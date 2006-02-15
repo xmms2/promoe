@@ -17,20 +17,22 @@ class Skin : public QWidget
 	public:
 		Skin(string m_skinname);
 		~Skin();
+
 		QPixmap *Pixmap (string file);
 		void Parse (string file);
-		QPixmap *Skin::GetPixmap (string file);
 		void BuildLetterMap (void);
 		void BuildButtons (void);
 		void BuildToggleButtons (void);
 		void BuildTitleBar (void);
 		void BuildSliders (void);
 		void BuildOther (void);
+		void Skin::ParsePLEdit (void);
 
 		const QPixmap getItem (uint part) const { return m_items->value(part); }
 		const QPixmap getVol (uint p) const { return m_volume_bar->value(p); }
 		const QPixmap getBal (uint p) const { return m_balance->value(p); }
-		const QPixmap getLetter (uint c) { return m_letterMap->value(c); }
+		const QPixmap getLetter (uint c) const { return m_letterMap->value(c); }
+		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt->value(c); }
 
 		enum Volume {
 			VOLUMEBAR_POS_MIN,
@@ -150,6 +152,7 @@ class Skin : public QWidget
 			TEXTBG
 		};
 	private:
+		QPixmap *Skin::GetPixmap (string file);
 		string m_skinname;
 		QString m_path;
 
@@ -194,6 +197,7 @@ class Skin : public QWidget
 		QHash<uint, QPixmap> *m_letterMap;
 		QHash<uint, QPixmap> *m_volume_bar;
 		QHash<uint, QPixmap> *m_balance;
+		QHash<QByteArray, QByteArray> *m_pledit_txt;
 		QList<QPixmap *> m_buttons;
 };
 

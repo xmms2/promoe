@@ -3,11 +3,12 @@
 
 Skin::Skin (string m_skinname) : m_skinname (m_skinname)
 {
-	m_path = QString ("./CleanAMP/");
+	m_path = QString ("./Debian/");
 
 	m_items = new QHash<uint, QPixmap>;
 	m_volume_bar = new QHash<uint, QPixmap>;
 	m_balance = new QHash<uint, QPixmap>;
+	m_pledit_txt = new QHash<QByteArray, QByteArray>;
 	
 	BuildLetterMap();
 	BuildButtons();
@@ -15,11 +16,50 @@ Skin::Skin (string m_skinname) : m_skinname (m_skinname)
 	BuildSliders();
 	BuildOther();
 	BuildTitleBar();
+	ParsePLEdit();
 }
 
 
 Skin::~Skin ()
 {
+}
+
+void
+Skin::ParsePLEdit (void)
+{
+	QDir dir;
+	QString path;
+
+	dir.setPath (m_path);
+	dir.setFilter (QDir::Files);
+
+	QFileInfoList list = dir.entryInfoList();
+	for (int i = 0; i < list.size(); ++i) {
+		QFileInfo fileInfo = list.at(i);
+		if (fileInfo.fileName().toLower() == "pledit.txt") {
+			path += fileInfo.filePath ();
+			break;
+		}
+	}
+
+	if (path.isNull ()) {
+		qDebug ("trasigt!");
+		return;
+	}
+
+	QFile file (path);
+
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+		return;
+
+	while (!file.atEnd ()) {
+		QByteArray line = file.readLine ();
+		QList<QByteArray> l = line.split ('=');
+		if (l.count () == 2) {
+			m_pledit_txt->insert (l[0].toLower (), l[1].trimmed());
+		}
+	}
+
 }
 
 QPixmap *Skin::GetPixmap (string file)

@@ -33,9 +33,9 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 
 	setAutoFillBackground (true);
 
-	setText (QString::fromUtf8 ("Promoe 0.1"));
+	//setText (QString::fromUtf8 ("Promoe 0.1"));
 
-	//setText (QString::fromUtf8 ("Okerueu etuoduå öästö åntöå dS !! !¤ ¤ % % & & ¤"));
+	setText (QString::fromUtf8 ("Okerueu etuoduå öästö åntöå dS !! !¤ ¤ % % & & ¤"));
 	
 }
 
@@ -59,7 +59,7 @@ TextScroller::addOffset ()
 void
 TextScroller::setText (const QString &text)
 {
-	drawBitmapFont (text);
+	drawQtFont (text);
 }
 
 void
@@ -100,6 +100,40 @@ TextScroller::drawBitmapFont (const QString &text)
 void
 TextScroller::drawQtFont (const QString &text)
 {
+	QFont font(m_skin->getPLeditValue ("font"));
+	font.setPointSize (6);
+
+	QFontMetrics fM(font);
+	QRect rect = fM.boundingRect (text);
+
+	QString (temp) = text;
+
+	if (rect.width() > m_w) {
+		temp += QString::fromAscii ("  --  ");
+		QRect rect = fM.boundingRect (temp);
+		m_timer->start (40);
+		m_x2_off = m_w / 2;
+
+		m_pixmap = QPixmap (rect.width(), m_h);
+	} else {
+		m_pixmap = QPixmap (m_w, m_h);
+	}
+
+	QPainter paint;
+	paint.begin (&m_pixmap);
+	paint.drawPixmap (m_pixmap.rect (),
+					  m_skin->getItem (Skin::TEXTBG),
+					  m_skin->getItem (Skin::TEXTBG).rect ());
+
+	paint.setFont (font);
+	QColor c;
+	c.setNamedColor (m_skin->getPLeditValue ("normal"));
+	paint.setPen (c);
+	paint.drawText (m_pixmap.rect (),
+					Qt::AlignLeft | Qt::AlignVCenter,
+					temp);
+	paint.end ();
+
 }
 
 void 
