@@ -1,0 +1,23 @@
+=============================================
+Debian 1.0 skin for XMMS
+
+Created by Jesper Schultz <jesper@schultz-net.dk>
+Visit www.schultz-net.dk
+Released Jan 25 2004
+
+Graphics done in The Gimp 1.3.2
+Tested with XMMS 1.2.8
+=============================================
+
+
+Installation
+------------
+You should have received this file in a gzip'ed tar
+archive named Debian.tar.gz. Simply copy or extract it 
+into your XMMS skins directory.
+
+Comments
+--------
+Dedicated to Debian GNU/Linux !
+
+
