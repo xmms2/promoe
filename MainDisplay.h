@@ -14,6 +14,7 @@
 #include "TitleBar.h"
 #include "Button.h"
 #include "TextBar.h"
+#include "MainWindow.h"
 
 using namespace std;
 

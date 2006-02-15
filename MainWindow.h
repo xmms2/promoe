@@ -13,6 +13,7 @@
 
 #include "Skin.h"
 #include "XmmsQT4.h"
+#include "MainDisplay.h"
 
 
 using namespace std;

@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include "MainDisplay.h"
 
 MainWindow::MainWindow ()
 {

@@ -10,7 +10,6 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 
-#include "MainWindow.h"
 #include "TitleBar.h"
 
 using namespace std;
