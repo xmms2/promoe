@@ -33,9 +33,9 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 
 	setAutoFillBackground (true);
 
-	//setText (QString::fromUtf8 ("Promoe 0.1"));
+	setText (QString::fromUtf8 ("Promoe 0.1"));
 
-	setText (QString::fromUtf8 ("Okerueu etuoduå öästö åntöå dS !! !¤ ¤ % % & & ¤"));
+	//setText (QString::fromUtf8 ("Okerueu etuoduå öästö åntöå dS !! !¤ ¤ % % & & ¤"));
 	
 }
 
