@@ -214,7 +214,7 @@ void Skin::BuildButtons (void)
 
 void Skin::BuildOther (void)
 {
-	QPixmap *img;
+	QPixmap *img, *part;
 	QPainter(painter);
 	
 	img = GetPixmap("monoster.bmp");
@@ -225,27 +225,33 @@ void Skin::BuildOther (void)
 	m_items->insert (STEREO_0, img->copy(0,  0, 29, 12));
 	m_items->insert (STEREO_1, img->copy(0, 12, 29, 12));
 
-	/*
 	img = GetPixmap("playpaus.bmp");
 
-	m_pic_play = new QPixmap(11, 9);
-	painter.begin(m_pic_play);
+	part = new QPixmap(11, 9);
+	painter.begin(part);
 	painter.drawPixmap (0, 0, 3, 9, *img, 36, 0, 3, 9);
 	painter.drawPixmap (3, 0, 8, 9, *img,  1, 0, 8, 9);
 	painter.end();
+	m_items->insert (PIC_PLAY, part->copy());
+	delete part;
 
-	m_pic_pause = new QPixmap(11, 9);
-	painter.begin(m_pic_pause);
+	part = new QPixmap(11, 9);
+	painter.begin(part);
 	painter.drawPixmap (0, 0, 2, 9, *img, 27, 0, 2, 9);
 	painter.drawPixmap (2, 0, 9, 9, *img,  9, 0, 9, 9);
 	painter.end();
+	m_items->insert (PIC_PAUSE, part->copy());
+	delete part;
 
-	m_pic_stop = new QPixmap(11, 9);
-	painter.begin(m_pic_stop);
+	part = new QPixmap(11, 9);
+	painter.begin(part);
 	painter.drawPixmap (0, 0, 2, 9, *img, 27, 0, 2, 9);
 	painter.drawPixmap (2, 0, 9, 9, *img, 18, 0, 9, 9);
 	painter.end();
-	*/
+	m_items->insert (PIC_STOP, part->copy());
+	delete part;
+
+	delete img;
 	
 	img = GetPixmap ("main.bmp");
 	m_items->insert (MAIN_WINDOW, img->copy());

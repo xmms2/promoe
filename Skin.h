@@ -151,7 +151,10 @@ class Skin : public QWidget
 			BTN_NEXT_1,
 			BTN_EJECT_0,
 			BTN_EJECT_1,
-			TEXTBG
+			TEXTBG,
+			PIC_PLAY,
+			PIC_PAUSE,
+			PIC_STOP,
 		};
 	private:
 		QPixmap *Skin::GetPixmap (string file);
