@@ -78,6 +78,8 @@ Skin::ParsePLEdit (void)
 		QList<QByteArray> l = line.split ('=');
 		if (l.count () == 2) {
 			m_pledit_txt->insert (l[0].toLower (), l[1].trimmed());
+		} else if (line.length() == 0) {
+			break;
 		}
 	}
 
