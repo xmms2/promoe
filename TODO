@@ -1,0 +1,22 @@
+Todo:
+
+Config
+ShadeDisplay
+Slider
+Balance
+VolumeBar
+SmallNumberDisplay
+MonoStereo
+PlayStatus
+PlaylistWindow
+PlaylistItem
+PlaylistList
+PlaylistSliderButton
+PlaylistSlider
+PlaylistButton
+	CloseButton
+	ShadeButton
+	ResizeButton
+
+
+
