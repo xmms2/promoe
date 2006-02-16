@@ -26,12 +26,14 @@ class Skin : public QWidget
 		void BuildTitleBar (void);
 		void BuildSliders (void);
 		void BuildOther (void);
+		void BuildNumbers (void);
 		void Skin::ParsePLEdit (void);
 
 		const QPixmap getItem (uint part) const { return m_items->value(part); }
 		const QPixmap getVol (uint p) const { return m_volume_bar->value(p); }
 		const QPixmap getBal (uint p) const { return m_balance->value(p); }
 		const QPixmap getLetter (uint c) const { return m_letterMap->value(c); }
+		const QPixmap getNumber (uint c) const { return m_numbers->value(c); }
 		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt->value(c); }
 
 		enum Volume {
@@ -156,47 +158,12 @@ class Skin : public QWidget
 		string m_skinname;
 		QString m_path;
 
-		/* titlebar pixmaps */
-		QPixmap *m_textbg;
-		QPixmap *m_menubutton;
-		QPixmap *m_minimize;
-		QPixmap *m_close;
-		QPixmap *m_shade;
-		QPixmap *m_shade2;
-		QPixmap *m_titlebar;
-		QPixmap *m_statusbar;
-
-		/* toggle buttons */
-		QPixmap *m_repeat_on;
-		QPixmap *m_repeat_off;
-		QPixmap *m_shuffle_on;
-		QPixmap *m_shuffle_off;
-		QPixmap *m_eq_on;
-		QPixmap *m_eq_off;
-		QPixmap *m_pls_on;
-		QPixmap *m_pls_off;
-
-		/* sliders */
-		QPixmap *m_seekbar;
-		QPixmap *m_seekbar_pos;
-		QPixmap *m_volume;
-
-		/* other */
-		QPixmap *m_mono;
-		QPixmap *m_stereo;
-		QPixmap *m_mainwin;
-		QPixmap m_about[2];
-		QPixmap *m_pic_play;
-		QPixmap *m_pic_pause;
-		QPixmap *m_pic_stop;
-
-		/* numbers */
-		QPixmap *m_numbers;
-		
 		QHash<uint, QPixmap> *m_items;
 		QHash<uint, QPixmap> *m_letterMap;
 		QHash<uint, QPixmap> *m_volume_bar;
 		QHash<uint, QPixmap> *m_balance;
+		QHash<uint, QPixmap> *m_numbers;
+
 		QHash<QByteArray, QByteArray> *m_pledit_txt;
 		QList<QPixmap *> m_buttons;
 };

@@ -24,6 +24,12 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_text = new TextScroller (this, 154, 15);
 	m_text->move (109, 23);
 
+	m_number = new NumberDisplay (this, 33, 11);
+	m_number->move (37, 26);
+
+	m_number2 = new NumberDisplay (this, 24, 0);
+	m_number2->move (78, 26);
+
 }
 
 void

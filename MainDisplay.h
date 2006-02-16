@@ -15,6 +15,7 @@
 #include "Button.h"
 #include "TextBar.h"
 #include "MainWindow.h"
+#include "NumberDisplay.h"
 
 using namespace std;
 
@@ -45,6 +46,9 @@ class MainDisplay : public SkinDisplay
 		ToggleButton *m_repeat;
 
 		TextScroller *m_text;
+
+		NumberDisplay *m_number;
+		NumberDisplay *m_number2;
 };
 
 #endif

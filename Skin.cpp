@@ -3,12 +3,13 @@
 
 Skin::Skin (string m_skinname) : m_skinname (m_skinname)
 {
-	m_path = QString ("./Debian/");
+	m_path = QString ("./CleanAMP/");
 
 	m_items = new QHash<uint, QPixmap>;
 	m_volume_bar = new QHash<uint, QPixmap>;
 	m_balance = new QHash<uint, QPixmap>;
 	m_pledit_txt = new QHash<QByteArray, QByteArray>;
+	m_numbers = new QHash<uint, QPixmap>;
 	
 	BuildLetterMap();
 	BuildButtons();
@@ -16,12 +17,32 @@ Skin::Skin (string m_skinname) : m_skinname (m_skinname)
 	BuildSliders();
 	BuildOther();
 	BuildTitleBar();
+	BuildNumbers();
 	ParsePLEdit();
 }
 
 
 Skin::~Skin ()
 {
+}
+
+void
+Skin::BuildNumbers (void)
+{
+	uint num = 11;
+
+	QPixmap *img = GetPixmap("numbers.bmp");
+	if (!img) {
+		num = 12;
+		img = GetPixmap ("nums_ex.bmp");
+	}
+
+	for (uint i = 0; i < num; i++) {
+		m_numbers->insert (i, img->copy (i*9, 0, 9, 13));
+	}
+
+	delete img;
+
 }
 
 void

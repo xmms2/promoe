@@ -20,7 +20,7 @@ PixWidget::~PixWidget ()
 void 
 PixWidget::paintEvent (QPaintEvent *event)
 {
-	if (m_pixmap.isNull () || !m_pixmap) {
+	if (m_pixmap.isNull ()) {
 		return;
 	}
 
