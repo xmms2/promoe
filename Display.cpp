@@ -1,5 +1,5 @@
-#include "Display.h"
 #include "MainWindow.h"
+#include "Display.h"
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 {

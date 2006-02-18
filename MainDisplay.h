@@ -1,6 +1,10 @@
 #ifndef __MAINDISPLAY_H__
 #define __MAINDISPLAY_H__
 
+class MainDisplay;
+
+#include "XMMSHandler.h"
+
 #include <iostream>
 
 #include <QPixmap>
@@ -25,11 +29,18 @@ class MainDisplay : public SkinDisplay
 	public:
 		MainDisplay (QWidget *parent);
 		~MainDisplay ();
+
+		TextScroller *m_text;
+		NumberDisplay *m_number;
+		NumberDisplay *m_number2;
+
 	public slots:
 		void setPixmaps(Skin *skin);
 	protected:
 		void SetupPushButtons (void);
 		void MainDisplay::SetupToggleButtons (void);
+
+		MainWindow *m_mw;
 
 		Button *m_prev;
 		Button *m_play;
@@ -47,10 +58,6 @@ class MainDisplay : public SkinDisplay
 		ToggleButton *m_shuffle;
 		ToggleButton *m_repeat;
 
-		TextScroller *m_text;
-
-		NumberDisplay *m_number;
-		NumberDisplay *m_number2;
 };
 
 #endif

@@ -12,10 +12,12 @@ class Button : public PixWidget
 	public:
 		Button (QWidget *parent, uint btn1, uint btn2);
 		~Button ();
-		void setFunc (void (*func)(void *userdata), void *userdata) { m_func = func; m_userdata = userdata; }
 
 	public slots:
 		void setPixmaps(Skin *skin);
+
+	signals:
+		void clicked (void);
 
 	protected:
 		void mousePressEvent (QMouseEvent *event);
@@ -26,8 +28,6 @@ class Button : public PixWidget
 		
 		QPixmap m_pixmap_normal;
 		QPixmap m_pixmap_pressed;
-		void (*m_func)(void *userdata);
-		void *m_userdata;
 };
 
 class ToggleButton : public Button
@@ -37,19 +37,13 @@ class ToggleButton : public Button
 		ToggleButton (QWidget *parent, uint, uint, uint, uint);
 		~ToggleButton ();
 
-		void toggleOn (bool);
-		void setFunc (void (*func)(void *userdata), void *userdata) { m_func2 = func; m_userdata2 = userdata; }
-
 		bool getOn () const { return m_toggled_on; }
-		void runFunc ();
 
 	public slots:
 		void setPixmaps(Skin *skin);
+		void toggleOn ();
 
 	private:
-		void (*m_func2)(void *userdata);
-		void *m_userdata2;
-		
 		uint m_name_on_normal;
 		uint m_name_on_pressed;
 		uint m_name_off_normal;

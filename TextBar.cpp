@@ -66,6 +66,9 @@ void
 TextScroller::setText (const QString &text)
 {
 	drawQtFont (text);
+	m_x_off = 1;
+	m_x2_off = 0;
+	update ();
 }
 
 void

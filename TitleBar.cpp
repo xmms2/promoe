@@ -1,5 +1,5 @@
-#include "TitleBar.h"
 #include "MainWindow.h"
+#include "TitleBar.h"
 #include "Display.h"
 
 TitleBar::TitleBar (QWidget *parent, bool shaded) : PixWidget (parent)

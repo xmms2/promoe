@@ -13,7 +13,7 @@ XmmsQT4::XmmsQT4 (xmmsc_connection_t *xmmsc, QObject *parent) : QObject (parent)
 
 	m_rsock = new QSocketNotifier (m_fd, QSocketNotifier::Read, this);
 	connect (m_rsock, SIGNAL (activated (int)), SLOT (OnRead ()));
-	m_rsock->setEnabled (false);
+	m_rsock->setEnabled (true);
 
 	m_wsock = new QSocketNotifier (m_fd, QSocketNotifier::Write, this);
 	connect (m_wsock, SIGNAL (activated (int)), SLOT (OnWrite ()));

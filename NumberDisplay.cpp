@@ -1,5 +1,5 @@
-#include "NumberDisplay.h"
 #include "MainWindow.h"
+#include "NumberDisplay.h"
 
 NumberDisplay::NumberDisplay (QWidget *parent, uint w, uint startpx) : PixWidget (parent)
 {

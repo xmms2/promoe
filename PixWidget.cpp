@@ -1,5 +1,6 @@
-#include "PixWidget.h"
 #include "MainWindow.h"
+
+#include "PixWidget.h"
 
 
 PixWidget::PixWidget (QWidget *parent) : QWidget (parent)

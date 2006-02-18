@@ -1,9 +1,12 @@
+#include "XMMSHandler.h"
 #include "MainDisplay.h"
 #include "TitleBar.h"
 #include "TextBar.h"
 
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
+	m_mw = dynamic_cast<MainWindow*>(parent);
+
 	m_tbar = new TitleBar(this, false);
 	m_tbar->move(0, 0);
 	m_tbar->resize(275, 14);
@@ -61,14 +64,24 @@ MainDisplay::SetupPushButtons (void)
 	/* Normal buttons */
 	m_prev = new Button (this, Skin::BTN_PREV_0, Skin::BTN_PREV_1);
 	m_prev->move(16, 88);
+	connect (m_prev, SIGNAL(clicked()), m_mw->getHandler (), SLOT(prev()));
+	
 	m_play = new Button (this, Skin::BTN_PLAY_0, Skin::BTN_PLAY_1);
 	m_play->move(39, 88);
+	connect (m_play, SIGNAL(clicked()), m_mw->getHandler (), SLOT(play()));
+
 	m_pause = new Button (this, Skin::BTN_PAUSE_0, Skin::BTN_PAUSE_1);
 	m_pause->move(62, 88);
+	connect (m_pause, SIGNAL(clicked()), m_mw->getHandler (), SLOT(pause()));
+
 	m_stop = new Button (this, Skin::BTN_STOP_0, Skin::BTN_STOP_1);
 	m_stop->move(85, 88);
+	connect (m_stop, SIGNAL(clicked()), m_mw->getHandler (), SLOT(stop()));
+
 	m_next = new Button (this, Skin::BTN_NEXT_0, Skin::BTN_NEXT_1);
 	m_next->move(108, 88);
+	connect (m_next, SIGNAL(clicked()), m_mw->getHandler (), SLOT(next()));
+
 	m_eject = new Button (this, Skin::BTN_EJECT_0, Skin::BTN_EJECT_1);
 	m_eject->move(136, 89);
 
