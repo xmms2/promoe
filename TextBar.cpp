@@ -6,12 +6,14 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 {
 
 	MainWindow *mw = (MainWindow *)((SkinDisplay *)parent)->getMW();
+	m_skin = mw->getSkin();
+
+	connect (m_skin, SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
 
 	m_h = h;
 	m_w = w;
 	m_x_off = 0;
 	m_x2_off = 0;
-	m_skin = mw->getSkin ();
 	
 	setMinimumSize(m_w + 2, m_h);
 	setMaximumSize(m_w + 2, m_h);
@@ -25,24 +27,28 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 	m_timer = new QTimer (this);
 	connect (m_timer, SIGNAL (timeout()), this, SLOT (addOffset ()));
 
-	QPalette pal = palette ();
-	QBrush b = QBrush (Qt::TexturePattern);
-	b.setTexture (mw->getSkin ()->getItem (Skin::TEXTBG));
-	pal.setBrush (QPalette::Window, b);
-	setPalette (pal);
-
 	setAutoFillBackground (true);
 
-	setText (QString::fromUtf8 ("Promoe 0.1"));
 
 	//setText (QString::fromUtf8 ("Okerueu etuoduå öästö åntöå dS !! !¤ ¤ % % & & ¤"));
 	
 }
 
+void
+TextScroller::setPixmaps (Skin *skin)
+{
+	QPalette pal = palette ();
+	QBrush b = QBrush (Qt::TexturePattern);
+	b.setTexture (skin->getItem (Skin::TEXTBG));
+	pal.setBrush (QPalette::Window, b);
+	setPalette (pal);
+
+	setText (QString::fromUtf8 ("Promoe 0.1"));
+	update();
+}
 void 
 TextScroller::addOffset ()
 {
-
 	if (m_x2_off > 0) {
 		m_x2_off --;
 	} else if (m_x_off < m_pixmap.size().width()) {

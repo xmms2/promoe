@@ -15,8 +15,11 @@ class NumberDisplay : public PixWidget
 	public:
 		NumberDisplay (QWidget *parent, uint, uint);
 		~NumberDisplay ();
-		
+
 		void setNumber (uint, uint);
+
+	public slots:
+		void setPixmaps (Skin *skin);
 
 	protected:
 		int m_w;

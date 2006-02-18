@@ -8,6 +8,8 @@ MainWindow::MainWindow ()
 	skin = new Skin("Debian");
 	MainDisplay *display = new MainDisplay(this);
 	setCentralWidget(display);
+
+	skin->setSkin("./CleanAMP/");
 	display->show();
 }
 

@@ -15,6 +15,22 @@ NumberDisplay::NumberDisplay (QWidget *parent, uint w, uint startpx) : PixWidget
 }
 
 void
+NumberDisplay::setPixmaps (Skin *skin)
+{
+	QBrush b (Qt::TexturePattern);
+	b.setTexture (skin->getNumber (10));
+
+	QPainter paint;
+	paint.begin (&m_pixmap);
+	paint.fillRect (m_pixmap.rect (), b);
+	paint.drawPixmap (m_startpx, 0, skin->getNumber (m_n1));
+	paint.drawPixmap (m_startpx+12, 0, skin->getNumber (m_n2));
+	paint.end();
+
+	update ();
+}
+
+void
 NumberDisplay::setNumber (uint n1, uint n2)
 {
 	MainWindow *mw = (MainWindow *)((SkinDisplay *)parent ())->getMW();
@@ -22,17 +38,7 @@ NumberDisplay::setNumber (uint n1, uint n2)
 	m_n1 = n1;
 	m_n2 = n2;
 
-	QBrush b (Qt::TexturePattern);
-	b.setTexture (mw->getSkin ()->getNumber (10));
-
-	QPainter paint;
-	paint.begin (&m_pixmap);
-	paint.fillRect (m_pixmap.rect (), b);
-	paint.drawPixmap (m_startpx, 0, mw->getSkin ()->getNumber (n1));
-	paint.drawPixmap (m_startpx+12, 0, mw->getSkin ()->getNumber (n2));
-	paint.end();
-
-	update ();
+	setPixmaps (mw->getSkin());
 }
 
 NumberDisplay::~NumberDisplay ()

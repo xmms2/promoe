@@ -4,16 +4,6 @@
 
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
-	QPalette palette = QPalette();
-	QBrush brush = QBrush(Qt::TexturePattern);
-
-	brush.setTexture((((MainWindow *)m_mw)->getSkin()->getItem(Skin::MAIN_WINDOW)));
-	palette.setBrush(QPalette::Background, brush);
-	setPalette(palette);
-
-	setMaximumSize(QSize(275, 116));
-	setMinimumSize(QSize(275, 116));
-
 	m_tbar = new TitleBar(this, false);
 	m_tbar->move(0, 0);
 	m_tbar->resize(275, 14);
@@ -30,6 +20,19 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_number2 = new NumberDisplay (this, 24, 0);
 	m_number2->move (78, 26);
 
+}
+
+void
+MainDisplay::setPixmaps (Skin *skin)
+{
+	QPalette palette = QPalette();
+	QBrush brush = QBrush(Qt::TexturePattern);
+	brush.setTexture(skin->getItem(Skin::MAIN_WINDOW));
+	palette.setBrush(QPalette::Background, brush);
+	setPalette(palette);
+
+	setMaximumSize(QSize(275, 116));
+	setMinimumSize(QSize(275, 116));
 }
 
 void

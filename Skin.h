@@ -18,17 +18,8 @@ class Skin : public QWidget
 		Skin(string m_skinname);
 		~Skin();
 
-		QPixmap *Pixmap (string file);
-		void Parse (string file);
-		void BuildLetterMap (void);
-		void BuildButtons (void);
-		void BuildToggleButtons (void);
-		void BuildTitleBar (void);
-		void BuildSliders (void);
-		void BuildOther (void);
-		void BuildNumbers (void);
-		void Skin::ParsePLEdit (void);
-
+		void setSkin (QString name);
+		
 		const QPixmap getItem (uint part) const { return m_items->value(part); }
 		const QPixmap getVol (uint p) const { return m_volume_bar->value(p); }
 		const QPixmap getBal (uint p) const { return m_balance->value(p); }
@@ -157,7 +148,18 @@ class Skin : public QWidget
 			PIC_STOP,
 		};
 	private:
-		QPixmap *Skin::GetPixmap (string file);
+		QPixmap *Skin::getPixmap (string file);
+		void Parse (string file);
+		void BuildLetterMap (void);
+		void BuildButtons (void);
+		void BuildToggleButtons (void);
+		void BuildTitleBar (void);
+		void BuildSliders (void);
+		void BuildOther (void);
+		void BuildNumbers (void);
+		void ParsePLEdit (void);
+
+
 		string m_skinname;
 		QString m_path;
 
@@ -169,6 +171,9 @@ class Skin : public QWidget
 
 		QHash<QByteArray, QByteArray> *m_pledit_txt;
 		QList<QPixmap *> m_buttons;
+
+	signals:
+		void skinChanged (Skin *skin);
 };
 
 #endif

@@ -1,9 +1,14 @@
 #include "PixWidget.h"
+#include "MainWindow.h"
 
 
 PixWidget::PixWidget (QWidget *parent) : QWidget (parent)
 {
+	MainWindow *mw = (MainWindow *)((SkinDisplay *)parent)->getMW();
+
 	m_pixmap = QPixmap(0,0);
+
+	connect (mw->getSkin(), SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
 }
 
 
@@ -11,6 +16,11 @@ PixWidget::~PixWidget ()
 {
 }
 
+
+void
+PixWidget::setPixmaps(Skin *skin)
+{
+}
 
 /*
  * Since almost every Widget I have here

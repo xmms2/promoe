@@ -1,22 +1,28 @@
 #include "Button.h"
-#include "MainWindow.h"
 #include "Display.h"
 
 Button::Button (QWidget *parent, uint normal, uint pressed) : PixWidget (parent)
 {
-	MainWindow *mw = (MainWindow *)((SkinDisplay *)parent)->getMW();
+	m_name_normal = normal;
+	m_name_pressed = pressed;
+}
 
-	m_pixmap_normal = mw->getSkin ()->getItem (normal);
-	m_pixmap_pressed = mw->getSkin ()->getItem (pressed);
+Button::~Button ()
+{
+}
+
+void
+Button::setPixmaps(Skin *skin)
+{
+	m_pixmap_normal = skin->getItem (m_name_normal);
+	m_pixmap_pressed = skin->getItem (m_name_pressed);
 	m_pixmap = m_pixmap_normal;
 	m_func = NULL;
 
 	setMinimumSize (m_pixmap.size ());
 	setMaximumSize (m_pixmap.size ());
-}
 
-Button::~Button ()
-{
+	update();
 }
 
 void Button::mousePressEvent (QMouseEvent *event)
@@ -49,21 +55,36 @@ ToggleButton::ToggleButton (QWidget *parent, uint on_normal, uint on_pressed,
 							uint off_normal, uint off_pressed) : 
 					Button (parent, off_normal, off_pressed)
 {
-	MainWindow *mw = (MainWindow *)((SkinDisplay *)parent)->getMW();
 
-	m_pixmap_on_normal = mw->getSkin()->getItem(on_normal);
-	m_pixmap_on_pressed = mw->getSkin()->getItem(on_pressed);
-	m_pixmap_off_normal = mw->getSkin()->getItem(off_normal);
-	m_pixmap_off_pressed = mw->getSkin()->getItem(off_pressed);
+	m_name_on_normal = on_normal;
+	m_name_on_pressed = on_pressed;
+	m_name_off_normal = off_normal;
+	m_name_off_pressed = off_pressed;
 
 	m_func = clicked;
 	m_userdata = (void *)this;
 
 	m_func2 = NULL;
 	m_userdata2 = NULL;
-	
-	toggleOn (false);
 }
+
+
+void
+ToggleButton::setPixmaps(Skin *skin)
+{
+	m_pixmap_on_normal = skin->getItem(m_name_on_normal);
+	m_pixmap_on_pressed = skin->getItem(m_name_on_pressed);
+	m_pixmap_off_normal = skin->getItem(m_name_off_normal);
+	m_pixmap_off_pressed = skin->getItem(m_name_off_pressed);
+
+	toggleOn(m_toggled_on);
+
+	setMinimumSize (m_pixmap.size ());
+	setMaximumSize (m_pixmap.size ());
+
+	update();
+}
+
 
 void
 ToggleButton::runFunc ()

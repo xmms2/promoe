@@ -1,9 +1,17 @@
 #include "Display.h"
+#include "MainWindow.h"
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 {
 	m_noDrag = false;
 	m_mw = parent;
+
+	connect(((MainWindow *)m_mw)->getSkin(), SIGNAL(skinChanged(Skin *)), this, SLOT(setPixmaps(Skin *)));
+}
+
+void
+SkinDisplay::setPixmaps (Skin *skin)
+{
 }
 
 void 

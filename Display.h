@@ -24,6 +24,8 @@ class SkinDisplay : public QWidget
 		void setNoDrag(bool d) { m_noDrag = d; }
 
 		QWidget *getMW() const { return m_mw; }
+	public slots:
+		virtual void setPixmaps(Skin *skin);
 
 	protected:
 		void mousePressEvent (QMouseEvent *);

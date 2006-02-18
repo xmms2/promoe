@@ -25,6 +25,8 @@ class MainDisplay : public SkinDisplay
 	public:
 		MainDisplay (QWidget *parent);
 		~MainDisplay ();
+	public slots:
+		void setPixmaps(Skin *skin);
 	protected:
 		void SetupPushButtons (void);
 		void MainDisplay::SetupToggleButtons (void);
