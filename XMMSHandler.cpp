@@ -57,10 +57,20 @@ void
 XMMSHandler::medialib_info (XMMSResult *res)
 {
 	char str[4096];
+	int b;
 
+	/* Make this NICER! */
 	res->entryFormat (str, 4096, "${artist} - ${album} - ${title}");
 	qDebug ("%s", str);
 	m_mw->getMD ()->m_text->setText (QString::fromUtf8 (str));
+
+	if (res->getDictValue ("bitrate", &b)) {
+		m_mw->getMD ()->m_kbps->setNumber (b/1000, 3);
+	}
+
+	if (res->getDictValue ("samplerate", &b)) {
+		m_mw->getMD ()->m_khz->setNumber (b/1000, 2);
+	}
 
 	delete res;
 }

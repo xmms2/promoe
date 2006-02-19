@@ -10,8 +10,7 @@ class SmallNumberDisplay : public PixWidget
 		SmallNumberDisplay (QWidget *parent, int w);
 		~SmallNumberDisplay () { };
 
-		void setNumber (char i1, char i2, char i3);
-		void setNumber (char i1, char i2);
+		void setNumber (int num, int len);
 
 	public slots:
 		void setPixmaps (Skin *skin);

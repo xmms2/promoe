@@ -16,24 +16,10 @@ SmallNumberDisplay::setPixmaps (Skin *skin)
 }
 
 void
-SmallNumberDisplay::setNumber (char i1, char i2, char i3)
+SmallNumberDisplay::setNumber (int num, int len)
 {
-	m_nums[0] = i1;
-	m_nums[1] = i2;
-	m_nums[2] = i3;
-	m_num = 3;
-
-	drawNumber ();
-
-	update ();
-}
-
-void
-SmallNumberDisplay::setNumber (char i1, char i2)
-{
-	m_nums[0] = i1;
-	m_nums[1] = i2;
-	m_num = 2;
+	snprintf (m_nums, len+1, "%d", num);
+	m_num = len;
 
 	drawNumber ();
 
