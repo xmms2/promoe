@@ -1,10 +1,9 @@
 #include "Skin.h"
 
 
-Skin::Skin (string m_skinname) : m_skinname (m_skinname)
+Skin::Skin (QString path)
 {
-	m_path = QString ("./CleanAMP/");
-
+	m_path = path;
 	m_items = new QHash<uint, QPixmap>;
 	m_volume_bar = new QHash<uint, QPixmap>;
 	m_balance = new QHash<uint, QPixmap>;
@@ -230,10 +229,10 @@ Skin::BuildOther (void)
 	QPainter(painter);
 	
 	img = getPixmap("monoster.bmp");
-	m_items->insert (MONO_0, img->copy(29,  0, 27, 12));
-	m_items->insert (MONO_1, img->copy(29, 12, 27, 12));
-	m_items->insert (STEREO_0, img->copy(0,  0, 29, 12));
-	m_items->insert (STEREO_1, img->copy(0, 12, 29, 12));
+	m_items->insert (MONO_1, img->copy(29,  0, 27, 12));
+	m_items->insert (MONO_0, img->copy(29, 12, 27, 12));
+	m_items->insert (STEREO_1, img->copy(0,  0, 29, 12));
+	m_items->insert (STEREO_0, img->copy(0, 12, 29, 12));
 	delete img;
 
 

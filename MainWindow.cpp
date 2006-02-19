@@ -8,12 +8,12 @@ MainWindow::MainWindow ()
 	
 	m_handler = new XMMSHandler (this);
 
-	skin = new Skin("Debian");
+	skin = new Skin("./Debian/");
 	m_display = new MainDisplay(this);
 	
 	setCentralWidget(m_display);
 
-	skin->setSkin("./CleanAMP/");
+	skin->setSkin("./Debian/");
 	m_display->show();
 
 }

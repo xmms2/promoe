@@ -21,6 +21,7 @@ class MainDisplay;
 #include "MainWindow.h"
 #include "NumberDisplay.h"
 #include "SmallNumberDisplay.h"
+#include "StereoMono.h"
 
 using namespace std;
 
@@ -37,6 +38,8 @@ class MainDisplay : public SkinDisplay
 
 		SmallNumberDisplay *m_kbps;
 		SmallNumberDisplay *m_khz;
+
+		StereoMono *m_stereo;
 
 	public slots:
 		void setPixmaps(Skin *skin);

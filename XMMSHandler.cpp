@@ -72,6 +72,14 @@ XMMSHandler::medialib_info (XMMSResult *res)
 		m_mw->getMD ()->m_khz->setNumber (b/1000, 2);
 	}
 
+	if (res->getDictValue ("channels:out", &b)) {
+		if (b == 1) {
+			m_mw->getMD ()->m_stereo->setStereoMono (0, 1);
+		} else {
+			m_mw->getMD ()->m_stereo->setStereoMono (1, 0);
+		}
+	}
+
 	delete res;
 }
 

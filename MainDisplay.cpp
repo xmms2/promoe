@@ -31,6 +31,10 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_khz->move (156, 43);
 	m_khz->setNumber (44, 2);
 
+	m_stereo = new StereoMono (this);
+	m_stereo->move (212, 41);
+	m_stereo->setStereoMono (0, 0);
+
 }
 
 void
