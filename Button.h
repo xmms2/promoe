@@ -14,7 +14,7 @@ class Button : public PixWidget
 		~Button ();
 
 	public slots:
-		void setPixmaps(Skin *skin);
+		void setPixmaps (Skin *skin);
 
 	signals:
 		void clicked (void);
@@ -55,6 +55,8 @@ class ToggleButton : public Button
 		QPixmap m_pixmap_off_pressed;
 
 		bool m_toggled_on;
+		
+		void setCurrentPix ();
 };
 
 #endif

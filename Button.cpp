@@ -53,8 +53,6 @@ ToggleButton::ToggleButton (QWidget *parent, uint on_normal, uint on_pressed,
 	m_name_off_pressed = off_pressed;
 	m_toggled_on = true;
 
-	toggleOn ();
-
 	connect (this, SIGNAL(clicked()), this, SLOT (toggleOn()));
 }
 
@@ -67,6 +65,8 @@ ToggleButton::setPixmaps(Skin *skin)
 	m_pixmap_off_normal = skin->getItem(m_name_off_normal);
 	m_pixmap_off_pressed = skin->getItem(m_name_off_pressed);
 
+	setCurrentPix ();
+
 	setMinimumSize (m_pixmap.size ());
 	setMaximumSize (m_pixmap.size ());
 
@@ -74,21 +74,30 @@ ToggleButton::setPixmaps(Skin *skin)
 }
 
 void
-ToggleButton::toggleOn ()
+ToggleButton::setCurrentPix ()
 {
-	if (!m_toggled_on) {
+	if (m_toggled_on) {
 		m_pixmap_normal = m_pixmap_on_normal;
 		m_pixmap_pressed = m_pixmap_on_pressed;
-		m_toggled_on = true;
 	} else {
 		m_pixmap_normal = m_pixmap_off_normal;
 		m_pixmap_pressed = m_pixmap_off_pressed;
-		m_toggled_on = false;
 	}
 
 	m_pixmap = m_pixmap_normal;
-	update ();
+}
 
+void
+ToggleButton::toggleOn ()
+{
+	if (!m_toggled_on) {
+		m_toggled_on = true;
+	} else {
+		m_toggled_on = false;
+	}
+
+	setCurrentPix ();
+	update ();
 }
 
 ToggleButton::~ToggleButton ()
