@@ -13,11 +13,17 @@ class TitleBar : public PixWidget
 		TitleBar (QWidget *parent, bool shaded);
 		~TitleBar ();
 		void setActive (bool active);
+
+	public slots:
+		void setPixmaps (Skin *skin);
+
 	protected:
 		void mouseDoubleClickEvent (QMouseEvent *event);
+
 	private:
 		QPixmap m_pixmap_active;
 		QPixmap m_pixmap_inactive;
+		bool m_shaded;
 };
 
 #endif
