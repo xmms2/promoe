@@ -23,6 +23,14 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_number2 = new NumberDisplay (this, 24, 0);
 	m_number2->move (78, 26);
 
+	m_kbps = new SmallNumberDisplay (this, 15);
+	m_kbps->move (111, 43);
+	m_kbps->setNumber ('1', '2', '8');
+
+	m_khz = new SmallNumberDisplay (this, 10);
+	m_khz->move (156, 43);
+	m_khz->setNumber ('4', '4');
+
 }
 
 void

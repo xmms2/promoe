@@ -20,6 +20,7 @@ class MainDisplay;
 #include "TextBar.h"
 #include "MainWindow.h"
 #include "NumberDisplay.h"
+#include "SmallNumberDisplay.h"
 
 using namespace std;
 
@@ -33,6 +34,9 @@ class MainDisplay : public SkinDisplay
 		TextScroller *m_text;
 		NumberDisplay *m_number;
 		NumberDisplay *m_number2;
+
+		SmallNumberDisplay *m_kbps;
+		SmallNumberDisplay *m_khz;
 
 	public slots:
 		void setPixmaps(Skin *skin);
