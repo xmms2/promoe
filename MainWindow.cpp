@@ -8,13 +8,13 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 	
 	m_handler = new XMMSHandler (this);
 
-	skin = new Skin("./Debian/");
+	skin = new Skin ();
 	m_display = new MainDisplay(this);
 	
-	setCentralWidget(m_display);
+	setCentralWidget (m_display);
 
-	skin->setSkin("./CleanAMP/");
-	m_display->show();
+	skin->setSkin ("./CleanAMP/");
+	m_display->show ();
 
 }
 

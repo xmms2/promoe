@@ -15,7 +15,7 @@ class Skin : public QWidget
 {
 	Q_OBJECT
 	public:
-		Skin (QString);
+		Skin ();
 		~Skin();
 
 		void setSkin (QString name);

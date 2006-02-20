@@ -1,9 +1,8 @@
 #include "Skin.h"
 
 
-Skin::Skin (QString path)
+Skin::Skin (void)
 {
-	m_path = path;
 	m_items = new QHash<uint, QPixmap>;
 	m_volume_bar = new QHash<uint, QPixmap>;
 	m_balance = new QHash<uint, QPixmap>;
