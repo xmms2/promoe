@@ -10,7 +10,8 @@ SOURCES += XmmsQT4.cpp \
 		   NumberDisplay.cpp \
 		   XMMSHandler.cpp \
 		   SmallNumberDisplay.cpp \
-		   StereoMono.cpp
+		   StereoMono.cpp \
+		   Slider.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -24,7 +25,8 @@ HEADERS += XmmsQT4.h \
 		   NumberDisplay.h \
 		   XMMSHandler.h \
 		   SmallNumberDisplay.h \
-		   StereoMono.h
+		   StereoMono.h \
+		   Slider.h
 
 CONFIG += link_pkgconfig
 CONFIG += debug

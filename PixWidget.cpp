@@ -1,14 +1,13 @@
 #include "MainWindow.h"
-
 #include "PixWidget.h"
-
 
 PixWidget::PixWidget (QWidget *parent) : QWidget (parent)
 {
-	MainWindow *mw = (MainWindow *)((SkinDisplay *)parent)->getMW();
-
+	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
+	if (!mw) {
+		qDebug ("******** DANGER! NO MAINWINDOW FOUND");
+	}
 	m_pixmap = QPixmap(0,0);
-
 	connect (mw->getSkin(), SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
 }
 

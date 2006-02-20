@@ -277,6 +277,13 @@ void
 Skin::BuildSliders (void)
 {
 	QPixmap *img;
+
+	img = getPixmap("posbar.bmp");
+	m_items->insert (POSBAR, img->copy (0, 0, 248, 10));
+	m_items->insert (POSBAR_BTN_0, img->copy (248, 0, 29, 10));
+	m_items->insert (POSBAR_BTN_1, img->copy (278, 0, 29, 10));
+
+	delete img;
 	
 	img = getPixmap("volume.bmp");
 	for (int i = VOLUMEBAR_POS_MIN; i < VOLUMEBAR_POS_MAX; i++) {

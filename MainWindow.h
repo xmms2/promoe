@@ -23,11 +23,12 @@ class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 	public:
-		MainWindow(void);
-		~MainWindow(void);
-		Skin *getSkin(void);
+		MainWindow (QWidget *parent);
+		~MainWindow (void);
+		Skin *getSkin (void);
 		XMMSHandler *getHandler () { return m_handler; }
 		MainDisplay *getMD () { return m_display; }
+		void setNoDrag (bool b);
 	private:
 		Skin *skin;
 		XMMSHandler *m_handler;

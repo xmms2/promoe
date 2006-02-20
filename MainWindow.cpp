@@ -1,7 +1,7 @@
 #include <xmmsclient/xmmsclient++.h>
 #include "MainWindow.h"
 
-MainWindow::MainWindow ()
+MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
 	setGeometry(100, 100, 275, 116);
@@ -13,7 +13,7 @@ MainWindow::MainWindow ()
 	
 	setCentralWidget(m_display);
 
-	skin->setSkin("./Debian/");
+	skin->setSkin("./CleanAMP/");
 	m_display->show();
 
 }
@@ -21,6 +21,12 @@ MainWindow::MainWindow ()
 MainWindow::~MainWindow ()
 {
 	delete skin;
+}
+
+void
+MainWindow::setNoDrag (bool b)
+{
+	m_display->setNoDrag (b);
 }
 
 Skin *MainWindow::getSkin(void)
@@ -32,7 +38,7 @@ int main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
 
-	MainWindow *mw = new MainWindow();
+	MainWindow *mw = new MainWindow (NULL);
 	mw->show();
 	
 

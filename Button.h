@@ -1,7 +1,6 @@
 #ifndef __BUTTON_H__
 #define __BUTTON_H__
 
-#include <QWidget>
 #include "PixWidget.h"
 
 using namespace std;
@@ -12,6 +11,7 @@ class Button : public PixWidget
 	public:
 		Button (QWidget *parent, uint btn1, uint btn2);
 		~Button ();
+		bool noDrag (void) { return m_nodrag; }
 
 	public slots:
 		void setPixmaps (Skin *skin);
@@ -25,9 +25,14 @@ class Button : public PixWidget
 
 		uint m_name_normal;
 		uint m_name_pressed;
+
+		uint m_diffx;
+		uint m_diffy;
 		
 		QPixmap m_pixmap_normal;
 		QPixmap m_pixmap_pressed;
+
+		bool m_nodrag;
 };
 
 class ToggleButton : public Button

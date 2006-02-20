@@ -146,6 +146,9 @@ class Skin : public QWidget
 			PIC_PLAY,
 			PIC_PAUSE,
 			PIC_STOP,
+			POSBAR,
+			POSBAR_BTN_0,
+			POSBAR_BTN_1,
 		};
 	private:
 		QPixmap *Skin::getPixmap (string file);

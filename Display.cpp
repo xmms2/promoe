@@ -33,13 +33,13 @@ SkinDisplay::mouseMoveEvent (QMouseEvent *event)
 void
 SkinDisplay::enterEvent (QEvent *event)
 {
-	m_tbar->setActive(true);
+	dynamic_cast<TitleBar *>(m_tbar)->setActive(true);
 }
 
 void
 SkinDisplay::leaveEvent (QEvent *event)
 {
-	m_tbar->setActive(false);
+	dynamic_cast<TitleBar *>(m_tbar)->setActive(false);
 }
 
 void 

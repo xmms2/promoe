@@ -3,11 +3,11 @@
 
 #include <iostream>
 
+#include "Skin.h"
+
 #include <QPixmap>
 #include <QPainter>
 #include <QWidget>
-
-#include "Skin.h"
 
 class PixWidget : public QWidget
 {
@@ -16,10 +16,12 @@ class PixWidget : public QWidget
 		PixWidget(QWidget *parent = 0);
 		~PixWidget();
 		void paintEvent (QPaintEvent *event);
+		QWidget *getMW (void) { return m_mw; }
 	public slots:
 		virtual void setPixmaps(Skin *skin);
 	protected:
 		QPixmap m_pixmap;
+		QWidget *m_mw;
 };
 
 #endif

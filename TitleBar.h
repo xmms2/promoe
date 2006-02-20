@@ -1,7 +1,8 @@
 #ifndef __TITLEBAR_H__
 #define __TITLEBAR_H__
 
-#include <QWidget>
+class TitleBar;
+
 #include "PixWidget.h"
 
 using namespace std;

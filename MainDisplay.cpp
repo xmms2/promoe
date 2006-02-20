@@ -35,6 +35,11 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_stereo->move (212, 41);
 	m_stereo->setStereoMono (0, 0);
 
+	m_slider = new Slider (this, Skin::POSBAR, 
+						   Skin::POSBAR_BTN_0, 
+						   Skin::POSBAR_BTN_1);
+	m_slider->move (16, 72);
+
 }
 
 void
@@ -73,26 +78,28 @@ MainDisplay::SetupToggleButtons (void)
 void
 MainDisplay::SetupPushButtons (void)
 {
+	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
+
 	/* Normal buttons */
 	m_prev = new Button (this, Skin::BTN_PREV_0, Skin::BTN_PREV_1);
 	m_prev->move(16, 88);
-	connect (m_prev, SIGNAL(clicked()), m_mw->getHandler (), SLOT(prev()));
+	connect (m_prev, SIGNAL(clicked()), mw->getHandler (), SLOT(prev()));
 	
 	m_play = new Button (this, Skin::BTN_PLAY_0, Skin::BTN_PLAY_1);
 	m_play->move(39, 88);
-	connect (m_play, SIGNAL(clicked()), m_mw->getHandler (), SLOT(play()));
+	connect (m_play, SIGNAL(clicked()), mw->getHandler (), SLOT(play()));
 
 	m_pause = new Button (this, Skin::BTN_PAUSE_0, Skin::BTN_PAUSE_1);
 	m_pause->move(62, 88);
-	connect (m_pause, SIGNAL(clicked()), m_mw->getHandler (), SLOT(pause()));
+	connect (m_pause, SIGNAL(clicked()), mw->getHandler (), SLOT(pause()));
 
 	m_stop = new Button (this, Skin::BTN_STOP_0, Skin::BTN_STOP_1);
 	m_stop->move(85, 88);
-	connect (m_stop, SIGNAL(clicked()), m_mw->getHandler (), SLOT(stop()));
+	connect (m_stop, SIGNAL(clicked()), mw->getHandler (), SLOT(stop()));
 
 	m_next = new Button (this, Skin::BTN_NEXT_0, Skin::BTN_NEXT_1);
 	m_next->move(108, 88);
-	connect (m_next, SIGNAL(clicked()), m_mw->getHandler (), SLOT(next()));
+	connect (m_next, SIGNAL(clicked()), mw->getHandler (), SLOT(next()));
 
 	m_eject = new Button (this, Skin::BTN_EJECT_0, Skin::BTN_EJECT_1);
 	m_eject->move(136, 89);

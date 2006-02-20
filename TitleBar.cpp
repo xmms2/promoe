@@ -1,4 +1,3 @@
-#include "MainWindow.h"
 #include "TitleBar.h"
 #include "Display.h"
 

@@ -1,12 +1,6 @@
 #ifndef __NUMBERDISPLAY_H__
 #define __NUMBERDISPLAY_H__
 
-#include <iostream>
-
-#include <QPixmap>
-#include <QPainter>
-#include <QWidget>
-
 #include "PixWidget.h"
 
 class NumberDisplay : public PixWidget

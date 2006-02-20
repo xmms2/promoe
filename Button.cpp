@@ -1,10 +1,14 @@
+
+#include "MainWindow.h"
 #include "Button.h"
-#include "Display.h"
+
 
 Button::Button (QWidget *parent, uint normal, uint pressed) : PixWidget (parent)
 {
 	m_name_normal = normal;
 	m_name_pressed = pressed;
+	m_diffx = 0;
+	m_diffy = 0;
 }
 
 Button::~Button ()
@@ -18,6 +22,13 @@ Button::setPixmaps(Skin *skin)
 	m_pixmap_pressed = skin->getItem (m_name_pressed);
 	m_pixmap = m_pixmap_normal;
 
+	if (!m_pixmap_normal || m_pixmap_normal.isNull()) {
+		qDebug ("OPPP! %d return NULL!", m_name_normal);
+	}
+	if (!m_pixmap_pressed || m_pixmap_pressed.isNull()) {
+		qDebug ("OPPP! %d return NULL!", m_name_pressed);
+	}
+
 	setMinimumSize (m_pixmap.size ());
 	setMaximumSize (m_pixmap.size ());
 
@@ -27,19 +38,28 @@ Button::setPixmaps(Skin *skin)
 void 
 Button::mousePressEvent (QMouseEvent *event)
 {
-	((SkinDisplay *)parent ())->setNoDrag (true);
+	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
+	mw->setNoDrag (true);
+
 	m_pixmap = m_pixmap_pressed;
+
+	m_diffx = event->pos().x();
+	m_diffy = event->pos().y();
+
+	m_nodrag = true;
+
 	update ();
 }
 
 void 
 Button::mouseReleaseEvent (QMouseEvent *event)
 {
-	((SkinDisplay *)parent())->setNoDrag (false);
+	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
+	mw->setNoDrag (false);
 	m_pixmap = m_pixmap_normal;
+	m_nodrag = false;
 	update();
 	emit clicked();
-
 }
 
 ToggleButton::ToggleButton (QWidget *parent, uint on_normal, uint on_pressed,

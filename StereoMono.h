@@ -1,3 +1,6 @@
+#ifndef __STEREOMONO_H__
+#define __STEREOMONO_H__
+
 #include "PixWidget.h"
 
 class StereoMono : public PixWidget
@@ -25,3 +28,4 @@ class StereoMono : public PixWidget
 		QPixmap m_pixmap_stereo;
 };
 
+#endif

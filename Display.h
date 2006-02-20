@@ -10,7 +10,7 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 
-#include "TitleBar.h"
+#include "Skin.h"
 
 using namespace std;
 
@@ -35,7 +35,7 @@ class SkinDisplay : public QWidget
 		void SkinDisplay::leaveEvent (QEvent *event);
 
 		QWidget *m_mw;
-		TitleBar *m_tbar;
+		QWidget *m_tbar;
 		
 	private:
 		bool m_noDrag;

@@ -18,10 +18,10 @@ class MainDisplay;
 #include "TitleBar.h"
 #include "Button.h"
 #include "TextBar.h"
-#include "MainWindow.h"
 #include "NumberDisplay.h"
 #include "SmallNumberDisplay.h"
 #include "StereoMono.h"
+#include "Slider.h"
 
 using namespace std;
 
@@ -40,14 +40,13 @@ class MainDisplay : public SkinDisplay
 		SmallNumberDisplay *m_khz;
 
 		StereoMono *m_stereo;
+		Slider *m_slider;
 
 	public slots:
 		void setPixmaps(Skin *skin);
 	protected:
 		void SetupPushButtons (void);
-		void MainDisplay::SetupToggleButtons (void);
-
-		MainWindow *m_mw;
+		void SetupToggleButtons (void);
 
 		Button *m_prev;
 		Button *m_play;

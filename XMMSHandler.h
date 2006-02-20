@@ -22,6 +22,8 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 
 	public slots:
+		void setPlaytime ();
+
 		void play () { delete m_xmmsc->playback_start (); }
 		void stop () { delete m_xmmsc->playback_stop (); }
 		void pause () { delete m_xmmsc->playback_pause (); }
