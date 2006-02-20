@@ -22,6 +22,7 @@ class MainDisplay;
 #include "SmallNumberDisplay.h"
 #include "StereoMono.h"
 #include "Slider.h"
+#include "PlayStatus.h"
 
 using namespace std;
 
@@ -41,6 +42,8 @@ class MainDisplay : public SkinDisplay
 
 		StereoMono *m_stereo;
 		Slider *m_slider;
+
+		PlayStatus *m_playstatus;
 
 	public slots:
 		void setPixmaps(Skin *skin);

@@ -40,6 +40,9 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 						   Skin::POSBAR_BTN_1);
 	m_slider->move (16, 72);
 
+	m_playstatus = new PlayStatus (this);
+	m_playstatus->move (24, 28);
+
 }
 
 void

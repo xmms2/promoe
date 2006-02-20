@@ -110,7 +110,7 @@ void
 TextScroller::drawQtFont (const QString &text)
 {
 	QFont font(m_skin->getPLeditValue ("font"));
-	font.setPointSize (6);
+	font.setPixelSize (9);
 
 	QFontMetrics fM(font);
 	QRect rect = fM.boundingRect (text);

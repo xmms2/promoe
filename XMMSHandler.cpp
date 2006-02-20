@@ -25,6 +25,17 @@ XMMSHandler::XMMSHandler (MainWindow *mw) : sigc::trackable ()
 
 	r = m_xmmsc->broadcast_playback_current_id ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_current_id));
+
+	r = m_xmmsc->broadcast_playback_status ();
+	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_status));
+}
+
+void
+XMMSHandler::playback_status (XMMSResult *res)
+{
+	uint i;
+	res->getValue (&i);
+	m_mw->getMD ()->m_playstatus->setStatus (i);
 }
 
 void 

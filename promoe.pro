@@ -11,7 +11,8 @@ SOURCES += XmmsQT4.cpp \
 		   XMMSHandler.cpp \
 		   SmallNumberDisplay.cpp \
 		   StereoMono.cpp \
-		   Slider.cpp
+		   Slider.cpp \
+		   PlayStatus.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -26,9 +27,8 @@ HEADERS += XmmsQT4.h \
 		   XMMSHandler.h \
 		   SmallNumberDisplay.h \
 		   StereoMono.h \
-		   Slider.h
+		   Slider.h \
+		   PlayStatus.h
 
 CONFIG += link_pkgconfig
-CONFIG += debug
-QMAKE_CFLAGS_WARN_OFF += -Wno-unused-parameter
-PKGCONFIG += xmms2-client-cpp sigc++-2.0
+PKGCONFIG += xmms2-client xmms2-client-cpp sigc++-2.0
