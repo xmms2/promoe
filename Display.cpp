@@ -6,7 +6,10 @@ SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 	m_noDrag = false;
 	m_mw = parent;
 
-	connect(((MainWindow *)m_mw)->getSkin(), SIGNAL(skinChanged(Skin *)), this, SLOT(setPixmaps(Skin *)));
+	connect (dynamic_cast<MainWindow *>(parent)->getSkin (),
+			 SIGNAL (skinChanged (Skin *)),
+			 this,
+			 SLOT (setPixmaps (Skin *)));
 }
 
 void
