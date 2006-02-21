@@ -23,6 +23,8 @@ class TextScroller : public QWidget
 		~TextScroller ();
 
 		void setText(const QString &text);
+		void setFontSize (int i) { m_fontsize = i; }
+		void setTTF (bool b) { m_ttf = b; }
 
 	public slots:
 		void addOffset ();
@@ -38,6 +40,8 @@ class TextScroller : public QWidget
 		int m_y;
 		int m_x_off;
 		int m_x2_off;
+		int m_fontsize;
+		bool m_ttf;
 
 		QTimer *m_timer;
 

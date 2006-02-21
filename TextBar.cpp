@@ -14,6 +14,8 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 	m_w = w;
 	m_x_off = 0;
 	m_x2_off = 0;
+	m_fontsize = 8; /* default */
+	m_ttf = true;
 	
 	setMinimumSize(m_w + 2, m_h);
 	setMaximumSize(m_w + 2, m_h);
@@ -27,11 +29,6 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 	m_timer = new QTimer (this);
 	connect (m_timer, SIGNAL (timeout()), this, SLOT (addOffset ()));
 
-	setAutoFillBackground (true);
-
-
-	//setText (QString::fromUtf8 ("Okerueu etuoduå öästö åntöå dS !! !¤ ¤ % % & & ¤"));
-	
 }
 
 void
@@ -65,7 +62,11 @@ TextScroller::addOffset ()
 void
 TextScroller::setText (const QString &text)
 {
-	drawQtFont (text);
+	if (m_ttf) {
+		drawQtFont (text);
+	} else {
+		drawBitmapFont (text);
+	}
 	m_x_off = 1;
 	m_x2_off = 0;
 	update ();
@@ -110,7 +111,7 @@ void
 TextScroller::drawQtFont (const QString &text)
 {
 	QFont font(m_skin->getPLeditValue ("font"));
-	font.setPixelSize (9);
+	font.setPixelSize (m_fontsize);
 
 	QFontMetrics fM(font);
 	QRect rect = fM.boundingRect (text);

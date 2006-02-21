@@ -107,14 +107,6 @@ MainDisplay::SetupPushButtons (void)
 	m_eject = new Button (this, Skin::BTN_EJECT_0, Skin::BTN_EJECT_1);
 	m_eject->move(136, 89);
 
-	m_menubtn = new Button (this, Skin::MENUBUTTON_0, Skin::MENUBUTTON_1);
-	m_menubtn->move(6, 3);
-	m_minimize = new Button (this, Skin::MINIMIZE_0, Skin::MINIMIZE_1);
-	m_minimize->move(244, 3);
-	m_shadebtn = new Button (this, Skin::SHADE_1_0, Skin::SHADE_1_1);
-	m_shadebtn->move(254, 3);
-	m_closebtn = new Button (this, Skin::CLOSE_0, Skin::CLOSE_1);
-	m_closebtn->move(264, 3);
 }
 
 MainDisplay::~MainDisplay (void)

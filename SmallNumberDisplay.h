@@ -1,3 +1,6 @@
+#ifndef __SMALLNUMBERDISPLAY_H__
+#define __SMALLNUMBERDISPLAY_H__
+
 #include "PixWidget.h"
 #include <QPainter>
 
@@ -25,3 +28,4 @@ class SmallNumberDisplay : public PixWidget
 		Skin *m_skin;
 };
 
+#endif

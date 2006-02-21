@@ -36,6 +36,15 @@ XMMSHandler::playback_status (XMMSResult *res)
 	uint i;
 	res->getValue (&i);
 	m_mw->getMD ()->m_playstatus->setStatus (i);
+
+	if (i == XMMS_PLAYBACK_STATUS_STOP) {
+		m_mw->getSD ()->m_number->setNumber (0, 2);
+		m_mw->getSD ()->m_number2->setNumber (0, 2);
+		m_mw->getMD ()->m_number->setNumber (0, 0);
+		m_mw->getMD ()->m_number2->setNumber (0, 0);
+		m_mw->getMD ()->m_slider->setPos (0);
+	}
+
 }
 
 void 
@@ -46,11 +55,17 @@ XMMSHandler::playback_playtime (XMMSResult *res)
 
 	sec = (i / 1000) % 60;
 	min = (i / 1000) / 60;
-	m_mw->getMD ()->m_number->setNumber (min / 10, min % 10);
-	m_mw->getMD ()->m_number2->setNumber (sec / 10, sec % 10);
 
-	/* update slider */
-	m_mw->getMD ()->m_slider->setPos (i);
+	if (m_mw->getShaded ()) {
+		m_mw->getSD ()->m_number->setNumber (min, 2);
+		m_mw->getSD ()->m_number2->setNumber (sec, 2);
+	} else {
+		m_mw->getMD ()->m_number->setNumber (min / 10, min % 10);
+		m_mw->getMD ()->m_number2->setNumber (sec / 10, sec % 10);
+
+		/* update slider */
+		m_mw->getMD ()->m_slider->setPos (i);
+	}
 
 	res->restart ();
 }
@@ -84,8 +99,8 @@ XMMSHandler::medialib_info (XMMSResult *res)
 
 	/* Make this NICER! */
 	res->entryFormat (str, 4096, "${artist} - ${album} - ${title}");
-	qDebug ("%s", str);
 	m_mw->getMD ()->m_text->setText (QString::fromUtf8 (str));
+	m_mw->getSD ()->m_title->setText (QString::fromUtf8 (str));
 
 	if (res->getDictValue ("bitrate", &b)) {
 		m_mw->getMD ()->m_kbps->setNumber (b/1000, 3);

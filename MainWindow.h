@@ -16,6 +16,7 @@ class MainWindow;
 #include "Skin.h"
 #include "XmmsQT4.h"
 #include "MainDisplay.h"
+#include "ShadedDisplay.h"
 
 using namespace std;
 
@@ -25,14 +26,27 @@ class MainWindow : public QMainWindow
 	public:
 		MainWindow (QWidget *parent);
 		~MainWindow (void);
+
 		Skin *getSkin (void);
+		void setNoDrag (bool b);
+
 		XMMSHandler *getHandler () { return m_handler; }
 		MainDisplay *getMD () { return m_display; }
-		void setNoDrag (bool b);
+		ShadedDisplay *getSD () { return m_shaded; }
+
+		bool getShaded (void) { return m_isshaded; }
+
+	public slots:
+		void switchDisplay ();
+
 	private:
+		bool m_isshaded;
 		Skin *skin;
+
 		XMMSHandler *m_handler;
 		MainDisplay *m_display;
+		ShadedDisplay *m_shaded;
 };
+
 
 #endif

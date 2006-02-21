@@ -47,6 +47,7 @@ class MainDisplay : public SkinDisplay
 
 	public slots:
 		void setPixmaps(Skin *skin);
+
 	protected:
 		void SetupPushButtons (void);
 		void SetupToggleButtons (void);
@@ -57,10 +58,6 @@ class MainDisplay : public SkinDisplay
 		Button *m_stop;
 		Button *m_next;
 		Button *m_eject;
-		Button *m_shadebtn;
-		Button *m_menubtn;
-		Button *m_closebtn;
-		Button *m_minimize;
 
 		ToggleButton *m_pls;
 		ToggleButton *m_eq;

@@ -119,7 +119,7 @@ Slider::setPos (uint p)
 	}
 		
 	uint x = m_pix * p / m_max;
-	if (x != m_pos) {
+	if (x < m_pix - m_button->rect().width() && x != m_pos) {
 		m_button->move (x , 0);
 		m_pos = x;
 		update ();

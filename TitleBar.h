@@ -4,6 +4,7 @@
 class TitleBar;
 
 #include "PixWidget.h"
+#include "Button.h"
 
 using namespace std;
 
@@ -24,6 +25,12 @@ class TitleBar : public PixWidget
 	private:
 		QPixmap m_pixmap_active;
 		QPixmap m_pixmap_inactive;
+
+		Button *m_shadebtn;
+		Button *m_menubtn;
+		Button *m_closebtn;
+		Button *m_minimize;
+
 		bool m_shaded;
 };
 

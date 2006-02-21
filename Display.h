@@ -12,18 +12,17 @@
 
 #include "Skin.h"
 
-using namespace std;
-
 class SkinDisplay : public QWidget
 {
 	Q_OBJECT
 	public:
 		SkinDisplay (QWidget *parent);
 
-		bool getNoDrag() const { return m_noDrag; }
-		void setNoDrag(bool d) { m_noDrag = d; }
+		bool getNoDrag () const { return m_noDrag; }
+		void setNoDrag (bool d) { m_noDrag = d; }
 
-		QWidget *getMW() const { return m_mw; }
+		QWidget *getMW () const { return m_mw; }
+
 	public slots:
 		virtual void setPixmaps(Skin *skin);
 

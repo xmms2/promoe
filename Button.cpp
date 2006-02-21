@@ -2,6 +2,11 @@
 #include "MainWindow.h"
 #include "Button.h"
 
+Button::Button (QWidget *parent) : PixWidget (parent)
+{
+	m_name_normal = 0;
+	m_name_pressed = 0;
+}
 
 Button::Button (QWidget *parent, uint normal, uint pressed) : PixWidget (parent)
 {
@@ -9,6 +14,7 @@ Button::Button (QWidget *parent, uint normal, uint pressed) : PixWidget (parent)
 	m_name_pressed = pressed;
 	m_diffx = 0;
 	m_diffy = 0;
+	m_nodrag = false;
 }
 
 Button::~Button ()
@@ -18,6 +24,10 @@ Button::~Button ()
 void
 Button::setPixmaps(Skin *skin)
 {
+	if (!m_name_normal && !m_name_pressed) {
+		return;
+	}
+
 	m_pixmap_normal = skin->getItem (m_name_normal);
 	m_pixmap_pressed = skin->getItem (m_name_pressed);
 	m_pixmap = m_pixmap_normal;

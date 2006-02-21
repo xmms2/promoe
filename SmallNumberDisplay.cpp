@@ -18,7 +18,7 @@ SmallNumberDisplay::setPixmaps (Skin *skin)
 void
 SmallNumberDisplay::setNumber (int num, int len)
 {
-	snprintf (m_nums, len+1, "%d", num);
+	snprintf (m_nums, len+1, "%02d", num);
 	m_num = len;
 
 	drawNumber ();

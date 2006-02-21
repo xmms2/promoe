@@ -10,6 +10,7 @@ class Button : public PixWidget
 	Q_OBJECT
 	public:
 		Button (QWidget *parent, uint btn1, uint btn2);
+		Button (QWidget *parent);
 		~Button ();
 		bool noDrag (void) { return m_nodrag; }
 
