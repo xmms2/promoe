@@ -23,6 +23,9 @@ XMMSHandler::XMMSHandler (MainWindow *mw) : sigc::trackable ()
 	XMMSResultValueUint *r = m_xmmsc->signal_playback_playtime ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_playtime));
 
+	r = m_xmmsc->playback_current_id ();
+	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_current_id));
+
 	r = m_xmmsc->broadcast_playback_current_id ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_current_id));
 
@@ -76,10 +79,14 @@ XMMSHandler::playback_current_id (XMMSResultValueUint *res)
 	uint i;
 	res->getValue (&i);
 
-	qDebug ("current id = %d", i);
+	if (i > 0) {
+		XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
+		r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
+	}
 
-	XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
-	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
+	if (res->getClass() == XMMSC_RESULT_CLASS_DEFAULT) {
+		delete res;
+	}
 }
 
 void
