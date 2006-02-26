@@ -22,6 +22,7 @@ class PlaylistList : public QWidget {
 		void setPixmaps (Skin *skin);
 		void playlistList (QList<uint>);
 		void mediainfoChanged (uint, QHash<QString,QString>);
+		void playlistChanged (QHash<QString,QString>);
 		void currentID (uint);
 	
 	private:

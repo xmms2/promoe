@@ -56,6 +56,50 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	connect (xmmsh, SIGNAL(currentID(uint)), this, SLOT(currentID(uint)));
 	connect (xmmsh, SIGNAL(mediainfoChanged(uint, QHash<QString, QString>)), 
 			 this, SLOT(mediainfoChanged(uint, QHash<QString, QString>)));
+	connect (xmmsh, SIGNAL(playlistChanged(QHash<QString, QString>)),
+			 this, SLOT(playlistChanged(QHash<QString, QString>)));
+}
+
+void
+PlaylistList::playlistChanged (QHash<QString,QString> h)
+{
+	int signal = h.value("type").toUInt();
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	switch (signal) {
+		case XMMS_PLAYLIST_CHANGED_ADD:
+			new PlaylistItem (this, h.value("id").toUInt());
+			break;
+		case XMMS_PLAYLIST_CHANGED_INSERT:
+			break;
+		case XMMS_PLAYLIST_CHANGED_REMOVE:
+			{
+				int pos = h.value("position").toUInt();
+				PlaylistItem *i = m_items->value (pos);
+				if (!i) {
+					qDebug ("no item in playlist?");
+					return;
+				}
+				m_items->removeAt (pos);
+				m_itemmap->remove (i->getID ());
+				delete i;
+			}
+			break;
+		case XMMS_PLAYLIST_CHANGED_MOVE:
+			break;
+		case XMMS_PLAYLIST_CHANGED_CLEAR:
+		case XMMS_PLAYLIST_CHANGED_SHUFFLE:
+		case XMMS_PLAYLIST_CHANGED_SORT:
+			{
+				m_itemmap->clear ();
+				while (!m_items->isEmpty())
+					delete m_items->takeFirst();
+
+				xmmsh->requestPlaylistList ();
+			}
+			break;
+	}
+
+	update ();
 }
 
 void

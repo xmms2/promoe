@@ -32,6 +32,9 @@ XMMSHandler::XMMSHandler (void) : sigc::trackable ()
 	XMMSResultValueList<uint> *l = m_xmmsc->playlist_list ();
 	l->connect (sigc::mem_fun (this, &XMMSHandler::playlist_list));
 
+	XMMSResultDict *p = m_xmmsc->broadcast_playlist_changed ();
+	p->connect (sigc::mem_fun (this, &XMMSHandler::playlist_changed));
+
 	XMMSResultValue<uint> *r = m_xmmsc->signal_playback_playtime ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_playtime));
 
@@ -50,6 +53,13 @@ XMMSHandler::requestMediainfo (uint id)
 {
 	XMMSResultDict *r = m_xmmsc->medialib_get_info (id);
 	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
+}
+
+void
+XMMSHandler::requestPlaylistList (void)
+{
+	XMMSResultValueList<uint> *r = m_xmmsc->playlist_list ();
+	r->connect (sigc::mem_fun (this, &XMMSHandler::playlist_list));
 }
 
 void
@@ -118,10 +128,40 @@ XMMSHandler::setPlaytime (void)
 
 }
 
-void 
-XMMSHandler::medialib_info (XMMSResultDict *res)
+QHash<QString, QString>
+XMMSHandler::DictToQHash (XMMSResultDict *res)
 {
-	int id;
+	QHash<QString, QString> h;
+	std::list<const char *> l = res->getDictKeys ();
+
+	std::list<const char *>::const_iterator it;
+	for(it=l.begin(); it!=l.end(); ++it)
+	{
+		if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_UINT32) {
+			uint i;
+			res->getValue (*it, &i);
+			QString t;
+			t.setNum (i);
+			h.insert (QString::fromLatin1(*it), t);
+		} else if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_INT32) {
+			int i;
+			res->getValue (*it, &i);
+			QString t;
+			t.setNum (i);
+			h.insert (QString::fromLatin1(*it), t);
+		} else if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_STRING) {
+			char *c;
+			res->getValue (*it, &c);
+			h.insert (QString::fromLatin1(*it), QString::fromUtf8 (c));
+		}
+	}
+
+	return h;
+}
+
+QHash<QString, QString>
+XMMSHandler::PropDictToQHash (XMMSResultDict *res)
+{
 	QHash<QString, QString> h;
 	std::list<const char *> l = res->getPropDictKeys ();
 
@@ -147,6 +187,22 @@ XMMSHandler::medialib_info (XMMSResultDict *res)
 		}
 	}
 
+	return h;
+}
+
+void
+XMMSHandler::playlist_changed (XMMSResultDict *res)
+{
+	QHash<QString, QString> h(DictToQHash (res));
+	emit playlistChanged (h);
+}
+
+void 
+XMMSHandler::medialib_info (XMMSResultDict *res)
+{
+	int id;
+	QHash<QString, QString> h(PropDictToQHash (res));
+	
 	res->getValue ("id", &id);
 
 	emit mediainfoChanged (id, h);

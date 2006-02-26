@@ -17,10 +17,12 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void playback_playtime (XMMSResultValue<uint> *res);
 		void playback_current_id (XMMSResultValue<uint> *res);
 		void medialib_info (XMMSResultDict *res);
+		void playlist_changed (XMMSResultDict *res);
 		void playback_status (XMMSResultValue<uint> *res);
 		void playlist_list (XMMSResultValueList<uint> *res);
 
 		void requestMediainfo (uint id);
+		void requestPlaylistList (void);
 
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 
@@ -46,12 +48,15 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void currentSong (QHash<QString, QString>);
 		void playlistList (QList<uint>);
 		void currentID (uint);
+		void playlistChanged (QHash<QString, QString>);
 
 	private:
 		XmmsQT4 *m_qt4;
 		XMMSClient *m_xmmsc;
 		static XMMSHandler *singleton;
 		uint m_currentid;
+		QHash<QString, QString> PropDictToQHash (XMMSResultDict *res);
+		QHash<QString, QString> DictToQHash (XMMSResultDict *res);
 };
 
 #endif
