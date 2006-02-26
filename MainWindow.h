@@ -29,7 +29,6 @@ class MainWindow : public QMainWindow
 		~MainWindow (void);
 
 		Skin *getSkin (void);
-		void setNoDrag (bool b);
 
 		XMMSHandler *getHandler () { return m_handler; }
 		MainDisplay *getMD () { return m_display; }

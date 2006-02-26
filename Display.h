@@ -17,10 +17,6 @@ class SkinDisplay : public QWidget
 	Q_OBJECT
 	public:
 		SkinDisplay (QWidget *parent);
-
-		bool getNoDrag () const { return m_noDrag; }
-		void setNoDrag (bool d) { m_noDrag = d; }
-
 		QWidget *getMW () const { return m_mw; }
 
 	public slots:
@@ -37,7 +33,6 @@ class SkinDisplay : public QWidget
 		QWidget *m_tbar;
 		
 	private:
-		bool m_noDrag;
 		int m_diffX;
 		int m_diffY;
 };

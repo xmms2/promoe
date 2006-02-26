@@ -64,7 +64,6 @@ class PlaylistWindow : public QMainWindow {
 
 		void setActive (bool);
 		Skin *getSkin (void) { return m_skin; }
-		void setNoDrag (bool b) { m_noDrag = b; }
 
 	public slots:
 		void setPixmaps (Skin *skin);
@@ -92,7 +91,6 @@ class PlaylistWindow : public QMainWindow {
 		QPixmap m_rfill3;
 
 		bool m_active;
-		bool m_noDrag;
 		
 		Skin *m_skin;
 

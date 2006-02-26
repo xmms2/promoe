@@ -45,16 +45,6 @@ MainWindow::~MainWindow ()
 }
 
 void
-MainWindow::setNoDrag (bool b)
-{
-	if (m_isshaded) {
-		m_shaded->setNoDrag (b);
-	} else {
-		m_display->setNoDrag (b);
-	}
-}
-
-void
 MainWindow::switchDisplay ()
 {
 	if (m_isshaded) {
