@@ -78,7 +78,7 @@ ToggleButton::ToggleButton (QWidget *parent, uint on_normal, uint on_pressed,
 	m_name_on_pressed = on_pressed;
 	m_name_off_normal = off_normal;
 	m_name_off_pressed = off_pressed;
-	m_toggled_on = true;
+	m_toggled_on = false;
 
 	connect (this, SIGNAL(clicked()), this, SLOT (toggleOn()));
 }

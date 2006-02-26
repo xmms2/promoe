@@ -35,9 +35,17 @@ class MainWindow : public QMainWindow
 		ShadedDisplay *getSD () { return m_shaded; }
 
 		bool getShaded (void) { return m_isshaded; }
+		void setPL (PlaylistWindow *p) { m_playlistwin = p; }
 
 	public slots:
 		void switchDisplay ();
+		void togglePL (void) { 
+			if (m_playlistwin->isVisible ()) { 
+				m_playlistwin->hide (); 
+			} else { 
+				m_playlistwin->show (); 
+			} 
+		}
 
 	private:
 		bool m_isshaded;

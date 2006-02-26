@@ -75,7 +75,7 @@ main (int argc, char **argv)
 
 	MainWindow *mw = new MainWindow (NULL);
 
-	QMainWindow *playlistwin = new PlaylistWindow (NULL, mw->getSkin ());
+	PlaylistWindow *playlistwin = new PlaylistWindow (NULL, mw->getSkin ());
 
 	/*
 	 * Now that everything is initialized
@@ -84,9 +84,8 @@ main (int argc, char **argv)
 	 * all widgets to get their pixmaps
 	 */
 	mw->getSkin ()->setSkin ("./CleanAMP/");
-	
 	mw->show ();
-	playlistwin->show ();
+	mw->setPL (playlistwin);
 
 	return app.exec();
 }
