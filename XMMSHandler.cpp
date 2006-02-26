@@ -20,7 +20,7 @@ XMMSHandler::XMMSHandler (MainWindow *mw) : sigc::trackable ()
 	}
 	m_qt4 = new XmmsQT4 (m_xmmsc->getConn (), qApp);
 
-	XMMSResultValueUint *r = m_xmmsc->signal_playback_playtime ();
+	XMMSResultValue<uint> *r = m_xmmsc->signal_playback_playtime ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_playtime));
 
 	r = m_xmmsc->playback_current_id ();
@@ -32,25 +32,18 @@ XMMSHandler::XMMSHandler (MainWindow *mw) : sigc::trackable ()
 	r = m_xmmsc->broadcast_playback_status ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_status));
 
-	XMMSResultValueListUint *l = m_xmmsc->playlist_list ();
+	XMMSResultValueList<uint> *l = m_xmmsc->playlist_list ();
 	l->connect (sigc::mem_fun (this, &XMMSHandler::playlist_list));
 }
 
 void
-XMMSHandler::playlist_list (XMMSResultValueListUint *res) 
+XMMSHandler::playlist_list (XMMSResultValueList<uint> *res) 
 {
-	qDebug ("korv!");
-
-	for (;res->listValid(); res->listNext()) {
-		uint i;
-		qDebug ("%u", res->getValue(&i));
-	}
-
 	delete res;
 }
 
 void
-XMMSHandler::playback_status (XMMSResultValueUint *res)
+XMMSHandler::playback_status (XMMSResultValue<uint> *res)
 {
 	uint i;
 	res->getValue (&i);
@@ -67,7 +60,7 @@ XMMSHandler::playback_status (XMMSResultValueUint *res)
 }
 
 void 
-XMMSHandler::playback_playtime (XMMSResultValueUint *res)
+XMMSHandler::playback_playtime (XMMSResultValue<uint> *res)
 {
 	uint i, sec, min;
         res->getValue (&i);
@@ -90,7 +83,7 @@ XMMSHandler::playback_playtime (XMMSResultValueUint *res)
 }
 
 void 
-XMMSHandler::playback_current_id (XMMSResultValueUint *res)
+XMMSHandler::playback_current_id (XMMSResultValue<uint> *res)
 {
 	uint i;
 	res->getValue (&i);

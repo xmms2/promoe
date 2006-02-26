@@ -15,11 +15,11 @@ class XMMSHandler : public QObject, public sigc::trackable {
 	public:
 		XMMSHandler (MainWindow *mw);
 		~XMMSHandler ();
-		void playback_playtime (XMMSResultValueUint *res);
-		void playback_current_id (XMMSResultValueUint *res);
+		void playback_playtime (XMMSResultValue<uint> *res);
+		void playback_current_id (XMMSResultValue<uint> *res);
 		void medialib_info (XMMSResultDict *res);
-		void playback_status (XMMSResultValueUint *res);
-		void playlist_list (XMMSResultValueListUint *res);
+		void playback_status (XMMSResultValue<uint> *res);
+		void playlist_list (XMMSResultValueList<uint> *res);
 
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 
