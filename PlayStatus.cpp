@@ -26,7 +26,6 @@ PlayStatus::setPixmaps (Skin *skin)
 void
 PlayStatus::setStatus (uint status)
 {
-	qDebug("funkar");
 	if (status == XMMS_PLAYBACK_STATUS_STOP) {
 		m_pixmap = m_pixmap_stop;
 	} else if (status == XMMS_PLAYBACK_STATUS_PLAY) {

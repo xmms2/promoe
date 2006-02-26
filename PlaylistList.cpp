@@ -1,3 +1,5 @@
+#include "XMMSHandler.h"
+
 #include "PlaylistList.h"
 #include "Playlist.h"
 
@@ -7,23 +9,146 @@ PlaylistItem::PlaylistItem (PlaylistList *pl, uint id)
 {
 	m_pl = pl;
 	m_id = id;
+	m_isactive = false;
+	m_isselected = false;
+	m_req = false;
+	if (getSelected ()) {
+		qDebug ("trasigt!");
+	}
 	pl->addItem (this);
 }
 
 QString
 PlaylistItem::text (void)
 {
-	return QString::fromUtf8 ("Entry entry entry");
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+
+	if (m_text.count() < 1) {
+
+		if (!m_req) {
+			xmmsh->requestMediainfo (m_id);
+			m_req = true;
+		}
+
+		QString q;
+		q.setNum (m_id);
+		return q;
+	} else {
+		m_req = false;
+		return m_text;
+	}
 }
 
 PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 {
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+
 	PlaylistWindow *pl = dynamic_cast<PlaylistWindow*>(window ());
 	connect (pl->getSkin (), SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
 	m_font = NULL;
 	m_fontmetrics = NULL;
 	m_items = new QList<PlaylistItem *>;
+	m_selected = new QList<uint>;
+	m_itemmap = new QHash<uint, PlaylistItem *>;
 	m_offset = 0;
+
+	connect (xmmsh, SIGNAL(playlistList(QList<uint>)), this, SLOT(playlistList(QList<uint>)));
+	connect (xmmsh, SIGNAL(currentID(uint)), this, SLOT(currentID(uint)));
+	connect (xmmsh, SIGNAL(mediainfoChanged(uint, QHash<QString, QString>)), 
+			 this, SLOT(mediainfoChanged(uint, QHash<QString, QString>)));
+}
+
+void
+PlaylistList::currentID (uint id)
+{
+	PlaylistItem *i = m_itemmap->value (id);
+	if (!i) {
+		return;
+	}
+	i->setActive (true);
+
+	i = m_itemmap->value (m_active);
+	if (!i) {
+		update ();
+		m_active = id;
+		return;
+	}
+	i->setActive (false);
+
+	m_active = id;
+	update ();
+}
+
+void
+PlaylistList::mediainfoChanged (uint id, QHash<QString, QString> h)
+{
+	PlaylistItem *i = m_itemmap->value (id);
+	if (i) {
+		QString n;
+		if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {
+			n = h.value("artist") + " - " + h.value("album") + " - " + h.value("title");
+		} else {
+			n = h.value("url");
+		}
+		i->setText (n);
+	}
+
+	update ();
+}
+
+void
+PlaylistList::playlistList (QList<uint> l)
+{
+	for (int i = 0; i < l.count(); i++) {
+		new PlaylistItem (this, l.value(i));
+	}
+
+	update ();
+}
+
+void 
+PlaylistList::mousePressEvent (QMouseEvent *event)
+{
+	if (m_items->count() < 1) {
+		return;
+	}
+	int i = ((event->pos().y()+m_offset) / getFontH());
+	if (i < 0) {
+		i = 0;
+	}
+
+	if (event->modifiers() & Qt::ShiftModifier) {
+		if (m_selected->count () > 0) {
+			int o = m_selected->last ();
+			if (o < i) {
+				for (int y = o; y <= i; y++) {
+					m_selected->append (y);
+					m_items->value(y)->setSelected (true);
+				}
+			} else {
+				for (int y = i; y <= o; y++) {
+					m_selected->append (y);
+					m_items->value(y)->setSelected (true);
+				}
+			}
+		} else {
+			m_selected->append (i);
+			m_items->value(i)->setSelected (true);
+		}
+	} else if (event->modifiers () & Qt::ControlModifier) {
+		m_items->value(i)->setSelected (true);
+		m_selected->append (i);
+	} else {
+		for (int y = 0; y < m_selected->count(); y++) {
+			m_items->value(m_selected->value(y))->setSelected (false);
+		}
+		m_selected->clear();
+
+		m_items->value(i)->setSelected (true);
+		m_selected->append(i);
+	}
+
+	update ();
 }
 
 void
@@ -34,6 +159,7 @@ PlaylistList::paintEvent (QPaintEvent *event)
 	paint.begin (this);
 	paint.setFont (*m_font);
 	paint.setClipping (false);
+	paint.setPen (QPen (m_color_normal));
 
 	int cy = event->rect().y () + m_offset;
 	int ch = event->rect().height();
@@ -46,11 +172,25 @@ PlaylistList::paintEvent (QPaintEvent *event)
 	for (i = sitem; i < eitem; i++) {
 		QRect r (3, getFontH()*(i-sitem), size().width(), getFontH());
 		if (event->region().contains (r)) {
+			PlaylistItem *item = m_items->value (i);
 			QString q;
 			q.sprintf ("%d. ", i+1);
-			q += m_items->value(i)->text ();
-			paint.eraseRect (r);
-			paint.drawText (r, q);
+			q += item->text ();
+
+			if (item->getSelected ()) {
+				paint.fillRect (r, QBrush (m_color_selected));
+			} else {
+				paint.eraseRect (r);
+			}
+
+			if (item->getActive ()) {
+				paint.setPen (QPen (m_color_active));
+				paint.drawText (r, q);
+				paint.setPen (QPen (m_color_normal));
+			} else {
+				paint.drawText (r, q);
+			}
+
 		}
 	}
 
@@ -67,6 +207,7 @@ void
 PlaylistList::addItem (PlaylistItem *i)
 {
 	m_items->append (i);
+	m_itemmap->insert (i->getID(), i);
 	if (m_items->count()*getFontH () > size().height()) {
 		resize (size().width(), m_items->count ()*getFontH ());
 	}
@@ -102,10 +243,11 @@ PlaylistList::setPixmaps (Skin *skin)
 	}
 	m_fontmetrics = new QFontMetrics (*m_font);
 
-	for (int i = 0; i < 100; i++) {
-		PlaylistItem (this, i);
-	}
-	
+	m_color_active.setNamedColor (skin->getPLeditValue ("current"));
+	m_color_selected.setNamedColor (skin->getPLeditValue ("selectedbg"));
+	m_color_normal.setNamedColor (skin->getPLeditValue ("normal"));
+
+	update ();
 }
 
 void
@@ -123,6 +265,7 @@ PlaylistList::setSize (int width, int height)
 		ny = size().height();
 	}
 	resize (nx, ny);
+
 }
 
 

@@ -43,8 +43,8 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_playstatus = new PlayStatus (this);
 	m_playstatus->move (24, 28);
 
-	connect (xmmsh, SIGNAL(mediainfoChanged(QString,int,int,int,int)),
-	         this, SLOT(setMediainfo(QString,int,int,int,int)));
+	connect (xmmsh, SIGNAL(currentSong (QHash<QString, QString>)), 
+			 this, SLOT(setMediainfo (QHash<QString, QString>)));
 	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
 	         this, SLOT(setStatus(uint)));
 	connect (xmmsh, SIGNAL(playtimeChanged(uint)),
@@ -91,21 +91,26 @@ MainDisplay::setPlaytime (uint time)
 }
 
 void
-MainDisplay::setMediainfo (QString str, int bitrate, int samplerate,
-                           int channels, int duration)
+MainDisplay::setMediainfo (QHash<QString, QString> h)
 {
-	m_text->setText (str);
-	m_kbps->setNumber (bitrate/1000, 3);
-	m_khz->setNumber (samplerate/1000, 2);
-	if (channels > 1) {
+	QString n;
+	if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {
+		n = h.value("artist") + " - " + h.value("album") + " - " + h.value("title");
+	} else {
+		n = h.value("url");
+	}
+	m_text->setText (n);
+	
+	m_kbps->setNumber (h.value("bitrate").toUInt()/1000, 3);
+	m_khz->setNumber (h.value("samplerate").toUInt()/1000, 2);
+	if (h.value("channels:in").toUInt() > 1) {
 		m_stereo->setStereoMono (1, 0);
 	} else {
 		m_stereo->setStereoMono (0, 1);
 	}
-	m_slider->setMax (duration);
+	m_slider->setMax (h.value("duration").toUInt());
 	m_slider->hideBar (false);
 }
-
 
 void
 MainDisplay::SetupToggleButtons (void)

@@ -6,6 +6,7 @@
 #include "XmmsQT4.h"
 
 #include <QObject>
+#include <QHash>
 
 class XMMSHandler : public QObject, public sigc::trackable {
 	Q_OBJECT
@@ -18,6 +19,8 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void medialib_info (XMMSResultDict *res);
 		void playback_status (XMMSResultValue<uint> *res);
 		void playlist_list (XMMSResultValueList<uint> *res);
+
+		void requestMediainfo (uint id);
 
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 
@@ -39,13 +42,16 @@ class XMMSHandler : public QObject, public sigc::trackable {
 	signals:
 		void playbackStatusChanged (uint status);
 		void playtimeChanged (uint time);
-		void mediainfoChanged (QString str, int bitrate, int samplerate,
-		                       int channels, int duration);
+		void mediainfoChanged (uint, QHash<QString, QString>);
+		void currentSong (QHash<QString, QString>);
+		void playlistList (QList<uint>);
+		void currentID (uint);
 
 	private:
 		XmmsQT4 *m_qt4;
 		XMMSClient *m_xmmsc;
 		static XMMSHandler *singleton;
+		uint m_currentid;
 };
 
 #endif

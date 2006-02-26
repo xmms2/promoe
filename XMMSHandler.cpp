@@ -4,6 +4,7 @@
 #include "XMMSHandler.h"
 
 #include <QErrorMessage>
+#include <QHash>
 
 XMMSHandler *XMMSHandler::singleton = NULL;
 
@@ -28,6 +29,9 @@ XMMSHandler::XMMSHandler (void) : sigc::trackable ()
 	}
 	m_qt4 = new XmmsQT4 (m_xmmsc->getConn (), qApp);
 
+	XMMSResultValueList<uint> *l = m_xmmsc->playlist_list ();
+	l->connect (sigc::mem_fun (this, &XMMSHandler::playlist_list));
+
 	XMMSResultValue<uint> *r = m_xmmsc->signal_playback_playtime ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_playtime));
 
@@ -39,14 +43,27 @@ XMMSHandler::XMMSHandler (void) : sigc::trackable ()
 
 	r = m_xmmsc->broadcast_playback_status ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_status));
+}
 
-	XMMSResultValueList<uint> *l = m_xmmsc->playlist_list ();
-	l->connect (sigc::mem_fun (this, &XMMSHandler::playlist_list));
+void
+XMMSHandler::requestMediainfo (uint id)
+{
+	XMMSResultDict *r = m_xmmsc->medialib_get_info (id);
+	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
 }
 
 void
 XMMSHandler::playlist_list (XMMSResultValueList<uint> *res) 
 {
+	QList<uint> list;
+	for (;res->listValid (); res->listNext()) {
+		uint i;
+		if (res->getValue (&i)) {
+			list.append (i);
+		}
+	}
+	emit playlistList (list);
+
 	delete res;
 }
 
@@ -76,10 +93,14 @@ XMMSHandler::playback_current_id (XMMSResultValue<uint> *res)
 	uint i;
 	res->getValue (&i);
 
+	m_currentid = i;
+
 	if (i > 0) {
 		XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
 		r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
 	}
+
+	emit currentID(i);
 
 	if (res->getClass() == XMMSC_RESULT_CLASS_DEFAULT) {
 		delete res;
@@ -100,20 +121,39 @@ XMMSHandler::setPlaytime (void)
 void 
 XMMSHandler::medialib_info (XMMSResultDict *res)
 {
-	int bitrate, samplerate, channels, duration;
-	char str[4096];
+	int id;
+	QHash<QString, QString> h;
+	std::list<const char *> l = res->getPropDictKeys ();
 
-	// Make this NICER! 
-	res->entryFormat (str, 4096, "${artist} - ${album} - ${title}");
+	std::list<const char *>::const_iterator it;
+	for(it=l.begin(); it!=l.end(); ++it)
+	{
+		if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_UINT32) {
+			uint i;
+			res->getValue (*it, &i);
+			QString t;
+			t.setNum (i);
+			h.insert (QString::fromLatin1(*it), t);
+		} else if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_INT32) {
+			int i;
+			res->getValue (*it, &i);
+			QString t;
+			t.setNum (i);
+			h.insert (QString::fromLatin1(*it), t);
+		} else if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_STRING) {
+			char *c;
+			res->getValue (*it, &c);
+			h.insert (QString::fromLatin1(*it), QString::fromUtf8 (c));
+		}
+	}
 
+	res->getValue ("id", &id);
 
-	res->getValue ("bitrate", &bitrate);
-	res->getValue ("samplerate", &samplerate);
-	res->getValue ("channels:out", &channels);
-	res->getValue ("duration", &duration);
+	emit mediainfoChanged (id, h);
 
-	emit mediainfoChanged (QString::fromUtf8 (str), bitrate,
-	                       samplerate, channels, duration);
+	if (id == m_currentid) {
+		emit currentSong (h);
+	}
 
 	delete res;
 }

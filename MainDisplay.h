@@ -50,8 +50,7 @@ class MainDisplay : public SkinDisplay
 		void setPixmaps(Skin *skin);
 		void setStatus (uint status);
 		void setPlaytime (uint time);
-		void setMediainfo (QString str, int bitrate, int samplerate,
-		                   int channels, int duration);
+		void setMediainfo (QHash<QString,QString>);
 
 	protected:
 		void SetupPushButtons (void);
