@@ -11,6 +11,14 @@
 class PlaylistWindow;
 class PlaylistScroller;
 
+class dragButton : public Button {
+	public:
+		dragButton (QWidget *parent) : Button (parent) {}
+		~dragButton () {}
+
+		void mouseMoveEvent (QMouseEvent *event);
+};
+
 class PlaylistScrollButton : public Button {
 	public:
 		PlaylistScrollButton (PlaylistScroller *parent, uint normal, uint pressed);
@@ -94,6 +102,7 @@ class PlaylistWindow : public QMainWindow {
 		PlaylistView *m_view;
 		PlaylistList *m_list;
 		PlaylistScroller *m_scroller;
+		dragButton *m_drag;
 };
 
 #endif

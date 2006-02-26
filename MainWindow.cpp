@@ -78,15 +78,14 @@ Skin *MainWindow::getSkin(void)
 	return skin;
 }
 
-int main (int argc, char **argv)
+int 
+main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
 
 	MainWindow *mw = new MainWindow (NULL);
-	mw->show ();
 
 	QMainWindow *playlistwin = new PlaylistWindow (NULL, mw->getSkin ());
-	playlistwin->show ();
 
 	/*
 	 * Now that everything is initialized
@@ -95,6 +94,9 @@ int main (int argc, char **argv)
 	 * all widgets to get their pixmaps
 	 */
 	mw->getSkin ()->setSkin ("./CleanAMP/");
+	
+	mw->show ();
+	playlistwin->show ();
 
 	return app.exec();
 }

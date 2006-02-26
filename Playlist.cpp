@@ -29,6 +29,14 @@ PlaylistScrollButton::mouseMoveEvent (QMouseEvent *event)
 	m_slider->doScroll (npos);
 }
 
+void
+dragButton::mouseMoveEvent (QMouseEvent *event)
+{
+	PlaylistWindow *pw = dynamic_cast<PlaylistWindow *>(window ());
+	pw->resize (pw->size().width()+(event->pos().x()-m_diffx),
+				pw->size().height()+(event->pos().y()-m_diffy));
+}
+
 PlaylistScroller::PlaylistScroller (PlaylistWindow *parent) : QWidget (parent)
 {
 	m_pixmap = QPixmap(0,0);
@@ -47,7 +55,6 @@ void
 PlaylistScroller::setPixmaps (Skin *skin)
 {
 	m_pixmap = skin->getPls (Skin::PLS_RFILL2_0);
-
 }
 
 void 
@@ -82,6 +89,8 @@ PlaylistWindow::PlaylistWindow (QWidget *parent, Skin *skin) : QMainWindow (pare
 	m_scroller = new PlaylistScroller (this);
 	connect (m_scroller, SIGNAL(scrolled(int)), this, SLOT(doScroll (int)));
 
+	m_drag = new dragButton (this);
+
 	setMinimumSize (275, 116);
 	resize (275, 300);
 }
@@ -98,8 +107,7 @@ void
 PlaylistWindow::resizeEvent (QResizeEvent *event)
 {
 	m_view->resize (size().width()-30, size().height()-20-38);
-	m_list->resize (m_view->size().width(), m_view->size().height());
-
+	m_list->setSize (m_view->size().width(), m_view->size().height());
 }
 
 void
@@ -267,6 +275,10 @@ PlaylistWindow::paintEvent (QPaintEvent *event)
 					  m_corner2.height());
 	m_scroller->resize (m_rfill2.width(),
 						size().height()-m_corner2.height()-m_corner4.height());
+
+	m_drag->move (size().width()-30,
+				  size().height()-30);
+	m_drag->resize (30, 30);
 
 }
 

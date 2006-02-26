@@ -1,19 +1,9 @@
 Todo:
 
 Config
-ShadeDisplay
 Balance
 VolumeBar
-PlayStatus
-PlaylistWindow
-PlaylistItem
-PlaylistList
-PlaylistSliderButton
-PlaylistSlider
 PlaylistButton
 	CloseButton
 	ShadeButton
 	ResizeButton
-
-
-

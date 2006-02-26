@@ -101,6 +101,10 @@ PlaylistList::setPixmaps (Skin *skin)
 		delete m_fontmetrics;
 	}
 	m_fontmetrics = new QFontMetrics (*m_font);
+
+	for (int i = 0; i < 100; i++) {
+		PlaylistItem (this, i);
+	}
 	
 }
 
@@ -118,7 +122,7 @@ PlaylistList::setSize (int width, int height)
 	} else {
 		ny = size().height();
 	}
-	resize (ny, nx);
+	resize (nx, ny);
 }
 
 
