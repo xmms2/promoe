@@ -10,7 +10,7 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 	 * Initialize the Handler that will
 	 * update the display and the buttons
 	 */
-	m_handler = new XMMSHandler (this);
+	m_handler = XMMSHandler::getInstance();
 
 	/*
 	 * Initialize skin, but don't open one

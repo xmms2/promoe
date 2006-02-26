@@ -124,7 +124,6 @@ Slider::setPos (uint p)
 		m_pos = x;
 		update ();
 	}
-
 }
 
 void

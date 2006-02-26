@@ -1,15 +1,23 @@
 #include <xmmsclient/xmmsclient++.h>
 
 #include "XmmsQT4.h"
-#include "MainDisplay.h"
 #include "XMMSHandler.h"
 
 #include <QErrorMessage>
 
-XMMSHandler::XMMSHandler (MainWindow *mw) : sigc::trackable ()
-{
-	m_mw = mw;
+XMMSHandler *XMMSHandler::singleton = NULL;
 
+XMMSHandler *XMMSHandler::getInstance (void)
+{
+	if (!singleton) {
+		singleton = new XMMSHandler ();
+	}
+
+	return singleton;
+}
+
+XMMSHandler::XMMSHandler (void) : sigc::trackable ()
+{
 	m_xmmsc = new XMMSClient ("promoe");
 
 	if (!m_xmmsc->connect (getenv ("XMMS_PATH"))) {
@@ -45,40 +53,20 @@ XMMSHandler::playlist_list (XMMSResultValueList<uint> *res)
 void
 XMMSHandler::playback_status (XMMSResultValue<uint> *res)
 {
-	uint i;
-	res->getValue (&i);
-	m_mw->getMD ()->m_playstatus->setStatus (i);
+	uint status;
+	res->getValue (&status);
 
-	if (i == XMMS_PLAYBACK_STATUS_STOP) {
-		m_mw->getSD ()->m_number->setNumber (0, 2);
-		m_mw->getSD ()->m_number2->setNumber (0, 2);
-		m_mw->getMD ()->m_number->setNumber (0, 0);
-		m_mw->getMD ()->m_number2->setNumber (0, 0);
-		m_mw->getMD ()->m_slider->setPos (0);
-	}
-
+	emit playbackStatusChanged (status);
 }
 
 void 
 XMMSHandler::playback_playtime (XMMSResultValue<uint> *res)
 {
-	uint i, sec, min;
-        res->getValue (&i);
+	uint i;
+	res->getValue (&i);
 
-	sec = (i / 1000) % 60;
-	min = (i / 1000) / 60;
-
-	if (m_mw->getShaded ()) {
-		m_mw->getSD ()->m_number->setNumber (min, 2);
-		m_mw->getSD ()->m_number2->setNumber (sec, 2);
-	} else {
-		m_mw->getMD ()->m_number->setNumber (min / 10, min % 10);
-		m_mw->getMD ()->m_number2->setNumber (sec / 10, sec % 10);
-
-		/* update slider */
-		m_mw->getMD ()->m_slider->setPos (i);
-	}
-
+	emit playtimeChanged (i);
+	
 	res->restart ();
 }
 
@@ -101,45 +89,31 @@ XMMSHandler::playback_current_id (XMMSResultValue<uint> *res)
 void
 XMMSHandler::setPlaytime (void)
 {
+	/*
 	uint pos = m_mw->getMD ()->m_slider->getPos();
 	qDebug ("pos = %d", pos);
 	delete m_xmmsc->playback_seek_ms (pos);
+	*/
 
 }
 
 void 
 XMMSHandler::medialib_info (XMMSResultDict *res)
 {
+	int bitrate, samplerate, channels, duration;
 	char str[4096];
-	int b;
 
-	/* Make this NICER! */
+	// Make this NICER! 
 	res->entryFormat (str, 4096, "${artist} - ${album} - ${title}");
-	m_mw->getMD ()->m_text->setText (QString::fromUtf8 (str));
-	m_mw->getSD ()->m_title->setText (QString::fromUtf8 (str));
 
-	if (res->getValue ("bitrate", &b)) {
-		m_mw->getMD ()->m_kbps->setNumber (b/1000, 3);
-	}
 
-	if (res->getValue ("samplerate", &b)) {
-		m_mw->getMD ()->m_khz->setNumber (b/1000, 2);
-	}
+	res->getValue ("bitrate", &bitrate);
+	res->getValue ("samplerate", &samplerate);
+	res->getValue ("channels:out", &channels);
+	res->getValue ("duration", &duration);
 
-	if (res->getValue ("channels:out", &b)) {
-		if (b == 1) {
-			m_mw->getMD ()->m_stereo->setStereoMono (0, 1);
-		} else {
-			m_mw->getMD ()->m_stereo->setStereoMono (1, 0);
-		}
-	}
-
-	if (res->getValue ("duration", &b)) {
-		if (b > 0) {
-			m_mw->getMD ()->m_slider->setMax (b);
-			m_mw->getMD ()->m_slider->hideBar (false);
-		}
-	}
+	emit mediainfoChanged (QString::fromUtf8 (str), bitrate,
+	                       samplerate, channels, duration);
 
 	delete res;
 }

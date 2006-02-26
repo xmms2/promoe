@@ -11,6 +11,7 @@ class ShadedDisplay;
 
 class ShadedDisplay : public SkinDisplay
 {
+	Q_OBJECT
 	public:
 		ShadedDisplay (QWidget *parent);
 		~ShadedDisplay () { }
@@ -26,6 +27,10 @@ class ShadedDisplay : public SkinDisplay
 		Button *m_stop;
 		Button *m_next;
 		Button *m_eject;
+
+	public slots:
+		void setStatus (uint status);
+		void setPlaytime (uint time);
 
 };
 

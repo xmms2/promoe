@@ -3,9 +3,6 @@
 
 #include <xmmsclient/xmmsclient++.h>
 
-class XMMSHandler;
-
-#include "MainWindow.h"
 #include "XmmsQT4.h"
 
 #include <QObject>
@@ -13,7 +10,8 @@ class XMMSHandler;
 class XMMSHandler : public QObject, public sigc::trackable {
 	Q_OBJECT
 	public:
-		XMMSHandler (MainWindow *mw);
+		static XMMSHandler *getInstance (void);
+		XMMSHandler (void);
 		~XMMSHandler ();
 		void playback_playtime (XMMSResultValue<uint> *res);
 		void playback_current_id (XMMSResultValue<uint> *res);
@@ -38,11 +36,16 @@ class XMMSHandler : public QObject, public sigc::trackable {
 			delete m_xmmsc->playback_tickle (); 
 		}
 
+	signals:
+		void playbackStatusChanged (uint status);
+		void playtimeChanged (uint time);
+		void mediainfoChanged (QString str, int bitrate, int samplerate,
+		                       int channels, int duration);
+
 	private:
-		MainWindow *m_mw;
 		XmmsQT4 *m_qt4;
 		XMMSClient *m_xmmsc;
-
+		static XMMSHandler *singleton;
 };
 
 #endif

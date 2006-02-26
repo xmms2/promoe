@@ -5,7 +5,7 @@
 
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
-	m_mw = dynamic_cast<MainWindow*>(parent);
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 
 	m_tbar = new TitleBar(this, false);
 	m_tbar->move(0, 0);
@@ -43,6 +43,12 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_playstatus = new PlayStatus (this);
 	m_playstatus->move (24, 28);
 
+	connect (xmmsh, SIGNAL(mediainfoChanged(QString,int,int,int,int)),
+	         this, SLOT(setMediainfo(QString,int,int,int,int)));
+	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
+	         this, SLOT(setStatus(uint)));
+	connect (xmmsh, SIGNAL(playtimeChanged(uint)),
+	         this, SLOT(setPlaytime(uint)));
 }
 
 void
@@ -57,6 +63,49 @@ MainDisplay::setPixmaps (Skin *skin)
 	setMaximumSize(QSize(275, 116));
 	setMinimumSize(QSize(275, 116));
 }
+
+void
+MainDisplay::setStatus (uint status)
+{
+	if (status == XMMS_PLAYBACK_STATUS_STOP) {
+		m_number->setNumber (0, 0);
+		m_number2->setNumber (0, 0);
+		m_slider->setPos (0);
+		m_slider->hideBar (true);
+	}
+}
+
+void
+MainDisplay::setPlaytime (uint time)
+{
+	uint sec, min;
+
+	sec = (time / 1000) % 60;
+	min = (time / 1000) / 60;
+
+	m_number->setNumber (min / 10, min % 10);
+	m_number2->setNumber (sec / 10, sec % 10);
+
+	// update slider
+	m_slider->setPos (time);
+}
+
+void
+MainDisplay::setMediainfo (QString str, int bitrate, int samplerate,
+                           int channels, int duration)
+{
+	m_text->setText (str);
+	m_kbps->setNumber (bitrate/1000, 3);
+	m_khz->setNumber (samplerate/1000, 2);
+	if (channels > 1) {
+		m_stereo->setStereoMono (1, 0);
+	} else {
+		m_stereo->setStereoMono (0, 1);
+	}
+	m_slider->setMax (duration);
+	m_slider->hideBar (false);
+}
+
 
 void
 MainDisplay::SetupToggleButtons (void)
@@ -81,28 +130,28 @@ MainDisplay::SetupToggleButtons (void)
 void
 MainDisplay::SetupPushButtons (void)
 {
-	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 
 	/* Normal buttons */
 	m_prev = new Button (this, Skin::BTN_PREV_0, Skin::BTN_PREV_1);
 	m_prev->move(16, 88);
-	connect (m_prev, SIGNAL(clicked()), mw->getHandler (), SLOT(prev()));
+	connect (m_prev, SIGNAL(clicked()), xmmsh, SLOT(prev()));
 	
 	m_play = new Button (this, Skin::BTN_PLAY_0, Skin::BTN_PLAY_1);
 	m_play->move(39, 88);
-	connect (m_play, SIGNAL(clicked()), mw->getHandler (), SLOT(play()));
+	connect (m_play, SIGNAL(clicked()), xmmsh, SLOT(play()));
 
 	m_pause = new Button (this, Skin::BTN_PAUSE_0, Skin::BTN_PAUSE_1);
 	m_pause->move(62, 88);
-	connect (m_pause, SIGNAL(clicked()), mw->getHandler (), SLOT(pause()));
+	connect (m_pause, SIGNAL(clicked()), xmmsh, SLOT(pause()));
 
 	m_stop = new Button (this, Skin::BTN_STOP_0, Skin::BTN_STOP_1);
 	m_stop->move(85, 88);
-	connect (m_stop, SIGNAL(clicked()), mw->getHandler (), SLOT(stop()));
+	connect (m_stop, SIGNAL(clicked()), xmmsh, SLOT(stop()));
 
 	m_next = new Button (this, Skin::BTN_NEXT_0, Skin::BTN_NEXT_1);
 	m_next->move(108, 88);
-	connect (m_next, SIGNAL(clicked()), mw->getHandler (), SLOT(next()));
+	connect (m_next, SIGNAL(clicked()), xmmsh, SLOT(next()));
 
 	m_eject = new Button (this, Skin::BTN_EJECT_0, Skin::BTN_EJECT_1);
 	m_eject->move(136, 89);

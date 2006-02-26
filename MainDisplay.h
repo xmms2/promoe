@@ -23,6 +23,7 @@ class MainDisplay;
 #include "StereoMono.h"
 #include "Slider.h"
 #include "PlayStatus.h"
+#include "MainWindow.h"
 
 using namespace std;
 
@@ -47,6 +48,10 @@ class MainDisplay : public SkinDisplay
 
 	public slots:
 		void setPixmaps(Skin *skin);
+		void setStatus (uint status);
+		void setPlaytime (uint time);
+		void setMediainfo (QString str, int bitrate, int samplerate,
+		                   int channels, int duration);
 
 	protected:
 		void SetupPushButtons (void);
