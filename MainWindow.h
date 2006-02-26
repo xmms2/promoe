@@ -39,13 +39,7 @@ class MainWindow : public QMainWindow
 
 	public slots:
 		void switchDisplay ();
-		void togglePL (void) { 
-			if (m_playlistwin->isVisible ()) { 
-				m_playlistwin->hide (); 
-			} else { 
-				m_playlistwin->show (); 
-			} 
-		}
+		void togglePL (void);
 
 	private:
 		bool m_isshaded;

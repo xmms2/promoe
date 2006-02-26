@@ -63,10 +63,23 @@ MainWindow::switchDisplay ()
 
 }
 
-Skin *MainWindow::getSkin(void)
+Skin *
+MainWindow::getSkin(void)
 {
 	return skin;
 }
+
+void 
+MainWindow::togglePL (void) 
+{ 
+	if (m_playlistwin->isVisible ()) { 
+		m_playlistwin->hide (); 
+	} else { 
+		m_playlistwin->move (pos().x(), pos().y()+size().height());
+		m_playlistwin->show (); 
+	} 
+}
+
 
 int 
 main (int argc, char **argv)
