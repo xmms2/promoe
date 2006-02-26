@@ -3,7 +3,6 @@
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 {
-	m_noDrag = false;
 	m_mw = parent;
 
 	connect (dynamic_cast<MainWindow *>(parent)->getSkin (),
@@ -27,10 +26,8 @@ SkinDisplay::mousePressEvent (QMouseEvent *event)
 void 
 SkinDisplay::mouseMoveEvent (QMouseEvent *event)
 {
-	if (!m_noDrag) {
-		m_mw->move(event->globalPos().x() - m_diffX,
-				   event->globalPos().y() - m_diffY);
-	}
+	m_mw->move(event->globalPos().x() - m_diffX,
+			   event->globalPos().y() - m_diffY);
 }
 
 void

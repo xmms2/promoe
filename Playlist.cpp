@@ -73,7 +73,6 @@ PlaylistScroller::paintEvent (QPaintEvent *event)
 PlaylistWindow::PlaylistWindow (QWidget *parent, Skin *skin) : QMainWindow (parent)
 {
 	m_skin = skin;
-	m_noDrag = false;
 
 	setWindowFlags (Qt::FramelessWindowHint);
 	connect (m_skin, SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
@@ -120,9 +119,6 @@ PlaylistWindow::mousePressEvent (QMouseEvent *event)
 void
 PlaylistWindow::mouseMoveEvent (QMouseEvent *event)
 {
-	if (m_noDrag)
-		return;
-
 	move (event->globalPos().x() - m_diffx,
 		  event->globalPos().y() - m_diffy);
 

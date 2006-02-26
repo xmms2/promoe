@@ -12,7 +12,6 @@ class Button : public PixWidget
 		Button (QWidget *parent, uint btn1, uint btn2, bool pls=false);
 		Button (QWidget *parent);
 		~Button ();
-		bool noDrag (void) { return m_nodrag; }
 
 	public slots:
 		void setPixmaps (Skin *skin);
@@ -23,6 +22,7 @@ class Button : public PixWidget
 	protected:
 		void mousePressEvent (QMouseEvent *event);
 		void mouseReleaseEvent (QMouseEvent *event);
+		void mouseMoveEvent (QMouseEvent *event) {}
 
 		uint m_name_normal;
 		uint m_name_pressed;

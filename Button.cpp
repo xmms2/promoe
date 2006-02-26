@@ -14,7 +14,6 @@ Button::Button (QWidget *parent, uint normal, uint pressed, bool pls) : PixWidge
 	m_name_pressed = pressed;
 	m_diffx = 0;
 	m_diffy = 0;
-	m_nodrag = false;
 	m_pls = pls;
 }
 
@@ -54,20 +53,10 @@ Button::setPixmaps(Skin *skin)
 void 
 Button::mousePressEvent (QMouseEvent *event)
 {
-	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
-	if (mw) {
-		mw->setNoDrag (true);
-	} else {
-		PlaylistWindow *pw = dynamic_cast<PlaylistWindow *>(window ());
-		pw->setNoDrag (true);
-	}
-
 	m_pixmap = m_pixmap_pressed;
 
 	m_diffx = event->pos().x();
 	m_diffy = event->pos().y();
-
-	m_nodrag = true;
 
 	update ();
 }
@@ -75,15 +64,7 @@ Button::mousePressEvent (QMouseEvent *event)
 void 
 Button::mouseReleaseEvent (QMouseEvent *event)
 {
-	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
-	if (mw) {
-		mw->setNoDrag (true);
-	} else {
-		PlaylistWindow *pw = dynamic_cast<PlaylistWindow *>(window ());
-		pw->setNoDrag (true);
-	}
 	m_pixmap = m_pixmap_normal;
-	m_nodrag = false;
 	update();
 	emit clicked();
 }
