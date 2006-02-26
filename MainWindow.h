@@ -17,6 +17,7 @@ class MainWindow;
 #include "XmmsQT4.h"
 #include "MainDisplay.h"
 #include "ShadedDisplay.h"
+#include "Playlist.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ class MainWindow : public QMainWindow
 		XMMSHandler *m_handler;
 		MainDisplay *m_display;
 		ShadedDisplay *m_shaded;
+		PlaylistWindow *m_playlistwin;
 };
 
 

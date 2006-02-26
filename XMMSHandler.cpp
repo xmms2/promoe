@@ -31,6 +31,22 @@ XMMSHandler::XMMSHandler (MainWindow *mw) : sigc::trackable ()
 
 	r = m_xmmsc->broadcast_playback_status ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_status));
+
+	XMMSResultValueListUint *l = m_xmmsc->playlist_list ();
+	l->connect (sigc::mem_fun (this, &XMMSHandler::playlist_list));
+}
+
+void
+XMMSHandler::playlist_list (XMMSResultValueListUint *res) 
+{
+	qDebug ("korv!");
+
+	for (;res->listValid(); res->listNext()) {
+		uint i;
+		qDebug ("%u", res->getValue(&i));
+	}
+
+	delete res;
 }
 
 void

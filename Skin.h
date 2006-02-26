@@ -21,6 +21,7 @@ class Skin : public QWidget
 		void setSkin (QString name);
 		
 		const QPixmap getItem (uint part) const { return m_items->value(part); }
+		const QPixmap getPls (uint part) const { return m_playlist->value(part); }
 		const QPixmap getVol (uint p) const { return m_volume_bar->value(p); }
 		const QPixmap getBal (uint p) const { return m_balance->value(p); }
 		const QPixmap getLetter (uint c) const { return m_letterMap->value(c); }
@@ -150,6 +151,44 @@ class Skin : public QWidget
 			POSBAR_BTN_0,
 			POSBAR_BTN_1,
 		};
+		enum PlaylistParts {
+			PLS_CORNER_UL_0,
+			PLS_CORNER_UL_1,
+			PLS_CORNER_UR_0,
+			PLS_CORNER_UR_1,
+			PLS_TBAR_0,
+			PLS_TBAR_1,
+			PLS_TFILL_0,
+			PLS_TFILL_1,
+			PLS_BFILL_0,
+			PLS_BFILL_1 = PLS_BFILL_0,
+			PLS_VISMINI_0,
+			PLS_VISMINI_1 = PLS_VISMINI_0,
+			PLS_LFILL_0,
+			PLS_LFILL_1 = PLS_LFILL_0,
+			PLS_RFILL_0,
+			PLS_RFILL_1 = PLS_RFILL_0,
+			PLS_RFILL2_0,
+			PLS_RFILL2_1 = PLS_RFILL2_0,
+			PLS_RFILL3_0,
+			PLS_RFILL3_1 = PLS_RFILL3_0,
+			PLS_CLOSE_BTN_0,
+			PLS_CLOSE_BTN_1,
+			PLS_SHADE_BTN_0,
+			PLS_SHADE_BTN_1,
+			PLS_MAX_BTN_0,
+			PLS_MAX_BTN_1,
+			PLS_SCROLL_0,
+			PLS_SCROLL_1,
+			PLS_WS_LE_0,
+			PLS_WS_LE_1 = PLS_WS_LE_0,
+			PLS_WS_RE_0,
+			PLS_WS_RE_1,
+			PLS_WS_MID_0,
+			PLS_WS_MID_1 = PLS_WS_MID_0,
+			PLS_LCBAR,
+			PLS_RCBAR
+		};
 	private:
 		QPixmap *Skin::getPixmap (string file);
 		void Parse (string file);
@@ -160,6 +199,7 @@ class Skin : public QWidget
 		void BuildSliders (void);
 		void BuildOther (void);
 		void BuildNumbers (void);
+		void BuildPlaylist (void);
 		void ParsePLEdit (void);
 
 
@@ -171,6 +211,7 @@ class Skin : public QWidget
 		QHash<uint, QPixmap> *m_volume_bar;
 		QHash<uint, QPixmap> *m_balance;
 		QHash<uint, QPixmap> *m_numbers;
+		QHash<uint, QPixmap> *m_playlist;
 
 		QHash<QByteArray, QByteArray> *m_pledit_txt;
 		QList<QPixmap *> m_buttons;

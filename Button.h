@@ -9,7 +9,7 @@ class Button : public PixWidget
 {
 	Q_OBJECT
 	public:
-		Button (QWidget *parent, uint btn1, uint btn2);
+		Button (QWidget *parent, uint btn1, uint btn2, bool pls=false);
 		Button (QWidget *parent);
 		~Button ();
 		bool noDrag (void) { return m_nodrag; }
@@ -34,6 +34,7 @@ class Button : public PixWidget
 		QPixmap m_pixmap_pressed;
 
 		bool m_nodrag;
+		bool m_pls;
 };
 
 class ToggleButton : public Button

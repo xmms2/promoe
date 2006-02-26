@@ -8,13 +8,14 @@ Button::Button (QWidget *parent) : PixWidget (parent)
 	m_name_pressed = 0;
 }
 
-Button::Button (QWidget *parent, uint normal, uint pressed) : PixWidget (parent)
+Button::Button (QWidget *parent, uint normal, uint pressed, bool pls) : PixWidget (parent)
 {
 	m_name_normal = normal;
 	m_name_pressed = pressed;
 	m_diffx = 0;
 	m_diffy = 0;
 	m_nodrag = false;
+	m_pls = pls;
 }
 
 Button::~Button ()
@@ -28,8 +29,13 @@ Button::setPixmaps(Skin *skin)
 		return;
 	}
 
-	m_pixmap_normal = skin->getItem (m_name_normal);
-	m_pixmap_pressed = skin->getItem (m_name_pressed);
+	if (m_pls) {
+		m_pixmap_normal = skin->getPls (m_name_normal);
+		m_pixmap_pressed = skin->getPls (m_name_pressed);
+	} else {
+		m_pixmap_normal = skin->getItem (m_name_normal);
+		m_pixmap_pressed = skin->getItem (m_name_pressed);
+	}
 	m_pixmap = m_pixmap_normal;
 
 	if (!m_pixmap_normal || m_pixmap_normal.isNull()) {
@@ -49,7 +55,12 @@ void
 Button::mousePressEvent (QMouseEvent *event)
 {
 	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
-	mw->setNoDrag (true);
+	if (mw) {
+		mw->setNoDrag (true);
+	} else {
+		PlaylistWindow *pw = dynamic_cast<PlaylistWindow *>(window ());
+		pw->setNoDrag (true);
+	}
 
 	m_pixmap = m_pixmap_pressed;
 
@@ -65,7 +76,12 @@ void
 Button::mouseReleaseEvent (QMouseEvent *event)
 {
 	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
-	mw->setNoDrag (false);
+	if (mw) {
+		mw->setNoDrag (true);
+	} else {
+		PlaylistWindow *pw = dynamic_cast<PlaylistWindow *>(window ());
+		pw->setNoDrag (true);
+	}
 	m_pixmap = m_pixmap_normal;
 	m_nodrag = false;
 	update();

@@ -3,12 +3,19 @@
 
 PixWidget::PixWidget (QWidget *parent) : QWidget (parent)
 {
+	Skin *s;
 	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
 	if (!mw) {
-		qDebug ("******** DANGER! NO MAINWINDOW FOUND");
+		PlaylistWindow *pl = dynamic_cast<PlaylistWindow*>(window ());
+		if (!pl) {
+			qDebug ("What are you?!");
+		}
+		s = pl->getSkin ();
+	} else {
+		s = mw->getSkin ();
 	}
 	m_pixmap = QPixmap(0,0);
-	connect (mw->getSkin(), SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
+	connect (s, SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
 }
 
 

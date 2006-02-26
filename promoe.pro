@@ -13,7 +13,9 @@ SOURCES += XmmsQT4.cpp \
 		   StereoMono.cpp \
 		   Slider.cpp \
 		   PlayStatus.cpp \
-		   ShadedDisplay.cpp
+		   ShadedDisplay.cpp \
+		   Playlist.cpp \
+		   PlaylistList.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -30,7 +32,10 @@ HEADERS += XmmsQT4.h \
 		   StereoMono.h \
 		   Slider.h \
 		   PlayStatus.h \
-		   ShadedDisplay.h
+		   ShadedDisplay.h \
+		   Playlist.h \
+		   PlaylistList.h
 
 CONFIG += link_pkgconfig
+CONFIG += debug
 PKGCONFIG += xmms2-client xmms2-client-cpp sigc++-2.0

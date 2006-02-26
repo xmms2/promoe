@@ -9,6 +9,7 @@ Skin::Skin (void)
 	m_pledit_txt = new QHash<QByteArray, QByteArray>;
 	m_numbers = new QHash<uint, QPixmap>;
 	m_letterMap = new QHash<uint, QPixmap>;
+	m_playlist = new QHash<uint, QPixmap>;
 }
 
 
@@ -16,6 +17,60 @@ Skin::~Skin ()
 {
 }
 
+void
+Skin::BuildPlaylist (void)
+{
+	QPixmap tmp;
+
+	QPixmap *img = getPixmap ("pledit.bmp");
+	qDebug ("%d %d", img->size().width(), img->size().height());
+
+	m_playlist->insert (PLS_CORNER_UL_0, img->copy(0, 0, 25, 20));
+	m_playlist->insert (PLS_CORNER_UL_1, img->copy(0, 21, 25, 20));
+	
+	m_playlist->insert (PLS_TBAR_0, img->copy (26, 0, 100, 20));
+	m_playlist->insert (PLS_TBAR_1, img->copy (26, 21, 100, 20));
+	
+	m_playlist->insert (PLS_CORNER_UR_0, img->copy(153, 0, 25, 20));
+	m_playlist->insert (PLS_CORNER_UR_1, img->copy(153, 21, 25, 20));
+
+	m_playlist->insert (PLS_TFILL_0, img->copy(127, 0, 25, 20));
+	m_playlist->insert (PLS_TFILL_1, img->copy(127, 21, 25, 20));
+
+	m_playlist->insert (PLS_BFILL_0, img->copy(179, 0, 25, 38));
+
+	m_playlist->insert (PLS_VISMINI_0, img->copy(205, 0, 75, 38));
+
+	m_playlist->insert (PLS_LFILL_0, img->copy(0, 42, 12, 29));
+
+	m_playlist->insert (PLS_RFILL_0, img->copy(31, 42, 5, 29));
+	m_playlist->insert (PLS_RFILL2_0, img->copy(36, 42, 8, 29));
+	m_playlist->insert (PLS_RFILL3_0, img->copy(44, 42, 7, 29));
+
+	tmp = m_playlist->value (PLS_CORNER_UR_0);
+
+	m_playlist->insert (PLS_CLOSE_BTN_0, tmp.copy(14, 3, 9, 9));
+	m_playlist->insert (PLS_CLOSE_BTN_1, img->copy(52, 42, 9, 9));
+
+	m_playlist->insert (PLS_SHADE_BTN_0, tmp.copy(14, 3, 9, 9));
+	m_playlist->insert (PLS_SHADE_BTN_1, img->copy(52, 42, 9, 9));
+
+	m_playlist->insert (PLS_MAX_BTN_0, img->copy(150, 42, 9, 9));
+
+	m_playlist->insert (PLS_SCROLL_0, img->copy(52, 53, 8, 18));
+	m_playlist->insert (PLS_SCROLL_1, img->copy(61, 53, 8, 18));
+
+	m_playlist->insert (PLS_WS_LE_0, img->copy(72, 42, 25, 14));
+	m_playlist->insert (PLS_WS_RE_0, img->copy(99, 42, 50, 14));
+	m_playlist->insert (PLS_WS_RE_1, img->copy(99, 57, 50, 14));
+	m_playlist->insert (PLS_WS_MID_0, img->copy(72, 57, 25, 14));
+
+	m_playlist->insert (PLS_LCBAR, img->copy(0, 72, 125, 38));
+	m_playlist->insert (PLS_RCBAR, img->copy(126, 72, 150, 38));
+
+	delete img;
+
+}
 
 void
 Skin::setSkin (QString name)
@@ -38,6 +93,9 @@ Skin::setSkin (QString name)
 
 	m_numbers->clear();
 	BuildNumbers();
+
+	m_playlist->clear ();
+	BuildPlaylist ();
 
 	emit skinChanged(this);
 }

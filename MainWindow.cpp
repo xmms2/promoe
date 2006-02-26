@@ -36,13 +36,6 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 	 */
 	m_isshaded = false;
 
-	/*
-	 * Now that everything is initialized
-	 * open the skin and send the
-	 * SkinChanged signal that will cause
-	 * all widgets to get their pixmaps
-	 */
-	skin->setSkin ("./CleanAMP/");
 
 }
 
@@ -90,8 +83,18 @@ int main (int argc, char **argv)
 	QApplication app(argc, argv);
 
 	MainWindow *mw = new MainWindow (NULL);
-	mw->show();
-	
+	mw->show ();
+
+	QMainWindow *playlistwin = new PlaylistWindow (NULL, mw->getSkin ());
+	playlistwin->show ();
+
+	/*
+	 * Now that everything is initialized
+	 * open the skin and send the
+	 * SkinChanged signal that will cause
+	 * all widgets to get their pixmaps
+	 */
+	mw->getSkin ()->setSkin ("./CleanAMP/");
 
 	return app.exec();
 }
