@@ -45,8 +45,6 @@ class TextScroller : public QWidget
 
 		QTimer *m_timer;
 
-		Skin *m_skin;
-
 		void drawBitmapFont (const QString &text);
 		void drawQtFont (const QString &text);
 };

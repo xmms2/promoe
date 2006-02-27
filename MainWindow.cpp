@@ -9,17 +9,6 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 	setGeometry(100, 100, 275, 116);
 	
 	/* 
-	 * Initialize the Handler that will
-	 * update the display and the buttons
-	 */
-	m_handler = XMMSHandler::getInstance();
-
-	/*
-	 * Initialize skin, but don't open one
-	 */
-	skin = new Skin ();
-	
-	/* 
 	 * The MainDisplay is the mainwindow non-shaded mode
 	 */
 	m_display = new MainDisplay (this);
@@ -43,7 +32,8 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 
 MainWindow::~MainWindow ()
 {
-	delete skin;
+	delete Skin::getInstance ();
+	delete XMMSHandler::getInstance();
 }
 
 void
@@ -65,11 +55,6 @@ MainWindow::switchDisplay ()
 
 }
 
-Skin *
-MainWindow::getSkin(void)
-{
-	return skin;
-}
 
 void 
 MainWindow::togglePL (void) 
@@ -91,7 +76,7 @@ main (int argc, char **argv)
 
 	MainWindow *mw = new MainWindow (NULL);
 
-	PlaylistWindow *playlistwin = new PlaylistWindow (NULL, mw->getSkin ());
+	PlaylistWindow *playlistwin = new PlaylistWindow (NULL);
 
 	/*
 	 * Now that everything is initialized
@@ -103,7 +88,7 @@ main (int argc, char **argv)
 		settings.setValue ("skin/path", "./CleanAMP/");
 	}
 
-	mw->getSkin ()->setSkin (settings.value("skin/path").toString ());
+	Skin::getInstance()->setSkin (settings.value("skin/path").toString ());
 
 	mw->show ();
 	mw->setPL (playlistwin);

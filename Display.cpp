@@ -3,12 +3,12 @@
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 {
+	Skin *skin = Skin::getInstance ();
+
 	m_mw = parent;
 
-	connect (dynamic_cast<MainWindow *>(parent)->getSkin (),
-			 SIGNAL (skinChanged (Skin *)),
-			 this,
-			 SLOT (setPixmaps (Skin *)));
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps (Skin *)));
 }
 
 void

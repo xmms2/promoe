@@ -33,20 +33,16 @@ NumberDisplay::setPixmaps (Skin *skin)
 void
 NumberDisplay::setNumber (uint n1, uint n2)
 {
-	if (m_n1 == n1 && m_n2 == n2) {
-		/* Do nothing */
-		return;
+	if (m_n1 != n1 || m_n2 != n2) {
+		Skin *skin = Skin::getInstance ();
+
+		m_n1 = n1;
+		m_n2 = n2;
+
+		setPixmaps (skin);
 	}
-	MainWindow *mw = (MainWindow *)((SkinDisplay *)parent ())->getMW();
-
-	m_n1 = n1;
-	m_n2 = n2;
-
-	setPixmaps (mw->getSkin());
 }
 
 NumberDisplay::~NumberDisplay ()
 {
 }
-
-

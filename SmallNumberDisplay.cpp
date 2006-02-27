@@ -11,7 +11,6 @@ SmallNumberDisplay::SmallNumberDisplay (QWidget *parent, int w) : PixWidget (par
 void
 SmallNumberDisplay::setPixmaps (Skin *skin)
 {
-	m_skin = skin;
 	drawNumber ();
 }
 
@@ -29,21 +28,18 @@ SmallNumberDisplay::setNumber (int num, int len)
 void
 SmallNumberDisplay::drawNumber ()
 {
-
-	if (!m_skin) {
-		return;
-	}
+	Skin *skin = Skin::getInstance ();
 
 	QPainter paint;
 	paint.begin (&m_pixmap);
 	paint.drawPixmap (m_pixmap.rect (),
-					  m_skin->getItem (Skin::TEXTBG),
+					  skin->getItem (Skin::TEXTBG),
 					  m_pixmap.rect ());
 
 	for (int i = 0; i < m_num; i++) {
 		paint.drawPixmap (QRect (i*5, 0, 4, 6),
-						  m_skin->getLetter (m_nums[i]),
-						  m_skin->getLetter (m_nums[i]).rect ());
+						  skin->getLetter (m_nums[i]),
+						  skin->getLetter (m_nums[i]).rect ());
 	}
 
 	paint.end ();

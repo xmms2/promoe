@@ -15,6 +15,7 @@ class Skin : public QWidget
 {
 	Q_OBJECT
 	public:
+		static Skin *getInstance (void);
 		Skin ();
 		~Skin();
 
@@ -191,6 +192,8 @@ class Skin : public QWidget
 			PLS_RCBAR
 		};
 	private:
+		static Skin *singleton;
+
 		QPixmap *Skin::getPixmap (string file);
 		void Parse (string file);
 		void BuildLetterMap (void);

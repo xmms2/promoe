@@ -53,11 +53,14 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 void
 SkinList::changeSkin (QListWidgetItem *item)
 {
+	Skin *skin = Skin::getInstance ();
+
 	QSettings settings;
 
 	SkinChooser *sc = dynamic_cast<SkinChooser *>(window());
 	qDebug ("change skin to %s", qPrintable (item->text()));
-	sc->getMW()->getSkin ()->setSkin (QDir::homePath()+"/.xmms2/clients/promoe/skins/"+item->text());
+
+	skin->setSkin (QDir::homePath()+"/.xmms2/clients/promoe/skins/"+item->text());
 
 	settings.setValue ("skin/path", QDir::homePath()+"/.xmms2/clients/promoe/skins/"+item->text());
 }

@@ -3,19 +3,11 @@
 
 PixWidget::PixWidget (QWidget *parent) : QWidget (parent)
 {
-	Skin *s;
-	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
-	if (!mw) {
-		PlaylistWindow *pl = dynamic_cast<PlaylistWindow*>(window ());
-		if (!pl) {
-			qDebug ("What are you?!");
-		}
-		s = pl->getSkin ();
-	} else {
-		s = mw->getSkin ();
-	}
+	Skin *skin = Skin::getInstance();
 	m_pixmap = QPixmap(0,0);
-	connect (s, SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
+
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
 }
 
 

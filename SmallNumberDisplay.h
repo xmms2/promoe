@@ -24,8 +24,6 @@ class SmallNumberDisplay : public PixWidget
 		int m_w;
 
 		void drawNumber (void);
-
-		Skin *m_skin;
 };
 
 #endif

@@ -59,11 +59,10 @@ class PlaylistWindow : public QMainWindow {
 	Q_OBJECT
 
 	public:
-		PlaylistWindow (QWidget *parent, Skin *skin);
+		PlaylistWindow (QWidget *parent);
 		~PlaylistWindow () {}
 
 		void setActive (bool);
-		Skin *getSkin (void) { return m_skin; }
 
 	public slots:
 		void setPixmaps (Skin *skin);
@@ -92,8 +91,6 @@ class PlaylistWindow : public QMainWindow {
 
 		bool m_active;
 		
-		Skin *m_skin;
-
 		int m_diffx;
 		int m_diffy;
 

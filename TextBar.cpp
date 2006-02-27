@@ -4,11 +4,10 @@
 
 TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 {
+	Skin *skin = Skin::getInstance ();
 
-	MainWindow *mw = (MainWindow *)((SkinDisplay *)parent)->getMW();
-	m_skin = mw->getSkin();
-
-	connect (m_skin, SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
 
 	m_h = h;
 	m_w = w;
@@ -75,6 +74,8 @@ TextScroller::setText (const QString &text)
 void
 TextScroller::drawBitmapFont (const QString &text)
 {
+	Skin *skin = Skin::getInstance ();
+
 	int width = text.length() * 6;
 	QString (temp) = text.toLower ();
 
@@ -93,9 +94,9 @@ TextScroller::drawBitmapFont (const QString &text)
 	paint.begin (&m_pixmap);
 	paint.fillRect (m_pixmap.rect(), Qt::white);
 	for (uint i = 0; i < strlen (t); i++) {
-		QPixmap p = m_skin->getLetter (t[i]);
+		QPixmap p = skin->getLetter (t[i]);
 		if (!p) {
-			p = m_skin->getLetter(' ');
+			p = skin->getLetter(' ');
 		}
 
 		paint.drawPixmap (QRect (i * 6, m_y, 4, 6),
@@ -110,7 +111,9 @@ TextScroller::drawBitmapFont (const QString &text)
 void
 TextScroller::drawQtFont (const QString &text)
 {
-	QFont font(m_skin->getPLeditValue ("font"));
+	Skin *skin = Skin::getInstance ();
+
+	QFont font(skin->getPLeditValue ("font"));
 	font.setPixelSize (m_fontsize);
 
 	QFontMetrics fM(font);
@@ -132,12 +135,12 @@ TextScroller::drawQtFont (const QString &text)
 	QPainter paint;
 	paint.begin (&m_pixmap);
 	paint.drawPixmap (m_pixmap.rect (),
-					  m_skin->getItem (Skin::TEXTBG),
-					  m_skin->getItem (Skin::TEXTBG).rect ());
+	                  skin->getItem (Skin::TEXTBG),
+	                  skin->getItem (Skin::TEXTBG).rect ());
 
 	paint.setFont (font);
 	QColor c;
-	c.setNamedColor (m_skin->getPLeditValue ("normal"));
+	c.setNamedColor (skin->getPLeditValue ("normal"));
 	paint.setPen (c);
 	paint.drawText (m_pixmap.rect (),
 					Qt::AlignLeft | Qt::AlignVCenter,

@@ -39,8 +39,13 @@ dragButton::mouseMoveEvent (QMouseEvent *event)
 
 PlaylistScroller::PlaylistScroller (PlaylistWindow *parent) : QWidget (parent)
 {
+	Skin *skin = Skin::getInstance ();
+
 	m_pixmap = QPixmap(0,0);
-	connect (parent->getSkin(), SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
+
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
+
 	m_button = new PlaylistScrollButton (this, Skin::PLS_SCROLL_0, Skin::PLS_SCROLL_1);
 	m_button->move (0, 0);
 }
@@ -70,12 +75,13 @@ PlaylistScroller::paintEvent (QPaintEvent *event)
 	paint.end ();
 }
 
-PlaylistWindow::PlaylistWindow (QWidget *parent, Skin *skin) : QMainWindow (parent)
+PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 {
-	m_skin = skin;
+	Skin *skin = Skin::getInstance ();
 
 	setWindowFlags (Qt::FramelessWindowHint);
-	connect (m_skin, SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
 
 	setActive (underMouse ());
 
@@ -127,7 +133,6 @@ PlaylistWindow::mouseMoveEvent (QMouseEvent *event)
 void
 PlaylistWindow::setPixmaps (Skin *skin)
 {
-	m_skin = skin;
 	setActive (m_active);
 	resize (size().width(), size().height());
 }
@@ -148,35 +153,33 @@ PlaylistWindow::leaveEvent (QEvent *event)
 void
 PlaylistWindow::setActive (bool active)
 {
+	Skin *skin = Skin::getInstance ();
+
 	m_active = active;
 
-	if (!m_skin) {
-		return;
-	}
-
-	m_corner3 = m_skin->getPls (Skin::PLS_LCBAR);
-	m_corner4 = m_skin->getPls (Skin::PLS_RCBAR);
+	m_corner3 = skin->getPls (Skin::PLS_LCBAR);
+	m_corner4 = skin->getPls (Skin::PLS_RCBAR);
 
 	if (active) {
-		m_corner1 = m_skin->getPls (Skin::PLS_CORNER_UL_0);
-		m_corner2 = m_skin->getPls (Skin::PLS_CORNER_UR_0);
-		m_titlebar = m_skin->getPls (Skin::PLS_TBAR_0);
-		m_tfill = m_skin->getPls (Skin::PLS_TFILL_0);
-		m_bfill = m_skin->getPls (Skin::PLS_BFILL_0);
-		m_lfill = m_skin->getPls (Skin::PLS_LFILL_0);
-		m_rfill = m_skin->getPls (Skin::PLS_RFILL_0);
-		m_rfill2 = m_skin->getPls (Skin::PLS_RFILL2_0);
-		m_rfill3 = m_skin->getPls (Skin::PLS_RFILL3_0);
+		m_corner1 = skin->getPls (Skin::PLS_CORNER_UL_0);
+		m_corner2 = skin->getPls (Skin::PLS_CORNER_UR_0);
+		m_titlebar = skin->getPls (Skin::PLS_TBAR_0);
+		m_tfill = skin->getPls (Skin::PLS_TFILL_0);
+		m_bfill = skin->getPls (Skin::PLS_BFILL_0);
+		m_lfill = skin->getPls (Skin::PLS_LFILL_0);
+		m_rfill = skin->getPls (Skin::PLS_RFILL_0);
+		m_rfill2 = skin->getPls (Skin::PLS_RFILL2_0);
+		m_rfill3 = skin->getPls (Skin::PLS_RFILL3_0);
 	} else {
-		m_corner1 = m_skin->getPls (Skin::PLS_CORNER_UL_1);
-		m_corner2 = m_skin->getPls (Skin::PLS_CORNER_UR_1);
-		m_titlebar = m_skin->getPls (Skin::PLS_TBAR_1);
-		m_tfill = m_skin->getPls (Skin::PLS_TFILL_1);
-		m_bfill = m_skin->getPls (Skin::PLS_BFILL_1);
-		m_lfill = m_skin->getPls (Skin::PLS_LFILL_1);
-		m_rfill = m_skin->getPls (Skin::PLS_RFILL_1);
-		m_rfill2 = m_skin->getPls (Skin::PLS_RFILL2_1);
-		m_rfill3 = m_skin->getPls (Skin::PLS_RFILL3_1);
+		m_corner1 = skin->getPls (Skin::PLS_CORNER_UL_1);
+		m_corner2 = skin->getPls (Skin::PLS_CORNER_UR_1);
+		m_titlebar = skin->getPls (Skin::PLS_TBAR_1);
+		m_tfill = skin->getPls (Skin::PLS_TFILL_1);
+		m_bfill = skin->getPls (Skin::PLS_BFILL_1);
+		m_lfill = skin->getPls (Skin::PLS_LFILL_1);
+		m_rfill = skin->getPls (Skin::PLS_RFILL_1);
+		m_rfill2 = skin->getPls (Skin::PLS_RFILL2_1);
+		m_rfill3 = skin->getPls (Skin::PLS_RFILL3_1);
 	}
 
 	update ();

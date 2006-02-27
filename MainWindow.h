@@ -28,9 +28,6 @@ class MainWindow : public QMainWindow
 		MainWindow (QWidget *parent);
 		~MainWindow (void);
 
-		Skin *getSkin (void);
-
-		XMMSHandler *getHandler () { return m_handler; }
 		MainDisplay *getMD () { return m_display; }
 		ShadedDisplay *getSD () { return m_shaded; }
 
@@ -43,9 +40,7 @@ class MainWindow : public QMainWindow
 
 	private:
 		bool m_isshaded;
-		Skin *skin;
 
-		XMMSHandler *m_handler;
 		MainDisplay *m_display;
 		ShadedDisplay *m_shaded;
 		PlaylistWindow *m_playlistwin;

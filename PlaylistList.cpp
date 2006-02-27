@@ -42,9 +42,11 @@ PlaylistItem::text (void)
 PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 {
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	Skin *skin = Skin::getInstance ();
 
-	PlaylistWindow *pl = dynamic_cast<PlaylistWindow*>(window ());
-	connect (pl->getSkin (), SIGNAL (skinChanged (Skin *)), this, SLOT (setPixmaps(Skin *)));
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
+
 	m_font = NULL;
 	m_fontmetrics = NULL;
 	m_items = new QList<PlaylistItem *>;
@@ -52,12 +54,17 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	m_itemmap = new QHash<uint, PlaylistItem *>;
 	m_offset = 0;
 
-	connect (xmmsh, SIGNAL(playlistList(QList<uint>)), this, SLOT(playlistList(QList<uint>)));
-	connect (xmmsh, SIGNAL(currentID(uint)), this, SLOT(currentID(uint)));
+	connect (xmmsh, SIGNAL(playlistList(QList<uint>)),
+	         this, SLOT(playlistList(QList<uint>)));
+
+	connect (xmmsh, SIGNAL(currentID(uint)),
+	         this, SLOT(currentID(uint)));
+
 	connect (xmmsh, SIGNAL(mediainfoChanged(uint, QHash<QString, QString>)), 
-			 this, SLOT(mediainfoChanged(uint, QHash<QString, QString>)));
+	         this, SLOT(mediainfoChanged(uint, QHash<QString, QString>)));
+
 	connect (xmmsh, SIGNAL(playlistChanged(QHash<QString, QString>)),
-			 this, SLOT(playlistChanged(QHash<QString, QString>)));
+	         this, SLOT(playlistChanged(QHash<QString, QString>)));
 }
 
 void

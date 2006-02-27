@@ -1,5 +1,15 @@
 #include "Skin.h"
 
+Skin *Skin::singleton = NULL;
+
+Skin *Skin::getInstance (void)
+{
+	if (!singleton) {
+		singleton = new Skin ();
+	}
+
+	return singleton;
+}
 
 Skin::Skin (void)
 {
