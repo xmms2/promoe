@@ -20,13 +20,14 @@ class SkinChooser : public QMainWindow
 {
 	public:
 		SkinChooser (QWidget *parent);
-		~SkinChooser () {}
+		~SkinChooser (void);
 		MainWindow *getMW (void) { return m_mw; }
 
 	private:
 		QVBoxLayout *m_vbox;
 		SkinList *m_skin;
 		QLabel *m_label;
+		QWidget *m_c;
 		MainWindow *m_mw;
 
 };

@@ -132,8 +132,6 @@ Skin::getPixmap (QString f, QDir dir)
 QPixmap *
 Skin::getPixmap (string file)
 {
-	/* check for files in zip and check if file exists */
-
 	QDir dir;
 	QString f = QString::fromStdString (file);
 
@@ -149,8 +147,6 @@ Skin::getPixmap (string file)
 	}
 
 	return NULL;
-
-	/*return new QPixmap ((m_path+file).c_str());*/
 }
 
 

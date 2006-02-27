@@ -15,19 +15,27 @@ SkinChooser::SkinChooser (QWidget *parent) : QMainWindow (parent)
 #endif
 	
 	m_mw = dynamic_cast<MainWindow *>(parent);
-	QWidget *c = new QWidget (this);
-	setCentralWidget (c);
+	m_c = new QWidget (this);
+	setCentralWidget (m_c);
 
-	m_vbox = new QVBoxLayout (c);
-	QLabel *label = new QLabel ("Available skins...", c);
-	label->setFont (QFont ("Helvetica", 16));
-	m_vbox->addWidget (label);
+	m_vbox = new QVBoxLayout (m_c);
+	m_label = new QLabel ("Available skins...", m_c);
+	m_label->setFont (QFont ("Helvetica", 16));
+	m_vbox->addWidget (m_label);
 
-	m_skin = new SkinList (c);
+	m_skin = new SkinList (m_c);
 	m_vbox->addWidget (m_skin);
 
 	resize (500, 300);
 
+}
+
+SkinChooser::~SkinChooser (void)
+{
+	delete m_c;
+	delete m_vbox;
+	delete m_label;
+	delete m_skin;
 }
 
 SkinList::SkinList (QWidget *parent) : QListWidget (parent)
@@ -63,7 +71,6 @@ SkinList::changeSkin (QListWidgetItem *item)
 
 	QSettings settings;
 
-	SkinChooser *sc = dynamic_cast<SkinChooser *>(window());
 	qDebug ("change skin to %s", qPrintable (item->text()));
 
 	skin->setSkin (QDir::homePath()+"/.xmms2/clients/promoe/skins/"+item->text());
