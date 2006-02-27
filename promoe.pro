@@ -38,7 +38,10 @@ HEADERS += XmmsQT4.h \
 		   PlaylistList.h \
 		   SkinChooser.h
 
+
+RESOURCES = promoe.qrc
 CONFIG += link_pkgconfig
 CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp sigc++-2.0
+

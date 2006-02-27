@@ -3,11 +3,17 @@
 #include "SkinChooser.h"
 
 #include <QDir>
+#include <QIcon>
 #include <QFile>
 #include <QSettings>
 
 SkinChooser::SkinChooser (QWidget *parent) : QMainWindow (parent)
 {
+
+#ifndef _WIN32
+	setWindowIcon (QIcon (":icon.png"));
+#endif
+	
 	m_mw = dynamic_cast<MainWindow *>(parent);
 	QWidget *c = new QWidget (this);
 	setCentralWidget (c);

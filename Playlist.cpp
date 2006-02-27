@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QRect>
+#include <QIcon>
 
 PlaylistScrollButton::PlaylistScrollButton (PlaylistScroller *parent, uint normal, uint pressed) : Button (parent, normal, pressed, true)
 {
@@ -78,6 +79,10 @@ PlaylistScroller::paintEvent (QPaintEvent *event)
 PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 {
 	Skin *skin = Skin::getInstance ();
+
+#ifndef _WIN32
+	setWindowIcon (QIcon (":icon.png"));
+#endif
 
 	setWindowFlags (Qt::FramelessWindowHint);
 	connect (skin, SIGNAL (skinChanged (Skin *)),

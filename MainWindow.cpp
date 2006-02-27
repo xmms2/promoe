@@ -2,12 +2,16 @@
 #include "MainWindow.h"
 
 #include <QSettings>
+#include <QIcon>
 
 MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
 	setGeometry(100, 100, 275, 116);
-	
+#ifndef _WIN32
+	setWindowIcon (QIcon (":icon.png"));
+#endif
+
 	/* 
 	 * The MainDisplay is the mainwindow non-shaded mode
 	 */
