@@ -31,7 +31,7 @@ class ShadedDisplay : public SkinDisplay
 	public slots:
 		void setStatus (uint status);
 		void setPlaytime (uint time);
-
+		void setMediainfo (QHash<QString, QString> h);
 };
 
 #endif

@@ -55,6 +55,20 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	         this, SLOT(setStatus(uint)));
 	connect (xmmsh, SIGNAL(playtimeChanged(uint)),
 	         this, SLOT(setPlaytime(uint)));
+	connect (xmmsh, SIGNAL(currentSong (QHash<QString, QString>)), 
+			 this, SLOT(setMediainfo (QHash<QString, QString>)));
+}
+
+void
+ShadedDisplay::setMediainfo (QHash<QString, QString> h)
+{
+	QString n;
+	if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {
+		n = h.value("artist") + " - " + h.value("album") + " - " + h.value("title");
+	} else {
+		n = h.value("url");
+	}
+	m_title->setText (n);
 }
 
 void
