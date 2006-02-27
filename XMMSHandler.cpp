@@ -63,6 +63,15 @@ XMMSHandler::requestPlaylistList (void)
 }
 
 void
+XMMSHandler::requestTrackChange (int pos)
+{
+	XMMSResult *r = m_xmmsc->playlist_set_next (pos);
+	delete r;
+	XMMSResult *r2 = m_xmmsc->playback_tickle ();
+	delete r2;
+}
+
+void
 XMMSHandler::playlist_list (XMMSResultValueList<uint> *res) 
 {
 	QList<uint> list;

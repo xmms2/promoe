@@ -23,6 +23,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 
 		void requestMediainfo (uint id);
 		void requestPlaylistList (void);
+		void requestTrackChange (int pos);
 
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 

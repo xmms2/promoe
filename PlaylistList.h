@@ -28,6 +28,8 @@ class PlaylistList : public QWidget {
 	private:
 		void paintEvent (QPaintEvent *event);
 		void mousePressEvent (QMouseEvent *event);
+		void mouseDoubleClickEvent (QMouseEvent *event);
+
 		void mouseMoveEvent (QMouseEvent *event) {}
 
 		QList<PlaylistItem*> *m_items;

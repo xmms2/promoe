@@ -150,6 +150,23 @@ PlaylistList::playlistList (QList<uint> l)
 	update ();
 }
 
+void
+PlaylistList::mouseDoubleClickEvent (QMouseEvent *event)
+{
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+
+	if (m_items->count() < 1 || m_selected->count() < 1) {
+		return;
+	}
+
+	PlaylistItem *it = m_items->value (m_selected->first());
+	if (!it) {
+		return;
+	}
+
+	xmmsh->requestTrackChange (m_items->indexOf(it));
+}
+
 void 
 PlaylistList::mousePressEvent (QMouseEvent *event)
 {
