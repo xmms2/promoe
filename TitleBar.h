@@ -18,6 +18,8 @@ class TitleBar : public PixWidget
 
 	public slots:
 		void setPixmaps (Skin *skin);
+		void showMenu (void);
+		void showTheme (void);
 
 	protected:
 		void mouseDoubleClickEvent (QMouseEvent *event);

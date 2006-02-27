@@ -1,6 +1,8 @@
 #include <xmmsclient/xmmsclient++.h>
 #include "MainWindow.h"
 
+#include <QSettings>
+
 MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
@@ -85,6 +87,7 @@ int
 main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
+	QSettings settings ("XMMS2", "Promoe");
 
 	MainWindow *mw = new MainWindow (NULL);
 
@@ -96,7 +99,12 @@ main (int argc, char **argv)
 	 * SkinChanged signal that will cause
 	 * all widgets to get their pixmaps
 	 */
-	mw->getSkin ()->setSkin ("./CleanAMP/");
+	if (!settings.contains ("skin/path")) {
+		settings.setValue ("skin/path", "./CleanAMP/");
+	}
+
+	mw->getSkin ()->setSkin (settings.value("skin/path").toString ());
+
 	mw->show ();
 	mw->setPL (playlistwin);
 

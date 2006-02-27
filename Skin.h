@@ -19,6 +19,7 @@ class Skin : public QWidget
 		~Skin();
 
 		void setSkin (QString name);
+		static QPixmap getPixmap (QString, QDir);
 		
 		const QPixmap getItem (uint part) const { return m_items->value(part); }
 		const QPixmap getPls (uint part) const { return m_playlist->value(part); }

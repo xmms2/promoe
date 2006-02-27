@@ -100,6 +100,24 @@ Skin::setSkin (QString name)
 	emit skinChanged(this);
 }
 
+QPixmap
+Skin::getPixmap (QString f, QDir dir)
+{
+	/* check for files in zip and check if file exists */
+
+	dir.setFilter (QDir::Files);
+
+	QFileInfoList list = dir.entryInfoList();
+	for (int i = 0; i < list.size(); ++i) {
+		QFileInfo fileInfo = list.at(i);
+		if (fileInfo.fileName().toLower() == f) {
+			return QPixmap (fileInfo.filePath());
+		}
+	}
+
+	return QPixmap (0,0);
+}
+
 
 QPixmap *
 Skin::getPixmap (string file)

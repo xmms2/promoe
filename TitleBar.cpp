@@ -1,6 +1,9 @@
 #include "MainWindow.h"
 #include "TitleBar.h"
 #include "Display.h"
+#include "SkinChooser.h"
+
+#include <QMenu>
 
 TitleBar::TitleBar (QWidget *parent, bool shaded) : PixWidget (parent)
 {
@@ -11,6 +14,7 @@ TitleBar::TitleBar (QWidget *parent, bool shaded) : PixWidget (parent)
 	setMaximumSize (275, 14);
 
 	m_menubtn = new Button (this, Skin::MENUBUTTON_0, Skin::MENUBUTTON_1);
+	connect (m_menubtn, SIGNAL (clicked ()), this, SLOT (showMenu ()));
 	m_menubtn->move(6, 3);
 
 	m_minimize = new Button (this, Skin::MINIMIZE_0, Skin::MINIMIZE_1);
@@ -25,6 +29,40 @@ TitleBar::TitleBar (QWidget *parent, bool shaded) : PixWidget (parent)
 	connect (m_closebtn, SIGNAL (clicked()), qApp, SLOT (quit ()));
 	m_closebtn->move(264, 3);
 
+}
+
+void
+TitleBar::showMenu (void)
+{
+	QMenu qm(this);
+
+	QAction *a;
+
+	a = new QAction (tr ("Theme settings"), this);
+	a->setShortcut (tr ("Alt+T"));
+	connect (a, SIGNAL (triggered ()), this, SLOT (showTheme ()));
+	qm.addAction (a);
+	a = new QAction (tr ("Application settings"), this);
+	a->setShortcut (tr ("Alt+A"));
+	qm.addAction (a);
+	a = new QAction (tr ("Server settings"), this);
+	a->setShortcut (tr ("Alt+S"));
+	qm.addAction (a);
+	qm.addSeparator ();
+	a = new QAction (tr ("Quit"), this);
+	a->setShortcut (tr ("Ctrl+Q"));
+	connect (a, SIGNAL (triggered ()), qApp, SLOT (quit ()));
+	qm.addAction (a);
+
+	qm.exec(QPoint (window()->pos().x()+6, window()->pos().y()+3));
+
+}
+
+void
+TitleBar::showTheme ()
+{
+	SkinChooser *sk = new SkinChooser (window());
+	sk->show();
 }
 
 void

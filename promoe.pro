@@ -15,7 +15,8 @@ SOURCES += XmmsQT4.cpp \
 		   PlayStatus.cpp \
 		   ShadedDisplay.cpp \
 		   Playlist.cpp \
-		   PlaylistList.cpp
+		   PlaylistList.cpp \
+		   SkinChooser.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -34,7 +35,8 @@ HEADERS += XmmsQT4.h \
 		   PlayStatus.h \
 		   ShadedDisplay.h \
 		   Playlist.h \
-		   PlaylistList.h
+		   PlaylistList.h \
+		   SkinChooser.h
 
 CONFIG += link_pkgconfig
 CONFIG += debug warn_on
