@@ -101,7 +101,9 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 				while (!m_items->isEmpty())
 					delete m_items->takeFirst();
 
-				xmmsh->requestPlaylistList ();
+				if (signal != XMMS_PLAYLIST_CHANGED_CLEAR) {
+					xmmsh->requestPlaylistList ();
+				}
 			}
 			break;
 	}

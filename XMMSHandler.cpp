@@ -5,6 +5,9 @@
 
 #include <QErrorMessage>
 #include <QHash>
+#include <QFile>
+#include <QFileDialog>
+#include <QDir>
 
 XMMSHandler *XMMSHandler::singleton = NULL;
 
@@ -46,6 +49,61 @@ XMMSHandler::XMMSHandler (void) : sigc::trackable ()
 
 	r = m_xmmsc->broadcast_playback_status ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_status));
+
+	r = m_xmmsc->broadcast_medialib_entry_changed ();
+	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_entry_changed));
+}
+
+void
+XMMSHandler::fileOpen (void)
+{
+	QStringList files = 
+		QFileDialog::getOpenFileNames (NULL,
+									   "Select files to play",
+									   QDir::homePath(),
+									   "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
+
+	if (files.count() > 0) {
+		playlistClear ();
+	}
+
+	for (int i = 0; i < files.count(); i++) {
+		playlistAddURL ("file://" + files.value(i));
+	}
+
+}
+
+
+
+void
+XMMSHandler::medialib_entry_changed (XMMSResultValue<uint> *res)
+{
+	uint i;
+	res->getValue (&i);
+
+	m_currentid = i;
+
+	if (i > 0) {
+		XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
+		r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
+	}
+
+	if (res->getClass() == XMMSC_RESULT_CLASS_DEFAULT) {
+		delete res;
+	}
+}
+
+void
+XMMSHandler::playlistAddURL (QString s)
+{
+	qDebug ("%s", s.toAscii ().constData ());
+	delete m_xmmsc->playlist_add (s.toAscii ().constData ());
+}
+
+void
+XMMSHandler::playlistClear (void)
+{
+	delete m_xmmsc->playlist_clear ();
 }
 
 void

@@ -3,6 +3,8 @@
 #include "TitleBar.h"
 #include "TextBar.h"
 
+#include <QFileDialog>
+
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
@@ -161,6 +163,7 @@ MainDisplay::SetupPushButtons (void)
 
 	m_eject = new Button (this, Skin::BTN_EJECT_0, Skin::BTN_EJECT_1);
 	m_eject->move(136, 89);
+	connect (m_eject, SIGNAL(clicked()), xmmsh, SLOT(fileOpen()));
 
 }
 

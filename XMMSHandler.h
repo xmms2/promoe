@@ -20,15 +20,20 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void playlist_changed (XMMSResultDict *res);
 		void playback_status (XMMSResultValue<uint> *res);
 		void playlist_list (XMMSResultValueList<uint> *res);
+		void medialib_entry_changed (XMMSResultValue<uint> *res);
 
 		void requestMediainfo (uint id);
 		void requestPlaylistList (void);
 		void requestTrackChange (int pos);
 
+		void playlistAddURL (QString);
+		void playlistClear (void);
+
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 
 	public slots:
 		void setPlaytime ();
+		void fileOpen (void);
 
 		void play () { delete m_xmmsc->playback_start (); }
 		void stop () { delete m_xmmsc->playback_stop (); }
