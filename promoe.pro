@@ -40,6 +40,8 @@ HEADERS += XmmsQT4.h \
 
 
 RESOURCES = promoe.qrc
+macx:RC_FILE = promoe.icns
+
 CONFIG += link_pkgconfig
 CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
