@@ -31,6 +31,7 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 	 */
 	m_isshaded = false;
 
+	m_playlistwin = NULL;
 
 }
 
@@ -59,6 +60,27 @@ MainWindow::switchDisplay ()
 
 }
 
+void
+MainWindow::moveEvent (QMoveEvent *event)
+{
+	int x = event->oldPos().x();
+	int y = event->oldPos().y() + size().height();
+
+	if (!m_playlistwin)
+		return;
+	
+	int x2 = m_playlistwin->pos().x();
+	int y2 = m_playlistwin->pos().y();
+
+	int diffy = y - y2;
+	int diffx = x - x2;
+
+	if ((diffy > -5 && diffy < 5) && (diffx > -10 && diffx < 10))
+	{
+		m_playlistwin->move (event->pos().x(),
+							 event->pos().y() + size().height());
+	}
+}
 
 void 
 MainWindow::togglePL (void) 

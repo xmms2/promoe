@@ -33,6 +33,7 @@ class MainWindow : public QMainWindow
 
 		bool getShaded (void) { return m_isshaded; }
 		void setPL (PlaylistWindow *p) { m_playlistwin = p; }
+		void moveEvent (QMoveEvent *event);
 
 	public slots:
 		void switchDisplay ();
