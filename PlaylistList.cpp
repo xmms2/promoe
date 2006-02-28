@@ -53,6 +53,7 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	m_selected = new QList<uint>;
 	m_itemmap = new QHash<uint, PlaylistItem *>;
 	m_offset = 0;
+	m_status = XMMS_PLAYBACK_STATUS_STOP;
 
 	connect (xmmsh, SIGNAL(playlistList(QList<uint>)),
 	         this, SLOT(playlistList(QList<uint>)));
@@ -65,6 +66,15 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 
 	connect (xmmsh, SIGNAL(playlistChanged(QHash<QString, QString>)),
 	         this, SLOT(playlistChanged(QHash<QString, QString>)));
+
+	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
+	         this, SLOT(setStatus(uint)));
+}
+
+void
+PlaylistList::setStatus (uint s)
+{
+	m_status = s;
 }
 
 void
@@ -174,6 +184,11 @@ PlaylistList::mouseDoubleClickEvent (QMouseEvent *event)
 	}
 
 	xmmsh->requestTrackChange (m_items->indexOf(it));
+	if (m_status == XMMS_PLAYBACK_STATUS_STOP ||
+		m_status == XMMS_PLAYBACK_STATUS_PAUSE)
+	{
+		xmmsh->play ();
+	}
 }
 
 void 

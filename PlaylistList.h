@@ -24,6 +24,7 @@ class PlaylistList : public QWidget {
 		void mediainfoChanged (uint, QHash<QString,QString>);
 		void playlistChanged (QHash<QString,QString>);
 		void currentID (uint);
+		void setStatus (uint);
 	
 	private:
 		void paintEvent (QPaintEvent *event);
@@ -45,6 +46,7 @@ class PlaylistList : public QWidget {
 		int getFontH (void);
 		int m_offset;
 		int m_active;
+		uint m_status;
 };
 
 class PlaylistItem {
