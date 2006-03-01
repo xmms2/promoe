@@ -1,9 +1,31 @@
 Todo:
 
-Config
-Balance
-VolumeBar
-PlaylistButton
-	CloseButton
-	ShadeButton
-	ResizeButton
+* Config
+	* ServerConfig
+	* ApplicationConfig
+* Balance
+* VolumeBar
+* Playlist
+	* PlaylistButton
+		* CloseButton
+		* ShadeButton
+		* Add files / folders
+	* Playlist Shaded display
+	* Redo paintEvent in PlaylistWindow class to not be slow.
+	* Jump entry to dialog
+	* Reposition sliderbar on resize
+	* move viewport when walking outside it with keyboard
+	* drag and drop outside viewport
+	* jump to entry when it's played.
+	* accept drops from other applications
+* Skin
+	* Compressed file reader
+	* Manage with faulty skins
+	* make cool effects when switching skin?
+	* Make default skin live in a qt resource
+* Medialib browser
+	* Keep it very simple
+	* browse by album art
+* Textbox
+	* redraw text in textbox when switching skin.
+	* figure out something smart on osx.
