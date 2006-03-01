@@ -72,8 +72,10 @@ class PlaylistItem {
 		~PlaylistItem () {}
 		
 		QString text (void);
+		QString duration (void) { return m_duration; }
 
 		uint getID (void) { return m_id; }
+		void setDuration (QString s) { m_duration = s; }
 		void setText (QString s) { m_text = s; }
 
 	private:
@@ -82,6 +84,7 @@ class PlaylistItem {
 
 		bool m_req;
 		QString m_text;
+		QString m_duration;
 };
 
 

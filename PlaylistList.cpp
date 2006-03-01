@@ -12,6 +12,7 @@ PlaylistItem::PlaylistItem (PlaylistList *pl, uint id)
 	m_pl = pl;
 	m_id = id;
 	m_req = false;
+	m_duration = QString ("00:00");
 	pl->addItem (this);
 }
 
@@ -96,7 +97,6 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 				int pos = h.value("position").toUInt();
 				PlaylistItem *i = m_items->value (pos);
 				if (!i) {
-					qDebug ("no item in playlist?");
 					return;
 				}
 				m_items->removeAt (pos);
@@ -147,11 +147,18 @@ PlaylistList::mediainfoChanged (uint id, QHash<QString, QString> h)
 		if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {
 			n = h.value("artist") + " - " + h.value("album") + " - " + h.value("title");
 		} else {
-			n = h.value("url");
+			QString t = h.value("url");
+			n = t.section ("/", -1);
 		}
 		i->setText (n);
+		if (h.contains ("duration")) {
+			int d = h.value("duration").toInt();
+			QString dur;
+			dur.sprintf ("%02d:%02d", d/60000, (d/1000)%60);
+			i->setDuration (dur);
+		}
 	}
-
+		
 	update ();
 }
 
@@ -200,7 +207,7 @@ PlaylistList::generatePixmap (int i)
 	paint.setFont (*m_font);
 	paint.setPen (QPen (m_color_normal));
 	paint.fillRect (p.rect(), QBrush (m_color_normal_bg));
-	paint.drawText (p.rect(), t);
+	paint.drawText (p.rect(), Qt::TextSingleLine, t);
 	paint.end ();
 
 	return p;
@@ -399,7 +406,9 @@ PlaylistList::paintEvent (QPaintEvent *event)
 	QPainter paint;
 	paint.begin (this);
 	paint.setFont (*m_font);
+	/*
 	paint.setClipping (false);
+	*/
 	paint.setPen (QPen (m_color_normal));
 
 	int cy = event->rect().y () + m_offset;
@@ -412,26 +421,38 @@ PlaylistList::paintEvent (QPaintEvent *event)
 		eitem = m_items->count();
 
 	QString q;
-	QRect r; 
+	QRect fullLine; 
+	QRect textLine;
+	QRect numLine;
 
 	for (i = sitem; i < eitem; i++) {
-		r.setRect(0, (getFontH()*(i-sitem)) - mod, 
-				  size().width(), getFontH());
 		PlaylistItem *item = m_items->value (i);
+
+		int tw = m_fontmetrics->width(item->duration ())+2;
+
+		fullLine.setRect(0, (getFontH()*(i-sitem)) - mod, 
+						 size().width(), getFontH());
+		textLine.setRect(0, (getFontH()*(i-sitem)) - mod, 
+						 size().width()-tw-4, getFontH());
+		numLine.setRect(size().width()-tw, (getFontH()*(i-sitem)) - mod, 
+						 tw, getFontH());
+
 		q = QString::number (i + 1) + ". " + item->text ();
 
 		if (m_selected->contains (i)) {
-			paint.fillRect (r, QBrush (m_color_selected));
+			paint.fillRect (fullLine, QBrush (m_color_selected));
 		} else {
-			paint.eraseRect (r);
+			paint.eraseRect (fullLine);
 		}
 
 		if (m_active == i) {
 			paint.setPen (QPen (m_color_active));
-			paint.drawText (r, q);
+			paint.drawText (textLine, Qt::TextSingleLine, q);
+			paint.drawText (numLine, item->duration ());
 			paint.setPen (QPen (m_color_normal));
 		} else {
-			paint.drawText (r, q);
+			paint.drawText (textLine, Qt::TextSingleLine, q);
+			paint.drawText (numLine, item->duration ());
 		}
 
 		if (m_bar == -1) {
@@ -446,7 +467,8 @@ PlaylistList::paintEvent (QPaintEvent *event)
 			QPen pen (m_color_active);
 			pen.setWidth (5);
 			paint.setPen (pen);
-			paint.drawLine (2, r.y()+getFontH(), size().width()-2, r.y()+getFontH());
+			paint.drawLine (2, fullLine.y()+getFontH(), size().width()-2, 
+							fullLine.y()+getFontH());
 			paint.restore ();
 		}
 
@@ -466,7 +488,9 @@ void
 PlaylistList::addItem (PlaylistItem *i)
 {
 	m_items->append (i);
-	m_itemmap->insert (i->getID(), i);
+	if (!m_itemmap->contains (i->getID())) {
+		m_itemmap->insert (i->getID(), i);
+	}
 	if (m_items->count()*getFontH () > size().height()) {
 		resize (size().width(), m_items->count ()*getFontH ());
 	}
@@ -514,18 +538,15 @@ void
 PlaylistList::setSize (int width, int height)
 {
 	int nx, ny;
-	if (width > size().width()) {
-		nx = width;
-	} else {
-		nx = size().width();
-	}
+	nx = width;
+
 	if (height > size().height()) {
 		ny = height;
 	} else {
 		ny = size().height();
 	}
-	resize (nx, ny);
 
+	resize (nx, ny);
 }
 
 
