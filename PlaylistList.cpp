@@ -4,6 +4,8 @@
 #include "Playlist.h"
 
 #include <QPaintEvent>
+#include <QDrag>
+#include <QStyleOptionHeader>
 
 PlaylistItem::PlaylistItem (PlaylistList *pl, uint id)
 {
@@ -42,6 +44,8 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	setAttribute (Qt::WA_NoBackground);
 	setFocusPolicy (Qt::StrongFocus);
 
+	setAcceptDrops (true);
+
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
@@ -52,6 +56,7 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	m_itemmap = new QHash<uint, PlaylistItem *>;
 	m_offset = 0;
 	m_status = XMMS_PLAYBACK_STATUS_STOP;
+	m_bar = -2;
 
 	connect (xmmsh, SIGNAL(playlistList(QList<uint>)),
 	         this, SLOT(playlistList(QList<uint>)));
@@ -182,6 +187,25 @@ PlaylistList::mouseDoubleClickEvent (QMouseEvent *event)
 	}
 }
 
+QPixmap 
+PlaylistList::generatePixmap (int i)
+{
+	QStyleOptionHeader opt;
+	QString t (m_items->value(i)->text());
+
+	QPixmap p (m_fontmetrics->width(t), getFontH());
+
+	QPainter paint;
+	paint.begin (&p);
+	paint.setFont (*m_font);
+	paint.setPen (QPen (m_color_normal));
+	paint.fillRect (p.rect(), QBrush (m_color_normal_bg));
+	paint.drawText (p.rect(), t);
+	paint.end ();
+
+	return p;
+}
+
 void 
 PlaylistList::mousePressEvent (QMouseEvent *event)
 {
@@ -193,37 +217,122 @@ PlaylistList::mousePressEvent (QMouseEvent *event)
 		i = 0;
 	}
 
-	if (event->modifiers() & Qt::ShiftModifier) {
-		if (m_selected->count () > 0) {
-			int o = m_selected->last ();
-			if (o < i) {
-				for (int y = o; y <= i; y++) {
-					m_selected->append (y);
+	if (i > m_items->count ()) {
+		return;
+	}
+
+	if (event->button () == Qt::LeftButton) {
+		if (event->modifiers() & Qt::ShiftModifier) {
+			if (m_selected->count () > 0) {
+				int o = m_selected->last ();
+				if (o < i) {
+					for (int y = o; y <= i; y++) {
+						m_selected->append (y);
+					}
+				} else {
+					for (int y = i; y <= o; y++) {
+						m_selected->append (y);
+					}
 				}
 			} else {
-				for (int y = i; y <= o; y++) {
-					m_selected->append (y);
-				}
+				m_selected->append (i);
+			}
+		} else if (event->modifiers () & Qt::ControlModifier) {
+			if (m_selected->contains (i)) {
+				m_selected->removeAll (i);
+			} else {
+				m_selected->append (i);
 			}
 		} else {
-			m_selected->append (i);
-		}
-	} else if (event->modifiers () & Qt::ControlModifier) {
-		if (m_selected->contains (i)) {
-			m_selected->removeAll (i);
-		} else {
-			m_selected->append (i);
-		}
-	} else {
-		if (m_selected->contains (i)) {
-			m_selected->clear();
-		} else {
-			m_selected->clear();
-			m_selected->append(i);
+			if (m_selected->contains (i)) {
+				m_selected->clear();
+			} else {
+				m_selected->clear();
+				m_selected->append(i);
+			}
+
+			m_dragstart = event->pos ();
 		}
 	}
 
 	update ();
+}
+
+void
+PlaylistList::mouseMoveEvent (QMouseEvent *event)
+{
+
+	if (!(event->buttons() & Qt::LeftButton))
+		return;
+	if ((event->pos() - m_dragstart).manhattanLength() < QApplication::startDragDistance())
+		return;
+
+	if (m_selected->count() > 0) {
+		int i = m_selected->last ();
+
+		m_drag = new QDrag (this);
+		m_md = new QMimeData;
+		m_md->setText (QString::number (m_selected->last ()));
+		m_drag->setMimeData (m_md);
+
+		m_drag_id = m_items->value (i)->getID ();
+		m_pos = i;
+
+		QPixmap p = generatePixmap (i);
+
+		m_drag->setPixmap (p);
+		m_items->removeAt (i);
+		m_selected->clear ();
+
+		Qt::DropAction drop = m_drag->start ();
+	}
+
+}
+
+void
+PlaylistList::dragEnterEvent (QDragEnterEvent *event)
+{
+	event->accept ();
+}
+
+void
+PlaylistList::dragMoveEvent (QDragMoveEvent *event)
+{
+	int i = ((event->pos().y()+m_offset) / getFontH());
+	if (event->pos().y() < getFontH() / 2) {
+		m_bar = -1;
+	} else if (i >= m_items->count ()) {
+		m_bar = m_items->count ()-1;
+	} else {
+		m_bar = i;
+	}
+	update ();
+}
+
+void
+PlaylistList::dragLeaveEvent (QDragLeaveEvent *event)
+{
+	m_bar = -2;
+	update ();
+}
+
+void
+PlaylistList::dropEvent (QDropEvent *event)
+{
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+
+	if (m_bar == -2) {
+		m_items->insert (m_pos, m_itemmap->value (m_drag_id));
+	} else {
+		m_items->insert (m_bar + 1, m_itemmap->value (m_drag_id));
+		xmmsh->playlistMove (m_pos, m_bar + 1);
+	}
+	m_selected->append (m_drag_id);
+	m_bar = -2;
+	update ();
+
+
+
 }
 
 void
@@ -260,9 +369,9 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 		case Qt::Key_Backspace:
 		case Qt::Key_Delete:
 			{
+				/* Sort list and remove in reverse order */
 				qSort (*m_selected);
 				for (int i = m_selected->count (); i > 0; i --) {
-					qDebug ("%d", m_selected->value (i));
 					xmmsh->playlistRemove (m_selected->value (i));
 				}
 				m_selected->clear ();
@@ -325,6 +434,22 @@ PlaylistList::paintEvent (QPaintEvent *event)
 			paint.drawText (r, q);
 		}
 
+		if (m_bar == -1) {
+			paint.save ();
+			QPen pen (m_color_active);
+			pen.setWidth (2);
+			paint.setPen (pen);
+			paint.drawLine (2, 0, size().width()-2, 0);
+			paint.restore ();
+		} else if (m_bar == i) {
+			paint.save ();
+			QPen pen (m_color_active);
+			pen.setWidth (5);
+			paint.setPen (pen);
+			paint.drawLine (2, r.y()+getFontH(), size().width()-2, r.y()+getFontH());
+			paint.restore ();
+		}
+
 	}
 
 	if ((getFontH()*(i-sitem) - mod) < size().height()) {
@@ -380,6 +505,7 @@ PlaylistList::setPixmaps (Skin *skin)
 	m_color_active.setNamedColor (skin->getPLeditValue ("current"));
 	m_color_selected.setNamedColor (skin->getPLeditValue ("selectedbg"));
 	m_color_normal.setNamedColor (skin->getPLeditValue ("normal"));
+	m_color_normal_bg.setNamedColor (skin->getPLeditValue ("normalbg"));
 
 	update ();
 }

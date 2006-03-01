@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QHash>
 
+#include <QDrag>
+
 class PlaylistItem;
 
 class PlaylistList : public QWidget {
@@ -29,10 +31,16 @@ class PlaylistList : public QWidget {
 	private:
 		void paintEvent (QPaintEvent *event);
 		void mousePressEvent (QMouseEvent *event);
+		void mouseMoveEvent (QMouseEvent *event);
 		void mouseDoubleClickEvent (QMouseEvent *event);
 		void keyPressEvent (QKeyEvent *event);
 
-		void mouseMoveEvent (QMouseEvent *event) {}
+		void dragMoveEvent (QDragMoveEvent *event);
+		void dragEnterEvent (QDragEnterEvent *event);
+		void dragLeaveEvent (QDragLeaveEvent *event);
+		void dropEvent (QDropEvent *event);
+
+		QPixmap generatePixmap (int);
 
 		QList<PlaylistItem*> *m_items;
 		QList<uint> *m_selected;
@@ -43,11 +51,19 @@ class PlaylistList : public QWidget {
 		QColor m_color_active;
 		QColor m_color_selected;
 		QColor m_color_normal;
+		QColor m_color_normal_bg;
 
 		int getFontH (void);
 		int m_offset;
 		int m_active;
+		int m_bar;
+		int m_drag_id;
+		int m_pos;
+		QPoint m_dragstart;
 		uint m_status;
+
+		QDrag *m_drag;
+		QMimeData *m_md;
 };
 
 class PlaylistItem {
