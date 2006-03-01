@@ -12,9 +12,6 @@ PlaylistItem::PlaylistItem (PlaylistList *pl, uint id)
 	m_isactive = false;
 	m_isselected = false;
 	m_req = false;
-	if (getSelected ()) {
-		qDebug ("trasigt!");
-	}
 	pl->addItem (this);
 }
 
@@ -43,6 +40,9 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 {
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	Skin *skin = Skin::getInstance ();
+
+	setAttribute (Qt::WA_NoBackground);
+	setFocusPolicy (Qt::StrongFocus);
 
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
@@ -250,17 +250,22 @@ PlaylistList::paintEvent (QPaintEvent *event)
 	int ch = event->rect().height();
 	int sitem = cy / getFontH();
 	int eitem = (cy + ch) / getFontH();
+	int mod = m_offset - (getFontH() * sitem);
 
 	if (eitem > m_items->count())
 		eitem = m_items->count();
 
+	QString q;
+	QRect r; 
+
 	for (i = sitem; i < eitem; i++) {
-		QRect r (3, getFontH()*(i-sitem), size().width(), getFontH());
-		if (event->region().contains (r)) {
+		r.setRect(0, (getFontH()*(i-sitem)) - mod, 
+				  size().width(), getFontH());
+		/*
+		if (event->rect().contains (r)) {
+		*/
 			PlaylistItem *item = m_items->value (i);
-			QString q;
-			q.sprintf ("%d. ", i+1);
-			q += item->text ();
+			q = QString::number (i + 1) + ". " + item->text ();
 
 			if (item->getSelected ()) {
 				paint.fillRect (r, QBrush (m_color_selected));
@@ -276,12 +281,15 @@ PlaylistList::paintEvent (QPaintEvent *event)
 				paint.drawText (r, q);
 			}
 
+			/*
 		}
+		*/
 	}
 
-	if (getFontH()*(i-sitem) < size().height()) {
-		paint.eraseRect (QRect (0, getFontH()*(i-sitem), size().width(), 
-								size().height()-getFontH()*(i-sitem)));
+	if ((getFontH()*(i-sitem) - mod) < size().height()) {
+		paint.eraseRect (QRect (0, (getFontH()*(i-sitem) - mod), 
+								size().width(), 
+								size().height()-(getFontH()*(i-sitem) - mod)));
 	}
 
 	paint.end ();

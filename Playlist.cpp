@@ -5,6 +5,7 @@
 #include <QPaintEvent>
 #include <QRect>
 #include <QIcon>
+#include <QApplication>
 
 PlaylistScrollButton::PlaylistScrollButton (PlaylistScroller *parent, uint normal, uint pressed) : Button (parent, normal, pressed, true)
 {
@@ -14,6 +15,8 @@ PlaylistScrollButton::PlaylistScrollButton (PlaylistScroller *parent, uint norma
 void
 PlaylistScrollButton::mouseMoveEvent (QMouseEvent *event)
 {
+	PlaylistWindow *pw = dynamic_cast<PlaylistWindow *>(window ());
+
 	QPoint p (event->pos ());
 
 	int npos = pos().y()+p.y()-m_diffy;
@@ -110,7 +113,12 @@ PlaylistWindow::doScroll (int pos)
 {
 	int npos = ((float)pos) / (float)(m_scroller->getMax()) * float(m_list->height() - m_view->height());
 	m_list->setOffset (npos);
-	m_list->scroll (0, npos);
+	if (npos == 0) {
+		m_list->update ();
+	} else {
+		m_list->scroll (0, npos);
+	}
+	QApplication::sendPostedEvents (m_list, 0);
 }
 
 void
