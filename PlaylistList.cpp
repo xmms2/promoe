@@ -9,8 +9,6 @@ PlaylistItem::PlaylistItem (PlaylistList *pl, uint id)
 {
 	m_pl = pl;
 	m_id = id;
-	m_isactive = false;
-	m_isselected = false;
 	m_req = false;
 	pl->addItem (this);
 }
@@ -126,19 +124,12 @@ PlaylistList::currentID (uint id)
 {
 	PlaylistItem *i = m_itemmap->value (id);
 	if (!i) {
+		m_active = -1;
 		return;
 	}
-	i->setActive (true);
+	
+	m_active = m_items->indexOf (i);
 
-	i = m_itemmap->value (m_active);
-	if (!i) {
-		update ();
-		m_active = id;
-		return;
-	}
-	i->setActive (false);
-
-	m_active = id;
 	update ();
 }
 
@@ -208,32 +199,88 @@ PlaylistList::mousePressEvent (QMouseEvent *event)
 			if (o < i) {
 				for (int y = o; y <= i; y++) {
 					m_selected->append (y);
-					m_items->value(y)->setSelected (true);
 				}
 			} else {
 				for (int y = i; y <= o; y++) {
 					m_selected->append (y);
-					m_items->value(y)->setSelected (true);
 				}
 			}
 		} else {
 			m_selected->append (i);
-			m_items->value(i)->setSelected (true);
 		}
 	} else if (event->modifiers () & Qt::ControlModifier) {
-		m_items->value(i)->setSelected (true);
-		m_selected->append (i);
-	} else {
-		for (int y = 0; y < m_selected->count(); y++) {
-			m_items->value(m_selected->value(y))->setSelected (false);
+		if (m_selected->contains (i)) {
+			m_selected->removeAll (i);
+		} else {
+			m_selected->append (i);
 		}
-		m_selected->clear();
-
-		m_items->value(i)->setSelected (true);
-		m_selected->append(i);
+	} else {
+		if (m_selected->contains (i)) {
+			m_selected->clear();
+		} else {
+			m_selected->clear();
+			m_selected->append(i);
+		}
 	}
 
 	update ();
+}
+
+void
+PlaylistList::keyPressEvent (QKeyEvent *event)
+{
+
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+
+	switch (event->key ()) {
+		case Qt::Key_Down:
+			{
+				int i = m_selected->last ();
+				i ++;
+				if (i > m_items->count ())
+					i = m_items->count ();
+				m_selected->clear ();
+				m_selected->append (i);
+
+				update ();
+			}
+			break;
+		case Qt::Key_Up:
+			{
+				int i = m_selected->last ();
+				i --;
+				if (i < 0)
+					i = 0;
+				m_selected->clear ();
+				m_selected->append (i);
+
+				update ();
+			}
+			break;
+		case Qt::Key_Backspace:
+		case Qt::Key_Delete:
+			{
+				qSort (*m_selected);
+				for (int i = m_selected->count (); i > 0; i --) {
+					qDebug ("%d", m_selected->value (i));
+					xmmsh->playlistRemove (m_selected->value (i));
+				}
+				m_selected->clear ();
+			}
+			break;
+		case Qt::Key_A:
+			{
+				if (event->modifiers() == Qt::ControlModifier) {
+					m_selected->clear ();
+					for (int i = 0; i < m_items->count (); i ++) {
+						m_selected->append (i);
+					}
+					update ();
+				}
+			}
+			break;
+	}
+
 }
 
 void
@@ -261,29 +308,23 @@ PlaylistList::paintEvent (QPaintEvent *event)
 	for (i = sitem; i < eitem; i++) {
 		r.setRect(0, (getFontH()*(i-sitem)) - mod, 
 				  size().width(), getFontH());
-		/*
-		if (event->rect().contains (r)) {
-		*/
-			PlaylistItem *item = m_items->value (i);
-			q = QString::number (i + 1) + ". " + item->text ();
+		PlaylistItem *item = m_items->value (i);
+		q = QString::number (i + 1) + ". " + item->text ();
 
-			if (item->getSelected ()) {
-				paint.fillRect (r, QBrush (m_color_selected));
-			} else {
-				paint.eraseRect (r);
-			}
-
-			if (item->getActive ()) {
-				paint.setPen (QPen (m_color_active));
-				paint.drawText (r, q);
-				paint.setPen (QPen (m_color_normal));
-			} else {
-				paint.drawText (r, q);
-			}
-
-			/*
+		if (m_selected->contains (i)) {
+			paint.fillRect (r, QBrush (m_color_selected));
+		} else {
+			paint.eraseRect (r);
 		}
-		*/
+
+		if (m_active == i) {
+			paint.setPen (QPen (m_color_active));
+			paint.drawText (r, q);
+			paint.setPen (QPen (m_color_normal));
+		} else {
+			paint.drawText (r, q);
+		}
+
 	}
 
 	if ((getFontH()*(i-sitem) - mod) < size().height()) {

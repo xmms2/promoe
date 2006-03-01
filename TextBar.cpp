@@ -54,7 +54,7 @@ TextScroller::addOffset ()
 		m_x2_off = 0;
 	}
 
-	update();
+	repaint ();
 	m_timer->start (40);
 }
 

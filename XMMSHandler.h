@@ -28,6 +28,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 
 		void playlistAddURL (QString);
 		void playlistClear (void);
+		void playlistRemove (uint pos) { delete m_xmmsc->playlist_remove (pos); }
 
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 

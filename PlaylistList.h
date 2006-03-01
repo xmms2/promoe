@@ -30,6 +30,7 @@ class PlaylistList : public QWidget {
 		void paintEvent (QPaintEvent *event);
 		void mousePressEvent (QMouseEvent *event);
 		void mouseDoubleClickEvent (QMouseEvent *event);
+		void keyPressEvent (QKeyEvent *event);
 
 		void mouseMoveEvent (QMouseEvent *event) {}
 
@@ -56,22 +57,13 @@ class PlaylistItem {
 		
 		QString text (void);
 
-		void setActive (bool b) { m_isactive = b; }
-		bool getActive (void) { return m_isactive; }
-
-		void setSelected (bool b) { m_isselected = b; }
-		bool getSelected (void) { return m_isselected; }
-
 		uint getID (void) { return m_id; }
-
 		void setText (QString s) { m_text = s; }
 
 	private:
 		uint m_id;
 		PlaylistList *m_pl;
 
-		bool m_isactive;
-		bool m_isselected;
 		bool m_req;
 		QString m_text;
 };
