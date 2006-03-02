@@ -10,7 +10,6 @@ Todo:
 		* CloseButton
 		* ShadeButton
 		* Add files / folders
-	* Playlist Shaded display
 	* Redo paintEvent in PlaylistWindow class to not be slow.
 	* Jump entry to dialog
 	* Reposition sliderbar on resize
