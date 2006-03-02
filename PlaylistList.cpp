@@ -88,7 +88,14 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	switch (signal) {
 		case XMMS_PLAYLIST_CHANGED_ADD:
-			new PlaylistItem (this, h.value("id").toUInt());
+			{
+				uint id = h.value("id").toUInt();
+				if (m_itemmap->contains (id)) {
+					m_items->append (m_itemmap->value (id));
+				} else {
+					new PlaylistItem (this, id);
+				}
+			}
 			break;
 		case XMMS_PLAYLIST_CHANGED_INSERT:
 			break;
@@ -101,6 +108,14 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 				}
 				m_items->removeAt (pos);
 				m_itemmap->remove (i->getID ());
+				if (m_active) {
+					if (m_active > pos) {
+						m_active --;
+					} else if (m_active == pos) {
+						m_active = 0;
+					}
+				}
+
 				delete i;
 			}
 			break;
@@ -166,7 +181,11 @@ void
 PlaylistList::playlistList (QList<uint> l)
 {
 	for (int i = 0; i < l.count(); i++) {
-		new PlaylistItem (this, l.value(i));
+		if (m_itemmap->contains (l.value(i))) {
+			m_items->append (m_itemmap->value (l.value(i)));
+		} else {
+			new PlaylistItem (this, l.value(i));
+		}
 	}
 
 	update ();
@@ -379,6 +398,7 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 				/* Sort list and remove in reverse order */
 				qSort (*m_selected);
 				for (int i = m_selected->count (); i > 0; i --) {
+					qDebug ("delete pos %d", m_selected->value (i));
 					xmmsh->playlistRemove (m_selected->value (i));
 				}
 				m_selected->clear ();
