@@ -43,7 +43,8 @@ RESOURCES = promoe.qrc
 macx:RC_FILE = promoe.icns
 
 CONFIG += link_pkgconfig
-CONFIG += debug warn_on
+CXXFLAGS += -g
+;CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp sigc++-2.0
 

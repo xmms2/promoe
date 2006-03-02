@@ -103,11 +103,17 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 			{
 				int pos = h.value("position").toUInt();
 				PlaylistItem *i = m_items->value (pos);
+
 				if (!i) {
 					return;
 				}
+
 				m_items->removeAt (pos);
-				m_itemmap->remove (i->getID ());
+				if (!m_items->contains (i)) {
+					m_itemmap->remove (i->getID ());
+					delete i;
+				} 
+
 				if (m_active) {
 					if (m_active > pos) {
 						m_active --;
@@ -116,7 +122,6 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 					}
 				}
 
-				delete i;
 			}
 			break;
 		case XMMS_PLAYLIST_CHANGED_MOVE:
@@ -397,8 +402,7 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 			{
 				/* Sort list and remove in reverse order */
 				qSort (*m_selected);
-				for (int i = m_selected->count (); i > 0; i --) {
-					qDebug ("delete pos %d", m_selected->value (i));
+				for (int i = m_selected->count () - 1; i >= 0; i --) {
 					xmmsh->playlistRemove (m_selected->value (i));
 				}
 				m_selected->clear ();
