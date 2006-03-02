@@ -91,7 +91,7 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 			{
 				uint id = h.value("id").toUInt();
 				if (m_itemmap->contains (id)) {
-					m_items->append (m_itemmap->value (id));
+					addItem (m_itemmap->value (id));
 				} else {
 					new PlaylistItem (this, id);
 				}
@@ -182,7 +182,7 @@ PlaylistList::playlistList (QList<uint> l)
 {
 	for (int i = 0; i < l.count(); i++) {
 		if (m_itemmap->contains (l.value(i))) {
-			m_items->append (m_itemmap->value (l.value(i)));
+			addItem (m_itemmap->value (l.value (i)));
 		} else {
 			new PlaylistItem (this, l.value(i));
 		}
