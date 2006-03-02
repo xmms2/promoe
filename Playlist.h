@@ -5,10 +5,11 @@
 #include "PlaylistList.h"
 #include "PixWidget.h"
 #include "Button.h"
+#include "PlaylistShade.h"
 #include <QMainWindow>
 #include <QFont>
 
-class PlaylistWindow;
+class PlaylistWidget;
 class PlaylistScroller;
 
 class dragButton : public Button {
@@ -31,7 +32,7 @@ class PlaylistScrollButton : public Button {
 class PlaylistScroller : public QWidget{
 	Q_OBJECT
 	public:
-		PlaylistScroller (PlaylistWindow *arent);
+		PlaylistScroller (PlaylistWidget *arent);
 		~PlaylistScroller () {}
 		void doScroll (int p) { emit scrolled(p); }
 
@@ -55,14 +56,15 @@ class PlaylistView : public QWidget {
 		~PlaylistView () {}
 };
 
-class PlaylistWindow : public QMainWindow {
+class PlaylistWidget : public QWidget {
 	Q_OBJECT
 
 	public:
-		PlaylistWindow (QWidget *parent);
-		~PlaylistWindow () {}
+		PlaylistWidget (QWidget *parent);
+		~PlaylistWidget () {}
 
 		void setActive (bool);
+		void switchDisplay (void);
 
 	public slots:
 		void setPixmaps (Skin *skin);
@@ -71,10 +73,7 @@ class PlaylistWindow : public QMainWindow {
 	private:
 		void resizeEvent (QResizeEvent *event);
 		void paintEvent (QPaintEvent *event);
-		void enterEvent (QEvent *event);
-		void leaveEvent (QEvent *event);
-		void mousePressEvent (QMouseEvent *event);
-		void mouseMoveEvent (QMouseEvent *event);
+		void mouseDoubleClickEvent (QMouseEvent *event);
 
 		QPixmap m_corner1;
 		QPixmap m_corner2;
@@ -91,13 +90,39 @@ class PlaylistWindow : public QMainWindow {
 
 		bool m_active;
 		
-		int m_diffx;
-		int m_diffy;
 
 		PlaylistView *m_view;
 		PlaylistList *m_list;
 		PlaylistScroller *m_scroller;
 		dragButton *m_drag;
+};
+
+
+class PlaylistWindow : public QMainWindow {
+	Q_OBJECT
+
+	public:
+		PlaylistWindow (QWidget *parent);
+		~PlaylistWindow () {}
+
+		void setActive (bool);
+		void switchDisplay (void);
+
+		void mousePressEvent (QMouseEvent *event);
+		void mouseMoveEvent (QMouseEvent *event);
+		void enterEvent (QEvent *event);
+		void leaveEvent (QEvent *event);
+
+	private:
+		bool m_isshaded;
+
+		PlaylistWidget *m_playlist;
+		PlaylistShade *m_shaded;
+		
+		int m_diffx;
+		int m_diffy;
+
+		QSize m_pl_size;
 };
 
 #endif

@@ -361,9 +361,6 @@ PlaylistList::dropEvent (QDropEvent *event)
 	m_selected->append (m_drag_id);
 	m_bar = -2;
 	update ();
-
-
-
 }
 
 void

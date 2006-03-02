@@ -39,7 +39,7 @@ dragButton::mouseMoveEvent (QMouseEvent *event)
 				pw->size().height()+(event->pos().y()-m_diffy));
 }
 
-PlaylistScroller::PlaylistScroller (PlaylistWindow *parent) : QWidget (parent)
+PlaylistScroller::PlaylistScroller (PlaylistWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
 
@@ -79,13 +79,85 @@ PlaylistScroller::paintEvent (QPaintEvent *event)
 
 PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 {
-	Skin *skin = Skin::getInstance ();
-
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 
 	setWindowFlags (Qt::FramelessWindowHint);
+
+	resize (275, 300);
+
+	m_playlist = new PlaylistWidget (this);
+	setCentralWidget (m_playlist);
+	m_shaded = new PlaylistShade (this);
+	m_shaded->hide ();
+
+	m_isshaded = false;
+}
+
+void
+PlaylistWindow::switchDisplay (void)
+{
+	if (m_isshaded) {
+		m_shaded->hide ();
+
+		m_playlist->show ();
+		m_playlist->resize (m_pl_size);
+		resize (m_pl_size);
+
+		m_isshaded = false;
+	} else {
+		m_pl_size = m_playlist->size ();
+		m_playlist->hide ();
+
+		m_shaded->show ();
+		m_shaded->resize (size().width(), 14);
+
+		resize (size().width(), 14);
+
+		m_isshaded = true;
+	}
+
+	update ();
+
+}
+
+void
+PlaylistWindow::mousePressEvent (QMouseEvent *event)
+{
+	m_diffx = event->pos ().x ();
+	m_diffy = event->pos ().y ();
+}
+
+void
+PlaylistWindow::mouseMoveEvent (QMouseEvent *event)
+{
+	move (event->globalPos().x() - m_diffx,
+		  event->globalPos().y() - m_diffy);
+
+}
+
+void
+PlaylistWindow::enterEvent (QEvent *event)
+{
+	m_playlist->setActive (true);
+	m_shaded->setActive (true);
+}
+
+
+void
+PlaylistWindow::leaveEvent (QEvent *event)
+{
+	m_playlist->setActive (false);
+	m_shaded->setActive (false);
+}
+
+
+
+PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
+{
+	Skin *skin = Skin::getInstance ();
+
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
@@ -107,7 +179,7 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 }
 
 void
-PlaylistWindow::doScroll (int pos)
+PlaylistWidget::doScroll (int pos)
 {
 	int npos = ((float)pos) / (float)(m_scroller->getMax()) * float(m_list->height() - m_view->height());
 
@@ -121,49 +193,21 @@ PlaylistWindow::doScroll (int pos)
 }
 
 void
-PlaylistWindow::resizeEvent (QResizeEvent *event)
+PlaylistWidget::resizeEvent (QResizeEvent *event)
 {
 	m_view->resize (size().width()-30, size().height()-20-38);
 	m_list->setSize (m_view->size().width(), m_view->size().height());
 }
 
 void
-PlaylistWindow::mousePressEvent (QMouseEvent *event)
-{
-	m_diffx = event->pos ().x ();
-	m_diffy = event->pos ().y ();
-}
-
-void
-PlaylistWindow::mouseMoveEvent (QMouseEvent *event)
-{
-	move (event->globalPos().x() - m_diffx,
-		  event->globalPos().y() - m_diffy);
-
-}
-
-void
-PlaylistWindow::setPixmaps (Skin *skin)
+PlaylistWidget::setPixmaps (Skin *skin)
 {
 	setActive (m_active);
 	resize (size().width(), size().height());
 }
 
 void
-PlaylistWindow::enterEvent (QEvent *event)
-{
-	setActive (true);
-}
-
-
-void
-PlaylistWindow::leaveEvent (QEvent *event)
-{
-	setActive (false);
-}
-
-void
-PlaylistWindow::setActive (bool active)
+PlaylistWidget::setActive (bool active)
 {
 	Skin *skin = Skin::getInstance ();
 
@@ -198,7 +242,17 @@ PlaylistWindow::setActive (bool active)
 }
 
 void
-PlaylistWindow::paintEvent (QPaintEvent *event)
+PlaylistWidget::mouseDoubleClickEvent (QMouseEvent *event)
+{
+	PlaylistWindow *pw = dynamic_cast<PlaylistWindow *>(window ());
+	if (event->pos().y() < 14) {
+		pw->switchDisplay ();
+	}
+
+}
+
+void
+PlaylistWidget::paintEvent (QPaintEvent *event)
 {
 	QPainter paint;
 

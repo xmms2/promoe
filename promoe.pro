@@ -16,7 +16,8 @@ SOURCES += XmmsQT4.cpp \
 		   ShadedDisplay.cpp \
 		   Playlist.cpp \
 		   PlaylistList.cpp \
-		   SkinChooser.cpp
+		   SkinChooser.cpp \
+		   PlaylistShade.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -36,7 +37,8 @@ HEADERS += XmmsQT4.h \
 		   ShadedDisplay.h \
 		   Playlist.h \
 		   PlaylistList.h \
-		   SkinChooser.h
+		   SkinChooser.h \
+		   PlaylistShade.h
 
 
 RESOURCES = promoe.qrc
