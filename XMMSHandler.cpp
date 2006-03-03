@@ -265,6 +265,26 @@ XMMSHandler::PropDictToQHash (XMMSResultDict *res)
 }
 
 void
+XMMSHandler::medialibQuery (QString q)
+{
+	XMMSResultDictList *r = m_xmmsc->medialib_select (q.toUtf8 ());
+	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_select));
+}
+
+void
+XMMSHandler::medialib_select (XMMSResultDictList *res)
+{
+	QList<QHash<QString, QString> > l;
+
+	for (;res->listValid (); res->listNext()) {
+		QHash<QString, QString> h(DictToQHash (static_cast<XMMSResultDict *>(res)));
+		l.append (h);
+	}
+
+	emit medialibResponse (l);
+}
+
+void
 XMMSHandler::playlist_changed (XMMSResultDict *res)
 {
 	QHash<QString, QString> h(DictToQHash (res));

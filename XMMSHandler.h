@@ -21,6 +21,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void playback_status (XMMSResultValue<uint> *res);
 		void playlist_list (XMMSResultValueList<uint> *res);
 		void medialib_entry_changed (XMMSResultValue<uint> *res);
+		void medialib_select (XMMSResultDictList *res);
 
 		void requestMediainfo (uint id);
 		void requestPlaylistList (void);
@@ -30,7 +31,8 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void playlistClear (void);
 		void playlistRemove (uint pos) { delete m_xmmsc->playlist_remove (pos); }
 		void playlistMove (uint pos, uint newpos) { delete m_xmmsc->playlist_move (pos, newpos); }
-
+		void medialibQuery (QString);
+		
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 
 	public slots:
@@ -57,6 +59,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void playlistList (QList<uint>);
 		void currentID (uint);
 		void playlistChanged (QHash<QString, QString>);
+		void medialibResponse (QList<QHash<QString, QString> >);
 
 	private:
 		XmmsQT4 *m_qt4;

@@ -17,7 +17,8 @@ SOURCES += XmmsQT4.cpp \
 		   Playlist.cpp \
 		   PlaylistList.cpp \
 		   SkinChooser.cpp \
-		   PlaylistShade.cpp
+		   PlaylistShade.cpp \
+		   Medialib.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -38,12 +39,14 @@ HEADERS += XmmsQT4.h \
 		   Playlist.h \
 		   PlaylistList.h \
 		   SkinChooser.h \
-		   PlaylistShade.h
+		   PlaylistShade.h \
+		   Medialib.h
 
 
 RESOURCES = promoe.qrc
 macx:RC_FILE = promoe.icns
 
+QT += network
 CONFIG += link_pkgconfig
 CXXFLAGS += -g
 ;CONFIG += debug warn_on
