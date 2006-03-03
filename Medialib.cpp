@@ -26,10 +26,18 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	m_tab = new QTabWidget (m_dummy);
 	m_vbox->addWidget (m_tab);
 
+	m_progress = new QProgressBar (m_dummy);
+	statusBar ()->addPermanentWidget (m_progress, 1);
+	m_progress->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
+
+	m_status = new QLabel (tr ("Idle"), statusBar ());
+	m_status->setFrameStyle (QFrame::NoFrame);
+	statusBar ()->addPermanentWidget (m_status, 2);
+
 	m_list = new MedialibList (m_tab);
-	m_tab->addTab (new QWidget (m_tab), "Artists");
-	m_tab->addTab (m_list, "Albums");
-	m_tab->addTab (new QWidget (m_tab), "Songs");
+	m_tab->addTab (new QWidget (m_tab), tr ("Artists"));
+	m_tab->addTab (m_list, tr ("Albums"));
+	m_tab->addTab (new QWidget (m_tab), tr ("Songs"));
 
 	connect (m_search, SIGNAL (textEdited (QString)), m_list, SLOT (search (QString)));
 }
@@ -39,8 +47,10 @@ MedialibList::MedialibList (QWidget *parent) : QListWidget (parent)
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	m_http = new QHttp (this);
 	m_httpmap = new QHash<int, MedialibListItem *>;
+	m_win = dynamic_cast<MedialibWindow*>(window ());
 
 	setIconSize (QSize (85, 85));
+	setDragEnabled (true);
 
 	QDir dir (QDir::homePath ()+"/.xmms2/clients/generic/art/");
 	if (!dir.exists()) {
@@ -55,6 +65,8 @@ MedialibList::MedialibList (QWidget *parent) : QListWidget (parent)
 	connect (m_http, SIGNAL (requestFinished (int, bool)), this,
 							 SLOT (httpDone (int, bool)));
 
+	m_win->setBusy (true);
+	m_win->setStatusText ("Loading album view");
 }
 
 void
@@ -94,7 +106,6 @@ MedialibList::httpDone (int id, bool error)
 		f->close ();
 
 		QString newname (QDir::homePath()+"/.xmms2/clients/generic/art/"+(f->fileName ().section("/", -1)));
-		qDebug ("new path %s", qPrintable (newname));
 		f->rename (newname);
 		f->setFileName (newname);
 
@@ -102,12 +113,18 @@ MedialibList::httpDone (int id, bool error)
 		if (!ico.isNull()) {
 			it->setIcon (ico);
 		} else {
-			qDebug ("removing %s", qPrintable (f->fileName()));
 			f->remove ();
 		}
 
 		delete f;
 		m_httpmap->remove (id);
+		if (m_httpmap->count () == 0) {
+			m_win->setBusy (false);
+			m_win->setStatusText ("idle");
+		} else {
+			m_win->setBusy (m_httpmap->count ());
+			m_win->setStatusText ("Got art for: " + it->text());
+		}
 	}
 
 	update ();
@@ -121,6 +138,9 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 
 	font.setPixelSize (14);
 
+	m_win->setBusy (false);
+	m_win->setStatusText ("idle");
+
 	for (int i = 0; i < l.count (); i++) {
 		QHash<QString, QString> h(l.value (i));
 
@@ -128,12 +148,12 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 		item->setSizeHint (QSize (90, 90));
 		item->setIcon (QIcon (":nocover.jpg"));
 		item->setFont (font);
-		item->setTextAlignment (Qt::AlignHCenter | Qt::AlignVCenter);
+		item->setTextAlignment (Qt::AlignVCenter);
 
 		if (h.contains ("image")) {
 
 			QString name = qtMD5 ((h.value("artist").toLower()+"-"+h.value("album").toLower()).toUtf8());
-			QString fname (QDir::homePath () +"/.xmms2/clients/generic/art/"+name+".jpg");
+			QString fname (QDir::homePath () +"/.xmms2/clients/generic/art/"+name+"_small.jpg");
 
 			if (!QFile::exists (fname)) {
 				QUrl url (h.value("image"));
@@ -143,7 +163,7 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 					m_http->setUser (url.userName(), url.password());
 				}
 
-				QFile *file = new QFile ("/tmp/"+name+".jpg");
+				QFile *file = new QFile ("/tmp/"+name+"_small.jpg");
 				file->open(QIODevice::WriteOnly);
 			
 				item->setFile (file);
@@ -158,6 +178,11 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 		}
 
 
+	}
+
+	if (m_httpmap->count() > 0) {
+		m_win->setBusy (0, m_httpmap->count ());
+		m_win->setStatusText ("Loading album art");
 	}
 
 }
