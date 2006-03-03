@@ -3,6 +3,8 @@
 
 #include <QSettings>
 #include <QIcon>
+#include <QPluginLoader>
+#include <qplugin.h>
 
 MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 {
@@ -99,6 +101,8 @@ main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
 	QSettings settings ("XMMS2", "Promoe");
+
+	Q_IMPORT_PLUGIN(QJpegPlugin);
 
 	MainWindow *mw = new MainWindow (NULL);
 
