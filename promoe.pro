@@ -18,7 +18,8 @@ SOURCES += XmmsQT4.cpp \
 		   PlaylistList.cpp \
 		   SkinChooser.cpp \
 		   PlaylistShade.cpp \
-		   Medialib.cpp
+		   Medialib.cpp \
+		   qtmd5.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -40,7 +41,8 @@ HEADERS += XmmsQT4.h \
 		   PlaylistList.h \
 		   SkinChooser.h \
 		   PlaylistShade.h \
-		   Medialib.h
+		   Medialib.h \
+		   qtmd5.h
 
 
 RESOURCES = promoe.qrc

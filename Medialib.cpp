@@ -4,6 +4,8 @@
 #include <QUrl>
 #include <QFile>
 #include <QIODevice>
+#include <QDir>
+#include "qtmd5.h"
 
 MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 {
@@ -39,6 +41,11 @@ MedialibList::MedialibList (QWidget *parent) : QListWidget (parent)
 	m_httpmap = new QHash<int, MedialibListItem *>;
 
 	setIconSize (QSize (85, 85));
+
+	QDir dir (QDir::homePath ()+"/.xmms2/clients/generic/art/");
+	if (!dir.exists()) {
+		dir.mkpath (dir.path ());
+	}
 
 	xmmsh->medialibQuery ("select distinct m1.value as artist, ifnull(m2.value,'[unknown]') as album, m4.value as image from Media m1 left join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='compilation' left join Media m4 on m4.id = m1.id and m4.key='album_front_small' where m1.key='artist' and m3.value is null");
 
@@ -86,8 +93,18 @@ MedialibList::httpDone (int id, bool error)
 		QFile *f = it->getFile ();
 		f->close ();
 
+		QString newname (QDir::homePath()+"/.xmms2/clients/generic/art/"+(f->fileName ().section("/", -1)));
+		qDebug ("new path %s", qPrintable (newname));
+		f->rename (newname);
+		f->setFileName (newname);
+
 		QIcon ico (f->fileName ());
-		it->setIcon (ico);
+		if (!ico.isNull()) {
+			it->setIcon (ico);
+		} else {
+			qDebug ("removing %s", qPrintable (f->fileName()));
+			f->remove ();
+		}
 
 		delete f;
 		m_httpmap->remove (id);
@@ -115,9 +132,10 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 
 		if (h.contains ("image")) {
 
-			QString name = h.value("artist")+"-"+h.value("album")+".jpg";
+			QString name = qtMD5 ((h.value("artist").toLower()+"-"+h.value("album").toLower()).toUtf8());
+			QString fname (QDir::homePath () +"/.xmms2/clients/generic/art/"+name+".jpg");
 
-			if (!QFile::exists (name)) {
+			if (!QFile::exists (fname)) {
 				QUrl url (h.value("image"));
 
 				m_http->setHost (url.host(), url.port() != -1 ? url.port() : 80);
@@ -125,7 +143,7 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 					m_http->setUser (url.userName(), url.password());
 				}
 
-				QFile *file = new QFile (h.value("artist")+"-"+h.value("album")+".jpg");
+				QFile *file = new QFile ("/tmp/"+name+".jpg");
 				file->open(QIODevice::WriteOnly);
 			
 				item->setFile (file);
@@ -133,7 +151,7 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 				int id = m_http->get (url.path(), file);
 				m_httpmap->insert (id, item);
 			} else {
-				QIcon ico (name);
+				QIcon ico (fname);
 				item->setIcon (ico);
 			}
 
