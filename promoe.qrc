@@ -2,5 +2,28 @@
 	<qresource>
 		<file>icon.png</file>
 		<file>nocover.jpg</file>
+		<file>CleanAMP/Eq_ex.bmp</file>
+		<file>CleanAMP/GENEX.bmp</file>
+		<file>CleanAMP/Gen.bmp</file>
+		<file>CleanAMP/MONOSTER.BMP</file>
+		<file>CleanAMP/PLEDIT.TXT</file>
+		<file>CleanAMP/ReadMe.txt</file>
+		<file>CleanAMP/Thumbs.db</file>
+		<file>CleanAMP/VIDEO.bmp</file>
+		<file>CleanAMP/Volume.bmp</file>
+		<file>CleanAMP/balance.bmp</file>
+		<file>CleanAMP/cbuttons.bmp</file>
+		<file>CleanAMP/eqmain.bmp</file>
+		<file>CleanAMP/main.bmp</file>
+		<file>CleanAMP/mb.bmp</file>
+		<file>CleanAMP/numbers.bmp</file>
+		<file>CleanAMP/playpaus.bmp</file>
+		<file>CleanAMP/pledit.bmp</file>
+		<file>CleanAMP/posbar.bmp</file>
+		<file>CleanAMP/shufrep.bmp</file>
+		<file>CleanAMP/text.bmp</file>
+		<file>CleanAMP/titlebar.bmp</file>
+		<file>CleanAMP/viscolor.txt</file>
+
 	</qresource>
 </RCC>

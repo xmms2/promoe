@@ -21,7 +21,6 @@ Todo:
 	* Compressed file reader
 	* Manage with faulty skins
 	* make cool effects when switching skin?
-	* Make default skin live in a qt resource
 * Medialib browser
 	* Keep it very simple
 	* browse by album art

@@ -100,7 +100,12 @@ int
 main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
-	QSettings settings ("XMMS2", "Promoe");
+
+	QCoreApplication::setOrganizationName("XMMS2 Team");
+	QCoreApplication::setOrganizationDomain("xmms.org");
+	QCoreApplication::setApplicationName("Promoe");
+
+	QSettings settings;
 
 #ifdef Q_OS_MACX 
 	/** This is soooo wrong, there must exsist a flag for
@@ -120,7 +125,7 @@ main (int argc, char **argv)
 	 * all widgets to get their pixmaps
 	 */
 	if (!settings.contains ("skin/path")) {
-		settings.setValue ("skin/path", "./CleanAMP/");
+		settings.setValue ("skin/path", ":CleanAMP/");
 	}
 
 	Skin::getInstance()->setSkin (settings.value("skin/path").toString ());
