@@ -6,6 +6,7 @@
 #include <QRect>
 #include <QIcon>
 #include <QApplication>
+#include <QSettings>
 
 PlaylistScrollButton::PlaylistScrollButton (PlaylistScroller *parent, uint normal, uint pressed) : Button (parent, normal, pressed, true)
 {
@@ -79,47 +80,73 @@ PlaylistScroller::paintEvent (QPaintEvent *event)
 
 PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 {
+	QSettings s;
+
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 
 	setWindowFlags (Qt::FramelessWindowHint);
 
-	resize (275, 300);
+	s.beginGroup ("playlist");
+	if (!s.contains ("size")) {
+		s.setValue ("size", QSize (280, 350));
+	}
+	resize (s.value("size").toSize ());
 
 	m_playlist = new PlaylistWidget (this);
 	setCentralWidget (m_playlist);
 	m_shaded = new PlaylistShade (this);
-	m_shaded->hide ();
 
-	m_isshaded = false;
+	if (!s.contains ("shaded"))
+		s.setValue ("shaded", false);
+	else
+		s.setValue ("shaded", !s.value("shaded").toBool ());
+	
+	switchDisplay ();
+
+	s.endGroup ();
+
 }
 
 void
 PlaylistWindow::switchDisplay (void)
 {
-	if (m_isshaded) {
+	QSettings s;
+
+	s.beginGroup ("playlist");
+
+	if (!s.value("shaded").toBool ()) {
 		m_shaded->hide ();
 
 		m_playlist->show ();
-		m_playlist->resize (m_pl_size);
-		resize (m_pl_size);
+		s.setValue ("shaded", true);
+		m_playlist->resize (s.value("size").toSize ());
+		resize (s.value("size").toSize ());
 
-		m_isshaded = false;
 	} else {
-		m_pl_size = m_playlist->size ();
 		m_playlist->hide ();
 
 		m_shaded->show ();
-		m_shaded->resize (size().width(), 14);
-
-		resize (size().width(), 14);
-
-		m_isshaded = true;
+		s.setValue ("shaded", false);
+		m_shaded->resize (s.value("size").toSize ().width(), 14);
+		resize (s.value("size").toSize ().width(), 14);
 	}
+
+	s.endGroup ();
 
 	update ();
 
+}
+
+void
+PlaylistWindow::resizeEvent (QResizeEvent *event)
+{
+	QSettings s;
+
+	if (s.value("playlist/shaded").toBool ()) {
+		s.setValue ("playlist/size", size ());
+	}
 }
 
 void
@@ -135,6 +162,8 @@ PlaylistWindow::mouseMoveEvent (QMouseEvent *event)
 	move (event->globalPos().x() - m_diffx,
 		  event->globalPos().y() - m_diffy);
 
+	QSettings s;
+	s.setValue ("playlist/pos", pos ());
 }
 
 void

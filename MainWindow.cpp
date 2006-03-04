@@ -8,11 +8,18 @@
 
 MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 {
+	QSettings settings;
+
 	setWindowFlags(Qt::FramelessWindowHint);
 	setGeometry(100, 100, 275, 116);
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
+
+	if (!settings.contains ("mainwindow/shaded"))
+		setShaded (true);
+	else
+		setShaded (!isShaded ());
 
 	/* 
 	 * The MainDisplay is the mainwindow non-shaded mode
@@ -27,14 +34,14 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 	m_shaded = new ShadedDisplay (this);
 	m_shaded->hide ();
 
-	/*
-	 * Per default not shaded. Change this to a 
-	 * config value later.
-	 */
-	m_isshaded = false;
+	switchDisplay ();
 
 	m_playlistwin = NULL;
 
+	if (!settings.contains ("mainwindow/pos"))
+		settings.setValue ("mainwindow/pos", QPoint (100, 100));
+
+	move (settings.value("mainwindow/pos").toPoint ());
 }
 
 MainWindow::~MainWindow ()
@@ -46,16 +53,18 @@ MainWindow::~MainWindow ()
 void
 MainWindow::switchDisplay ()
 {
-	if (m_isshaded) {
+	QSettings s;
+
+	if (isShaded ()) {
 		m_shaded->hide ();
 		m_display->show ();
 		resize (275, 116);
-		m_isshaded = false;
+		setShaded (false);
 	} else {
 		m_display->hide ();
 		m_shaded->show ();
 		resize (275, 14);
-		m_isshaded = true;
+		setShaded (true);
 	}
 
 	update ();
@@ -82,16 +91,23 @@ MainWindow::moveEvent (QMoveEvent *event)
 		m_playlistwin->move (event->pos().x(),
 							 event->pos().y() + size().height());
 	}
+
+	QSettings s;
+	s.setValue ("mainwindow/pos", pos ());
 }
 
 void 
 MainWindow::togglePL (void) 
 { 
-	if (m_playlistwin->isVisible ()) { 
-		m_playlistwin->hide (); 
-	} else { 
-		m_playlistwin->move (pos().x(), pos().y()+size().height());
+	QSettings s;
+
+	if (s.value ("playlist/hidden").toBool ()) {
+		m_playlistwin->move (s.value("playlist/pos").toPoint ());
 		m_playlistwin->show (); 
+		s.setValue ("playlist/hidden", false);
+	} else {
+		m_playlistwin->hide (); 
+		s.setValue ("playlist/hidden", true);
 	} 
 }
 
@@ -132,6 +148,21 @@ main (int argc, char **argv)
 
 	mw->show ();
 	mw->setPL (playlistwin);
+
+	if (!settings.contains ("playlist/pos"))
+		settings.setValue ("playlist/pos", QPoint (mw->pos().x(),
+												   mw->pos().y()+mw->size().height()));
+	playlistwin->move (settings.value("playlist/pos").toPoint ());
+	playlistwin->move (settings.value("playlist/pos").toPoint ());
+
+
+	if (!settings.contains ("playlist/hidden"))
+		settings.setValue ("playlist/hidden", true);
+
+	if (settings.value("playlist/hidden").toBool ())
+		playlistwin->hide ();
+	else
+		playlistwin->show ();
 
 	return app.exec();
 }

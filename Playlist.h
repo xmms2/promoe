@@ -112,17 +112,15 @@ class PlaylistWindow : public QMainWindow {
 		void mouseMoveEvent (QMouseEvent *event);
 		void enterEvent (QEvent *event);
 		void leaveEvent (QEvent *event);
+		void resizeEvent (QResizeEvent *event);
 
 	private:
-		bool m_isshaded;
-
 		PlaylistWidget *m_playlist;
 		PlaylistShade *m_shaded;
 		
 		int m_diffx;
 		int m_diffy;
 
-		QSize m_pl_size;
 };
 
 #endif
