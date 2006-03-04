@@ -16,6 +16,20 @@ class SkinList : public QListWidget
 		void changeSkin (QListWidgetItem *item);
 };
 
+class SkinChooserItem : public QListWidgetItem
+{
+	public:
+		SkinChooserItem (QIcon i, QString n, QString p, QListWidget *parent) :
+			QListWidgetItem (i, n, parent) {
+				m_path = p;
+			}
+		~SkinChooserItem () {}
+		QString getPath (void) { return m_path; }
+	private:
+		QString m_path;
+
+};
+
 class SkinChooser : public QMainWindow
 {
 	public:

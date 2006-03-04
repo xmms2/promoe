@@ -47,6 +47,8 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 	path.append (QDir::homePath());
 	path.append ("/.xmms2/clients/promoe/skins/");
 	QDir d;
+			
+	new SkinChooserItem (QIcon (":CleanAMP/main.bmp"), "CleanAMP (default)", ":CleanAMP/", this);
 
 	d.setPath (path);
 	d.setFilter (QDir::Dirs);
@@ -57,7 +59,7 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 		QDir dir (fileInfo.filePath());
 		QPixmap p = Skin::getPixmap ("main.bmp", dir);
 		if (!p.isNull()) {
-			new QListWidgetItem (QIcon (p), dir.dirName(), this);
+			new SkinChooserItem (QIcon (p), dir.dirName(), dir.absolutePath(), this);
 		}
 	}
 
@@ -68,13 +70,11 @@ void
 SkinList::changeSkin (QListWidgetItem *item)
 {
 	Skin *skin = Skin::getInstance ();
+	SkinChooserItem *it = dynamic_cast<SkinChooserItem*> (item);
 
 	QSettings settings;
 
-	qDebug ("change skin to %s", qPrintable (item->text()));
-
-	skin->setSkin (QDir::homePath()+"/.xmms2/clients/promoe/skins/"+item->text());
-
-	settings.setValue ("skin/path", QDir::homePath()+"/.xmms2/clients/promoe/skins/"+item->text());
+	skin->setSkin (it->getPath ());
+	settings.setValue ("skin/path", it->getPath ());
 }
 
