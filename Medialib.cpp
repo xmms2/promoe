@@ -148,7 +148,6 @@ MedialibList::mimeData(const QList<QListWidgetItem*> items) const
 	MedialibListItem *it = dynamic_cast<MedialibListItem *> (currentItem ());
 	
 	QDataStream stream(&encodedData, QIODevice::WriteOnly);
-	qDebug ("%s %s", qPrintable (it->getArtist ()), qPrintable (it->getAlbum ()));
 	stream << it->getArtist ();
 	stream << it->getAlbum ();
 

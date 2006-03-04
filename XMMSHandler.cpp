@@ -84,8 +84,6 @@ XMMSHandler::medialib_entry_changed (XMMSResultValue<uint> *res)
 	uint i;
 	res->getValue (&i);
 
-	m_currentid = i;
-
 	if (i > 0) {
 		XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
 		r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
@@ -178,6 +176,8 @@ XMMSHandler::playback_current_id (XMMSResultValue<uint> *res)
 	res->getValue (&i);
 
 	m_currentid = i;
+
+	qDebug ("currentid = %d", m_currentid);
 
 	if (i > 0) {
 		XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
