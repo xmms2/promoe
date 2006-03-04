@@ -97,7 +97,6 @@ XMMSHandler::medialib_entry_changed (XMMSResultValue<uint> *res)
 void
 XMMSHandler::playlistAddURL (QString s)
 {
-	qDebug ("%s", s.toAscii ().constData ());
 	delete m_xmmsc->playlist_add (s.toAscii ().constData ());
 }
 
@@ -176,8 +175,6 @@ XMMSHandler::playback_current_id (XMMSResultValue<uint> *res)
 	res->getValue (&i);
 
 	m_currentid = i;
-
-	qDebug ("currentid = %d", m_currentid);
 
 	if (i > 0) {
 		XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
