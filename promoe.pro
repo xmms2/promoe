@@ -49,7 +49,7 @@ RESOURCES = promoe.qrc
 macx:RC_FILE = promoe.icns
 
 QT += network
-QTPLUGIN += qjpeg
+macx:QTPLUGIN += qjpeg
 QMAKE_LFLAGS += -L$$[QT_INSTALL_PLUGINS]/imageformats
 
 CONFIG += link_pkgconfig
