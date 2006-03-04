@@ -302,8 +302,15 @@ PlaylistList::mouseMoveEvent (QMouseEvent *event)
 		int i = m_selected->last ();
 
 		m_drag = new QDrag (this);
-		m_md = new QMimeData;
-		m_md->setText (QString::number (m_selected->last ()));
+
+		m_md = new QMimeData();
+		QByteArray encodedData;
+
+		QDataStream stream (&encodedData, QIODevice::WriteOnly);
+		stream << QString::number (m_selected->last ());
+
+		m_md->setData("application/playlist.move", encodedData);
+
 		m_drag->setMimeData (m_md);
 
 		m_drag_id = m_items->value (i)->getID ();
@@ -323,7 +330,25 @@ PlaylistList::mouseMoveEvent (QMouseEvent *event)
 void
 PlaylistList::dragEnterEvent (QDragEnterEvent *event)
 {
+
+	if (event->mimeData()->hasFormat("application/mlib.album") ||
+		event->mimeData()->hasFormat("application/playlist.move"))
+		event->acceptProposedAction();
+	/*
+	const QMimeData *md = event->mimeData ();
+	QByteArray encodedData = md->data("application/mlib.album");
+	QDataStream stream(&encodedData, QIODevice::ReadOnly);
+
+	QString artist;
+	QString album;
+	stream >> artist;
+	stream >> album;
+
+	qDebug ("korv %s - %s", qPrintable (artist), 
+			qPrintable (album));
+	
 	event->accept ();
+	*/
 }
 
 void
@@ -352,13 +377,33 @@ PlaylistList::dropEvent (QDropEvent *event)
 {
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 
-	if (m_bar == -2) {
-		m_items->insert (m_pos, m_itemmap->value (m_drag_id));
-	} else {
-		m_items->insert (m_bar + 1, m_itemmap->value (m_drag_id));
-		xmmsh->playlistMove (m_pos, m_bar + 1);
+	if (event->mimeData()->hasFormat("application/playlist.move")) {
+		if (m_bar == -2) {
+			m_items->insert (m_pos, m_itemmap->value (m_drag_id));
+		} else {
+			m_items->insert (m_bar + 1, m_itemmap->value (m_drag_id));
+			xmmsh->playlistMove (m_pos, m_bar + 1);
+		}
+		m_selected->append (m_drag_id);
+
+		event->acceptProposedAction ();
+	} else if (event->mimeData()->hasFormat("application/mlib.album")) {
+		const QMimeData *md = event->mimeData ();
+		QByteArray encodedData = md->data("application/mlib.album");
+		QDataStream stream(&encodedData, QIODevice::ReadOnly);
+
+		QString artist;
+		QString album;
+		stream >> artist;
+		stream >> album;
+
+		QString query;
+		query.sprintf ("select m1.id as id, ifnull(m3.value,-1) as tracknr from Media m1 join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='tracknr' where m1.key='artist' and m1.value='%s' and m2.value='%s' order by tracknr", artist.toUtf8 ().data (), album.toUtf8 ().data ());
+
+		xmmsh->medialibQueryAdd (query);
+
+		event->acceptProposedAction ();
 	}
-	m_selected->append (m_drag_id);
 	m_bar = -2;
 	update ();
 }

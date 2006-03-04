@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 #include <QStatusBar>
 #include <QTabWidget>
+#include <QMimeData>
 #include <QLineEdit>
 #include <QLabel>
 #include <QHttp>
@@ -18,13 +19,21 @@ class MedialibWindow;
 class MedialibListItem : public QListWidgetItem
 {
 	public:
-		MedialibListItem (QString text, QListWidget *parent) : QListWidgetItem (text, parent) {}
+		MedialibListItem (QString artist, QString album, QListWidget *parent) : 
+			QListWidgetItem (artist + " - " + album, parent) {
+				m_artist = artist;
+				m_album = album;
+			}
 		~MedialibListItem () {}
 		void setFile (QFile *f) { m_file = f; }
 		QFile *getFile (void) { return m_file; }
+		QString getArtist (void) { return m_artist; }
+		QString getAlbum (void) { return m_album; }
 
 	private:
 		QFile *m_file;
+		QString m_artist;
+		QString m_album;
 };
 
 class MedialibList : public QListWidget
@@ -33,11 +42,13 @@ class MedialibList : public QListWidget
 	public:
 		MedialibList (QWidget *parent);
 		~MedialibList () {}
+		QStringList mimeTypes (void) const;
 
 	public slots:
 		void queryCallback (QList<QHash<QString, QString> >);
 		void httpDone (int, bool);
 		void search (QString);
+		QMimeData *mimeData(const QList<QListWidgetItem*> items) const;
 
 	private:
 		QHash<int, MedialibListItem*> *m_httpmap;

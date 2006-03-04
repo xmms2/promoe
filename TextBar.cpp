@@ -13,7 +13,11 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 	m_w = w;
 	m_x_off = 0;
 	m_x2_off = 0;
+#ifdef Q_OS_MACX
+	m_fontsize = 9;
+#else
 	m_fontsize = 8; /* default */
+#endif
 	m_ttf = true;
 	
 	setMinimumSize(m_w + 2, m_h);

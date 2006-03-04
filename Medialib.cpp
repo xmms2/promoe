@@ -131,6 +131,32 @@ MedialibList::httpDone (int id, bool error)
 
 }
 
+QStringList 
+MedialibList::mimeTypes () const
+{
+	QStringList types;
+	types << "application/mlib.album";
+	return types;
+}
+
+QMimeData *
+MedialibList::mimeData(const QList<QListWidgetItem*> items) const
+{
+	QMimeData *mimeData = new QMimeData();
+	QByteArray encodedData;
+
+	MedialibListItem *it = dynamic_cast<MedialibListItem *> (currentItem ());
+	
+	QDataStream stream(&encodedData, QIODevice::WriteOnly);
+	qDebug ("%s %s", qPrintable (it->getArtist ()), qPrintable (it->getAlbum ()));
+	stream << it->getArtist ();
+	stream << it->getAlbum ();
+
+	mimeData->setData("application/mlib.album", encodedData);
+	return mimeData;
+}
+
+
 void
 MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 {
@@ -144,7 +170,7 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 	for (int i = 0; i < l.count (); i++) {
 		QHash<QString, QString> h(l.value (i));
 
-		MedialibListItem *item = new MedialibListItem (h.value("artist") + " - " + h.value("album"), this);
+		MedialibListItem *item = new MedialibListItem (h.value("artist"), h.value("album"), this);
 		item->setSizeHint (QSize (90, 90));
 		item->setIcon (QIcon (":nocover.jpg"));
 		item->setFont (font);
@@ -153,7 +179,7 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 		if (h.contains ("image")) {
 
 			QString name = qtMD5 ((h.value("artist").toLower()+"-"+h.value("album").toLower()).toUtf8());
-			QString fname (QDir::homePath () +"/.xmms2/clients/generic/art/"+name+"_small.jpg");
+			QString fname (QDir::homePath () +"/.xmms2/clients/generic/art/"+name+"-small.jpg");
 
 			if (!QFile::exists (fname)) {
 				QUrl url (h.value("image"));
@@ -163,7 +189,7 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 					m_http->setUser (url.userName(), url.password());
 				}
 
-				QFile *file = new QFile ("/tmp/"+name+"_small.jpg");
+				QFile *file = new QFile ("/tmp/"+name+"-small.jpg");
 				file->open(QIODevice::WriteOnly);
 			
 				item->setFile (file);
