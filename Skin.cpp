@@ -119,7 +119,8 @@ Skin::getPixmap (QString f, QDir dir)
 	QFileInfoList list = dir.entryInfoList();
 	for (int i = 0; i < list.size(); ++i) {
 		QFileInfo fileInfo = list.at(i);
-		if (fileInfo.fileName().toLower() == f) {
+		QString fname = fileInfo.fileName().toLower();
+		if (fname.section(".", 0, 0) == f) {
 			return QPixmap (fileInfo.filePath());
 		}
 	}

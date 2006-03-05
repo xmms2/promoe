@@ -48,7 +48,7 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 	path.append ("/.xmms2/clients/promoe/skins/");
 	QDir d;
 			
-	new SkinChooserItem (QIcon (":CleanAMP/main.bmp"), "CleanAMP (default)", ":CleanAMP/", this);
+	new SkinChooserItem (QIcon (":CleanAMP/main.png"), "CleanAMP (default)", ":CleanAMP/", this);
 
 	d.setPath (path);
 	d.setFilter (QDir::Dirs);
@@ -57,7 +57,7 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 	for (int i = 0; i < list.size(); ++i) {
 		QFileInfo fileInfo = list.at(i);
 		QDir dir (fileInfo.filePath());
-		QPixmap p = Skin::getPixmap ("main.bmp", dir);
+		QPixmap p = Skin::getPixmap ("main", dir);
 		if (!p.isNull()) {
 			new SkinChooserItem (QIcon (p), dir.dirName(), dir.absolutePath(), this);
 		}
