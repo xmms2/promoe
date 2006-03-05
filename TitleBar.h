@@ -21,6 +21,7 @@ class TitleBar : public PixWidget
 		void showMenu (void);
 		void showTheme (void);
 		void showMlib (void);
+		void showSettings (void);
 
 	protected:
 		void mouseDoubleClickEvent (QMouseEvent *event);

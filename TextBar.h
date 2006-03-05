@@ -22,13 +22,14 @@ class TextScroller : public QWidget
 		TextScroller (QWidget *parent, uint, uint);
 		~TextScroller ();
 
-		void setText(const QString &text);
+		void setText(QString text);
 		void setFontSize (int i) { m_fontsize = i; }
 		void setTTF (bool b) { m_ttf = b; }
 
 	public slots:
 		void addOffset ();
 		void setPixmaps(Skin *skin);
+		void settingsSaved (void);
 
 	protected:
 		QPixmap m_pixmap;
@@ -44,9 +45,10 @@ class TextScroller : public QWidget
 		bool m_ttf;
 
 		QTimer *m_timer;
+		QString m_text;
 
-		void drawBitmapFont (const QString &text);
-		void drawQtFont (const QString &text);
+		void drawBitmapFont (QString text);
+		void drawQtFont (QString text);
 };
 
 #endif

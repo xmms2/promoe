@@ -36,6 +36,8 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		
 		const XMMSClient *getXMMS () { return m_xmmsc; }
 
+		void updateSettings (void) { emit settingsSaved (); }
+
 	public slots:
 		void setPlaytime ();
 		void fileOpen (void);
@@ -53,6 +55,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		}
 
 	signals:
+		void settingsSaved (void);
 		void playbackStatusChanged (uint status);
 		void playtimeChanged (uint time);
 		void mediainfoChanged (uint, QHash<QString, QString>);

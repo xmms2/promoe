@@ -4,21 +4,37 @@
 
 TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 {
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	Skin *skin = Skin::getInstance ();
 
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
+	QSettings s;
+
+	s.beginGroup ("maindisplay");
+
+	if (!s.contains("scrollbar"))
+		s.setValue("scrollbar", true);
+
+	if (!s.contains("fontsize"))
+		s.setValue("fontsize", 8);
+
+	if (!s.contains("mainttf"))
+		s.setValue("mainttf", true);
+
+	if (!s.contains("shadettf"))
+		s.setValue("shadettf", true);
+
 	m_h = h;
 	m_w = w;
 	m_x_off = 0;
 	m_x2_off = 0;
-#ifdef Q_OS_MACX
-	m_fontsize = 9;
-#else
-	m_fontsize = 8; /* default */
-#endif
-	m_ttf = true;
+	m_fontsize = s.value ("fontsize").toInt ();
+	m_ttf = s.value ("mainttf").toBool ();
+	m_text = "Promoe 0.1";
+
+	s.endGroup ();
 	
 	setMinimumSize(m_w + 2, m_h);
 	setMaximumSize(m_w + 2, m_h);
@@ -31,7 +47,20 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 
 	m_timer = new QTimer (this);
 	connect (m_timer, SIGNAL (timeout()), this, SLOT (addOffset ()));
+	connect (xmmsh, SIGNAL (settingsSaved ()), this, SLOT (settingsSaved ()));
+}
 
+void
+TextScroller::settingsSaved (void)
+{
+	QSettings s;
+	s.beginGroup ("maindisplay");
+	m_fontsize = s.value ("fontsize").toInt ();
+	m_ttf = s.value ("mainttf").toBool ();
+	s.endGroup ();
+
+	setText (m_text);
+	update ();
 }
 
 void
@@ -43,7 +72,7 @@ TextScroller::setPixmaps (Skin *skin)
 	pal.setBrush (QPalette::Window, b);
 	setPalette (pal);
 
-	setText (QString::fromUtf8 ("Promoe 0.1"));
+	setText (m_text);
 	update();
 }
 void 
@@ -63,8 +92,10 @@ TextScroller::addOffset ()
 }
 
 void
-TextScroller::setText (const QString &text)
+TextScroller::setText (QString text)
 {
+	m_text = text;
+
 	if (m_ttf) {
 		drawQtFont (text);
 	} else {
@@ -76,12 +107,12 @@ TextScroller::setText (const QString &text)
 }
 
 void
-TextScroller::drawBitmapFont (const QString &text)
+TextScroller::drawBitmapFont (QString text)
 {
 	Skin *skin = Skin::getInstance ();
 
 	int width = text.length() * 6;
-	QString (temp) = text.toLower ();
+	QString temp = text.toLower ();
 
 	if (width > m_w) {
 		temp += QString::fromAscii ("  --  ");
@@ -91,29 +122,36 @@ TextScroller::drawBitmapFont (const QString &text)
 	} else {
 		m_pixmap = QPixmap (m_w, m_h);
 	}
-	const char *t = temp.toLatin1();
+	QByteArray temp2 = temp.toLatin1();
+	const char *t = temp2.data();
 
 	QPainter (paint);
 
 	paint.begin (&m_pixmap);
-	paint.fillRect (m_pixmap.rect(), Qt::white);
+
+	paint.drawPixmap (m_pixmap.rect (),
+	                  skin->getItem (Skin::TEXTBG),
+	                  skin->getItem (Skin::TEXTBG).rect ());
+
 	for (uint i = 0; i < strlen (t); i++) {
 		QPixmap p = skin->getLetter (t[i]);
-		if (!p) {
+		if (p.isNull ()) {
 			p = skin->getLetter(' ');
+			if (p.isNull ()) {
+				qDebug ("abort ffs!");
+			}
 		}
 
-		paint.drawPixmap (QRect (i * 6, m_y, 4, 6),
+		paint.drawPixmap (QRect ((i * 6), m_y, 4, 6),
 						  p, p.rect());
 	}
 
 	paint.end();
-	m_pixmap.setMask (m_pixmap.createHeuristicMask ());
 
 }
 
 void
-TextScroller::drawQtFont (const QString &text)
+TextScroller::drawQtFont (QString text)
 {
 	Skin *skin = Skin::getInstance ();
 

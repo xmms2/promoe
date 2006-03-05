@@ -19,7 +19,8 @@ SOURCES += XmmsQT4.cpp \
 		   SkinChooser.cpp \
 		   PlaylistShade.cpp \
 		   Medialib.cpp \
-		   qtmd5.cpp
+		   qtmd5.cpp \
+		   SettingsWindow.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -42,7 +43,8 @@ HEADERS += XmmsQT4.h \
 		   SkinChooser.h \
 		   PlaylistShade.h \
 		   Medialib.h \
-		   qtmd5.h
+		   qtmd5.h \
+		   SettingsWindow.h
 
 
 RESOURCES = promoe.qrc
@@ -53,7 +55,7 @@ macx:QTPLUGIN += qjpeg
 QMAKE_LFLAGS += -L$$[QT_INSTALL_PLUGINS]/imageformats
 
 CONFIG += link_pkgconfig
-CXXFLAGS += -g
+QMAKE_CXXFLAGS += -g
 ;CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp sigc++-2.0

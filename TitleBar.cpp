@@ -3,6 +3,7 @@
 #include "Display.h"
 #include "SkinChooser.h"
 #include "Medialib.h"
+#include "SettingsWindow.h"
 
 #include <QMenu>
 
@@ -50,6 +51,7 @@ TitleBar::showMenu (void)
 	qm.addAction (a);
 	a = new QAction (tr ("Application settings"), this);
 	a->setShortcut (tr ("Alt+A"));
+	connect (a, SIGNAL (triggered ()), this, SLOT (showSettings ()));
 	qm.addAction (a);
 	a = new QAction (tr ("Server settings"), this);
 	a->setShortcut (tr ("Alt+S"));
@@ -69,6 +71,13 @@ TitleBar::showMlib ()
 {
 	MedialibWindow *mw = new MedialibWindow (window ());
 	mw->show ();
+}
+
+void
+TitleBar::showSettings ()
+{
+	SettingsWindow *sw = new SettingsWindow (window ());
+	sw->show ();
 }
 
 void
