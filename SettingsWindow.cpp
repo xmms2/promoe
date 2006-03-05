@@ -10,7 +10,7 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 	
-	resize (400, 300);
+	resize (400, 400);
 
 	QWidget *dummy = new QWidget (this);
 	setCentralWidget (dummy);
@@ -57,34 +57,121 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 {
 	QSettings s;
 
-	QVBoxLayout *vbox = new QVBoxLayout (this);
-	QWidget *c = new QWidget (this);
+	QWidget *dummy = new QWidget (this);
+
+	QVBoxLayout *vbox = new QVBoxLayout (dummy);
+	QWidget *c = new QWidget (dummy);
 	QHBoxLayout *h = new QHBoxLayout (c);
 
 	vbox->addWidget (c);
+
+	m_quitonclose = new QCheckBox (tr ("Quit XMMS2D when closing Promoe"), c);
+	if (s.contains ("promoe/quitonclose"))
+		s.setValue ("promoe/quitonclose", false);
+	m_quitonclose->setCheckState (s.value ("promoe/quitonclose").toBool () ? Qt::Checked : Qt::Unchecked);
+	h->addWidget (m_quitonclose);
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c);
+
+	QLabel *l = new QLabel (tr ("Unshaded view"), c);
 	
-	s.beginGroup ("maindisplay");
-	m_scrolltbar = new QCheckBox (tr ("Scroll titlebar"), this);
+	QFrame *f = new QFrame (c);
+	f->setFrameStyle (QFrame::HLine | QFrame::Raised);
+	h->addWidget (l);
+	h->addWidget (f, 1);
 
-	if (s.value("scrollbar").toBool ()) 
-		m_scrolltbar->setCheckState (Qt::Checked);
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c);
+
+	s.beginGroup ("display_main");
+	m_mainscroll = new QCheckBox (tr ("Scroll titlebar"), c);
+
+	if (s.value("scroll").toBool ()) 
+		m_mainscroll->setCheckState (Qt::Checked);
 	else
-		m_scrolltbar->setCheckState (Qt::Unchecked);
+		m_mainscroll->setCheckState (Qt::Unchecked);
 
-	h->addWidget (m_scrolltbar);
+	h->addWidget (m_mainscroll);
 
-	m_fontsize = new QSpinBox (this);
-	m_fontsize->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
-	m_fontsize->setMinimum (6);
-	m_fontsize->setMaximum (20);
-	m_fontsize->setValue (s.value("fontsize").toInt ());
-	h->addWidget (m_fontsize);
+	m_mainsize = new QSpinBox (c);
+	m_mainsize->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
+	m_mainsize->setMinimum (6);
+	m_mainsize->setMaximum (20);
+	m_mainsize->setValue (s.value("fontsize").toInt ());
+	h->addWidget (m_mainsize);
 
-	QLabel *l = new QLabel (tr ("Titlebar fontsize"), this);
+	l = new QLabel (tr ("Titlebar fontsize"), c);
 	l->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
 	h->addWidget (l);
 
-	QFrame *f = new QFrame (this);
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c);
+
+	m_mainttf = new QCheckBox (tr ("Draw text with TrueType fonts"), dummy);
+	m_mainttf->setCheckState (s.value ("ttf").toBool () ? Qt::Checked : Qt::Unchecked);
+	h->addWidget (m_mainttf);
+
+	
+	s.endGroup ();
+
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c);
+
+	l = new QLabel (tr ("Shaded view"), c);
+	
+	f = new QFrame (c);
+	f->setFrameStyle (QFrame::HLine | QFrame::Raised);
+	h->addWidget (l);
+	h->addWidget (f, 1);
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c);
+
+	s.beginGroup ("display_shaded");
+	m_shadescroll = new QCheckBox (tr ("Scroll titlebar"), c);
+
+	if (s.value("scroll").toBool ()) 
+		m_shadescroll->setCheckState (Qt::Checked);
+	else
+		m_shadescroll->setCheckState (Qt::Unchecked);
+
+	h->addWidget (m_shadescroll);
+
+	m_shadesize = new QSpinBox (c);
+	m_shadesize->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
+	m_shadesize->setMinimum (6);
+	m_shadesize->setMaximum (20);
+	m_shadesize->setValue (s.value("fontsize").toInt ());
+	h->addWidget (m_shadesize);
+
+	l = new QLabel (tr ("Titlebar fontsize"), c);
+	l->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
+	h->addWidget (l);
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c);
+
+	m_shadettf = new QCheckBox (tr ("Draw text with TrueType fonts"), dummy);
+	m_shadettf->setCheckState (s.value ("ttf").toBool () ? Qt::Checked : Qt::Unchecked);
+	h->addWidget (m_shadettf);
+
+	/*
+
+	QFrame *f = new QFrame (dummy);
 	f->setFrameStyle (QFrame::HLine | QFrame::Raised);
 	vbox->addWidget (f, 1);
 
@@ -97,7 +184,6 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	m_mainttf->setCheckState (s.value ("mainttf").toBool () ? Qt::Checked : Qt::Unchecked);
 	h->addWidget (m_mainttf);
 
-	/*
 	c = new QWidget (this);
 	h = new QHBoxLayout (c);
 
@@ -106,7 +192,6 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	m_shadettf = new QCheckBox (tr ("Draw shaded title with TrueType fonts"), this);
 	m_shadettf->setCheckState (s.value ("shadettf").toBool () ? Qt::Checked : Qt::Unchecked);
 	h->addWidget (m_shadettf);
-	*/
 
 	f = new QFrame (this);
 	f->setFrameStyle (QFrame::HLine | QFrame::Raised);
@@ -117,14 +202,10 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	
 	vbox->addWidget (c);
 
-	m_quitonclose = new QCheckBox (tr ("Quit XMMS2D when closing Promoe"));
-	if (s.contains ("quitonclose"))
-		s.setValue ("quitonclose", false);
-	m_quitonclose->setCheckState (s.value ("quitonclose").toBool () ? Qt::Checked : Qt::Unchecked);
-	h->addWidget (m_quitonclose);
 	
 	
 	s.endGroup ();
+	*/
 
 }
 
@@ -132,11 +213,18 @@ void
 SettingsTabMain::saveSettings (void)
 {
 	QSettings s;
+	
+	s.setValue ("promoe/quitonclose", m_quitonclose->checkState () == Qt::Checked);
 
-	s.beginGroup ("maindisplay");
-	s.setValue ("scrollbar", m_scrolltbar->checkState () == Qt::Checked);
-	s.setValue ("fontsize", m_fontsize->value ());
-	s.setValue ("quitonclose", m_quitonclose->checkState () == Qt::Checked);
-	s.setValue ("mainttf", m_mainttf->checkState () == Qt::Checked);
+	s.beginGroup ("display_main");
+	s.setValue ("scroll", m_mainscroll->checkState () == Qt::Checked);
+	s.setValue ("fontsize", m_mainsize->value ());
+	s.setValue ("ttf", m_mainttf->checkState () == Qt::Checked);
+	s.endGroup ();
+
+	s.beginGroup ("display_shaded");
+	s.setValue ("scroll", m_shadescroll->checkState () == Qt::Checked);
+	s.setValue ("fontsize", m_shadesize->value ());
+	s.setValue ("ttf", m_shadettf->checkState () == Qt::Checked);
 	s.endGroup ();
 }

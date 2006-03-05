@@ -19,7 +19,7 @@ class TextScroller : public QWidget
 	Q_OBJECT
 
 	public:
-		TextScroller (QWidget *parent, uint, uint);
+		TextScroller (QWidget *parent, uint, uint, const QString &);
 		~TextScroller ();
 
 		void setText(QString text);
@@ -43,9 +43,11 @@ class TextScroller : public QWidget
 		int m_x2_off;
 		int m_fontsize;
 		bool m_ttf;
+		bool m_scroll;
 
 		QTimer *m_timer;
 		QString m_text;
+		QString m_name;
 
 		void drawBitmapFont (QString text);
 		void drawQtFont (QString text);

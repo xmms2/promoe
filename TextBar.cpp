@@ -2,7 +2,9 @@
 #include "Display.h"
 #include "TextBar.h"
 
-TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
+TextScroller::TextScroller (QWidget *parent, uint w, 
+							uint h, const QString &name) : 
+	QWidget (parent)
 {
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	Skin *skin = Skin::getInstance ();
@@ -12,27 +14,26 @@ TextScroller::TextScroller (QWidget *parent, uint w, uint h) : QWidget (parent)
 
 	QSettings s;
 
-	s.beginGroup ("maindisplay");
+	s.beginGroup ("display_" + name);
 
-	if (!s.contains("scrollbar"))
-		s.setValue("scrollbar", true);
+	if (!s.contains("scroll"))
+		s.setValue("scroll", true);
 
 	if (!s.contains("fontsize"))
 		s.setValue("fontsize", 8);
 
-	if (!s.contains("mainttf"))
-		s.setValue("mainttf", true);
+	if (!s.contains("ttf"))
+		s.setValue("ttf", true);
 
-	if (!s.contains("shadettf"))
-		s.setValue("shadettf", true);
-
+	m_name = name;
 	m_h = h;
 	m_w = w;
 	m_x_off = 0;
 	m_x2_off = 0;
 	m_fontsize = s.value ("fontsize").toInt ();
-	m_ttf = s.value ("mainttf").toBool ();
+	m_ttf = s.value ("ttf").toBool ();
 	m_text = "Promoe 0.1";
+	m_scroll = s.value ("scroll").toBool ();
 
 	s.endGroup ();
 	
@@ -54,9 +55,16 @@ void
 TextScroller::settingsSaved (void)
 {
 	QSettings s;
-	s.beginGroup ("maindisplay");
+	s.beginGroup ("display_" + m_name);
 	m_fontsize = s.value ("fontsize").toInt ();
-	m_ttf = s.value ("mainttf").toBool ();
+	m_ttf = s.value ("ttf").toBool ();
+
+	if (m_scroll != s.value ("scroll").toBool ()) {
+		m_x_off = 0;
+		m_x2_off = 0;
+	}
+
+	m_scroll = s.value ("scroll").toBool ();
 	s.endGroup ();
 
 	setText (m_text);
@@ -83,7 +91,7 @@ TextScroller::addOffset ()
 	} else if (m_x_off < m_pixmap.size().width()) {
 		m_x_off ++;
 	} else {
-		m_x_off = 1;
+		m_x_off = 0;
 		m_x2_off = 0;
 	}
 
@@ -101,8 +109,6 @@ TextScroller::setText (QString text)
 	} else {
 		drawBitmapFont (text);
 	}
-	m_x_off = 1;
-	m_x2_off = 0;
 	update ();
 }
 
@@ -116,9 +122,13 @@ TextScroller::drawBitmapFont (QString text)
 
 	if (width > m_w) {
 		temp += QString::fromAscii ("  --  ");
-		m_x2_off = m_w / 2;
 		m_pixmap = QPixmap (width + 6*6, m_h);
-		m_timer->start (40);
+
+		if (m_scroll) {
+			m_timer->start (40);
+		} else {
+			m_timer->stop ();
+		}
 	} else {
 		m_pixmap = QPixmap (m_w, m_h);
 	}
@@ -166,10 +176,15 @@ TextScroller::drawQtFont (QString text)
 	if (rect.width() > m_w) {
 		temp += QString::fromAscii ("  --  ");
 		QRect rect = fM.boundingRect (temp);
-		m_timer->start (40);
-		m_x2_off = m_w / 2;
 
 		m_pixmap = QPixmap (rect.width(), m_h);
+
+		if (m_scroll) {
+			m_timer->start (40);
+		} else {
+			m_timer->stop ();
+		}
+
 	} else {
 		m_pixmap = QPixmap (m_w, m_h);
 	}

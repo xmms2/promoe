@@ -19,11 +19,14 @@ class SettingsTabMain : public QWidget {
 
 
 	private:
-		QCheckBox *m_scrolltbar;
-		QSpinBox *m_fontsize;
 		QCheckBox *m_quitonclose;
+
+		QSpinBox *m_mainsize;
 		QCheckBox *m_mainttf;
+		QCheckBox *m_mainscroll;
+		QSpinBox *m_shadesize;
 		QCheckBox *m_shadettf;
+		QCheckBox *m_shadescroll;
 };
 
 class SettingsWindow : public QMainWindow {

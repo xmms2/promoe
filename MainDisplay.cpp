@@ -17,7 +17,7 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	SetupPushButtons ();
 	SetupToggleButtons ();
 
-	m_text = new TextScroller (this, 154, 15);
+	m_text = new TextScroller (this, 154, 15, "main");
 	m_text->move (109, 23);
 
 	m_number = new NumberDisplay (this, 33, 11);
