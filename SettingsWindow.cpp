@@ -36,9 +36,9 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 	hbox->addWidget (cancel);
 	hbox->addWidget (ok);
 
-	m_mainwindow = new SettingsTabMain (tab);
-	m_playlistwin = new SettingsTabPlaylist (tab);
-	m_medialib = new SettingsTabMedialib (tab);
+	m_mainwindow = new SettingsTabMain (NULL);
+	m_playlistwin = new SettingsTabPlaylist (NULL);
+	m_medialib = new SettingsTabMedialib (NULL);
 
 	tab->addTab (m_mainwindow, tr ("Main Window"));
 	tab->addTab (m_playlistwin, tr ("Playlist Window"));
@@ -211,7 +211,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 
 	vbox->addWidget (c, 1);
 
-	m_mainttf = new QCheckBox (tr ("Draw text with TrueType fonts"), dummy);
+	m_mainttf = new QCheckBox (tr ("Draw text with TrueType fonts"), c);
 	m_mainttf->setCheckState (s.value ("ttf").toBool () ? Qt::Checked : Qt::Unchecked);
 	h->addWidget (m_mainttf);
 
@@ -262,7 +262,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 
 	vbox->addWidget (c, 1);
 
-	m_shadettf = new QCheckBox (tr ("Draw text with TrueType fonts"), dummy);
+	m_shadettf = new QCheckBox (tr ("Draw text with TrueType fonts"), c);
 	m_shadettf->setCheckState (s.value ("ttf").toBool () ? Qt::Checked : Qt::Unchecked);
 	h->addWidget (m_shadettf);
 

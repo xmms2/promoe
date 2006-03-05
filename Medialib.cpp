@@ -24,7 +24,7 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	
 	resize (500, 550);
 
-	m_dummy = new QWidget (parent);
+	m_dummy = new QWidget (this);
 	setCentralWidget (m_dummy);
 
 	m_vbox = new QVBoxLayout (m_dummy);
@@ -35,7 +35,7 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	m_tab = new QTabWidget (m_dummy);
 	m_vbox->addWidget (m_tab);
 
-	m_progress = new QProgressBar (m_dummy);
+	m_progress = new QProgressBar (statusBar ());
 	statusBar ()->addPermanentWidget (m_progress, 1);
 	m_progress->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
 
@@ -43,10 +43,10 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	m_status->setFrameStyle (QFrame::NoFrame);
 	statusBar ()->addPermanentWidget (m_status, 2);
 
-	m_list = new MedialibList (m_tab);
-	m_tab->addTab (new QWidget (m_tab), tr ("Artists"));
+	m_list = new MedialibList (this);
+	m_tab->addTab (new QWidget (), tr ("Artists"));
 	m_tab->addTab (m_list, tr ("Albums"));
-	m_tab->addTab (new QWidget (m_tab), tr ("Songs"));
+	m_tab->addTab (new QWidget (), tr ("Songs"));
 
 	for (int i = 0; i < m_tab->count() ; i++) {
 		if (s.value("selected").toString () == m_tab->tabText (i)) {
@@ -60,12 +60,12 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	connect (m_search, SIGNAL (textEdited (QString)), m_list, SLOT (search (QString)));
 }
 
-MedialibList::MedialibList (QWidget *parent) : QListWidget (parent)
+MedialibList::MedialibList (QWidget *parent) : QListWidget ()
 {
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	m_http = new QHttp (this);
 	m_httpmap = new QHash<int, MedialibListItem *>;
-	m_win = dynamic_cast<MedialibWindow*>(window ());
+	m_win = dynamic_cast<MedialibWindow*> (parent);
 
 	setIconSize (QSize (85, 85));
 	setDragEnabled (true);
@@ -189,7 +189,7 @@ MedialibList::queryCallback (QList<QHash<QString, QString> >l)
 
 		MedialibListItem *item = new MedialibListItem (h.value("artist"), h.value("album"), this);
 		item->setSizeHint (QSize (90, 90));
-		item->setIcon (QIcon (":nocover.jpg"));
+		item->setIcon (QIcon (":nocover.png"));
 		item->setFont (font);
 		item->setTextAlignment (Qt::AlignVCenter);
 
