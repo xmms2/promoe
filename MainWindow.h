@@ -33,6 +33,7 @@ class MainWindow : public QMainWindow
 		ShadedDisplay *getSD () { return m_shaded; }
 
 		void setPL (PlaylistWindow *p) { m_playlistwin = p; }
+		void raisePL (void) { m_playlistwin->raise (); }
 		void moveEvent (QMoveEvent *event);
 
 	public slots:

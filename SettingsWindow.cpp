@@ -9,8 +9,9 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
+	setWindowTitle ("Promoe - Settings window");
 	
-	resize (400, 400);
+	resize (400, 500);
 
 	QWidget *dummy = new QWidget (this);
 	setCentralWidget (dummy);

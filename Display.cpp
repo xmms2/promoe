@@ -19,6 +19,7 @@ SkinDisplay::setPixmaps (Skin *skin)
 void 
 SkinDisplay::mousePressEvent (QMouseEvent *event)
 {
+	dynamic_cast<MainWindow *>(getMW())->raisePL ();
 	m_diffX = event->x();
 	m_diffY = event->y();
 }
