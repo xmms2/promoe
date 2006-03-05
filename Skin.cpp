@@ -33,7 +33,6 @@ Skin::BuildPlaylist (void)
 	QPixmap tmp;
 
 	QPixmap *img = getPixmap ("pledit.bmp");
-	qDebug ("%d %d", img->size().width(), img->size().height());
 
 	m_playlist->insert (PLS_CORNER_UL_0, img->copy(0, 0, 25, 20));
 	m_playlist->insert (PLS_CORNER_UL_1, img->copy(0, 21, 25, 20));
