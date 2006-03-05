@@ -257,11 +257,11 @@ PlaylistList::mousePressEvent (QMouseEvent *event)
 			if (m_selected->count () > 0) {
 				int o = m_selected->last ();
 				if (o < i) {
-					for (int y = o; y <= i; y++) {
+					for (int y = o+1; y <= i; y++) {
 						m_selected->append (y);
 					}
 				} else {
-					for (int y = i; y <= o; y++) {
+					for (int y = i; y < o; y++) {
 						m_selected->append (y);
 					}
 				}
@@ -444,7 +444,7 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 			{
 				/* Sort list and remove in reverse order */
 				qSort (*m_selected);
-				for (int i = m_selected->count () - 1; i >= 0; i --) {
+				for (int i = (m_selected->count () - 1); i >= 0; i --) {
 					xmmsh->playlistRemove (m_selected->value (i));
 				}
 				m_selected->clear ();
