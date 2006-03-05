@@ -30,6 +30,7 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 	QPushButton *ok = new QPushButton (tr ("OK"));
 	ok->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
 	connect (ok, SIGNAL (clicked ()), this, SLOT (okButton ()));
+	connect (cancel, SIGNAL (clicked ()), this, SLOT (close ()));
 
 	hbox->addWidget (new QWidget (dummy2), 1);
 	hbox->addWidget (cancel);
@@ -37,7 +38,7 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 
 	m_mainwindow = new SettingsTabMain (tab);
 	m_playlistwin = new SettingsTabPlaylist (tab);
-	m_medialib = new QWidget (tab);
+	m_medialib = new SettingsTabMedialib (tab);
 
 	tab->addTab (m_mainwindow, tr ("Main Window"));
 	tab->addTab (m_playlistwin, tr ("Playlist Window"));
@@ -50,9 +51,54 @@ SettingsWindow::okButton (void)
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	m_mainwindow->saveSettings ();
 	m_playlistwin->saveSettings ();
+	m_medialib->saveSettings ();
 	
 	close ();
 	xmmsh->updateSettings ();
+}
+
+SettingsTabMedialib::SettingsTabMedialib (QWidget *parent) : QWidget (parent)
+{
+	QSettings s;
+
+	s.beginGroup("medialib");
+	QWidget *dummy = new QWidget (this);
+
+	QVBoxLayout *vbox = new QVBoxLayout (dummy);
+	QWidget *c = new QWidget (dummy);
+	QHBoxLayout *h = new QHBoxLayout (c);
+
+	vbox->addWidget (c, 1);
+
+	m_selected = new QComboBox (c);
+	m_selected->addItem (tr ("Artists"));
+	m_selected->addItem (tr ("Albums"));
+	m_selected->addItem (tr ("Songs"));
+	m_selected->setEditable (false);
+
+	QString curr = s.value ("selected").toString ();
+	for (int i = 0; i < m_selected->count(); i++) {
+		if (m_selected->itemText (i) == curr) {
+			m_selected->setCurrentIndex (i);
+			break;
+		}
+	}
+
+	h->addWidget (m_selected);
+
+	QLabel *l = new QLabel (tr ("Selected tab on startup"), c);
+
+	h->addWidget (l, 1);
+
+	s.endGroup ();
+
+}
+
+void
+SettingsTabMedialib::saveSettings ()
+{
+	QSettings s;
+	s.setValue ("medialib/selected", m_selected->currentText ());
 }
 
 SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)

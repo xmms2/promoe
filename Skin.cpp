@@ -32,7 +32,7 @@ Skin::BuildPlaylist (void)
 {
 	QPixmap tmp;
 
-	QPixmap *img = getPixmap ("pledit.bmp");
+	QPixmap *img = getPixmap ("pledit");
 
 	m_playlist->insert (PLS_CORNER_UL_0, img->copy(0, 0, 25, 20));
 	m_playlist->insert (PLS_CORNER_UL_1, img->copy(0, 21, 25, 20));
@@ -140,7 +140,8 @@ Skin::getPixmap (string file)
 	QFileInfoList list = dir.entryInfoList();
 	for (int i = 0; i < list.size(); ++i) {
 		QFileInfo fileInfo = list.at(i);
-		if (fileInfo.fileName().toLower() == f) {
+		QString fname = fileInfo.fileName().toLower();
+		if (fname.section(".", 0, 0) == f) {
 			return new QPixmap (fileInfo.filePath());
 		}
 	}
@@ -152,7 +153,7 @@ Skin::getPixmap (string file)
 void
 Skin::BuildLetterMap (void)
 {
-	QPixmap *img = getPixmap("text.bmp");
+	QPixmap *img = getPixmap("text");
 
 	QList<QList<QPixmap> >(letters);
 	for (int i = 0; i < 3; i++) {
@@ -215,7 +216,7 @@ Skin::BuildLetterMap (void)
 void
 Skin::BuildButtons (void)
 {
-	QPixmap *img = getPixmap("cbuttons.bmp");
+	QPixmap *img = getPixmap("cbuttons");
 	
 	m_items->insert (BTN_PREV_0, img->copy(0,  0, 23, 18));
 	m_items->insert (BTN_PREV_1, img->copy(0, 18, 23, 18));
@@ -242,7 +243,7 @@ Skin::BuildButtons (void)
 void
 Skin::BuildToggleButtons (void)
 {
-	QPixmap *img = getPixmap("shufrep.bmp");
+	QPixmap *img = getPixmap("shufrep");
 
 	m_items->insert(REPEAT_ON_0, img->copy(0, 30, 28, 15));
 	m_items->insert(REPEAT_ON_1, img->copy(0, 45, 28, 15));
@@ -275,7 +276,7 @@ Skin::BuildToggleButtons (void)
 void
 Skin::BuildTitleBar (void)
 {
-	QPixmap *img = getPixmap("titlebar.bmp");
+	QPixmap *img = getPixmap("titlebar");
 
 	m_items->insert(MENUBUTTON_0, img->copy(0, 0, 9, 9));
 	m_items->insert(MENUBUTTON_1, img->copy(0, 9, 9, 9));
@@ -308,7 +309,7 @@ Skin::BuildOther (void)
 	QPixmap *img, *part;
 	QPainter(painter);
 	
-	img = getPixmap("monoster.bmp");
+	img = getPixmap("monoster");
 	m_items->insert (MONO_1, img->copy(29,  0, 27, 12));
 	m_items->insert (MONO_0, img->copy(29, 12, 27, 12));
 	m_items->insert (STEREO_1, img->copy(0,  0, 29, 12));
@@ -316,7 +317,7 @@ Skin::BuildOther (void)
 	delete img;
 
 
-	img = getPixmap("playpaus.bmp");
+	img = getPixmap("playpaus");
 
 	part = new QPixmap(11, 9);
 	painter.begin(part);
@@ -345,7 +346,7 @@ Skin::BuildOther (void)
 	delete img;
 	
 
-	img = getPixmap ("main.bmp");
+	img = getPixmap ("main");
 	m_items->insert (MAIN_WINDOW, img->copy());
 	m_items->insert (ABOUT_0, img->copy(247, 83, 20, 25));
 	m_items->insert (ABOUT_1, img->copy(247, 83, 20, 24)); 
@@ -358,22 +359,22 @@ Skin::BuildSliders (void)
 {
 	QPixmap *img;
 
-	img = getPixmap("posbar.bmp");
+	img = getPixmap("posbar");
 	m_items->insert (POSBAR, img->copy (0, 0, 248, 10));
 	m_items->insert (POSBAR_BTN_0, img->copy (248, 0, 29, 10));
 	m_items->insert (POSBAR_BTN_1, img->copy (278, 0, 29, 10));
 
 	delete img;
 	
-	img = getPixmap("volume.bmp");
+	img = getPixmap("volume");
 	for (int i = VOLUMEBAR_POS_MIN; i < VOLUMEBAR_POS_MAX; i++) {
 		m_volume_bar->insert(i, img->copy(0, i*15, 68, 13));
 	}
 	delete img;
 	
-	img = getPixmap("balance.bmp");
+	img = getPixmap("balance");
 	if (!img) {
-		img = getPixmap("volume.bmp");
+		img = getPixmap("volume");
 	}
 
 	for (int i = BALANCE_POS_MIN; i < BALANCE_POS_MAX; i++) {
@@ -388,10 +389,10 @@ Skin::BuildNumbers (void)
 {
 	uint num = 11;
 
-	QPixmap *img = getPixmap("numbers.bmp");
+	QPixmap *img = getPixmap("numbers");
 	if (!img) {
 		num = 12;
-		img = getPixmap ("nums_ex.bmp");
+		img = getPixmap ("nums_ex");
 	}
 
 	for (uint i = 0; i < num; i++) {

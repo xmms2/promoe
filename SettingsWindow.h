@@ -9,6 +9,18 @@
 #include <QHBoxLayout>
 #include <QSpinBox>
 #include <QLabel>
+#include <QComboBox>
+
+class SettingsTabMedialib : public QWidget {
+	Q_OBJECT
+	public:
+		SettingsTabMedialib (QWidget *parent);
+		~SettingsTabMedialib () {}
+		void saveSettings (void);
+
+	private:
+		QComboBox *m_selected;
+};
 
 class SettingsTabPlaylist : public QWidget {
 	Q_OBJECT
@@ -53,7 +65,7 @@ class SettingsWindow : public QMainWindow {
 	private:
 		SettingsTabMain *m_mainwindow;
 		SettingsTabPlaylist *m_playlistwin;
-		QWidget *m_medialib;
+		SettingsTabMedialib *m_medialib;
 
 };
 

@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QIODevice>
 #include <QDir>
+#include <QSettings>
 #include "qtmd5.h"
 
 MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
@@ -12,6 +13,14 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
+	setWindowTitle ("Promoe - Medialib Window");
+
+	QSettings s;
+	s.beginGroup ("medialib");
+
+	if (!s.contains ("selected")) {
+		s.setValue ("selected", tr ("Artists"));
+	}
 	
 	resize (500, 550);
 
@@ -38,6 +47,15 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	m_tab->addTab (new QWidget (m_tab), tr ("Artists"));
 	m_tab->addTab (m_list, tr ("Albums"));
 	m_tab->addTab (new QWidget (m_tab), tr ("Songs"));
+
+	for (int i = 0; i < m_tab->count() ; i++) {
+		if (s.value("selected").toString () == m_tab->tabText (i)) {
+			m_tab->setCurrentIndex (i);
+			break;
+		}
+	}
+
+	s.endGroup ();
 
 	connect (m_search, SIGNAL (textEdited (QString)), m_list, SLOT (search (QString)));
 }

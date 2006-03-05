@@ -2,28 +2,27 @@
 	<qresource>
 		<file>icon.png</file>
 		<file>nocover.jpg</file>
-		<file>CleanAMP/Eq_ex.bmp</file>
-		<file>CleanAMP/GENEX.bmp</file>
-		<file>CleanAMP/Gen.bmp</file>
-		<file>CleanAMP/MONOSTER.BMP</file>
+		<file>CleanAMP/Eq_ex.png</file>
+		<file>CleanAMP/GENEX.png</file>
+		<file>CleanAMP/Gen.png</file>
+		<file>CleanAMP/monoster.png</file>
 		<file>CleanAMP/PLEDIT.TXT</file>
 		<file>CleanAMP/ReadMe.txt</file>
 		<file>CleanAMP/Thumbs.db</file>
-		<file>CleanAMP/VIDEO.bmp</file>
-		<file>CleanAMP/Volume.bmp</file>
-		<file>CleanAMP/balance.bmp</file>
-		<file>CleanAMP/cbuttons.bmp</file>
-		<file>CleanAMP/eqmain.bmp</file>
-		<file>CleanAMP/main.bmp</file>
-		<file>CleanAMP/mb.bmp</file>
-		<file>CleanAMP/numbers.bmp</file>
-		<file>CleanAMP/playpaus.bmp</file>
-		<file>CleanAMP/pledit.bmp</file>
-		<file>CleanAMP/posbar.bmp</file>
-		<file>CleanAMP/shufrep.bmp</file>
-		<file>CleanAMP/text.bmp</file>
-		<file>CleanAMP/titlebar.bmp</file>
+		<file>CleanAMP/VIDEO.png</file>
+		<file>CleanAMP/Volume.png</file>
+		<file>CleanAMP/balance.png</file>
+		<file>CleanAMP/cbuttons.png</file>
+		<file>CleanAMP/eqmain.png</file>
+		<file>CleanAMP/main.png</file>
+		<file>CleanAMP/mb.png</file>
+		<file>CleanAMP/numbers.png</file>
+		<file>CleanAMP/playpaus.png</file>
+		<file>CleanAMP/pledit.png</file>
+		<file>CleanAMP/posbar.png</file>
+		<file>CleanAMP/shufrep.png</file>
+		<file>CleanAMP/text.png</file>
+		<file>CleanAMP/titlebar.png</file>
 		<file>CleanAMP/viscolor.txt</file>
-
 	</qresource>
 </RCC>
