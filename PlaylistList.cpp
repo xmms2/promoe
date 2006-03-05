@@ -398,7 +398,11 @@ PlaylistList::dropEvent (QDropEvent *event)
 		stream >> album;
 
 		QString query;
-		query.sprintf ("select m1.id as id, ifnull(m3.value,-1) as tracknr from Media m1 join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='tracknr' where m1.key='artist' and m1.value='%s' and m2.value='%s' order by tracknr", artist.toUtf8 ().data (), album.toUtf8 ().data ());
+		if (artist == "Various Artists") {
+			query.sprintf ("select m1.id as id, ifnull(m3.value,-1) as tracknr from Media m1 join Media m2 on m1.id = m2.id and m2.key='compilation' left join Media m3 on m1.id = m3.id and m3.key='tracknr' where m1.key='album' and m1.value='%s' and m2.value=1 order by tracknr", album.toUtf8 ().data ());
+		} else {
+			query.sprintf ("select m1.id as id, ifnull(m3.value,-1) as tracknr from Media m1 join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='tracknr' where m1.key='artist' and m1.value='%s' and m2.value='%s' order by tracknr", artist.toUtf8 ().data (), album.toUtf8 ().data ());
+		}
 
 		xmmsh->medialibQueryAdd (query);
 

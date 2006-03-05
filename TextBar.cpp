@@ -147,9 +147,6 @@ TextScroller::drawBitmapFont (QString text)
 		QPixmap p = skin->getLetter (t[i]);
 		if (p.isNull ()) {
 			p = skin->getLetter(' ');
-			if (p.isNull ()) {
-				qDebug ("abort ffs!");
-			}
 		}
 
 		paint.drawPixmap (QRect ((i * 6), m_y, 4, 6),

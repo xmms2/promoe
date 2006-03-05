@@ -57,7 +57,7 @@ MedialibList::MedialibList (QWidget *parent) : QListWidget (parent)
 		dir.mkpath (dir.path ());
 	}
 
-	xmmsh->medialibQuery ("select distinct m1.value as artist, ifnull(m2.value,'[unknown]') as album, m4.value as image from Media m1 left join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='compilation' left join Media m4 on m4.id = m1.id and m4.key='album_front_small' where m1.key='artist' and m3.value is null");
+	xmmsh->medialibQuery ("select distinct ifnull(nullif(ifnull(nullif(ifnull(m3.value,0),1),'Various Artists'),0),m1.value) as artist, ifnull(m2.value,'[unknown]') as album, m4.value as image from Media m1 left join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='compilation' left join Media m4 on m4.id = m1.id and m4.key='album_front_small' where m1.key='artist' order by artist, album");
 
 	connect (xmmsh, SIGNAL (medialibResponse (QList<QHash<QString, QString> >)), 
 			 this, SLOT (queryCallback (QList<QHash<QString, QString> >)));
