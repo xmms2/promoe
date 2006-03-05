@@ -90,7 +90,7 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 
 	s.beginGroup ("playlist");
 	if (!s.contains ("size")) {
-		s.setValue ("size", QSize (280, 350));
+		s.setValue ("size", QSize (275, 350));
 	}
 	resize (s.value("size").toSize ());
 

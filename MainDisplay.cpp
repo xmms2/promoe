@@ -4,6 +4,7 @@
 #include "TextBar.h"
 
 #include <QFileDialog>
+#include <QSettings>
 
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
@@ -117,9 +118,14 @@ MainDisplay::setMediainfo (QHash<QString, QString> h)
 void
 MainDisplay::SetupToggleButtons (void)
 {
+	QSettings s;
+
 	m_pls = new ToggleButton (this, Skin::PLS_ON_0, Skin::PLS_ON_1,
 							  Skin::PLS_OFF_0, Skin::PLS_OFF_1);
 	m_pls->move(242, 58);
+	if (!s.value ("playlist/hidden").toBool ())
+		m_pls->toggleOn ();
+
 	connect (m_pls, SIGNAL(clicked()), window(), SLOT(togglePL()));
 
 	m_eq = new ToggleButton (this, Skin::EQ_ON_0, Skin::EQ_ON_1,
