@@ -187,7 +187,6 @@ PlaylistWindow::leaveEvent (QEvent *event)
 }
 
 
-
 PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();

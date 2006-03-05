@@ -5,6 +5,7 @@
 
 #include <QPaintEvent>
 #include <QDrag>
+#include <QSettings>
 #include <QStyleOptionHeader>
 
 PlaylistItem::PlaylistItem (PlaylistList *pl, uint id)
@@ -39,8 +40,12 @@ PlaylistItem::text (void)
 
 PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 {
+	QSettings s;
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	Skin *skin = Skin::getInstance ();
+
+	if (!s.contains("playlist/fontsize"))
+		s.setValue ("playlist/fontsize", 10);
 
 	setAttribute (Qt::WA_NoBackground);
 	setFocusPolicy (Qt::StrongFocus);
@@ -73,6 +78,22 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 
 	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
 	         this, SLOT(setStatus(uint)));
+
+	connect (xmmsh, SIGNAL(settingsSaved()),
+	         this, SLOT(settingsSaved()));
+}
+
+void
+PlaylistList::settingsSaved ()
+{
+	QSettings s;
+	m_font->setPixelSize (s.value ("playlist/fontsize").toInt ());
+
+	if (m_fontmetrics) {
+		delete m_fontmetrics;
+	}
+	m_fontmetrics = new QFontMetrics (*m_font);
+	update ();
 }
 
 void
@@ -578,6 +599,7 @@ PlaylistList::getFontH (void)
 void
 PlaylistList::setPixmaps (Skin *skin)
 {
+	QSettings s;
 	QPalette pal;
 	QColor c;
 	c.setNamedColor (skin->getPLeditValue ("normalbg"));
@@ -589,7 +611,7 @@ PlaylistList::setPixmaps (Skin *skin)
 		delete m_font;
 	}
 	m_font = new QFont (skin->getPLeditValue ("font"));
-	m_font->setPixelSize (10);
+	m_font->setPixelSize (s.value ("playlist/fontsize").toInt ());
 
 	if (m_fontmetrics) {
 		delete m_fontmetrics;

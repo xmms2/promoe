@@ -10,6 +10,17 @@
 #include <QSpinBox>
 #include <QLabel>
 
+class SettingsTabPlaylist : public QWidget {
+	Q_OBJECT
+	public:
+		SettingsTabPlaylist (QWidget *parent);
+		~SettingsTabPlaylist () {}
+		void saveSettings (void);
+
+	private:
+		QSpinBox *m_fontsize;
+};
+
 class SettingsTabMain : public QWidget {
 	Q_OBJECT
 	public:
@@ -40,7 +51,7 @@ class SettingsWindow : public QMainWindow {
 
 	private:
 		SettingsTabMain *m_mainwindow;
-		QWidget *m_playlistwin;
+		SettingsTabPlaylist *m_playlistwin;
 		QWidget *m_medialib;
 
 };

@@ -27,6 +27,7 @@ class PlaylistList : public QWidget {
 		void playlistChanged (QHash<QString,QString>);
 		void currentID (uint);
 		void setStatus (uint);
+		void settingsSaved ();
 	
 	private:
 		void paintEvent (QPaintEvent *event);

@@ -36,7 +36,7 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 	hbox->addWidget (ok);
 
 	m_mainwindow = new SettingsTabMain (tab);
-	m_playlistwin = new QWidget (tab);
+	m_playlistwin = new SettingsTabPlaylist (tab);
 	m_medialib = new QWidget (tab);
 
 	tab->addTab (m_mainwindow, tr ("Main Window"));
@@ -49,9 +49,44 @@ SettingsWindow::okButton (void)
 {
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	m_mainwindow->saveSettings ();
+	m_playlistwin->saveSettings ();
 	
 	close ();
 	xmmsh->updateSettings ();
+}
+
+SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)
+{
+	QSettings s;
+
+	s.beginGroup("playlist");
+	QWidget *dummy = new QWidget (this);
+
+	QVBoxLayout *vbox = new QVBoxLayout (dummy);
+	QWidget *c = new QWidget (dummy);
+	QHBoxLayout *h = new QHBoxLayout (c);
+
+	vbox->addWidget (c);
+
+	m_fontsize = new QSpinBox (c);
+	m_fontsize->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
+	m_fontsize->setMinimum (6);
+	m_fontsize->setMaximum (20);
+	m_fontsize->setValue (s.value("fontsize").toInt ());
+	h->addWidget (m_fontsize);
+
+	QLabel *l = new QLabel (tr ("Playlist fontsize"), c);
+	l->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
+	h->addWidget (l);
+
+	s.endGroup ();
+}
+
+void
+SettingsTabPlaylist::saveSettings (void)
+{
+	QSettings s;
+	s.setValue ("playlist/fontsize", m_fontsize->value ());
 }
 
 SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
