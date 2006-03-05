@@ -3,9 +3,15 @@
 #include "PlaylistShade.h"
 #include "Playlist.h"
 
+#include <QSettings>
+
 PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 {
+	QSettings s;
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+
+	if (!s.contains ("playlist/shadedsize"))
+		s.setValue ("playlist/shadedsize", 8);
 
 	Skin *skin = Skin::getInstance ();
 	setMinimumSize (275, 14);
@@ -15,7 +21,19 @@ PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 	connect (xmmsh, SIGNAL(currentSong (QHash<QString, QString>)), 
 			 this, SLOT(setMediainfo (QHash<QString, QString>)));
 
+	connect (xmmsh, SIGNAL(settingsSaved ()), 
+			 this, SLOT(settingsSaved ()));
+
 	m_text = "Promoe 0.1 - A very neat XMMS2 client";
+}
+
+void
+PlaylistShade::settingsSaved ()
+{
+	QSettings s;
+
+	m_font.setPixelSize (s.value ("playlist/shadedsize").toInt ());
+	update ();
 }
 
 void
@@ -35,6 +53,7 @@ PlaylistShade::setMediainfo (QHash<QString, QString> h)
 void
 PlaylistShade::setPixmaps (Skin *skin)
 {
+	QSettings s;
 
 	m_pixmap_le = skin->getPls (Skin::PLS_WS_LE_0);
 	m_pixmap_re_0 = skin->getPls (Skin::PLS_WS_RE_0);
@@ -43,7 +62,7 @@ PlaylistShade::setPixmaps (Skin *skin)
 	m_pixmap_re = m_pixmap_re_0;
 
 	m_font = QFont (skin->getPLeditValue ("font"));
-	m_font.setPixelSize (8);
+	m_font.setPixelSize (s.value ("playlist/shadedsize").toInt ());
 	m_color.setNamedColor (skin->getPLeditValue ("normal"));
 
 	update ();

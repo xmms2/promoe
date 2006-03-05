@@ -19,6 +19,7 @@ class PlaylistShade : public QWidget {
 	public slots:
 		void setPixmaps (Skin *skin);
 		void setMediainfo (QHash<QString, QString> h);
+		void settingsSaved ();
 
 	private:
 		QPixmap m_pixmap_le;

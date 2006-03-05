@@ -19,6 +19,7 @@ class SettingsTabPlaylist : public QWidget {
 
 	private:
 		QSpinBox *m_fontsize;
+		QSpinBox *m_shadesize;
 };
 
 class SettingsTabMain : public QWidget {

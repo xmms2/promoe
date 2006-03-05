@@ -66,7 +66,7 @@ SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)
 	QWidget *c = new QWidget (dummy);
 	QHBoxLayout *h = new QHBoxLayout (c);
 
-	vbox->addWidget (c);
+	vbox->addWidget (c, 1);
 
 	m_fontsize = new QSpinBox (c);
 	m_fontsize->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
@@ -76,9 +76,23 @@ SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)
 	h->addWidget (m_fontsize);
 
 	QLabel *l = new QLabel (tr ("Playlist fontsize"), c);
-	l->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
-	h->addWidget (l);
+	h->addWidget (l, 1);
 
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c, 1);
+
+	m_shadesize = new QSpinBox (c);
+	m_shadesize->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
+	m_shadesize->setMinimum (6);
+	m_shadesize->setMaximum (20);
+	m_shadesize->setValue (s.value("shadedsize").toInt ());
+	h->addWidget (m_shadesize);
+
+	l = new QLabel (tr ("Playlist shaded mode fontsize"), c);
+	h->addWidget (l, 1);
+	
 	s.endGroup ();
 }
 
@@ -87,6 +101,7 @@ SettingsTabPlaylist::saveSettings (void)
 {
 	QSettings s;
 	s.setValue ("playlist/fontsize", m_fontsize->value ());
+	s.setValue ("playlist/shadedsize", m_shadesize->value ());
 }
 
 SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
@@ -99,7 +114,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	QWidget *c = new QWidget (dummy);
 	QHBoxLayout *h = new QHBoxLayout (c);
 
-	vbox->addWidget (c);
+	vbox->addWidget (c, 1);
 
 	m_quitonclose = new QCheckBox (tr ("Quit XMMS2D when closing Promoe"), c);
 	if (s.contains ("promoe/quitonclose"))
@@ -110,7 +125,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	c = new QWidget (dummy);
 	h = new QHBoxLayout (c);
 
-	vbox->addWidget (c);
+	vbox->addWidget (c, 1);
 
 	QLabel *l = new QLabel (tr ("Unshaded view"), c);
 	
@@ -122,7 +137,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	c = new QWidget (dummy);
 	h = new QHBoxLayout (c);
 
-	vbox->addWidget (c);
+	vbox->addWidget (c, 1);
 
 	s.beginGroup ("display_main");
 	m_mainscroll = new QCheckBox (tr ("Scroll titlebar"), c);
@@ -148,7 +163,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	c = new QWidget (dummy);
 	h = new QHBoxLayout (c);
 
-	vbox->addWidget (c);
+	vbox->addWidget (c, 1);
 
 	m_mainttf = new QCheckBox (tr ("Draw text with TrueType fonts"), dummy);
 	m_mainttf->setCheckState (s.value ("ttf").toBool () ? Qt::Checked : Qt::Unchecked);
@@ -161,7 +176,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	c = new QWidget (dummy);
 	h = new QHBoxLayout (c);
 
-	vbox->addWidget (c);
+	vbox->addWidget (c, 1);
 
 	l = new QLabel (tr ("Shaded view"), c);
 	
@@ -173,7 +188,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	c = new QWidget (dummy);
 	h = new QHBoxLayout (c);
 
-	vbox->addWidget (c);
+	vbox->addWidget (c, 1);
 
 	s.beginGroup ("display_shaded");
 	m_shadescroll = new QCheckBox (tr ("Scroll titlebar"), c);
@@ -199,7 +214,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	c = new QWidget (dummy);
 	h = new QHBoxLayout (c);
 
-	vbox->addWidget (c);
+	vbox->addWidget (c, 1);
 
 	m_shadettf = new QCheckBox (tr ("Draw text with TrueType fonts"), dummy);
 	m_shadettf->setCheckState (s.value ("ttf").toBool () ? Qt::Checked : Qt::Unchecked);
