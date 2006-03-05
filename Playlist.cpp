@@ -162,6 +162,11 @@ PlaylistWindow::mouseMoveEvent (QMouseEvent *event)
 	move (event->globalPos().x() - m_diffx,
 		  event->globalPos().y() - m_diffy);
 
+}
+
+void
+PlaylistWindow::moveEvent (QMoveEvent *event)
+{
 	QSettings s;
 	s.setValue ("playlist/pos", pos ());
 }
