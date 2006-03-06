@@ -61,6 +61,18 @@ SettingsTabMedialib::SettingsTabMedialib (QWidget *parent) : QWidget (parent)
 {
 	QSettings s;
 
+	if (!s.contains ("medialib_artist/size")) {
+		s.setValue ("medialib_artist/size", tr ("Large"));
+	}
+
+	if (!s.contains ("medialib_album/size")) {
+		s.setValue ("medialib_album/size", tr ("Large"));
+	}
+
+	if (!s.contains ("medialib_song/size")) {
+		s.setValue ("medialib_song/size", tr ("Large"));
+	}
+
 	s.beginGroup("medialib");
 	QWidget *dummy = new QWidget (this);
 
@@ -87,7 +99,121 @@ SettingsTabMedialib::SettingsTabMedialib (QWidget *parent) : QWidget (parent)
 	h->addWidget (m_selected);
 
 	QLabel *l = new QLabel (tr ("Selected tab on startup"), c);
+	h->addWidget (l, 1);
 
+	s.endGroup ();
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c, 1);
+
+	s.beginGroup ("medialib_artist");
+
+	l = new QLabel (tr ("Artist view"), c);
+	
+	QFrame *f = new QFrame (c);
+	f->setFrameStyle (QFrame::HLine | QFrame::Raised);
+	h->addWidget (l);
+	h->addWidget (f, 1);
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+
+	vbox->addWidget (c, 1);
+
+	m_artistsize = new QComboBox (c);
+	m_artistsize->addItem (tr ("None"));
+	m_artistsize->addItem (tr ("Small"));
+	m_artistsize->addItem (tr ("Large"));
+	m_artistsize->setEditable (false);
+
+	curr = s.value ("size").toString ();
+	for (int i = 0; i < m_artistsize->count(); i++) {
+		if (m_artistsize->itemText (i) == curr) {
+			m_artistsize->setCurrentIndex (i);
+			break;
+		}
+	}
+
+	h->addWidget (m_artistsize);
+	l = new QLabel (tr ("Size of media art icon"), c);
+	h->addWidget (l, 1);
+
+	s.endGroup ();
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+	vbox->addWidget (c, 1);
+
+	s.beginGroup ("medialib_album");
+
+	l = new QLabel (tr ("Album view"), c);
+	
+	f = new QFrame (c);
+	f->setFrameStyle (QFrame::HLine | QFrame::Raised);
+	h->addWidget (l);
+	h->addWidget (f, 1);
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+	
+	vbox->addWidget (c, 1);
+
+	m_albumsize = new QComboBox (c);
+	m_albumsize->addItem (tr ("None"));
+	m_albumsize->addItem (tr ("Small"));
+	m_albumsize->addItem (tr ("Large"));
+	m_albumsize->setEditable (false);
+
+	curr = s.value ("size").toString ();
+	for (int i = 0; i < m_artistsize->count(); i++) {
+		if (m_albumsize->itemText (i) == curr) {
+			m_albumsize->setCurrentIndex (i);
+			break;
+		}
+	}
+
+	h->addWidget (m_albumsize);
+	l = new QLabel (tr ("Size of media art icon"), c);
+	h->addWidget (l, 1);
+
+	s.endGroup ();
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+	vbox->addWidget (c, 1);
+
+	s.beginGroup ("medialib_song");
+
+	l = new QLabel (tr ("Song view"), c);
+	
+	f = new QFrame (c);
+	f->setFrameStyle (QFrame::HLine | QFrame::Raised);
+	h->addWidget (l);
+	h->addWidget (f, 1);
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+	
+	vbox->addWidget (c, 1);
+
+	m_songsize = new QComboBox (c);
+	m_songsize->addItem (tr ("None"));
+	m_songsize->addItem (tr ("Small"));
+	m_songsize->addItem (tr ("Large"));
+	m_songsize->setEditable (false);
+
+	curr = s.value ("size").toString ();
+	for (int i = 0; i < m_artistsize->count(); i++) {
+		if (m_songsize->itemText (i) == curr) {
+			m_songsize->setCurrentIndex (i);
+			break;
+		}
+	}
+
+	h->addWidget (m_songsize);
+	l = new QLabel (tr ("Size of media art icon"), c);
 	h->addWidget (l, 1);
 
 	s.endGroup ();
@@ -99,6 +225,9 @@ SettingsTabMedialib::saveSettings ()
 {
 	QSettings s;
 	s.setValue ("medialib/selected", m_selected->currentText ());
+	s.setValue ("medialib_artist/size", m_artistsize->currentText ());
+	s.setValue ("medialib_album/size", m_albumsize->currentText ());
+	s.setValue ("medialib_song/size", m_songsize->currentText ());
 }
 
 SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)

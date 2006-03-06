@@ -261,11 +261,12 @@ XMMSHandler::PropDictToQHash (XMMSResultDict *res)
 	return h;
 }
 
-void
+uint
 XMMSHandler::medialibQuery (QString q)
 {
 	XMMSResultDictList *r = m_xmmsc->medialib_select (q.toUtf8 ());
 	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_select));
+	return r->getCID ();
 }
 
 void
@@ -278,7 +279,7 @@ XMMSHandler::medialib_select (XMMSResultDictList *res)
 		l.append (h);
 	}
 
-	emit medialibResponse (l);
+	emit medialibResponse (res->getCID (), l);
 }
 
 void

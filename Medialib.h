@@ -13,48 +13,75 @@
 #include <QLabel>
 #include <QHttp>
 #include <QFile>
+#include <QUrl>
 
 class MedialibWindow;
 
 class MedialibListItem : public QListWidgetItem
 {
 	public:
-		MedialibListItem (QString artist, QString album, QListWidget *parent) : 
+		MedialibListItem (const QString &artist, const QString &album,
+						  const QString &song, QListWidget *parent) : 
+			QListWidgetItem (artist + " - " + song, parent) {
+				m_artist = artist;
+				m_album = album;
+				m_song = song;
+			}
+		MedialibListItem (const QString &artist, const QString &album, 
+						  QListWidget *parent) : 
 			QListWidgetItem (artist + " - " + album, parent) {
 				m_artist = artist;
 				m_album = album;
 			}
+		MedialibListItem (const QString &artist, QListWidget *parent) : 
+			QListWidgetItem (artist, parent) {
+				m_artist = artist;
+			}
+
 		~MedialibListItem () {}
 		void setFile (QFile *f) { m_file = f; }
 		QFile *getFile (void) { return m_file; }
+
 		QString getArtist (void) { return m_artist; }
 		QString getAlbum (void) { return m_album; }
+		QString getSong (void) { return m_song; }
 
 	private:
 		QFile *m_file;
 		QString m_artist;
 		QString m_album;
+		QString m_song;
 };
 
 class MedialibList : public QListWidget
 {
 	Q_OBJECT
 	public:
-		MedialibList (QWidget *parent);
+		MedialibList (QWidget *parent, const QString &name);
 		~MedialibList () {}
-		QStringList mimeTypes (void) const;
+		void setSizes (void);
+		void refresh (void) {}
+		/*
+		QStringList mimeTypes (void) const {};
+		*/
 
 	public slots:
-		void queryCallback (QList<QHash<QString, QString> >);
-		void httpDone (int, bool);
-		void search (QString);
-		QMimeData *mimeData(const QList<QListWidgetItem*> items) const;
+
+		/*
+		void queryCallback (uint, QList<QHash<QString, QString> >) {};
+		QMimeData *mimeData(const QList<QListWidgetItem*> items) const {};
+		*/
+
+		void search (const QString &);
+
+	protected:
+		uint m_cid;
+		QFont m_font;
+		MedialibWindow *m_win;
+		bool m_noicon;
 
 	private:
-		QHash<int, MedialibListItem*> *m_httpmap;
-		QHttp *m_http;
-		MedialibWindow *m_win;
-		int m_httpr;
+		QString m_name;
 
 };
 
@@ -74,16 +101,25 @@ class MedialibWindow : public QMainWindow
 				m_progress->reset ();
 			}
 		}
+
 		void setBusy (int min, int max) {
 			m_progress->setMaximum (max);
 			m_progress->setMinimum (min);
 		}
+
 		void setBusy (int cur) {
 			m_progress->setValue (cur);
 		}
+
 		void setStatusText (QString s) {
 			m_status->setText (s);
 		}
+
+		void addRequest (QUrl url, MedialibListItem *item);
+
+	public slots:
+		void httpDone (int, bool);
+		void settingsSaved (void);
 
 	private:
 		QWidget *m_dummy;
@@ -92,7 +128,12 @@ class MedialibWindow : public QMainWindow
 		QVBoxLayout *m_vbox;
 		QProgressBar *m_progress;
 		QLabel *m_status;
-		MedialibList *m_list;
+		MedialibList *m_artist;
+		MedialibList *m_album;
+		MedialibList *m_song;
+
+		QHash<int, MedialibListItem*> *m_httpmap;
+		QHttp *m_http;
 };
 
 #endif

@@ -20,6 +20,9 @@ class SettingsTabMedialib : public QWidget {
 
 	private:
 		QComboBox *m_selected;
+		QComboBox *m_artistsize;
+		QComboBox *m_albumsize;
+		QComboBox *m_songsize;
 };
 
 class SettingsTabPlaylist : public QWidget {

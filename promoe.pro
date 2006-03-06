@@ -20,7 +20,10 @@ SOURCES += XmmsQT4.cpp \
 		   PlaylistShade.cpp \
 		   Medialib.cpp \
 		   qtmd5.cpp \
-		   SettingsWindow.cpp
+		   SettingsWindow.cpp \
+		   MediaArtistList.cpp \
+		   MediaAlbumList.cpp \
+		   MediaSongList.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -44,7 +47,10 @@ HEADERS += XmmsQT4.h \
 		   PlaylistShade.h \
 		   Medialib.h \
 		   qtmd5.h \
-		   SettingsWindow.h
+		   SettingsWindow.h \
+		   MediaArtistList.h \
+		   MediaAlbumList.h \
+		   MediaSongList.h
 
 
 RESOURCES = promoe.qrc

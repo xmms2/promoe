@@ -343,7 +343,7 @@ PlaylistList::mouseMoveEvent (QMouseEvent *event)
 		m_items->removeAt (i);
 		m_selected->clear ();
 
-		Qt::DropAction drop = m_drag->start ();
+		m_drag->start ();
 	}
 
 }
@@ -353,23 +353,10 @@ PlaylistList::dragEnterEvent (QDragEnterEvent *event)
 {
 
 	if (event->mimeData()->hasFormat("application/mlib.album") ||
+		event->mimeData()->hasFormat("application/mlib.artist") ||
+		event->mimeData()->hasFormat("application/mlib.song") ||
 		event->mimeData()->hasFormat("application/playlist.move"))
 		event->acceptProposedAction();
-	/*
-	const QMimeData *md = event->mimeData ();
-	QByteArray encodedData = md->data("application/mlib.album");
-	QDataStream stream(&encodedData, QIODevice::ReadOnly);
-
-	QString artist;
-	QString album;
-	stream >> artist;
-	stream >> album;
-
-	qDebug ("korv %s - %s", qPrintable (artist), 
-			qPrintable (album));
-	
-	event->accept ();
-	*/
 }
 
 void
@@ -424,6 +411,41 @@ PlaylistList::dropEvent (QDropEvent *event)
 		} else {
 			query.sprintf ("select m1.id as id, ifnull(m3.value,-1) as tracknr from Media m1 join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='tracknr' where m1.key='artist' and m1.value='%s' and m2.value='%s' order by tracknr", artist.toUtf8 ().data (), album.toUtf8 ().data ());
 		}
+
+		xmmsh->medialibQueryAdd (query);
+
+		event->acceptProposedAction ();
+	} else if (event->mimeData()->hasFormat("application/mlib.artist")) {
+		const QMimeData *md = event->mimeData ();
+		QByteArray encodedData = md->data("application/mlib.artist");
+		QDataStream stream(&encodedData, QIODevice::ReadOnly);
+
+		QString artist;
+		stream >> artist;
+
+		QString query;
+		if (artist == "Various Artists") {
+			query.sprintf ("select m1.id as id, m2.value as album, ifnull(m3.value,-1) as tracknr from Media m1 left join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='tracknr' where m1.key='compilation' and m1.value=1 order by album, tracknr;");
+		} else {
+			query.sprintf ("select m1.id as id, m2.value as album, ifnull(m3.value,-1) as tracknr from Media m1 left join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='tracknr' where m1.key='artist' and m1.value='%s' order by album, tracknr", artist.toUtf8 ().data ());
+		}
+
+		xmmsh->medialibQueryAdd (query);
+		event->acceptProposedAction ();
+	} else if (event->mimeData()->hasFormat("application/mlib.song")) {
+		const QMimeData *md = event->mimeData ();
+		QByteArray encodedData = md->data("application/mlib.song");
+		QDataStream stream(&encodedData, QIODevice::ReadOnly);
+
+		QString artist;
+		QString album;
+		QString song;
+		stream >> artist;
+		stream >> album;
+		stream >> song;
+
+		QString query;
+		query.sprintf ("select m1.id as id, ifnull(m1.value, '[unknown]') as artist, ifnull(m2.value,'[unknown]') as album, ifnull(m4.value,m5.value) as song from Media m1 left join Media m2 on m1.id = m2.id and m2.key='album' left join Media m4 on m1.id = m4.id and m4.key='title' left join Media m5 on m1.id = m5.id and m5.key='url' where m1.key='artist' and artist='%s' and album='%s' and song='%s'", artist.toUtf8 ().data (), album.toUtf8 ().data (), song.toUtf8 ().data ());
 
 		xmmsh->medialibQueryAdd (query);
 

@@ -8,12 +8,18 @@
 #include <QSettings>
 #include "qtmd5.h"
 
+#include "MediaArtistList.h"
+#include "MediaAlbumList.h"
+#include "MediaSongList.h"
+
 MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 {
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 	setWindowTitle ("Promoe - Medialib Window");
+
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 
 	QSettings s;
 	s.beginGroup ("medialib");
@@ -43,11 +49,36 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	m_status->setFrameStyle (QFrame::NoFrame);
 	statusBar ()->addPermanentWidget (m_status, 2);
 
-	m_list = new MedialibList (this);
-	m_tab->addTab (new QWidget (), tr ("Artists"));
-	m_tab->addTab (m_list, tr ("Albums"));
-	m_tab->addTab (new QWidget (), tr ("Songs"));
 
+	/*** Init views ***/
+	QDir dir (QDir::homePath ()+"/.xmms2/clients/generic/art/");
+	if (!dir.exists()) {
+		dir.mkpath (dir.path ());
+	}
+	m_http = new QHttp (this);
+	connect (m_http, SIGNAL (requestFinished (int, bool)), this,
+							 SLOT (httpDone (int, bool)));
+
+	/*** artist ***/
+	m_artist = new MediaArtistList (this, "artist");
+	m_tab->addTab (m_artist, tr ("Artists"));
+	connect (m_search, SIGNAL (textEdited (QString)), 
+			 m_artist, SLOT (search (QString)));
+
+	/*** album ***/
+	m_album = new MediaAlbumList (this, "album");
+	m_tab->addTab (m_album, tr ("Albums"));
+	connect (m_search, SIGNAL (textEdited (QString)), 
+			 m_album, SLOT (search (QString)));
+
+	/*** song ***/
+	m_song = new MediaSongList (this, "song");
+	m_tab->addTab (m_song, tr ("Songs"));
+	connect (m_search, SIGNAL (textEdited (QString)), 
+			 m_song, SLOT (search (QString)));
+
+
+	/*** set active view from config ***/
 	for (int i = 0; i < m_tab->count() ; i++) {
 		if (s.value("selected").toString () == m_tab->tabText (i)) {
 			m_tab->setCurrentIndex (i);
@@ -57,60 +88,46 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 
 	s.endGroup ();
 
-	connect (m_search, SIGNAL (textEdited (QString)), m_list, SLOT (search (QString)));
-}
+	setBusy (true);
+	setStatusText ("Loading medialib");
 
-MedialibList::MedialibList (QWidget *parent) : QListWidget ()
-{
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
-	m_http = new QHttp (this);
-	m_httpmap = new QHash<int, MedialibListItem *>;
-	m_win = dynamic_cast<MedialibWindow*> (parent);
-
-	setIconSize (QSize (85, 85));
-	setDragEnabled (true);
-
-	QDir dir (QDir::homePath ()+"/.xmms2/clients/generic/art/");
-	if (!dir.exists()) {
-		dir.mkpath (dir.path ());
-	}
-
-	xmmsh->medialibQuery ("select distinct ifnull(nullif(ifnull(nullif(ifnull(m3.value,0),1),'Various Artists'),0),m1.value) as artist, ifnull(m2.value,'[unknown]') as album, m4.value as image from Media m1 left join Media m2 on m1.id = m2.id and m2.key='album' left join Media m3 on m1.id = m3.id and m3.key='compilation' left join Media m4 on m4.id = m1.id and m4.key='album_front_small' where m1.key='artist' order by artist, album");
-
-	connect (xmmsh, SIGNAL (medialibResponse (QList<QHash<QString, QString> >)), 
-			 this, SLOT (queryCallback (QList<QHash<QString, QString> >)));
-
-	connect (m_http, SIGNAL (requestFinished (int, bool)), this,
-							 SLOT (httpDone (int, bool)));
-
-	m_win->setBusy (true);
-	m_win->setStatusText ("Loading album view");
+	connect (xmmsh, SIGNAL (settingsSaved ()), this, SLOT (settingsSaved ()));
 }
 
 void
-MedialibList::search (QString s)
+MedialibWindow::settingsSaved ()
 {
-	if (s.length () > 0) {
-		for (int i = 0; i < count (); i++) {
-			MedialibListItem *it = dynamic_cast<MedialibListItem*> (item (i));
-			if (!it->text().contains (s, Qt::CaseInsensitive)) {
-				setItemHidden (it, true);
-			} else if (isItemHidden (it)) {
-				setItemHidden (it, false);
-			}
-		}
+	m_artist->setSizes();
+	m_album->setSizes();
+	m_song->setSizes();
 
-	} else {
-		for (int i = 0; i < count (); i++) {
-			MedialibListItem *it = dynamic_cast<MedialibListItem*> (item (i));
-			setItemHidden (it, false);
-		}
-	}
+	setBusy (true);
+	setStatusText ("Refreshing medialib");
 
+	m_artist->refresh();
+	m_album->refresh();
+	m_song->refresh();
+	
+	update ();
 }
 
 void
-MedialibList::httpDone (int id, bool error)
+MedialibWindow::addRequest (QUrl url, MedialibListItem *item)
+{
+	m_http->setHost (url.host (), url.port () != 1 ? url.port () : 80);
+
+	if (!url.userName().isEmpty()) {
+		m_http->setUser (url.userName(), url.password());
+	}
+
+	int id = m_http->get (url.path (), item->getFile ());
+	m_httpmap->insert (id, item);
+
+	qDebug ("add request %s (%d)", qPrintable (url.path ()), id);
+}
+
+void
+MedialibWindow::httpDone (int id, bool error)
 {
 	if (error) {
 		qWarning ("error!");
@@ -137,11 +154,11 @@ MedialibList::httpDone (int id, bool error)
 		delete f;
 		m_httpmap->remove (id);
 		if (m_httpmap->count () == 0) {
-			m_win->setBusy (false);
-			m_win->setStatusText ("idle");
+			setBusy (false);
+			setStatusText ("idle");
 		} else {
-			m_win->setBusy (m_httpmap->count ());
-			m_win->setStatusText ("Got art for: " + it->text());
+			setBusy (m_httpmap->count ());
+			setStatusText ("Got art for: " + it->text());
 		}
 	}
 
@@ -149,84 +166,67 @@ MedialibList::httpDone (int id, bool error)
 
 }
 
-QStringList 
-MedialibList::mimeTypes () const
+
+
+MedialibList::MedialibList (QWidget *parent, const QString &name) : QListWidget ()
 {
-	QStringList types;
-	types << "application/mlib.album";
-	return types;
+	m_win = dynamic_cast<MedialibWindow*> (parent);
+
+	setDragEnabled (true);
+
+	m_name = name;
+	setSizes ();
 }
-
-QMimeData *
-MedialibList::mimeData(const QList<QListWidgetItem*> items) const
-{
-	QMimeData *mimeData = new QMimeData();
-	QByteArray encodedData;
-
-	MedialibListItem *it = dynamic_cast<MedialibListItem *> (currentItem ());
-	
-	QDataStream stream(&encodedData, QIODevice::WriteOnly);
-	stream << it->getArtist ();
-	stream << it->getAlbum ();
-
-	mimeData->setData("application/mlib.album", encodedData);
-	return mimeData;
-}
-
 
 void
-MedialibList::queryCallback (QList<QHash<QString, QString> >l)
+MedialibList::setSizes (void)
 {
-	QFont font;
+	QSettings s;
 
-	font.setPixelSize (14);
+	s.beginGroup ("medialib_"+m_name);
 
-	m_win->setBusy (false);
-	m_win->setStatusText ("idle");
-
-	for (int i = 0; i < l.count (); i++) {
-		QHash<QString, QString> h(l.value (i));
-
-		MedialibListItem *item = new MedialibListItem (h.value("artist"), h.value("album"), this);
-		item->setSizeHint (QSize (90, 90));
-		item->setIcon (QIcon (":nocover.png"));
-		item->setFont (font);
-		item->setTextAlignment (Qt::AlignVCenter);
-
-		if (h.contains ("image")) {
-
-			QString name = qtMD5 ((h.value("artist").toLower()+"-"+h.value("album").toLower()).toUtf8());
-			QString fname (QDir::homePath () +"/.xmms2/clients/generic/art/"+name+"-small.jpg");
-
-			if (!QFile::exists (fname)) {
-				QUrl url (h.value("image"));
-
-				m_http->setHost (url.host(), url.port() != -1 ? url.port() : 80);
-				if (!url.userName().isEmpty()) {
-					m_http->setUser (url.userName(), url.password());
-				}
-
-				QFile *file = new QFile ("/tmp/"+name+"-small.jpg");
-				file->open(QIODevice::WriteOnly);
-			
-				item->setFile (file);
-
-				int id = m_http->get (url.path(), file);
-				m_httpmap->insert (id, item);
-			} else {
-				QIcon ico (fname);
-				item->setIcon (ico);
-			}
-
-		}
-
-
+	if (!s.contains ("size")) {
+		s.setValue ("size", tr ("Large"));
 	}
+	
+	QString size = s.value("size").toString ();
+	
+	m_noicon = false;
 
-	if (m_httpmap->count() > 0) {
-		m_win->setBusy (0, m_httpmap->count ());
-		m_win->setStatusText ("Loading album art");
+	if (size == tr ("Small")) {
+		setIconSize (QSize (42, 42));
+		m_font.setPixelSize (10);
+	} else if (size == tr ("Large")) {
+		setIconSize (QSize (85, 85));
+		m_font.setPixelSize (14);
+	} else if (size == tr ("None")) {
+		setIconSize (QSize (10, 10));
+		m_noicon = true;
+		m_font.setPixelSize (10);
 	}
 
 }
+
+void
+MedialibList::search (const QString &s)
+{
+	if (s.length () > 0) {
+		for (int i = 0; i < count (); i++) {
+			MedialibListItem *it = dynamic_cast<MedialibListItem*> (item (i));
+			if (!it->text().contains (s, Qt::CaseInsensitive)) {
+				setItemHidden (it, true);
+			} else if (isItemHidden (it)) {
+				setItemHidden (it, false);
+			}
+		}
+
+	} else {
+		for (int i = 0; i < count (); i++) {
+			MedialibListItem *it = dynamic_cast<MedialibListItem*> (item (i));
+			setItemHidden (it, false);
+		}
+	}
+
+}
+
 
