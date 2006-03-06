@@ -86,7 +86,8 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 
-	setWindowFlags (Qt::FramelessWindowHint);
+	setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
+	setAttribute (Qt::WA_DeleteOnClose);
 
 	s.beginGroup ("playlist");
 	if (!s.contains ("size")) {

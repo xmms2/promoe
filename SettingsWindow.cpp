@@ -10,7 +10,10 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 	setWindowTitle ("Promoe - Settings window");
-	
+	setWindowFlags (Qt::Dialog);
+	setWindowModality (Qt::ApplicationModal);
+	setAttribute (Qt::WA_DeleteOnClose);
+
 	resize (400, 500);
 
 	QWidget *dummy = new QWidget (this);

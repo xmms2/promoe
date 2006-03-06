@@ -18,6 +18,8 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 	setWindowTitle ("Promoe - Medialib Window");
+	setWindowFlags (Qt::Dialog);
+	setAttribute (Qt::WA_DeleteOnClose);
 
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 

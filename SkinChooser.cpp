@@ -13,7 +13,10 @@ SkinChooser::SkinChooser (QWidget *parent) : QMainWindow (parent)
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
-	
+	setWindowFlags (Qt::Dialog);
+	setWindowModality (Qt::ApplicationModal);
+	setAttribute (Qt::WA_DeleteOnClose);
+
 	m_mw = dynamic_cast<MainWindow *>(parent);
 	m_c = new QWidget (this);
 	setCentralWidget (m_c);
