@@ -69,7 +69,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		XmmsQT4 *m_qt4;
 		XMMSClient *m_xmmsc;
 		static XMMSHandler *singleton;
-		uint m_currentid;
+		int m_currentid;
 		QHash<QString, QString> PropDictToQHash (XMMSResultDict *res);
 		QHash<QString, QString> DictToQHash (XMMSResultDict *res);
 };
