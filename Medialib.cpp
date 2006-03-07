@@ -60,6 +60,8 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	m_http = new QHttp (this);
 	connect (m_http, SIGNAL (requestFinished (int, bool)), this,
 							 SLOT (httpDone (int, bool)));
+	connect (m_http, SIGNAL (requestStarted (int)), this,
+							 SLOT (httpDone (int)));
 
 	/*** artist ***/
 	m_artist = new MediaArtistList (this, "artist");
@@ -116,27 +118,41 @@ MedialibWindow::settingsSaved ()
 void
 MedialibWindow::addRequest (QUrl url, MedialibListItem *item)
 {
-	m_http->setHost (url.host (), url.port () != 1 ? url.port () : 80);
+	m_http->setHost (url.host (), url.port () != -1 ? url.port () : 80);
 
 	if (!url.userName().isEmpty()) {
 		m_http->setUser (url.userName(), url.password());
 	}
 
 	int id = m_http->get (url.path (), item->getFile ());
-	m_httpmap[id] = item;
+	m_httpmap.insert (id, item);
 
-	qDebug ("add request %s (%d)", qPrintable (url.path ()), id);
+}
+
+void
+MedialibWindow::httpStarted (int id)
+{
+	MedialibListItem *it = m_httpmap[id];
+
+	if (it) {
+		setStatusText ("Downloading art: " + it->text ());
+	}
 }
 
 void
 MedialibWindow::httpDone (int id, bool error)
 {
+	MedialibListItem *it = m_httpmap[id];
+
 	if (error) {
-		qWarning ("error!");
+		if (it) {
+			setStatusText ("Error when downloading " + it->text ());
+		} else {
+			setStatusText ("Generic error in HTTP");
+		}
+		qDebug (qPrintable (m_http->errorString ()));
 		return;
 	}
-
-	MedialibListItem *it = m_httpmap[id];
 
 	if (it) {
 		QFile *f = it->getFile ();

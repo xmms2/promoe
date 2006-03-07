@@ -120,6 +120,7 @@ class MedialibWindow : public QMainWindow
 
 	public slots:
 		void httpDone (int, bool);
+		void httpStarted (int);
 		void settingsSaved (void);
 
 	private:
