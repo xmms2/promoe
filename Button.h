@@ -3,8 +3,6 @@
 
 #include "PixWidget.h"
 
-using namespace std;
-
 class Button : public PixWidget
 {
 	Q_OBJECT

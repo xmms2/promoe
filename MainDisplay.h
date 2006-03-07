@@ -25,8 +25,6 @@ class MainDisplay;
 #include "PlayStatus.h"
 #include "MainWindow.h"
 
-using namespace std;
-
 class MainDisplay : public SkinDisplay 
 {
 	Q_OBJECT

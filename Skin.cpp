@@ -82,7 +82,7 @@ Skin::BuildPlaylist (void)
 }
 
 void
-Skin::setSkin (QString name)
+Skin::setSkin (const QString& name)
 {
 	m_path = name;
 
@@ -110,7 +110,7 @@ Skin::setSkin (QString name)
 }
 
 QPixmap
-Skin::getPixmap (QString f, QDir dir)
+Skin::getPixmap (const QString& file, QDir dir)
 {
 	/* check for files in zip and check if file exists */
 
@@ -120,7 +120,7 @@ Skin::getPixmap (QString f, QDir dir)
 	for (int i = 0; i < list.size(); ++i) {
 		QFileInfo fileInfo = list.at(i);
 		QString fname = fileInfo.fileName().toLower();
-		if (fname.section(".", 0, 0) == f) {
+		if (fname.section(".", 0, 0) == file) {
 			return QPixmap (fileInfo.filePath());
 		}
 	}
@@ -130,10 +130,9 @@ Skin::getPixmap (QString f, QDir dir)
 
 
 QPixmap *
-Skin::getPixmap (string file)
+Skin::getPixmap (const QString& file)
 {
 	QDir dir;
-	QString f = QString::fromStdString (file);
 
 	dir.setPath (m_path);
 	dir.setFilter (QDir::Files);
@@ -142,7 +141,7 @@ Skin::getPixmap (string file)
 	for (int i = 0; i < list.size(); ++i) {
 		QFileInfo fileInfo = list.at(i);
 		QString fname = fileInfo.fileName().toLower();
-		if (fname.section(".", 0, 0) == f) {
+		if (fname.section(".", 0, 0) == file) {
 			return new QPixmap (fileInfo.filePath());
 		}
 	}

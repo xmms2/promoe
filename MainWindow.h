@@ -20,8 +20,6 @@ class MainWindow;
 #include "ShadedDisplay.h"
 #include "Playlist.h"
 
-using namespace std;
-
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT

@@ -9,8 +9,6 @@
 #include <QHash>
 #include <QDir>
 
-using namespace std;
-
 class Skin : public QWidget
 {
 	Q_OBJECT
@@ -19,8 +17,8 @@ class Skin : public QWidget
 		Skin ();
 		~Skin();
 
-		void setSkin (QString name);
-		static QPixmap getPixmap (QString, QDir);
+		void setSkin (const QString& name);
+		static QPixmap getPixmap (const QString&, QDir);
 		
 		const QPixmap getItem (uint part) const { return m_items->value(part); }
 		const QPixmap getPls (uint part) const { return m_playlist->value(part); }
@@ -194,8 +192,7 @@ class Skin : public QWidget
 	private:
 		static Skin *singleton;
 
-		QPixmap *Skin::getPixmap (string file);
-		void Parse (string file);
+		QPixmap *Skin::getPixmap (const QString& file);
 		void BuildLetterMap (void);
 		void BuildButtons (void);
 		void BuildToggleButtons (void);
@@ -207,7 +204,7 @@ class Skin : public QWidget
 		void ParsePLEdit (void);
 
 
-		string m_skinname;
+		QString m_skinname;
 		QString m_path;
 
 		QHash<uint, QPixmap> *m_items;

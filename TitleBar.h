@@ -6,8 +6,6 @@ class TitleBar;
 #include "PixWidget.h"
 #include "Button.h"
 
-using namespace std;
-
 class TitleBar : public PixWidget
 {
 	Q_OBJECT
