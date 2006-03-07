@@ -4,6 +4,7 @@
 #include "Skin.h"
 
 #include <QWidget>
+#include <QHash>
 
 class PlaylistShade : public QWidget {
 	Q_OBJECT

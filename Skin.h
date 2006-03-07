@@ -6,7 +6,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QWidget>
-#include <QHash>
+#include <QMap>
 #include <QDir>
 
 class Skin : public QWidget
@@ -20,13 +20,13 @@ class Skin : public QWidget
 		void setSkin (const QString& name);
 		static QPixmap getPixmap (const QString&, QDir);
 		
-		const QPixmap getItem (uint part) const { return m_items->value(part); }
-		const QPixmap getPls (uint part) const { return m_playlist->value(part); }
-		const QPixmap getVol (uint p) const { return m_volume_bar->value(p); }
-		const QPixmap getBal (uint p) const { return m_balance->value(p); }
-		const QPixmap getLetter (uint c) const { return m_letterMap->value(c); }
-		const QPixmap getNumber (uint c) const { return m_numbers->value(c); }
-		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt->value(c); }
+		const QPixmap getItem (uint part) const { return m_items[part]; }
+		const QPixmap getPls (uint part) const { return m_playlist[part]; }
+		const QPixmap getVol (uint p) const { return m_volume_bar[p]; }
+		const QPixmap getBal (uint p) const { return m_balance[p]; }
+		const QPixmap getLetter (uint c) const { return m_letterMap[c]; }
+		const QPixmap getNumber (uint c) const { return m_numbers[c]; }
+		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt[c]; }
 
 		enum Volume {
 			VOLUMEBAR_POS_MIN,
@@ -207,14 +207,14 @@ class Skin : public QWidget
 		QString m_skinname;
 		QString m_path;
 
-		QHash<uint, QPixmap> *m_items;
-		QHash<uint, QPixmap> *m_letterMap;
-		QHash<uint, QPixmap> *m_volume_bar;
-		QHash<uint, QPixmap> *m_balance;
-		QHash<uint, QPixmap> *m_numbers;
-		QHash<uint, QPixmap> *m_playlist;
+		QMap<uint, QPixmap> m_items;
+		QMap<uint, QPixmap> m_letterMap;
+		QMap<uint, QPixmap> m_volume_bar;
+		QMap<uint, QPixmap> m_balance;
+		QMap<uint, QPixmap> m_numbers;
+		QMap<uint, QPixmap> m_playlist;
 
-		QHash<QByteArray, QByteArray> *m_pledit_txt;
+		QMap<QByteArray, QByteArray> m_pledit_txt;
 		QList<QPixmap *> m_buttons;
 
 	signals:
