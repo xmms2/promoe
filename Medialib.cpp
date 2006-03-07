@@ -123,7 +123,7 @@ MedialibWindow::addRequest (QUrl url, MedialibListItem *item)
 	}
 
 	int id = m_http->get (url.path (), item->getFile ());
-	m_httpmap->insert (id, item);
+	m_httpmap[id] = item;
 
 	qDebug ("add request %s (%d)", qPrintable (url.path ()), id);
 }
@@ -136,7 +136,7 @@ MedialibWindow::httpDone (int id, bool error)
 		return;
 	}
 
-	MedialibListItem *it = m_httpmap->value (id);
+	MedialibListItem *it = m_httpmap[id];
 
 	if (it) {
 		QFile *f = it->getFile ();
@@ -154,12 +154,12 @@ MedialibWindow::httpDone (int id, bool error)
 		}
 
 		delete f;
-		m_httpmap->remove (id);
-		if (m_httpmap->count () == 0) {
+		m_httpmap.remove (id);
+		if (m_httpmap.count () == 0) {
 			setBusy (false);
 			setStatusText ("idle");
 		} else {
-			setBusy (m_httpmap->count ());
+			setBusy (m_httpmap.count ());
 			setStatusText ("Got art for: " + it->text());
 		}
 	}

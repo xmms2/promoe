@@ -14,6 +14,7 @@
 #include <QHttp>
 #include <QFile>
 #include <QUrl>
+#include <QMap>
 
 class MedialibWindow;
 
@@ -132,7 +133,7 @@ class MedialibWindow : public QMainWindow
 		MedialibList *m_album;
 		MedialibList *m_song;
 
-		QHash<int, MedialibListItem*> *m_httpmap;
+		QMap<int, MedialibListItem*> m_httpmap;
 		QHttp *m_http;
 };
 
