@@ -1,6 +1,10 @@
 #include <xmmsclient/xmmsclient++.h>
 #include "MainWindow.h"
 
+#ifdef HAVE_SERVERBROWSER
+#include "ServerBrowser.h"
+#endif
+
 #include <QSettings>
 #include <QIcon>
 #include <QPluginLoader>
@@ -155,7 +159,6 @@ main (int argc, char **argv)
 	playlistwin->move (settings.value("playlist/pos").toPoint ());
 	playlistwin->move (settings.value("playlist/pos").toPoint ());
 
-
 	if (!settings.contains ("playlist/hidden"))
 		settings.setValue ("playlist/hidden", true);
 
@@ -163,6 +166,11 @@ main (int argc, char **argv)
 		playlistwin->hide ();
 	else
 		playlistwin->show ();
+
+#ifdef HAVE_SERVERBROWSER
+	ServerBrowserWindow *browser = new ServerBrowserWindow (mw);
+	browser->show ();
+#endif
 
 	return app.exec();
 }

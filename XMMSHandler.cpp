@@ -15,20 +15,27 @@ XMMSHandler *XMMSHandler::getInstance (void)
 {
 	if (!singleton) {
 		singleton = new XMMSHandler ();
+#ifndef HAVE_SERVERBROWSER
+		singleton->connect (getenv ("XMMS_PATH"));
+#endif
 	}
 
 	return singleton;
 }
 
-XMMSHandler::XMMSHandler (void) : sigc::trackable ()
+XMMSHandler::XMMSHandler () : sigc::trackable ()
 {
 	m_xmmsc = new XMMSClient ("promoe");
+}
 
-	if (!m_xmmsc->connect (getenv ("XMMS_PATH"))) {
+bool
+XMMSHandler::connect (const char *path)
+{
+	if (!m_xmmsc->connect (path)) {
 		QErrorMessage *err = new QErrorMessage ();
 		err->showMessage ("Couldn't connect to XMMS2, please try again.");
 		err->exec ();
-		exit (-1);
+		return false;
 	}
 	m_qt4 = new XmmsQT4 (m_xmmsc->getConn (), qApp);
 
@@ -55,6 +62,8 @@ XMMSHandler::XMMSHandler (void) : sigc::trackable ()
 
 	r = m_xmmsc->broadcast_medialib_entry_changed ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_entry_changed));
+
+	return true;
 }
 
 void

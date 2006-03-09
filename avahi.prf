@@ -1,0 +1,4 @@
+SOURCES += ServerBrowser.cpp
+HEADERS += ServerBrowser.h
+PKGCONFIG += avahi-client avahi-qt4
+DEFINES += HAVE_SERVERBROWSER
