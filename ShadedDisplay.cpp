@@ -20,7 +20,6 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 
 	m_title = new TextScroller (this, 39, 7, "shaded");
 	m_title->move (79, 4);
-	m_title->setText ("Promoe 0.1");
 
 	m_prev = new Button (this);
 	m_prev->move(169, 4);
