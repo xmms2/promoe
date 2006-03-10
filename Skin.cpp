@@ -11,15 +11,6 @@ Skin *Skin::getInstance (void)
 	return singleton;
 }
 
-Skin::Skin (void)
-{
-}
-
-
-Skin::~Skin ()
-{
-}
-
 void
 Skin::BuildPlaylist (void)
 {

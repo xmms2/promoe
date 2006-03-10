@@ -14,8 +14,6 @@ class Skin : public QWidget
 	Q_OBJECT
 	public:
 		static Skin *getInstance (void);
-		Skin ();
-		~Skin();
 
 		void setSkin (const QString& name);
 		static QPixmap getPixmap (const QString&, QDir);
@@ -190,6 +188,7 @@ class Skin : public QWidget
 			PLS_RCBAR
 		};
 	private:
+		Skin() {};
 		static Skin *singleton;
 
 		QPixmap *Skin::getPixmap (const QString& file);
