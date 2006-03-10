@@ -317,5 +317,6 @@ XMMSHandler::medialib_info (XMMSResultDict *res)
 
 XMMSHandler::~XMMSHandler ()
 {
+	delete m_xmmsc;
 }
 

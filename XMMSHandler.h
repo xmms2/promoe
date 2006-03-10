@@ -12,7 +12,6 @@ class XMMSHandler : public QObject, public sigc::trackable {
 	Q_OBJECT
 	public:
 		static XMMSHandler *getInstance (void);
-		XMMSHandler (void);
 		~XMMSHandler ();
 
 		bool connect (const char *path);
@@ -69,12 +68,14 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void medialibResponse (uint, QList<QHash<QString, QString> >);
 
 	private:
+		XMMSHandler (void);
+		QHash<QString, QString> PropDictToQHash (XMMSResultDict *res);
+		QHash<QString, QString> DictToQHash (XMMSResultDict *res);
+
 		XmmsQT4 *m_qt4;
 		XMMSClient *m_xmmsc;
 		static XMMSHandler *singleton;
 		int m_currentid;
-		QHash<QString, QString> PropDictToQHash (XMMSResultDict *res);
-		QHash<QString, QString> DictToQHash (XMMSResultDict *res);
 };
 
 #endif
