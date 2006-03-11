@@ -143,6 +143,8 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 					}
 				}
 
+				doResize ();
+
 			}
 			break;
 		case XMMS_PLAYLIST_CHANGED_MOVE:
@@ -151,12 +153,18 @@ PlaylistList::playlistChanged (QHash<QString,QString> h)
 		case XMMS_PLAYLIST_CHANGED_SHUFFLE:
 		case XMMS_PLAYLIST_CHANGED_SORT:
 			{
+				while (!m_items->isEmpty()) {
+					PlaylistItem *item = m_items->takeFirst();
+					m_items->removeAll (item);
+					delete item;
+				}
+
 				m_itemmap->clear ();
-				while (!m_items->isEmpty())
-					delete m_items->takeFirst();
 
 				if (signal != XMMS_PLAYLIST_CHANGED_CLEAR) {
 					xmmsh->requestPlaylistList ();
+				} else {
+					doResize ();
 				}
 			}
 			break;
@@ -598,16 +606,28 @@ PlaylistList::paintEvent (QPaintEvent *event)
 }
 
 void
+PlaylistList::doResize (void)
+{
+	QWidget *w = dynamic_cast<QWidget*>(parent());
+	QSize s = w->size ();
+
+	if (m_items->count()*getFontH () > s.height ()) {
+		resize (size().width(), m_items->count ()*getFontH ());
+	} else {
+		resize (size().width(), s.height());
+		setOffset (0);
+	}
+	emit sizeChanged (size());
+}
+
+void
 PlaylistList::addItem (PlaylistItem *i)
 {
 	m_items->append (i);
 	if (!m_itemmap->contains (i->getID())) {
 		m_itemmap->insert (i->getID(), i);
 	}
-	if (m_items->count()*getFontH () > size().height()) {
-		resize (size().width(), m_items->count ()*getFontH ());
-		emit sizeChanged (size());
-	}
+	doResize ();
 }
 
 int

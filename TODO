@@ -10,9 +10,7 @@ Todo:
 		* CloseButton
 		* ShadeButton
 		* Add files / folders
-	* Redo paintEvent in PlaylistWindow class to not be slow.
 	* Jump entry to dialog
-	* Reposition sliderbar on resize
 	* move viewport when walking outside it with keyboard
 	* drag and drop outside viewport
 	* jump to entry when it's played.

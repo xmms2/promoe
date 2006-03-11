@@ -20,6 +20,7 @@ class PlaylistList : public QWidget {
 		void addItem (PlaylistItem *i);
 		void setOffset (int i) { m_offset = i; }
 		uint getOffset (void) const { return m_offset; }
+		void doResize (void);
 
 	public slots:
 		void setPixmaps (Skin *skin);
