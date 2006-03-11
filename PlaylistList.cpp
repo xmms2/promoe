@@ -468,18 +468,30 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 {
 
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	QWidget *w = dynamic_cast<QWidget*>(parent());
+	QSize s = w->size ();
+	int lastitem = (m_offset + s.height()) / getFontH () - 1;
+	if (lastitem > m_items->count())
+		lastitem = m_items->count() - 1;
+	int firstitem = m_offset / getFontH();
 
 	switch (event->key ()) {
 		case Qt::Key_Down:
 			{
 				int i = m_selected->last ();
 				i ++;
-				if (i > m_items->count ())
-					i = m_items->count ();
+
+				if (i > (m_items->count () - 1))
+					i = m_items->count () - 1;
+
 				m_selected->clear ();
 				m_selected->append (i);
 
+				if (i > lastitem)
+					setOffset (m_offset += getFontH ());
+
 				update ();
+				emit sizeChanged (size());
 			}
 			break;
 		case Qt::Key_Up:
@@ -490,8 +502,11 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 					i = 0;
 				m_selected->clear ();
 				m_selected->append (i);
+				if (i < firstitem)
+					setOffset (m_offset -= getFontH ());
 
 				update ();
+				emit sizeChanged (size());
 			}
 			break;
 		case Qt::Key_Backspace:

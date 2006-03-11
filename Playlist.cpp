@@ -84,6 +84,8 @@ PlaylistScroller::repositionButton (void)
 	PlaylistWidget *pw = dynamic_cast<PlaylistWidget *>(parent ());
 	/*  x = 182.6 / (454 - 242) * 224 */
 	int bpos = (int)((float)(pw->getOffset ()) / (float)m_max * (float) getMax ());
+	if (bpos > getMax ()) 
+		bpos = getMax ();
 	m_button->move (0, bpos);
 }
 
