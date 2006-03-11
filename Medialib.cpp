@@ -61,7 +61,7 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	connect (m_http, SIGNAL (requestFinished (int, bool)), this,
 							 SLOT (httpDone (int, bool)));
 	connect (m_http, SIGNAL (requestStarted (int)), this,
-							 SLOT (httpDone (int)));
+							 SLOT (httpStarted (int)));
 
 	/*** artist ***/
 	m_artist = new MediaArtistList (this, "artist");

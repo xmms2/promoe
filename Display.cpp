@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include "Display.h"
 
+#include <QFileDialog>
+
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 {
 	Skin *skin = Skin::getInstance ();
@@ -52,3 +54,23 @@ SkinDisplay::paintEvent (QPaintEvent *event)
 	paint.eraseRect(rect());
 	paint.end();
 }
+
+void
+SkinDisplay::fileOpen (void)
+{
+	XMMSHandler *xmmsh = XMMSHandler::getInstance();
+	QStringList files;
+
+	files = QFileDialog::getOpenFileNames (NULL, "Select files to play",
+	                                       QDir::homePath(),
+	                                       "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
+
+	if (files.count() > 0) {
+		xmmsh->playlistClear ();
+	}
+
+	for (int i = 0; i < files.count(); i++) {
+		xmmsh->playlistAddURL ("file://" + files.value(i));
+	}
+}
+

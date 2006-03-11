@@ -21,6 +21,7 @@ class SkinDisplay : public QWidget
 
 	public slots:
 		virtual void setPixmaps(Skin *skin);
+		void fileOpen (void);
 
 	protected:
 		void mousePressEvent (QMouseEvent *);

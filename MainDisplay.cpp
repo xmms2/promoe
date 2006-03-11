@@ -173,25 +173,6 @@ MainDisplay::SetupPushButtons (void)
 
 }
 
-void
-MainDisplay::fileOpen (void)
-{
-	XMMSHandler *xmmsh = XMMSHandler::getInstance();
-	QStringList files;
-
-	files = QFileDialog::getOpenFileNames (NULL, "Select files to play",
-	                                       QDir::homePath(),
-	                                       "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
-
-	if (files.count() > 0) {
-		xmmsh->playlistClear ();
-	}
-
-	for (int i = 0; i < files.count(); i++) {
-		xmmsh->playlistAddURL ("file://" + files.value(i));
-	}
-}
-
 MainDisplay::~MainDisplay (void)
 {
 }

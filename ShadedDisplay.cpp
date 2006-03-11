@@ -49,7 +49,7 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	m_eject = new Button (this);
 	m_eject->move(216, 4);
 	m_eject->resize (9, 7);
-	connect (m_eject, SIGNAL(clicked()), xmmsh, SLOT(fileOpen()));
+	connect (m_eject, SIGNAL(clicked()), this, SLOT(fileOpen()));
 
 	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
 	         this, SLOT(setStatus(uint)));

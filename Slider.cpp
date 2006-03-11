@@ -75,8 +75,6 @@ BarButton::mouseMoveEvent (QMouseEvent *event)
 
 Slider::Slider (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vertical) : PixWidget (parent)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
-
 	m_bg = bg;
 	m_vertical = vertical;
 
@@ -87,9 +85,6 @@ Slider::Slider (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vert
 
 	m_button = new BarButton (this, bnormal, bpressed);
 	m_button->move (0, 0);
-
-	connect (m_button, SIGNAL(clicked ()),
-	         xmmsh, SLOT (setPlaytime ()));
 
 	if (m_vertical) {
 		m_pix = size().width()-m_button->size().width();

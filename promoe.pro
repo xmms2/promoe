@@ -63,10 +63,10 @@ QMAKE_LFLAGS += -L$$[QT_INSTALL_PLUGINS]/imageformats
 
 CONFIG += link_pkgconfig
 
-QMAKE_CXXFLAGS += -g
-;CONFIG += debug warn_on
+;QMAKE_CXXFLAGS += -g
+CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp sigc++-2.0 
 
-CONFIG += avahi
+;CONFIG += avahi
 
