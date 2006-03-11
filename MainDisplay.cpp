@@ -169,8 +169,27 @@ MainDisplay::SetupPushButtons (void)
 
 	m_eject = new Button (this, Skin::BTN_EJECT_0, Skin::BTN_EJECT_1);
 	m_eject->move(136, 89);
-	connect (m_eject, SIGNAL(clicked()), xmmsh, SLOT(fileOpen()));
+	connect (m_eject, SIGNAL(clicked()), this, SLOT(fileOpen()));
 
+}
+
+void
+MainDisplay::fileOpen (void)
+{
+	XMMSHandler *xmmsh = XMMSHandler::getInstance();
+	QStringList files;
+
+	files = QFileDialog::getOpenFileNames (NULL, "Select files to play",
+	                                       QDir::homePath(),
+	                                       "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
+
+	if (files.count() > 0) {
+		xmmsh->playlistClear ();
+	}
+
+	for (int i = 0; i < files.count(); i++) {
+		xmmsh->playlistAddURL ("file://" + files.value(i));
+	}
 }
 
 MainDisplay::~MainDisplay (void)

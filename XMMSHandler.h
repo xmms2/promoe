@@ -42,7 +42,6 @@ class XMMSHandler : public QObject, public sigc::trackable {
 
 	public slots:
 		void setPlaytime ();
-		void fileOpen (void);
 
 		void play () { delete m_xmmsc->playback_start (); }
 		void stop () { delete m_xmmsc->playback_stop (); }

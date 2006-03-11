@@ -66,26 +66,6 @@ XMMSHandler::connect (const char *path)
 	return true;
 }
 
-void
-XMMSHandler::fileOpen (void)
-{
-	QStringList files = 
-		QFileDialog::getOpenFileNames (NULL,
-									   "Select files to play",
-									   QDir::homePath(),
-									   "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
-
-	if (files.count() > 0) {
-		playlistClear ();
-	}
-
-	for (int i = 0; i < files.count(); i++) {
-		playlistAddURL ("file://" + files.value(i));
-	}
-
-}
-
-
 
 void
 XMMSHandler::medialib_entry_changed (XMMSResultValue<uint> *res)

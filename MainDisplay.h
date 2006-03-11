@@ -49,6 +49,7 @@ class MainDisplay : public SkinDisplay
 		void setStatus (uint status);
 		void setPlaytime (uint time);
 		void setMediainfo (QHash<QString,QString>);
+		void fileOpen (void);
 
 	protected:
 		void SetupPushButtons (void);
