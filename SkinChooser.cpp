@@ -33,14 +33,6 @@ SkinChooser::SkinChooser (QWidget *parent) : QMainWindow (parent)
 
 }
 
-SkinChooser::~SkinChooser (void)
-{
-	delete m_c;
-	delete m_vbox;
-	delete m_label;
-	delete m_skin;
-}
-
 SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 {
 

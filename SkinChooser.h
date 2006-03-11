@@ -34,7 +34,7 @@ class SkinChooser : public QMainWindow
 {
 	public:
 		SkinChooser (QWidget *parent);
-		~SkinChooser (void);
+		~SkinChooser (void) {}
 		MainWindow *getMW (void) { return m_mw; }
 
 	private:
