@@ -289,92 +289,107 @@ void
 PlaylistWidget::paintEvent (QPaintEvent *event)
 {
 	QPainter paint;
+	QRect r;
+	QRect er = event->rect ();
 
 	paint.begin (this);
-	paint.drawPixmap (QRect (0, 0,
-							 m_corner1.size ().width (),
-							 m_corner1.size ().height ()),
-					  m_corner1,
-					  m_corner1.rect ());
+	
+	/* drawing the upper left corner */
+	r.setRect (0, 0, 
+			   m_corner1.width(),
+			   m_corner1.height());
+	if (er.contains (r)) 
+		paint.drawPixmap (r, m_corner1, m_corner1.rect ());
 
-	paint.drawPixmap (QRect (size().width()-m_corner2.width(),
-							 0, m_corner2.width(),
-							 m_corner2.height()),
-					  m_corner2,
-					  m_corner2.rect());
+	/* drawing the upper right corner */
+	r.setRect (width()-m_corner2.width(), 0, m_corner2.width(), m_corner2.height());
+	if (er.contains (r))
+		paint.drawPixmap (r, m_corner2, m_corner2.rect());
 
-	paint.drawPixmap (QRect (0, size().height()-m_corner3.height(),
-							 m_corner3.width(),
-							 m_corner3.height()),
-					  m_corner3,
-					  m_corner3.rect());
+	/* Drawing the lower left corner */
+	r.setRect (0, size().height()-m_corner3.height(), 
+			   m_corner3.width(), m_corner3.height());
+	if (er.contains (r))
+		paint.drawPixmap (r, m_corner3, m_corner3.rect());
 
-	paint.drawPixmap (QRect (size().width()-m_corner4.width(),
-							 size().height()-m_corner4.height(),
-							 m_corner4.width(),
-							 m_corner4.height()),
-					  m_corner4,
-					  m_corner4.rect());
+	/* drawing the lower right corner */
+	r.setRect (size().width()-m_corner4.width(),
+			   size().height()-m_corner4.height(),
+			   m_corner4.width(),
+			   m_corner4.height());
+	if (er.contains (r))
+		paint.drawPixmap (r, m_corner4, m_corner4.rect());
 
+	/* calculate middle of the bar */
 	int midx = (size().width()/2) - (m_titlebar.width()/2);
-	paint.drawPixmap (QRect(midx, 0, m_titlebar.width(), m_titlebar.height()),
-					  m_titlebar, m_titlebar.rect());
+
+	/* Add the titlebar */
+	r.setRect (midx, 0, m_titlebar.width(), m_titlebar.height());
+	if (er.contains (r))
+		paint.drawPixmap (r, m_titlebar, m_titlebar.rect());
 
 	/* left fill */
-	paint.drawPixmap (QRect(m_corner1.width(),
-							0, midx - m_corner1.width(),
-							m_tfill.height()),
-					  m_tfill,
-					  m_tfill.rect());
+	r.setRect (m_corner1.width(), 0, midx - m_corner1.width(), m_tfill.height());
+	if (er.contains (r))
+		paint.drawPixmap (r, m_tfill, m_tfill.rect());
 
+	/* Calculate middle pixel to the right side of the titlebar */
 	int midx2 = midx + m_titlebar.width();
 
-	paint.drawPixmap (QRect (midx2, 0, size().width()-midx2-m_corner2.width(),
-							 m_tfill.height()),
-					  m_tfill,
-					  m_tfill.rect());
+	/* right fill */
+	r.setRect (midx2, 0, width()-midx2-m_corner2.width(), m_tfill.height());
+	if (er.contains (r))
+		paint.drawPixmap (r, m_tfill, m_tfill.rect());
 
+	/* calculate the size of the bottom side */
 	int bsize = m_corner3.width()+m_corner4.width();
 
+	/* if the width is bigger than bottom size we need to pad with
+	 * a bit of generic bottom */
 	if (size().width() > bsize) {
+		/* calculate padding width */
 		int pad_to = size().width() - bsize;
-		paint.drawPixmap (QRect (m_corner3.width(),
-								 size().height()-m_bfill.height(),
-								 pad_to,
-								 m_bfill.height()),
-						  m_bfill,
-						  m_bfill.rect());
+
+		/* Draw the bottom filling */
+		r.setRect (m_corner3.width(), size().height()-m_bfill.height(), 
+				   pad_to, m_bfill.height());
+		if (er.contains (r))
+			paint.drawPixmap (r, m_bfill, m_bfill.rect());
 	}
 
-	paint.drawPixmap (QRect (0, m_corner1.height(), m_lfill.width(),
-							 size().height()-m_corner3.height()-m_corner1.height()),
-					  m_lfill,
-					  m_lfill.rect());
-	paint.drawPixmap (QRect (size().width()-m_rfill3.width(),
-							 m_corner2.height(),
-							 m_rfill3.width(),
-							 size().height()-m_corner2.height()-m_corner3.height()),
-					  m_rfill3,
-					  m_rfill3.rect());
+	/* The slider bar consists of three elements L|S|R (left, slider, right)
+	 * here we paint L and R and let the slider take care of the rest.
+	 */
+	r.setRect (0, m_corner1.height(), m_lfill.width(), 
+			   size().height()-m_corner3.height()-m_corner1.height());
+	if (er.contains (r))
+		paint.drawPixmap (r,m_lfill, m_lfill.rect());
 
+	r.setRect (size().width()-m_rfill3.width(), m_corner2.height(), m_rfill3.width(),
+			   size().height()-m_corner2.height()-m_corner3.height());
+	if (er.contains (r))
+		paint.drawPixmap (r, m_rfill3, m_rfill3.rect());
+
+	/* figure out where to place the last padding */
 	int x = size().width();
-	x -= m_rfill3.width();
-	x -= m_rfill2.width();
-	x -= m_rfill.width();
+	x -= m_rfill3.width(); /* minus R */
+	x -= m_rfill2.width(); /* minus slider */
+	x -= m_rfill.width(); /* minus L */
 
-	paint.drawPixmap (QRect (x, m_corner2.height(),
-							 m_rfill.width(),
-							 size().height()-m_corner2.height()-m_corner3.height()),
-					  m_rfill,
-					  m_rfill.rect());
+	r.setRect (x, m_corner2.height(), m_rfill.width(), 
+			   size().height()-m_corner2.height()-m_corner3.height());
+	if (er.contains (r))
+		paint.drawPixmap (r, m_rfill, m_rfill.rect());
 
 	paint.end ();
 
+	/* since the sizes has changed we need to move the buttons */
 	m_scroller->move (size().width()-m_rfill3.width()-m_rfill2.width(),
 					  m_corner2.height());
 	m_scroller->resize (m_rfill2.width(),
 						size().height()-m_corner2.height()-m_corner4.height());
 
+	/* drag corner */
 	m_drag->move (size().width()-30,
 				  size().height()-30);
 	m_drag->resize (30, 30);
