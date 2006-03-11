@@ -10,6 +10,38 @@ BarButton::BarButton (QWidget *parent, uint normal, uint pressed) : Button (pare
 	m_slider = dynamic_cast<Slider *>(parent);
 	setMinimumSize (29, 10);
 	setMaximumSize (29, 10);
+	m_moving = false;
+}
+
+void
+BarButton::setPos (uint pos)
+{
+	m_pos = pos;
+	if (!m_moving) {
+		move (pos, 0);
+	}
+}
+
+uint
+BarButton::getPos (void)
+{
+	return m_pos;
+}
+
+void
+BarButton::mousePressEvent (QMouseEvent *event)
+{
+	m_moving = true;
+}
+
+void
+BarButton::mouseReleaseEvent (QMouseEvent *event)
+{
+	m_moving = false;
+
+	float value = pos().x() / (float)(m_slider->width() - width());
+
+	m_slider->requestPos (value);
 }
 
 void
@@ -65,8 +97,6 @@ Slider::Slider (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vert
 		m_pix = size().height()-m_button->size().height();
 	}
 	
-	m_pos = 0;
-
 	hideBar (true);
 
 }
@@ -117,11 +147,19 @@ Slider::setPos (uint p)
 	}
 
 	uint x = m_pix * p / m_max;
-	if (x < m_pix - m_button->rect().width() && x != m_pos) {
-		m_button->move (x , 0);
-		m_pos = x;
+	if (x < m_pix - m_button->rect().width() && x != m_button->getPos()) {
+		m_button->setPos (x);
 		update ();
 	}
+}
+
+void
+Slider::requestPos (float value)
+{
+	XMMSHandler *xmmsh = XMMSHandler::getInstance();
+
+	uint new_pos = (uint)(m_max * value);
+	xmmsh->setPlaytime (new_pos);
 }
 
 void

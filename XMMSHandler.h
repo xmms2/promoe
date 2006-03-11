@@ -41,7 +41,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void updateSettings (void) { emit settingsSaved (); }
 
 	public slots:
-		void setPlaytime ();
+		void setPlaytime (uint pos);
 
 		void play () { delete m_xmmsc->playback_start (); }
 		void stop () { delete m_xmmsc->playback_stop (); }

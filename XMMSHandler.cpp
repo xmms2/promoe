@@ -178,14 +178,9 @@ XMMSHandler::playback_current_id (XMMSResultValue<uint> *res)
 }
 
 void
-XMMSHandler::setPlaytime (void)
+XMMSHandler::setPlaytime (uint pos)
 {
-	/*
-	uint pos = m_mw->getMD ()->m_slider->getPos();
-	qDebug ("pos = %d", pos);
 	delete m_xmmsc->playback_seek_ms (pos);
-	*/
-
 }
 
 QHash<QString, QString>

@@ -12,11 +12,16 @@ class BarButton : public Button
 		BarButton (QWidget *, uint, uint);
 
 		void mouseMoveEvent (QMouseEvent *);
+		void mousePressEvent (QMouseEvent *);
+		void mouseReleaseEvent (QMouseEvent *);
+
+		void setPos (uint pos);
+		uint getPos (void);
 
 	private:
 		Slider *m_slider;
-	
-
+		bool m_moving;
+		uint m_pos;
 };
 
 class Slider : public PixWidget
@@ -30,6 +35,7 @@ class Slider : public PixWidget
 		void setSize (uint, uint);
 		uint getPos (void);
 		void setPos (uint);
+		void requestPos (float value);
 		
 		void setMax (uint max) { m_max = max; }
 		void hideBar (bool b); 		
@@ -43,7 +49,6 @@ class Slider : public PixWidget
 		int m_bg;
 		uint m_max;
 		uint m_pix;
-		uint m_pos;
 		BarButton *m_button;
 
 };
