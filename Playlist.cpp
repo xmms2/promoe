@@ -29,7 +29,7 @@ PlaylistScrollButton::mouseMoveEvent (QMouseEvent *event)
 		npos = m_slider->rect().height()-rect().height();
 	}
 
-	m_slider->doScroll (npos);
+	m_slider->doScroll ();
 }
 
 void
@@ -52,17 +52,39 @@ PlaylistScroller::PlaylistScroller (PlaylistWidget *parent) : QWidget (parent)
 	m_button = new PlaylistScrollButton (this, Skin::PLS_SCROLL_0, Skin::PLS_SCROLL_1);
 	m_button->move (0, 0);
 }
+		
+void
+PlaylistScroller::setMax (uint max) 
+{ 
+	m_max = max;
+	repositionButton ();
+}
 
-int
+uint
 PlaylistScroller::getMax (void)
 {
 	return rect().height()-m_button->rect().height();
+}
+
+uint
+PlaylistScroller::getPos (void)
+{
+	return (int)((float)(m_button->pos ().y ()) / (float)getMax() * (float)m_max);
 }
 
 void
 PlaylistScroller::setPixmaps (Skin *skin)
 {
 	m_pixmap = skin->getPls (Skin::PLS_RFILL2_0);
+}
+
+void
+PlaylistScroller::repositionButton (void)
+{
+	PlaylistWidget *pw = dynamic_cast<PlaylistWidget *>(parent ());
+	/*  x = 182.6 / (454 - 242) * 224 */
+	int bpos = (int)((float)(pw->getOffset ()) / (float)m_max * (float) getMax ());
+	m_button->move (0, bpos);
 }
 
 void 
@@ -205,6 +227,7 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 
 	m_scroller = new PlaylistScroller (this);
 	connect (m_scroller, SIGNAL(scrolled(int)), this, SLOT(doScroll (int)));
+	connect (m_list, SIGNAL(sizeChanged(QSize)), this, SLOT(sizeChangedList (QSize)));
 
 	m_drag = new dragButton (this);
 
@@ -213,15 +236,19 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 }
 
 void
+PlaylistWidget::sizeChangedList (QSize s)
+{
+	m_scroller->setMax (s.height() - m_view->height());
+}
+
+void
 PlaylistWidget::doScroll (int pos)
 {
-	int npos = ((float)pos) / (float)(m_scroller->getMax()) * float(m_list->height() - m_view->height());
-
-	m_list->setOffset (npos);
-	if (npos == 0) {
+	m_list->setOffset (pos);
+	if (pos == 0) {
 		m_list->update ();
 	} else {
-		m_list->scroll (0, npos);
+		m_list->scroll (0, pos);
 	}
 	QApplication::sendPostedEvents (m_list, 0);
 }
@@ -231,6 +258,7 @@ PlaylistWidget::resizeEvent (QResizeEvent *event)
 {
 	m_view->resize (size().width()-30, size().height()-20-38);
 	m_list->setSize (m_view->size().width(), m_view->size().height());
+	m_scroller->setMax (m_list->height() - m_view->height());
 }
 
 void

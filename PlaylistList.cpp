@@ -606,6 +606,7 @@ PlaylistList::addItem (PlaylistItem *i)
 	}
 	if (m_items->count()*getFontH () > size().height()) {
 		resize (size().width(), m_items->count ()*getFontH ());
+		emit sizeChanged (size());
 	}
 }
 

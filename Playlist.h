@@ -34,9 +34,13 @@ class PlaylistScroller : public QWidget{
 	public:
 		PlaylistScroller (PlaylistWidget *arent);
 		~PlaylistScroller () {}
-		void doScroll (int p) { emit scrolled(p); }
+		void doScroll (void) { emit scrolled(getPos ()); }
 
-		int getMax (void);
+		uint getPos (void);
+		uint getMax (void);
+		void setMax (uint max);
+
+		void repositionButton (void);
 
 	public slots:
 		void setPixmaps (Skin *skin);
@@ -48,6 +52,8 @@ class PlaylistScroller : public QWidget{
 		void paintEvent (QPaintEvent *event);
 		QPixmap m_pixmap;
 		PlaylistScrollButton *m_button;
+
+		uint m_max;
 };
 
 class PlaylistView : public QWidget {
@@ -65,10 +71,12 @@ class PlaylistWidget : public QWidget {
 
 		void setActive (bool);
 		void switchDisplay (void);
+		uint getOffset (void) const { return m_list->getOffset (); };
 
 	public slots:
 		void setPixmaps (Skin *skin);
 		void doScroll (int);
+		void sizeChangedList (QSize);
 
 	private:
 		void resizeEvent (QResizeEvent *event);
@@ -89,7 +97,6 @@ class PlaylistWidget : public QWidget {
 		QPixmap m_rfill3;
 
 		bool m_active;
-		
 
 		PlaylistView *m_view;
 		PlaylistList *m_list;
@@ -114,6 +121,7 @@ class PlaylistWindow : public QMainWindow {
 		void leaveEvent (QEvent *event);
 		void moveEvent (QMoveEvent *event);
 		void resizeEvent (QResizeEvent *event);
+
 
 	private:
 		PlaylistWidget *m_playlist;

@@ -19,6 +19,7 @@ class PlaylistList : public QWidget {
 		void setSize (int, int);
 		void addItem (PlaylistItem *i);
 		void setOffset (int i) { m_offset = i; }
+		uint getOffset (void) const { return m_offset; }
 
 	public slots:
 		void setPixmaps (Skin *skin);
@@ -28,6 +29,9 @@ class PlaylistList : public QWidget {
 		void currentID (uint);
 		void setStatus (uint);
 		void settingsSaved ();
+	
+	signals:
+		void sizeChanged (QSize);
 	
 	private:
 		void paintEvent (QPaintEvent *event);
