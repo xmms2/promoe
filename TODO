@@ -4,14 +4,8 @@ Todo:
 	* ServerConfig
 	* ApplicationConfig
 * Balance
-* VolumeBar
 * Playlist
-	* PlaylistButton
-		* CloseButton
-		* ShadeButton
-		* Add files / folders
 	* Jump entry to dialog
-	* move viewport when walking outside it with keyboard
 	* drag and drop outside viewport
 	* jump to entry when it's played.
 	* accept drops from other applications
