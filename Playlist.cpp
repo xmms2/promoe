@@ -1,12 +1,15 @@
 #include "MainWindow.h"
 #include "Playlist.h"
 
+#include "PlaylistMenu.h"
+
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QRect>
 #include <QIcon>
 #include <QApplication>
 #include <QSettings>
+#include <QFileDialog>
 
 PlaylistScrollButton::PlaylistScrollButton (PlaylistScroller *parent, uint normal, uint pressed) : Button (parent, normal, pressed, true)
 {
@@ -98,7 +101,7 @@ PlaylistScroller::paintEvent (QPaintEvent *event)
 
 	QPainter (paint);
 	paint.begin (this);
-	paint.drawPixmap (rect (), m_pixmap, m_pixmap.rect ());
+	paint.drawPixmap (event->rect (), m_pixmap, m_pixmap.rect ());
 	paint.end ();
 }
 
@@ -142,7 +145,8 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 
 }
 
-void PlaylistWindow::togglePL (void)
+void 
+PlaylistWindow::togglePL (void)
 {
 	m_mw->togglePL(true);
 }
@@ -248,9 +252,105 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	connect (m_list, SIGNAL(sizeChanged(QSize)), this, SLOT(sizeChangedList (QSize)));
 
 	m_drag = new dragButton (this);
+	m_drag->resize (30, 30);
+	
+	addButtons ();
 
 	setMinimumSize (275, 116);
 	resize (275, 300);
+}
+
+void 
+PlaylistWidget::addButtons (void)
+{
+	PlaylistMenuButton *b;
+
+	m_add = new PlaylistMenu (this, Skin::PLS_ADD,
+							  Skin::PLS_ADD_DEC);
+	b = new PlaylistMenuButton (m_add, Skin::PLS_ADD_URL_0,
+								Skin::PLS_ADD_URL_1);
+	connect (b, SIGNAL(activated ()), this, SLOT (menuAddUrl ()));
+	b = new PlaylistMenuButton (m_add, Skin::PLS_ADD_DIR_0,
+								Skin::PLS_ADD_DIR_1);
+	connect (b, SIGNAL(activated ()), this, SLOT (menuAddDir ()));
+	b = new PlaylistMenuButton (m_add, Skin::PLS_ADD_FIL_0,
+								Skin::PLS_ADD_FIL_1);
+	connect (b, SIGNAL(activated ()), this, SLOT (menuAddFile ()));
+
+
+	m_del = new PlaylistMenu (this, Skin::PLS_DEL,
+							  Skin::PLS_DEL_DEC);
+	b = new PlaylistMenuButton (m_del, Skin::PLS_MSC_BTN_0,
+								Skin::PLS_MSC_BTN_1);
+	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_ALL_0,
+								Skin::PLS_DEL_ALL_1);
+	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_CRP_0,
+								Skin::PLS_DEL_CRP_1);
+	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_FIL_0,
+								Skin::PLS_DEL_FIL_1);
+
+	m_sel = new PlaylistMenu (this, Skin::PLS_SEL,
+							  Skin::PLS_SEL_DEC);
+	b = new PlaylistMenuButton (m_sel, Skin::PLS_SEL_INV_0,
+								Skin::PLS_SEL_INV_1);
+	b = new PlaylistMenuButton (m_sel, Skin::PLS_SEL_NIL_0,
+								Skin::PLS_SEL_NIL_1);
+	b = new PlaylistMenuButton (m_sel, Skin::PLS_SEL_ALL_0,
+								Skin::PLS_SEL_ALL_1);
+
+	m_msc = new PlaylistMenu (this, Skin::PLS_MSC,
+							  Skin::PLS_MSC_DEC);
+	b = new PlaylistMenuButton (m_msc, Skin::PLS_MSC_SRT_0,
+								Skin::PLS_MSC_SRT_1);
+	b = new PlaylistMenuButton (m_msc, Skin::PLS_MSC_INF_0,
+								Skin::PLS_MSC_INF_1);
+	b = new PlaylistMenuButton (m_msc, Skin::PLS_MSC_OPT_0,
+								Skin::PLS_MSC_OPT_1);
+
+	m_lst = new PlaylistMenu (this, Skin::PLS_LST,
+							  Skin::PLS_LST_DEC);
+	b = new PlaylistMenuButton (m_lst, Skin::PLS_LST_NEW_0,
+								Skin::PLS_LST_NEW_1);
+	b = new PlaylistMenuButton (m_lst, Skin::PLS_LST_SAV_0,
+								Skin::PLS_LST_SAV_1);
+	b = new PlaylistMenuButton (m_lst, Skin::PLS_LST_OPN_0,
+								Skin::PLS_LST_OPN_1);
+}
+
+void
+PlaylistWidget::menuAddDir ()
+{
+	XMMSHandler *xmmsh = XMMSHandler::getInstance();
+	QString dir;
+	dir = QFileDialog::getExistingDirectory (this, "Select files to play",
+											 QDir::homePath ());
+	QDir d (dir);
+
+	d.setFilter (QDir::Files);
+
+	QFileInfoList list = d.entryInfoList();
+	for (int i = 0; i < list.size(); ++i) {
+		QFileInfo fileInfo = list.at(i);
+		QString fname = fileInfo.filePath();
+		xmmsh->playlistAddURL ("file://" + fname);
+	}
+	
+}
+
+void
+PlaylistWidget::menuAddFile ()
+{
+	XMMSHandler *xmmsh = XMMSHandler::getInstance();
+	QStringList files;
+
+	files = QFileDialog::getOpenFileNames (NULL, "Select files to play",
+	                                       QDir::homePath(),
+	                                       "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
+
+	for (int i = 0; i < files.count(); i++) {
+		xmmsh->playlistAddURL ("file://" + files.value(i));
+	}
+
 }
 
 void
@@ -438,7 +538,12 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 	/* drag corner */
 	m_drag->move (size().width()-30,
 				  size().height()-30);
-	m_drag->resize (30, 30);
 
+	/* move add menu */
+	m_add->move (11, height() - m_add->height() - 12);
+	m_del->move (40, height() - m_del->height() - 12);
+	m_sel->move (69, height() - m_sel->height() - 12);
+	m_msc->move (98, height() - m_msc->height() - 12);
+	m_lst->move (width()-22-25, height() - m_lst->height() - 12);
 }
 

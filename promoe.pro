@@ -23,7 +23,8 @@ SOURCES += XmmsQT4.cpp \
 		   SettingsWindow.cpp \
 		   MediaArtistList.cpp \
 		   MediaAlbumList.cpp \
-		   MediaSongList.cpp
+		   MediaSongList.cpp \
+		   PlaylistMenu.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -50,7 +51,8 @@ HEADERS += XmmsQT4.h \
 		   SettingsWindow.h \
 		   MediaArtistList.h \
 		   MediaAlbumList.h \
-		   MediaSongList.h
+		   MediaSongList.h \
+		   PlaylistMenu.h
 
 
 

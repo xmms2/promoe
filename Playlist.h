@@ -1,11 +1,14 @@
 #ifndef __PLAYLIST_H__
 #define __PLAYLIST_H__
 
+#include "XMMSHandler.h"
 #include "Skin.h"
 #include "PlaylistList.h"
 #include "PixWidget.h"
 #include "Button.h"
 #include "PlaylistShade.h"
+#include "PlaylistMenu.h"
+
 #include <QMainWindow>
 #include <QFont>
 
@@ -79,10 +82,15 @@ class PlaylistWidget : public QWidget {
 		void doScroll (int);
 		void sizeChangedList (QSize);
 
+		void menuAddUrl () {}
+		void menuAddDir ();
+		void menuAddFile ();
+
 	private:
 		void resizeEvent (QResizeEvent *event);
 		void paintEvent (QPaintEvent *event);
 		void mouseDoubleClickEvent (QMouseEvent *event);
+		void addButtons (void);
 
 		QPixmap m_corner1;
 		QPixmap m_corner2;
@@ -103,6 +111,12 @@ class PlaylistWidget : public QWidget {
 		PlaylistList *m_list;
 		PlaylistScroller *m_scroller;
 		dragButton *m_drag;
+
+		PlaylistMenu *m_add;
+		PlaylistMenu *m_del;
+		PlaylistMenu *m_sel;
+		PlaylistMenu *m_msc;
+		PlaylistMenu *m_lst;
 };
 
 
@@ -121,7 +135,6 @@ class PlaylistWindow : public QMainWindow {
 		void leaveEvent (QEvent *event);
 		void moveEvent (QMoveEvent *event);
 		void resizeEvent (QResizeEvent *event);
-
 
 	public slots:
 		void switchDisplay (void);

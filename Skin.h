@@ -154,14 +154,18 @@ class Skin : public QWidget
 			PLS_CORNER_UL_1,
 			PLS_CORNER_UR_0,
 			PLS_CORNER_UR_1,
+
 			PLS_TBAR_0,
 			PLS_TBAR_1,
+
 			PLS_TFILL_0,
 			PLS_TFILL_1,
 			PLS_BFILL_0,
 			PLS_BFILL_1 = PLS_BFILL_0,
+
 			PLS_VISMINI_0,
 			PLS_VISMINI_1 = PLS_VISMINI_0,
+
 			PLS_LFILL_0,
 			PLS_LFILL_1 = PLS_LFILL_0,
 			PLS_RFILL_0,
@@ -170,12 +174,14 @@ class Skin : public QWidget
 			PLS_RFILL2_1 = PLS_RFILL2_0,
 			PLS_RFILL3_0,
 			PLS_RFILL3_1 = PLS_RFILL3_0,
+
 			PLS_CLOSE_BTN_0,
 			PLS_CLOSE_BTN_1,
 			PLS_SHADE_BTN_0,
 			PLS_SHADE_BTN_1,
 			PLS_MAX_BTN_0,
 			PLS_MAX_BTN_1,
+
 			PLS_SCROLL_0,
 			PLS_SCROLL_1,
 			PLS_WS_LE_0,
@@ -185,8 +191,57 @@ class Skin : public QWidget
 			PLS_WS_MID_0,
 			PLS_WS_MID_1 = PLS_WS_MID_0,
 			PLS_LCBAR,
-			PLS_RCBAR
+			PLS_RCBAR,
+			
+			PLS_MSC_BTN_0,
+			PLS_MSC_BTN_1,
+
+			PLS_ADD,
+			PLS_ADD_DEC,
+			PLS_ADD_URL_0,
+			PLS_ADD_URL_1,
+			PLS_ADD_DIR_0,
+			PLS_ADD_DIR_1,
+			PLS_ADD_FIL_0,
+			PLS_ADD_FIL_1,
+
+			PLS_DEL,
+			PLS_DEL_DEC,
+			PLS_DEL_ALL_0,
+			PLS_DEL_ALL_1,
+			PLS_DEL_CRP_0,
+			PLS_DEL_CRP_1,
+			PLS_DEL_FIL_0,
+			PLS_DEL_FIL_1,
+
+			PLS_SEL,
+			PLS_SEL_DEC,
+			PLS_SEL_INV_0,
+			PLS_SEL_INV_1,
+			PLS_SEL_NIL_0,
+			PLS_SEL_NIL_1,
+			PLS_SEL_ALL_0,
+			PLS_SEL_ALL_1,
+
+			PLS_MSC,
+			PLS_MSC_DEC,
+			PLS_MSC_SRT_0,
+			PLS_MSC_SRT_1,
+			PLS_MSC_INF_0,
+			PLS_MSC_INF_1,
+			PLS_MSC_OPT_0,
+			PLS_MSC_OPT_1,
+
+			PLS_LST,
+			PLS_LST_DEC,
+			PLS_LST_NEW_0,
+			PLS_LST_NEW_1,
+			PLS_LST_SAV_0,
+			PLS_LST_SAV_1,
+			PLS_LST_OPN_0,
+			PLS_LST_OPN_1
 		};
+
 	private:
 		Skin() {};
 		static Skin *singleton;
