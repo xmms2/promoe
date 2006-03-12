@@ -59,12 +59,12 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void settingsSaved (void);
 		void playbackStatusChanged (uint status);
 		void playtimeChanged (uint time);
-		void mediainfoChanged (uint, QHash<QString, QString>);
-		void currentSong (QHash<QString, QString>);
-		void playlistList (QList<uint>);
+		void mediainfoChanged (uint, const QHash<QString, QString> &);
+		void currentSong (const QHash<QString, QString> &);
+		void playlistList (const QList<uint> &);
 		void currentID (uint);
-		void playlistChanged (QHash<QString, QString>);
-		void medialibResponse (uint, QList<QHash<QString, QString> >);
+		void playlistChanged (const QHash<QString, QString> &);
+		void medialibResponse (uint, const QList<QHash<QString, QString> > &);
 
 	private:
 		XMMSHandler (void);

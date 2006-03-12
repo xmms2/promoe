@@ -24,9 +24,9 @@ class PlaylistList : public QWidget {
 
 	public slots:
 		void setPixmaps (Skin *skin);
-		void playlistList (QList<uint>);
-		void mediainfoChanged (uint, QHash<QString,QString>);
-		void playlistChanged (QHash<QString,QString>);
+		void playlistList (const QList<uint> &);
+		void mediainfoChanged (uint, const QHash<QString,QString> &);
+		void playlistChanged (const QHash<QString,QString> &);
 		void currentID (uint);
 		void setStatus (uint);
 		void settingsSaved ();

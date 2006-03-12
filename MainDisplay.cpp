@@ -48,8 +48,8 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_playstatus = new PlayStatus (this);
 	m_playstatus->move (24, 28);
 
-	connect (xmmsh, SIGNAL(currentSong (QHash<QString, QString>)), 
-			 this, SLOT(setMediainfo (QHash<QString, QString>)));
+	connect (xmmsh, SIGNAL(currentSong (const QHash<QString, QString> &)), 
+			 this, SLOT(setMediainfo (const QHash<QString, QString> &)));
 	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
 	         this, SLOT(setStatus(uint)));
 	connect (xmmsh, SIGNAL(playtimeChanged(uint)),
@@ -96,7 +96,7 @@ MainDisplay::setPlaytime (uint time)
 }
 
 void
-MainDisplay::setMediainfo (QHash<QString, QString> h)
+MainDisplay::setMediainfo (const QHash<QString, QString> &h)
 {
 	QString n;
 	if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {

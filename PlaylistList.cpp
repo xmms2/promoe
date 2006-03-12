@@ -64,17 +64,17 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	m_status = XMMS_PLAYBACK_STATUS_STOP;
 	m_bar = -2;
 
-	connect (xmmsh, SIGNAL(playlistList(QList<uint>)),
-	         this, SLOT(playlistList(QList<uint>)));
+	connect (xmmsh, SIGNAL(playlistList(const QList<uint> &)),
+	         this, SLOT(playlistList(const QList<uint> &)));
 
 	connect (xmmsh, SIGNAL(currentID(uint)),
 	         this, SLOT(currentID(uint)));
 
-	connect (xmmsh, SIGNAL(mediainfoChanged(uint, QHash<QString, QString>)), 
-	         this, SLOT(mediainfoChanged(uint, QHash<QString, QString>)));
+	connect (xmmsh, SIGNAL(mediainfoChanged(uint, const QHash<QString, QString> &)), 
+	         this, SLOT(mediainfoChanged(uint, const QHash<QString, QString> &)));
 
-	connect (xmmsh, SIGNAL(playlistChanged(QHash<QString, QString>)),
-	         this, SLOT(playlistChanged(QHash<QString, QString>)));
+	connect (xmmsh, SIGNAL(playlistChanged(const QHash<QString, QString> &)),
+	         this, SLOT(playlistChanged(const QHash<QString, QString> &)));
 
 	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
 	         this, SLOT(setStatus(uint)));
@@ -103,7 +103,7 @@ PlaylistList::setStatus (uint s)
 }
 
 void
-PlaylistList::playlistChanged (QHash<QString,QString> h)
+PlaylistList::playlistChanged (const QHash<QString,QString> &h)
 {
 	int signal = h.value("type").toUInt();
 	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
@@ -188,7 +188,7 @@ PlaylistList::currentID (uint id)
 }
 
 void
-PlaylistList::mediainfoChanged (uint id, QHash<QString, QString> h)
+PlaylistList::mediainfoChanged (uint id, const QHash<QString, QString> &h)
 {
 	PlaylistItem *i = m_itemmap->value (id);
 	if (i) {
@@ -212,7 +212,7 @@ PlaylistList::mediainfoChanged (uint id, QHash<QString, QString> h)
 }
 
 void
-PlaylistList::playlistList (QList<uint> l)
+PlaylistList::playlistList (const QList<uint> &l)
 {
 	for (int i = 0; i < l.count(); i++) {
 		if (m_itemmap->contains (l.value(i))) {

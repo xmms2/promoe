@@ -49,7 +49,7 @@ class MainDisplay : public SkinDisplay
 		void setPixmaps(Skin *skin);
 		void setStatus (uint status);
 		void setPlaytime (uint time);
-		void setMediainfo (QHash<QString,QString>);
+		void setMediainfo (const QHash<QString,QString> &);
 		void togglePL(void);
 
 	protected:
