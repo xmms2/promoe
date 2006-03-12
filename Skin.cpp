@@ -46,7 +46,7 @@ Skin::BuildPlaylist (void)
 	m_playlist[PLS_CLOSE_BTN_1] = img->copy(52, 42, 9, 9);
 
 	m_playlist[PLS_SHADE_BTN_0] = tmp.copy(14, 3, 9, 9);
-	m_playlist[PLS_SHADE_BTN_1] = img->copy(52, 42, 9, 9);
+	m_playlist[PLS_SHADE_BTN_1] = img->copy(62, 42, 9, 9);
 
 	m_playlist[PLS_MAX_BTN_0] = img->copy(150, 42, 9, 9);
 

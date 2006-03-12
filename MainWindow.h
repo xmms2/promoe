@@ -33,10 +33,10 @@ class MainWindow : public QMainWindow
 		void setPL (PlaylistWindow *p) { m_playlistwin = p; }
 		void raisePL (void) { m_playlistwin->raise (); }
 		void moveEvent (QMoveEvent *event);
+		void togglePL (bool UpdateButton);
 
 	public slots:
 		void switchDisplay ();
-		void togglePL (void);
 
 	private:
 		bool isShaded (void) { QSettings s; return s.value("MainWindow/shaded").toBool(); }

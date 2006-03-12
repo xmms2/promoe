@@ -31,6 +31,7 @@ class MainDisplay : public SkinDisplay
 	public:
 		MainDisplay (QWidget *parent);
 		~MainDisplay ();
+		ToggleButton *GetPls() {return m_pls;};
 
 		TextScroller *m_text;
 		NumberDisplay *m_number;
@@ -49,6 +50,7 @@ class MainDisplay : public SkinDisplay
 		void setStatus (uint status);
 		void setPlaytime (uint time);
 		void setMediainfo (QHash<QString,QString>);
+		void togglePL(void);
 
 	protected:
 		void SetupPushButtons (void);
@@ -65,6 +67,8 @@ class MainDisplay : public SkinDisplay
 		ToggleButton *m_eq;
 		ToggleButton *m_shuffle;
 		ToggleButton *m_repeat;
+
+		MainWindow *m_mw;
 
 };
 

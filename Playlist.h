@@ -9,6 +9,7 @@
 #include <QMainWindow>
 #include <QFont>
 
+class MainWindow;
 class PlaylistWidget;
 class PlaylistScroller;
 
@@ -113,7 +114,6 @@ class PlaylistWindow : public QMainWindow {
 		~PlaylistWindow () {}
 
 		void setActive (bool);
-		void switchDisplay (void);
 
 		void mousePressEvent (QMouseEvent *event);
 		void mouseMoveEvent (QMouseEvent *event);
@@ -123,12 +123,20 @@ class PlaylistWindow : public QMainWindow {
 		void resizeEvent (QResizeEvent *event);
 
 
+	public slots:
+		void switchDisplay (void);
+		void togglePL (void);
+
 	private:
 		PlaylistWidget *m_playlist;
 		PlaylistShade *m_shaded;
 		
 		int m_diffx;
 		int m_diffy;
+
+		Button *m_shadebtn;
+		Button *m_closebtn;
+		MainWindow *m_mw;
 
 };
 

@@ -101,9 +101,14 @@ MainWindow::moveEvent (QMoveEvent *event)
 }
 
 void 
-MainWindow::togglePL (void) 
+MainWindow::togglePL (bool UpdateButton) 
 { 
 	QSettings s;
+
+	if(UpdateButton)
+	{
+		getMD()->GetPls()->toggleOn();
+	}
 
 	if (s.value ("playlist/hidden").toBool ()) {
 		m_playlistwin->move (s.value("playlist/pos").toPoint ());
@@ -136,7 +141,7 @@ main (int argc, char **argv)
 
 	MainWindow *mw = new MainWindow (NULL);
 
-	PlaylistWindow *playlistwin = new PlaylistWindow (NULL);
+	PlaylistWindow *playlistwin = new PlaylistWindow (mw);
 
 	/*
 	 * Now that everything is initialized

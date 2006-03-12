@@ -14,6 +14,8 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_tbar->move(0, 0);
 	m_tbar->resize(275, 14);
 
+	m_mw = dynamic_cast<MainWindow *>(parent);
+
 	SetupPushButtons ();
 	SetupToggleButtons ();
 
@@ -126,7 +128,7 @@ MainDisplay::SetupToggleButtons (void)
 	if (!s.value ("playlist/hidden").toBool ())
 		m_pls->toggleOn ();
 
-	connect (m_pls, SIGNAL(clicked()), window(), SLOT(togglePL()));
+	connect (m_pls, SIGNAL(clicked()), this, SLOT(togglePL()));
 
 	m_eq = new ToggleButton (this, Skin::EQ_ON_0, Skin::EQ_ON_1,
 							 Skin::EQ_OFF_0, Skin::EQ_OFF_1);
@@ -139,6 +141,12 @@ MainDisplay::SetupToggleButtons (void)
 	m_repeat = new ToggleButton (this, Skin::REPEAT_ON_0, Skin::REPEAT_ON_1,
 								 Skin::REPEAT_OFF_0, Skin::REPEAT_OFF_1);
 	m_repeat->move(210, 89);
+}
+
+void
+MainDisplay::togglePL (void)
+{
+	m_mw->togglePL(false);
 }
 
 void
