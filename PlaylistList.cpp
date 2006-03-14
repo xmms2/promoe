@@ -17,6 +17,15 @@ PlaylistItem::PlaylistItem (PlaylistList *pl, uint id)
 	pl->addItem (this);
 }
 
+PlaylistItem::PlaylistItem (PlaylistList *pl, uint id, uint pos)
+{
+	m_pl = pl;
+	m_id = id;
+	m_req = false;
+	m_duration = QString ("00:00");
+	pl->addItem (this, pos);
+}
+
 QString
 PlaylistItem::text (void)
 {
@@ -119,6 +128,17 @@ PlaylistList::playlistChanged (const QHash<QString,QString> &h)
 			}
 			break;
 		case XMMS_PLAYLIST_CHANGED_INSERT:
+			{
+				uint id = h.value("id").toUInt ();
+				uint pos = h.value("position").toUInt ();
+
+				if (m_itemmap->contains (id)) {
+					addItem (m_itemmap->value (id));
+				} else {
+					new PlaylistItem (this, id, pos);
+				}
+
+			}
 			break;
 		case XMMS_PLAYLIST_CHANGED_REMOVE:
 			{
@@ -633,6 +653,16 @@ PlaylistList::doResize (void)
 		setOffset (0);
 	}
 	emit sizeChanged (size());
+}
+
+void
+PlaylistList::addItem (PlaylistItem *i, uint pos)
+{
+	m_items->insert (pos, i);
+	if (!m_itemmap->contains (i->getID())) {
+		m_itemmap->insert (i->getID(), i);
+	}
+	doResize ();
 }
 
 void

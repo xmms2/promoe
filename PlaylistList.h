@@ -18,6 +18,7 @@ class PlaylistList : public QWidget {
 
 		void setSize (int, int);
 		void addItem (PlaylistItem *i);
+		void addItem (PlaylistItem *i, uint pos);
 		void setOffset (int i) { m_offset = i; }
 		uint getOffset (void) const { return m_offset; }
 		void doResize (void);
@@ -74,6 +75,7 @@ class PlaylistList : public QWidget {
 
 class PlaylistItem {
 	public:
+		PlaylistItem (PlaylistList *pl, uint, uint);
 		PlaylistItem (PlaylistList *pl, uint);
 		~PlaylistItem () {}
 		
