@@ -38,7 +38,6 @@ class TextScroller : public QWidget
 	private:
 		int m_w;
 		int m_h;
-		int m_y;
 		int m_x_off;
 		int m_x2_off;
 		int m_fontsize;

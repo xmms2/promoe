@@ -40,12 +40,6 @@ TextScroller::TextScroller (QWidget *parent, uint w,
 	setMinimumSize(m_w + 2, m_h);
 	setMaximumSize(m_w + 2, m_h);
 
-	if (m_h > 10) {
-		m_y = 4;
-	} else {
-		m_y = 0;
-	}
-
 	m_timer = new QTimer (this);
 	connect (m_timer, SIGNAL (timeout()), this, SLOT (addOffset ()));
 	connect (xmmsh, SIGNAL (settingsSaved ()), this, SLOT (settingsSaved ()));
@@ -149,7 +143,7 @@ TextScroller::drawBitmapFont (QString text)
 			p = skin->getLetter(' ');
 		}
 
-		paint.drawPixmap (QRect ((i * 6), m_y, 4, 6),
+		paint.drawPixmap (QRect ((i * 6), 0, 4, 6),
 						  p, p.rect());
 	}
 

@@ -19,8 +19,8 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	SetupPushButtons ();
 	SetupToggleButtons ();
 
-	m_text = new TextScroller (this, 154, 15, "main");
-	m_text->move (109, 23);
+	m_text = new TextScroller (this, 154, 10, "main");
+	m_text->move (112, 25);
 
 	m_time = new TimeDisplay(this, 0);
 	connect (m_time, SIGNAL(clicked()), this, SLOT(toggleTime()));
