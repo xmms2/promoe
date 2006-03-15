@@ -34,6 +34,8 @@ class MainWindow : public QMainWindow
 		void raisePL (void) { m_playlistwin->raise (); }
 		void moveEvent (QMoveEvent *event);
 		void togglePL (bool UpdateButton);
+		bool isTimemodeReverse(void) { QSettings s; return s.value("MainWindow/timemodereverse").toBool(); }
+		void setTimemodeReverse(bool b) { QSettings s; return s.setValue("MainWindow/timemodereverse",b); }
 
 	public slots:
 		void switchDisplay ();

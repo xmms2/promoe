@@ -46,3 +46,13 @@ NumberDisplay::setNumber (uint n1, uint n2)
 NumberDisplay::~NumberDisplay ()
 {
 }
+void
+NumberDisplay::mousePressEvent (QMouseEvent *event)
+{
+}
+void
+NumberDisplay::mouseReleaseEvent (QMouseEvent *event)
+{
+	emit clicked();
+}
+

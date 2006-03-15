@@ -8,6 +8,7 @@ SOURCES += XmmsQT4.cpp \
 		   Button.cpp \
 		   TextBar.cpp \
 		   NumberDisplay.cpp \
+			 TimeDisplay.cpp \
 		   XMMSHandler.cpp \
 		   SmallNumberDisplay.cpp \
 		   StereoMono.cpp \
@@ -37,6 +38,7 @@ HEADERS += XmmsQT4.h \
 		   Button.h \
 		   TextBar.h \
 		   NumberDisplay.h \
+			 TimeDisplay.h \
 		   XMMSHandler.h \
 		   SmallNumberDisplay.h \
 		   StereoMono.h \
@@ -68,7 +70,7 @@ QMAKE_LFLAGS += -L$$[QT_INSTALL_PLUGINS]/imageformats
 CONFIG += link_pkgconfig
 
 ;QMAKE_CXXFLAGS += -g
-CONFIG += debug warn_on
+;CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp sigc++-2.0 
 

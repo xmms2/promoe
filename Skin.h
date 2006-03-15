@@ -24,6 +24,7 @@ class Skin : public QWidget
 		const QPixmap getBal (uint p) const { return m_balance[p]; }
 		const QPixmap getLetter (uint c) const { return m_letterMap[c]; }
 		const QPixmap getNumber (uint c) const { return m_numbers[c]; }
+		uint getNumberSize () { return m_numbers.size(); }
 		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt[c]; }
 		const bool getVolBtn(void) const { return m_volbtn; }
 		const bool getBalBtn(void) const { return m_balbtn; }

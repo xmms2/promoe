@@ -19,6 +19,7 @@ class MainDisplay;
 #include "Button.h"
 #include "TextBar.h"
 #include "NumberDisplay.h"
+#include "TimeDisplay.h"
 #include "SmallNumberDisplay.h"
 #include "StereoMono.h"
 #include "Slider.h"
@@ -35,8 +36,7 @@ class MainDisplay : public SkinDisplay
 		ToggleButton *GetPls() {return m_pls;};
 
 		TextScroller *m_text;
-		NumberDisplay *m_number;
-		NumberDisplay *m_number2;
+		TimeDisplay *m_time;
 
 		SmallNumberDisplay *m_kbps;
 		SmallNumberDisplay *m_khz;
@@ -46,6 +46,7 @@ class MainDisplay : public SkinDisplay
 		VolumeSlider *m_vslider;
 		
 		PlayStatus *m_playstatus;
+		MainWindow *getMW(void) { return m_mw; }
 
 	public slots:
 		void setPixmaps(Skin *skin);
@@ -53,6 +54,7 @@ class MainDisplay : public SkinDisplay
 		void setPlaytime (uint time);
 		void setMediainfo (const QHash<QString,QString> &);
 		void togglePL(void);
+		void toggleTime(void);
 
 	protected:
 		void SetupPushButtons (void);

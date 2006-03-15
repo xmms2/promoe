@@ -38,6 +38,7 @@ class Slider : public PixWidget
 		void requestPos (float value);
 		
 		void setMax (uint max) { m_max = max; }
+		uint getMax () { return m_max; }
 		void hideBar (bool b); 		
 		bool getVertical () { return m_vertical; }
 

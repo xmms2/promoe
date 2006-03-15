@@ -14,8 +14,12 @@ class NumberDisplay : public PixWidget
 
 	public slots:
 		void setPixmaps (Skin *skin);
+	signals:
+		void clicked(void);
 
 	protected:
+		void mousePressEvent (QMouseEvent *event);
+		void mouseReleaseEvent (QMouseEvent *event);
 		int m_w;
 		int m_startpx;
 

@@ -22,11 +22,8 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_text = new TextScroller (this, 154, 15, "main");
 	m_text->move (109, 23);
 
-	m_number = new NumberDisplay (this, 33, 11);
-	m_number->move (37, 26);
-
-	m_number2 = new NumberDisplay (this, 24, 0);
-	m_number2->move (78, 26);
+	m_time = new TimeDisplay(this, 0);
+	connect (m_time, SIGNAL(clicked()), this, SLOT(toggleTime()));
 
 	m_kbps = new SmallNumberDisplay (this, 15);
 	m_kbps->move (111, 43);
@@ -76,8 +73,7 @@ void
 MainDisplay::setStatus (uint status)
 {
 	if (status == XMMS_PLAYBACK_STATUS_STOP) {
-		m_number->setNumber (0, 0);
-		m_number2->setNumber (0, 0);
+		m_time->setTime(0);
 		m_slider->setPos (0);
 		m_slider->hideBar (true);
 	}
@@ -86,13 +82,14 @@ MainDisplay::setStatus (uint status)
 void
 MainDisplay::setPlaytime (uint time)
 {
-	uint sec, min;
-
-	sec = (time / 1000) % 60;
-	min = (time / 1000) / 60;
-
-	m_number->setNumber (min / 10, min % 10);
-	m_number2->setNumber (sec / 10, sec % 10);
+	uint showtime;
+	if (m_mw->isTimemodeReverse()) {
+		uint maxtime = m_slider->getMax();
+		showtime = -(maxtime - time); 
+	} else {
+		showtime = time;
+	}
+	m_time->setTime (showtime);
 
 	// update slider
 	m_slider->setPos (time);
@@ -150,6 +147,11 @@ void
 MainDisplay::togglePL (void)
 {
 	m_mw->togglePL(false);
+}
+void
+MainDisplay::toggleTime (void)
+{
+	m_mw->setTimemodeReverse (!m_mw->isTimemodeReverse());
 }
 
 void
