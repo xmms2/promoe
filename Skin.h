@@ -25,6 +25,8 @@ class Skin : public QWidget
 		const QPixmap getLetter (uint c) const { return m_letterMap[c]; }
 		const QPixmap getNumber (uint c) const { return m_numbers[c]; }
 		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt[c]; }
+		const bool getVolBtn(void) const { return m_volbtn; }
+		const bool getBalBtn(void) const { return m_balbtn; }
 
 		enum Volume {
 			VOLUMEBAR_POS_MIN,
@@ -148,6 +150,8 @@ class Skin : public QWidget
 			POSBAR,
 			POSBAR_BTN_0,
 			POSBAR_BTN_1,
+			VOLBAR_BTN_0,
+			VOLBAR_BTN_1,
 		};
 		enum PlaylistParts {
 			PLS_CORNER_UL_0,
@@ -270,6 +274,9 @@ class Skin : public QWidget
 
 		QMap<QByteArray, QByteArray> m_pledit_txt;
 		QList<QPixmap *> m_buttons;
+
+		bool m_volbtn;
+		bool m_balbtn;
 
 	signals:
 		void skinChanged (Skin *skin);

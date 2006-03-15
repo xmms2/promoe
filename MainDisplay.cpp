@@ -48,6 +48,9 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_playstatus = new PlayStatus (this);
 	m_playstatus->move (24, 28);
 
+	m_vslider = new VolumeSlider(this);
+	m_vslider->move (107, 57);
+
 	connect (xmmsh, SIGNAL(currentSong (const QHash<QString, QString> &)), 
 			 this, SLOT(setMediainfo (const QHash<QString, QString> &)));
 	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),

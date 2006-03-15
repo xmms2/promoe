@@ -23,6 +23,7 @@ class MainDisplay;
 #include "StereoMono.h"
 #include "Slider.h"
 #include "PlayStatus.h"
+#include "VolumeSlider.h"
 #include "MainWindow.h"
 
 class MainDisplay : public SkinDisplay 
@@ -42,7 +43,8 @@ class MainDisplay : public SkinDisplay
 
 		StereoMono *m_stereo;
 		Slider *m_slider;
-
+		VolumeSlider *m_vslider;
+		
 		PlayStatus *m_playstatus;
 
 	public slots:

@@ -24,7 +24,8 @@ SOURCES += XmmsQT4.cpp \
 		   MediaArtistList.cpp \
 		   MediaAlbumList.cpp \
 		   MediaSongList.cpp \
-		   PlaylistMenu.cpp
+		   PlaylistMenu.cpp \
+		   VolumeSlider.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -52,7 +53,8 @@ HEADERS += XmmsQT4.h \
 		   MediaArtistList.h \
 		   MediaAlbumList.h \
 		   MediaSongList.h \
-		   PlaylistMenu.h
+		   PlaylistMenu.h \
+		   VolumeSlider.h
 
 
 
