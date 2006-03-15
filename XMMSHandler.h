@@ -30,7 +30,6 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void requestTrackChange (int pos);
 
 		void playlistAddURL (QString);
-		void playlistClear (void);
 		void playlistRemove (uint pos) { delete m_xmmsc->playlist_remove (pos); }
 		void playlistMove (uint pos, uint newpos) { delete m_xmmsc->playlist_move (pos, newpos); }
 		uint medialibQuery (QString);
@@ -43,6 +42,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 	public slots:
 		void setPlaytime (uint pos);
 
+		void playlistClear () { delete m_xmmsc->playlist_clear (); }
 		void play () { delete m_xmmsc->playback_start (); }
 		void stop () { delete m_xmmsc->playback_stop (); }
 		void pause () { delete m_xmmsc->playback_pause (); }

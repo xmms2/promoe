@@ -264,6 +264,7 @@ void
 PlaylistWidget::addButtons (void)
 {
 	PlaylistMenuButton *b;
+	XMMSHandler *xmmsh = XMMSHandler::getInstance();
 
 	m_add = new PlaylistMenu (this, Skin::PLS_ADD,
 							  Skin::PLS_ADD_DEC);
@@ -284,10 +285,12 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_MSC_BTN_1);
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_ALL_0,
 								Skin::PLS_DEL_ALL_1);
+	connect (b, SIGNAL(activated ()), xmmsh, SLOT (playlistClear ()));
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_CRP_0,
 								Skin::PLS_DEL_CRP_1);
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_FIL_0,
 								Skin::PLS_DEL_FIL_1);
+	connect (b, SIGNAL(activated ()), m_list, SLOT (deleteFiles ()));
 
 	m_sel = new PlaylistMenu (this, Skin::PLS_SEL,
 							  Skin::PLS_SEL_DEC);

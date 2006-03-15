@@ -487,7 +487,6 @@ void
 PlaylistList::keyPressEvent (QKeyEvent *event)
 {
 
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	QWidget *w = dynamic_cast<QWidget*>(parent());
 	QSize s = w->size ();
 	int lastitem = (m_offset + s.height()) / getFontH () - 1;
@@ -532,12 +531,7 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 		case Qt::Key_Backspace:
 		case Qt::Key_Delete:
 			{
-				/* Sort list and remove in reverse order */
-				qSort (*m_selected);
-				for (int i = (m_selected->count () - 1); i >= 0; i --) {
-					xmmsh->playlistRemove (m_selected->value (i));
-				}
-				m_selected->clear ();
+				deleteFiles ();
 			}
 			break;
 		case Qt::Key_A:
@@ -553,6 +547,19 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 			break;
 	}
 
+}
+
+void
+PlaylistList::deleteFiles ()
+{
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+
+	/* Sort list and remove in reverse order */
+	qSort (*m_selected);
+	for (int i = (m_selected->count () - 1); i >= 0; i --) {
+		xmmsh->playlistRemove (m_selected->value (i));
+	}
+	m_selected->clear ();
 }
 
 void

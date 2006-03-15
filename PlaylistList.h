@@ -31,6 +31,7 @@ class PlaylistList : public QWidget {
 		void currentID (uint);
 		void setStatus (uint);
 		void settingsSaved ();
+		void deleteFiles ();
 	
 	signals:
 		void sizeChanged (QSize);

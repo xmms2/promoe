@@ -90,12 +90,6 @@ XMMSHandler::playlistAddURL (QString s)
 }
 
 void
-XMMSHandler::playlistClear (void)
-{
-	delete m_xmmsc->playlist_clear ();
-}
-
-void
 XMMSHandler::requestMediainfo (uint id)
 {
 	XMMSResultDict *r = m_xmmsc->medialib_get_info (id);
