@@ -1,13 +1,16 @@
 #ifndef __NUMBERDISPLAY_H__
 #define __NUMBERDISPLAY_H__
 
+class TimeDisplay;
+
 #include "PixWidget.h"
+//#include "TimeDisplay.h"
 
 class NumberDisplay : public PixWidget
 {
 	Q_OBJECT
 	public:
-		NumberDisplay (QWidget *parent, uint, uint);
+		NumberDisplay (QWidget *parent, TimeDisplay *td, uint, uint);
 		~NumberDisplay ();
 
 		void setNumber (uint, uint);
@@ -23,6 +26,7 @@ class NumberDisplay : public PixWidget
 		int m_w;
 		int m_startpx;
 
+		TimeDisplay *m_td;
 		uint m_n1;
 		uint m_n2;
 };

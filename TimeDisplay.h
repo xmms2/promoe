@@ -1,6 +1,8 @@
 #ifndef __TIMEDISPLAY_H__
 #define __TIMEDISPLAY_H__
 
+class TimeDisplay;
+
 #include "PixWidget.h"
 #include "NumberDisplay.h"
 
@@ -11,6 +13,7 @@ class TimeDisplay : public PixWidget
 		TimeDisplay (QWidget *parent, int time);
 		~TimeDisplay ();
 		void setTime (int);
+		void drawMinus();
 	public slots:
 		void setPixmaps (Skin *skin);
 	signals:
@@ -19,7 +22,6 @@ class TimeDisplay : public PixWidget
 	protected:
 		void mousePressEvent (QMouseEvent *event);
 		void mouseReleaseEvent (QMouseEvent *event);
-		void drawMinus();
 		int m_time;
 		NumberDisplay *m_number_min;
 		NumberDisplay *m_number_sec;

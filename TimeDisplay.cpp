@@ -24,9 +24,9 @@ TimeDisplay::TimeDisplay (QWidget *parent, int time) : PixWidget (parent)
 	m_number_sec->move (78-37, 0);
 */
 
-	m_number_min = new NumberDisplay (parent, 24, 0);
+	m_number_min = new NumberDisplay (parent, this,24, 0);
 	m_number_min->move (37+10, 26);
-	m_number_sec = new NumberDisplay (parent, 24, 0);
+	m_number_sec = new NumberDisplay (parent, this,24, 0);
 	m_number_sec->move (78, 26);
 
 	connect (m_number_min, SIGNAL(clicked()), parent, SLOT(toggleTime()));
@@ -95,5 +95,6 @@ void
 TimeDisplay::mouseReleaseEvent (QMouseEvent *event)
 {
 	emit clicked();
+	drawMinus ();
 }
 

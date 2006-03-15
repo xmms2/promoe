@@ -1,8 +1,9 @@
 #include "MainWindow.h"
 #include "NumberDisplay.h"
 
-NumberDisplay::NumberDisplay (QWidget *parent, uint w, uint startpx) : PixWidget (parent)
+NumberDisplay::NumberDisplay (QWidget *parent, TimeDisplay *td,uint w, uint startpx) : PixWidget (parent)
 {
+	m_td = td;
 	m_w = w;
 	m_startpx = startpx;
 
@@ -53,6 +54,8 @@ NumberDisplay::mousePressEvent (QMouseEvent *event)
 void
 NumberDisplay::mouseReleaseEvent (QMouseEvent *event)
 {
+//	TimeDisplay *td = dynamic_cast<TimeDisplay *>(parent());
 	emit clicked();
+	m_td->drawMinus ();
 }
 
