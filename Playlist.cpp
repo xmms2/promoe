@@ -321,23 +321,33 @@ PlaylistWidget::addButtons (void)
 }
 
 void
-PlaylistWidget::menuAddDir ()
+PlaylistWidget::diveDir (const QString &dir)
 {
 	XMMSHandler *xmmsh = XMMSHandler::getInstance();
-	QString dir;
-	dir = QFileDialog::getExistingDirectory (this, "Select files to play",
-											 QDir::homePath ());
 	QDir d (dir);
 
-	d.setFilter (QDir::Files);
+	d.setFilter (QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
 
 	QFileInfoList list = d.entryInfoList();
 	for (int i = 0; i < list.size(); ++i) {
 		QFileInfo fileInfo = list.at(i);
-		QString fname = fileInfo.filePath();
-		xmmsh->playlistAddURL ("file://" + fname);
+		if (fileInfo.isDir ()) {
+			diveDir (fileInfo.filePath ());
+		} else {
+			QString fname = fileInfo.filePath();
+			xmmsh->playlistAddURL ("file://" + fname);
+		}
 	}
+}
+
+void
+PlaylistWidget::menuAddDir ()
+{
+	QString dir;
+	dir = QFileDialog::getExistingDirectory (this, "Select files to play",
+											 QDir::homePath ());
 	
+	diveDir (dir);
 }
 
 void

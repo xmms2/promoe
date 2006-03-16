@@ -91,6 +91,7 @@ class PlaylistWidget : public QWidget {
 		void paintEvent (QPaintEvent *event);
 		void mouseDoubleClickEvent (QMouseEvent *event);
 		void addButtons (void);
+		void diveDir (const QString &);
 
 		QPixmap m_corner1;
 		QPixmap m_corner2;
