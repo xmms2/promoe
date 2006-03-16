@@ -1,3 +1,5 @@
+#include "XMMSHandler.h"
+
 #include "VolumeSlider.h"
 #include <QMouseEvent>
 
@@ -8,6 +10,8 @@
 
 VolumeSlider::VolumeSlider (QWidget *parent) : PixWidget (parent)
 {
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+
 	setMinimumSize (68, 13);
 	setMaximumSize (68, 13);
 	m_volume = 0;
@@ -16,6 +20,11 @@ VolumeSlider::VolumeSlider (QWidget *parent) : PixWidget (parent)
 	m_volbtn = NULL;
 
 	m_pixmap = QPixmap (68, 13);
+
+	connect (xmmsh, SIGNAL(getVolume (uint)),
+		 this, SLOT(setVolume (uint)));
+
+	xmmsh->volumeGet ();
 }
 
 VolumeSlider::~VolumeSlider ()
@@ -164,6 +173,9 @@ VolumeSlider::setVolume (uint volume_base100)
 	if(m_volume > 27)
 		m_volume = 27;
 
+	if(m_hasvolbtn)
+		m_volbtn->setVolume (volume_base100);
+
 	changePixmap ();
 }
 
@@ -188,9 +200,9 @@ void
 VolButton::mousePressEvent (QMouseEvent *event)
 {
 	QPoint p (event->globalPos ());
-	QPoint np = m_volslider->mapFromGlobal(p);
+	QPoint np = m_volslider->mapFromGlobal (p);
 
-	move(np.x() - 7, 1);
+	move (np.x() - 7, 1);
 
 	changePixmap (true);
 }
@@ -204,7 +216,7 @@ VolButton::mouseReleaseEvent (QMouseEvent *event)
 void
 VolButton::mouseMoveEvent (QMouseEvent *event)
 {
-	QPoint p = m_volslider->mapFromGlobal(event->globalPos ());
+	QPoint p = m_volslider->mapFromGlobal (event->globalPos ());
 	int volume = 0;
 	int curx = p.x ();
 
@@ -212,12 +224,12 @@ VolButton::mouseMoveEvent (QMouseEvent *event)
 	if(curx < 7)
 	{
 		volume = 0;
-		m_volslider->setVolume(0);
+		m_volslider->setVolume (0);
 	}
 	else if(curx > 61)
 	{
 		volume = 54;
-		m_volslider->setVolume(100);
+		m_volslider->setVolume (100);
 	}
 	else
 	{
@@ -225,11 +237,25 @@ VolButton::mouseMoveEvent (QMouseEvent *event)
 		float b100temp = ((float)(((float)curx - 12) / (float)(68.0f - 19)));
 		volume = (int)(68 * temp) - 7;
 		// This is to make sure the volume slider itself reflects our changes.
-		m_volslider->setVolume((int)(100 * b100temp));
+		m_volslider->setVolume ((int)(100 * b100temp));
 	}
 
-	move(volume, 1);
+	move (volume, 1);
 }
+
+void
+VolButton::setVolume (uint volume_base100)
+{
+	int volume = (int)((float)(volume_base100) *.68);
+
+	if(volume < 0)
+		volume = 0;
+	else if(volume > 54)
+		volume = 54;
+
+	move (volume,1);
+}
+
 
 void
 VolButton::setPixmaps (Skin *skin)

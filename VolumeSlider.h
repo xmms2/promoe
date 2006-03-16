@@ -20,6 +20,7 @@ class VolButton : public PixWidget
 
 	public slots:
 		void setPixmaps (Skin *skin);
+		void setVolume (uint volume_base100);
 
 	private:
 		void changePixmap (bool pressed);
@@ -43,10 +44,10 @@ class VolumeSlider : public PixWidget
 		void mouseReleaseEvent (QMouseEvent *);
 
 		uint getVolume (void) { return m_volume_base100; };
-		void setVolume (uint volume_base100);
 
 	public slots:
 		void setPixmaps (Skin *skin);
+		void setVolume (uint volume_base100);
 
 	private:
 		void drawPixmaps ();

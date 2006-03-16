@@ -63,6 +63,9 @@ XMMSHandler::connect (const char *path)
 	r = m_xmmsc->broadcast_medialib_entry_changed ();
 	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_entry_changed));
 
+	XMMSResult *xr = m_xmmsc->broadcast_playback_volume_changed ();
+	xr->connect (sigc::mem_fun (this, &XMMSHandler::volume_changed));
+
 	return true;
 }
 
@@ -282,6 +285,36 @@ XMMSHandler::medialib_info (XMMSResultDict *res)
 	}
 
 	delete res;
+}
+
+void
+XMMSHandler::volumeGet (void)
+{
+	XMMSResultDict *p = m_xmmsc->playback_volume_get ();
+	p->connect (sigc::mem_fun (this, &XMMSHandler::volume_get));
+}
+
+void
+XMMSHandler::volume_changed (XMMSResult *res)
+{
+	volumeGet ();
+}
+
+void
+XMMSHandler::volume_get (XMMSResultDict *res)
+{
+	QHash<QString, QString> h (DictToQHash (res));
+	QList<QString> Values = h.values();
+	QListIterator<QString> vol (Values);
+
+	uint right = atol (vol.next().toAscii());
+	uint left = atol (vol.next().toAscii());
+
+	if(left > right)
+		emit getVolume (left);
+	else
+		emit getVolume (right);
+
 }
 
 XMMSHandler::~XMMSHandler ()
