@@ -3,11 +3,11 @@
 
 #include <iostream>
 
-#include "Skin.h"
-
 #include <QPixmap>
 #include <QPainter>
 #include <QWidget>
+
+class Skin;
 
 class PixWidget : public QWidget
 {

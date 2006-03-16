@@ -14,11 +14,20 @@ class MainWindow;
 #include <QHash>
 #include <QSettings>
 
-#include "Skin.h"
 #include "XmmsQT4.h"
+
+/*
+#include "Skin.h"
 #include "MainDisplay.h"
 #include "ShadedDisplay.h"
 #include "Playlist.h"
+*/
+
+class XmmsQT4;
+class Skin;
+class MainDisplay;
+class ShadedDisplay;
+class PlaylistWindow;
 
 class MainWindow : public QMainWindow
 {
@@ -29,9 +38,10 @@ class MainWindow : public QMainWindow
 
 		MainDisplay *getMD () { return m_display; }
 		ShadedDisplay *getSD () { return m_shaded; }
+		PlaylistWindow *getPL () { return m_playlistwin; }
 
 		void setPL (PlaylistWindow *p) { m_playlistwin = p; }
-		void raisePL (void) { m_playlistwin->raise (); }
+		void raisePL (void);
 		void moveEvent (QMoveEvent *event);
 		void togglePL (bool UpdateButton);
 		bool isTimemodeReverse(void) { QSettings s; return s.value("MainWindow/timemodereverse").toBool(); }

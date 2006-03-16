@@ -33,7 +33,6 @@ class SkinDisplay : public QWidget
 		QWidget *m_mw;
 		QWidget *m_tbar;
 		
-	private:
 		int m_diffX;
 		int m_diffY;
 };

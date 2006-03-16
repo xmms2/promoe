@@ -1,4 +1,5 @@
 #include "PlayStatus.h"
+#include "Skin.h"
 
 PlayStatus::PlayStatus (QWidget *parent) : PixWidget (parent)
 {

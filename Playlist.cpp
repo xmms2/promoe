@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include "Playlist.h"
+#include "PlaylistList.h"
 
+#include "PlaylistShade.h"
 #include "PlaylistMenu.h"
 
 #include <QMouseEvent>
@@ -432,6 +434,13 @@ PlaylistWidget::setActive (bool active)
 	}
 
 	update ();
+}
+
+
+uint 
+PlaylistWidget::getOffset (void)
+{ 
+	return m_list->getOffset (); 
 }
 
 void

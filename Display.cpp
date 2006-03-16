@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include "Display.h"
 
+#include "TitleBar.h"
+
 #include <QFileDialog>
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
@@ -29,8 +31,8 @@ SkinDisplay::mousePressEvent (QMouseEvent *event)
 void 
 SkinDisplay::mouseMoveEvent (QMouseEvent *event)
 {
-	m_mw->move(event->globalPos().x() - m_diffX,
-			   event->globalPos().y() - m_diffY);
+	m_mw->move (event->globalPos().x() - m_diffX,
+				event->globalPos().y() - m_diffY);
 }
 
 void

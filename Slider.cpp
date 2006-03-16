@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 
 #include "Slider.h"
+#include "Skin.h"
 
 #include <QWidget>
 #include <QMouseEvent>

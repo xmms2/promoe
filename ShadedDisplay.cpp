@@ -1,4 +1,11 @@
+#include "XMMSHandler.h"
+
 #include "ShadedDisplay.h"
+#include "TitleBar.h"
+#include "Button.h"
+
+#include "SmallNumberDisplay.h"
+#include "TextBar.h"
 
 ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 {

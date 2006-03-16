@@ -2,10 +2,10 @@
 #define __VOLUMESLIDER_H__
 
 #include "PixWidget.h"
-#include "Button.h"
 
 class VolumeSlider;
 class MainDisplay;
+class Button;
 
 class VolButton : public PixWidget
 {

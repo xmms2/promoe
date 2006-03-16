@@ -3,6 +3,8 @@
 #include "VolumeSlider.h"
 #include <QMouseEvent>
 
+#include "Skin.h"
+
 // NOTE!
 // This file has lots of seemingly strange math.
 // I will document it as we go, but please keep in mind

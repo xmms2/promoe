@@ -2,12 +2,6 @@
 #define __PLAYLIST_H__
 
 #include "XMMSHandler.h"
-#include "Skin.h"
-#include "PlaylistList.h"
-#include "PixWidget.h"
-#include "Button.h"
-#include "PlaylistShade.h"
-#include "PlaylistMenu.h"
 
 #include <QMainWindow>
 #include <QFont>
@@ -15,6 +9,13 @@
 class MainWindow;
 class PlaylistWidget;
 class PlaylistScroller;
+
+#include "Button.h"
+
+class Skin;
+class PlaylistList;
+class PlaylistShade;
+class PlaylistMenu;
 
 class dragButton : public Button {
 	public:
@@ -75,7 +76,7 @@ class PlaylistWidget : public QWidget {
 
 		void setActive (bool);
 		void switchDisplay (void);
-		uint getOffset (void) const { return m_list->getOffset (); };
+		uint getOffset (void);
 
 	public slots:
 		void setPixmaps (Skin *skin);

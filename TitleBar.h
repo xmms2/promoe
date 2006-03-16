@@ -4,7 +4,8 @@
 class TitleBar;
 
 #include "PixWidget.h"
-#include "Button.h"
+
+class Button;
 
 class TitleBar : public PixWidget
 {

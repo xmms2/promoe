@@ -1,4 +1,5 @@
 #include "SmallNumberDisplay.h"
+#include "Skin.h"
 
 SmallNumberDisplay::SmallNumberDisplay (QWidget *parent, int w) : PixWidget (parent)
 {

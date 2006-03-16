@@ -1,6 +1,9 @@
-
 #include "MainWindow.h"
 #include "Button.h"
+
+#include "Skin.h"
+
+#include <QMouseEvent>
 
 Button::Button (QWidget *parent) : PixWidget (parent)
 {

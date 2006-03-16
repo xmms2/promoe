@@ -1,4 +1,5 @@
 #include "StereoMono.h"
+#include "Skin.h"
 
 StereoMono::StereoMono (QWidget *parent) : PixWidget (parent)
 {

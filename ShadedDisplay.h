@@ -3,11 +3,12 @@
 
 class ShadedDisplay;
 
-#include "MainWindow.h"
 #include "Display.h"
-#include "SmallNumberDisplay.h"
-#include "TextBar.h"
-#include "Button.h"
+
+class MainWindow;
+class Button;
+class SmallNumberDisplay;
+class TextScroller;
 
 class ShadedDisplay : public SkinDisplay
 {

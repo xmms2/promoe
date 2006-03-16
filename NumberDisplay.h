@@ -4,7 +4,6 @@
 class TimeDisplay;
 
 #include "PixWidget.h"
-//#include "TimeDisplay.h"
 
 class NumberDisplay : public PixWidget
 {

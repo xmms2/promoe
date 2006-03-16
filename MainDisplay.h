@@ -15,6 +15,7 @@ class MainDisplay;
 #include <QPalette>
 
 #include "Display.h"
+/*
 #include "TitleBar.h"
 #include "Button.h"
 #include "TextBar.h"
@@ -26,6 +27,18 @@ class MainDisplay;
 #include "PlayStatus.h"
 #include "VolumeSlider.h"
 #include "MainWindow.h"
+*/
+
+class Button;
+class ToggleButton;
+class TextScroller;
+class TimeDisplay;
+class SmallNumberDisplay;
+class StereoMono;
+class Slider;
+class VolumeSlider;
+class PlayStatus;
+class MainWindow;
 
 class MainDisplay : public SkinDisplay 
 {
@@ -47,6 +60,8 @@ class MainDisplay : public SkinDisplay
 		
 		PlayStatus *m_playstatus;
 		MainWindow *getMW(void) { return m_mw; }
+
+		void mouseMoveEvent (QMouseEvent *);
 
 	public slots:
 		void setPixmaps(Skin *skin);

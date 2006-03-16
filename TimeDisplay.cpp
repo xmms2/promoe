@@ -2,6 +2,8 @@
 #include "TimeDisplay.h"
 #include "NumberDisplay.h"
 
+#include "MainWindow.h"
+
 #include <QPen>
 
 TimeDisplay::TimeDisplay (QWidget *parent, int time) : PixWidget (parent)

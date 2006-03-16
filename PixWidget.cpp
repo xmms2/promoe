@@ -1,5 +1,8 @@
 #include "MainWindow.h"
 
+#include "Skin.h"
+#include "PixWidget.h"
+
 PixWidget::PixWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance();

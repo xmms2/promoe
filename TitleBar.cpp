@@ -4,6 +4,7 @@
 #include "SkinChooser.h"
 #include "Medialib.h"
 #include "SettingsWindow.h"
+#include "Button.h"
 
 #include <QMenu>
 

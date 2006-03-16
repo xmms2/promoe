@@ -1,7 +1,18 @@
 #include "XMMSHandler.h"
 #include "MainDisplay.h"
+#include "MainWindow.h"
+
 #include "TitleBar.h"
+#include "Button.h"
 #include "TextBar.h"
+#include "NumberDisplay.h"
+#include "TimeDisplay.h"
+#include "SmallNumberDisplay.h"
+#include "StereoMono.h"
+#include "Slider.h"
+#include "PlayStatus.h"
+#include "VolumeSlider.h"
+#include "Playlist.h"
 
 #include <QFileDialog>
 #include <QSettings>
@@ -54,6 +65,22 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	         this, SLOT(setStatus(uint)));
 	connect (xmmsh, SIGNAL(playtimeChanged(uint)),
 	         this, SLOT(setPlaytime(uint)));
+}
+
+void 
+MainDisplay::mouseMoveEvent (QMouseEvent *event)
+{
+	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
+	PlaylistWindow *pl = mw->getPL ();
+
+	m_mw->move (event->globalPos().x() - m_diffX,
+				event->globalPos().y() - m_diffY);
+
+	if (!pl || !pl->isVisible ())
+		return;
+
+	pl->move (event->globalPos().x() - m_diffX,
+			  event->globalPos().y() - m_diffY + size().height());
 }
 
 void
