@@ -1,0 +1,27 @@
+##
+## This should be a somewhat complete list of people that have
+## contributed to the Promoe project. The format is copied from the
+## CREDITS-file in the Linux kernel source tree. The fields are: name
+## (N), email (E), web-address (W), PGP key ID and fingerprint (P),
+## description (D).
+##
+## This list is sorted alphabetically.
+##
+
+N: Tobias Bengtsson
+E: tobbe@tobbe.nu
+D: Various widgets
+
+N: Chris Gilbert
+E: neovanglist@neovanglist.net
+D: Various widgets and fixes
+
+N: Tobias Rundström
+E: tru@xmms.org
+W: http://tobi.nu/
+P: 1024D/EA0C5340 E203 6001 264C 71CE DBFD  7A95 102A 11D0 EA0C 5340
+D: Main developer and coordinator.
+
+N: Daniel Svensson
+E: daniel@nittionio.nu
+D: Various fixes.
