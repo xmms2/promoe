@@ -37,6 +37,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		uint medialibQuery (QString);
 		void medialibQueryAdd (QString q) { delete m_xmmsc->medialib_add_to_playlist (q.toUtf8 ()); }
 		void volumeGet (void);
+		void volumeSet (uint volume);
 
 
 		const XMMSClient *getXMMS () { return m_xmmsc; }
@@ -80,6 +81,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		XMMSClient *m_xmmsc;
 		static XMMSHandler *singleton;
 		int m_currentid;
+		bool m_masterchan;
 };
 
 #endif

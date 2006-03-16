@@ -86,6 +86,9 @@ VolumeSlider::setPixmaps (Skin *skin)
 void
 VolumeSlider::changePixmap ()
 {
+	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	xmmsh->volumeSet (m_volume_base100);
+
 	m_volslider = m_skin->getVol (m_volume);
 	drawPixmaps ();
 }

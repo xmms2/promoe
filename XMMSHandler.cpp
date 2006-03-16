@@ -294,6 +294,21 @@ XMMSHandler::volumeGet (void)
 	p->connect (sigc::mem_fun (this, &XMMSHandler::volume_get));
 }
 
+
+void
+XMMSHandler::volumeSet (uint volume)
+{
+	if(m_masterchan)
+	{
+		delete m_xmmsc->playback_volume_set ("master", volume);
+	}
+	else
+	{
+		delete m_xmmsc->playback_volume_set ("left", volume);
+		delete m_xmmsc->playback_volume_set ("right", volume);
+	}
+}
+
 void
 XMMSHandler::volume_changed (XMMSResult *res)
 {
@@ -308,12 +323,22 @@ XMMSHandler::volume_get (XMMSResultDict *res)
 	QListIterator<QString> vol (Values);
 
 	uint right = atol (vol.next().toAscii());
-	uint left = atol (vol.next().toAscii());
+	if(vol.hasNext())
+	{
+		uint left = atol (vol.next().toAscii());
+	
+		if(left > right)
+			emit getVolume (left);
+		else
+			emit getVolume (right);
 
-	if(left > right)
-		emit getVolume (left);
+		m_masterchan = false;
+	}
 	else
+	{
 		emit getVolume (right);
+		m_masterchan = true;
+	}
 
 }
 
