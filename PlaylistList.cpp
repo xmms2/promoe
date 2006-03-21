@@ -3,10 +3,12 @@
 #include "PlaylistList.h"
 #include "Playlist.h"
 
-#include <QPaintEvent>
-#include <QDrag>
-#include <QSettings>
 #include <QStyleOptionHeader>
+#include <QPaintEvent>
+#include <QSettings>
+#include <QCursor>
+#include <QDrag>
+#include <QMenu>
 
 PlaylistItem::PlaylistItem (PlaylistList *pl, uint id)
 {
@@ -286,13 +288,45 @@ PlaylistList::generatePixmap (int i)
 	return p;
 }
 
+void
+PlaylistList::showMenu (void)
+{
+	QMenu qm(this);
+
+	QAction *a;
+
+	a = new QAction (tr ("Show file info"), this);
+	a->setShortcut (tr ("Ctrl+Enter"));
+	/*
+	connect (a, SIGNAL (triggered ()), this, SLOT (showMlib ()));
+	*/
+	qm.addAction (a);
+	qm.addSeparator ();
+
+	a = new QAction (tr ("Add file"), this);
+	a->setShortcut (tr ("Ctrl+F"));
+	qm.addAction (a);
+
+	a = new QAction (tr ("Remove selected"), this);
+	qm.addAction (a);
+
+	qm.addSeparator ();
+
+	a = new QAction (tr ("Medialib browser"), this);
+	qm.addAction (a);
+
+	qm.exec (QCursor::pos ());
+}
+
 void 
 PlaylistList::mousePressEvent (QMouseEvent *event)
 {
 	if (m_items->count() < 1) {
 		return;
 	}
+
 	int i = ((event->pos().y()+m_offset) / getFontH());
+
 	if (i < 0) {
 		i = 0;
 	}
@@ -333,6 +367,8 @@ PlaylistList::mousePressEvent (QMouseEvent *event)
 
 			m_dragstart = event->pos ();
 		}
+	} else if (event->button () == Qt::RightButton) {
+		showMenu ();
 	}
 
 	update ();
@@ -423,6 +459,8 @@ PlaylistList::dropEvent (QDropEvent *event)
 		m_selected->append (m_drag_id);
 
 		event->acceptProposedAction ();
+	}
+	/*
 	} else if (event->mimeData()->hasFormat("application/mlib.album")) {
 		const QMimeData *md = event->mimeData ();
 		QByteArray encodedData = md->data("application/mlib.album");
@@ -479,6 +517,7 @@ PlaylistList::dropEvent (QDropEvent *event)
 
 		event->acceptProposedAction ();
 	}
+	*/
 	m_bar = -2;
 	update ();
 }

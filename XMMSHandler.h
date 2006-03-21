@@ -1,7 +1,7 @@
 #ifndef __XMMS_HANDLER_H__
 #define __XMMS_HANDLER_H__
 
-#include <xmmsclient/xmmsclient++.h>
+#include "xmmsclient_promoe.h"
 
 #include "XmmsQT4.h"
 
@@ -34,8 +34,10 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void playlistAddURL (QString);
 		void playlistRemove (uint pos) { delete m_xmmsc->playlist_remove (pos); }
 		void playlistMove (uint pos, uint newpos) { delete m_xmmsc->playlist_move (pos, newpos); }
+		/*
 		uint medialibQuery (QString);
 		void medialibQueryAdd (QString q) { delete m_xmmsc->medialib_add_to_playlist (q.toUtf8 ()); }
+		*/
 		void volumeGet (void);
 		void volumeSet (uint volume);
 
@@ -69,7 +71,9 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void playlistList (const QList<uint> &);
 		void currentID (uint);
 		void playlistChanged (const QHash<QString, QString> &);
+		/*
 		void medialibResponse (uint, const QList<QHash<QString, QString> > &);
+		*/
 		void getVolume (uint);
 
 	private:

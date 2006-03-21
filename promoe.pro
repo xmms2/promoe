@@ -19,14 +19,11 @@ SOURCES += XmmsQT4.cpp \
 		   PlaylistList.cpp \
 		   SkinChooser.cpp \
 		   PlaylistShade.cpp \
-		   Medialib.cpp \
 		   qtmd5.cpp \
 		   SettingsWindow.cpp \
-		   MediaArtistList.cpp \
-		   MediaAlbumList.cpp \
-		   MediaSongList.cpp \
 		   PlaylistMenu.cpp \
-		   VolumeSlider.cpp
+		   VolumeSlider.cpp \
+		   xmmsclient_promoe.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -38,7 +35,7 @@ HEADERS += XmmsQT4.h \
 		   Button.h \
 		   TextBar.h \
 		   NumberDisplay.h \
-			 TimeDisplay.h \
+		   TimeDisplay.h \
 		   XMMSHandler.h \
 		   SmallNumberDisplay.h \
 		   StereoMono.h \
@@ -49,14 +46,12 @@ HEADERS += XmmsQT4.h \
 		   PlaylistList.h \
 		   SkinChooser.h \
 		   PlaylistShade.h \
-		   Medialib.h \
 		   qtmd5.h \
 		   SettingsWindow.h \
-		   MediaArtistList.h \
-		   MediaAlbumList.h \
-		   MediaSongList.h \
 		   PlaylistMenu.h \
-		   VolumeSlider.h
+		   VolumeSlider.h \
+		   xmmsclient_promoe.h \
+		   xmmsclient_methods.h
 
 
 
@@ -72,7 +67,7 @@ CONFIG += link_pkgconfig
 ;QMAKE_CXXFLAGS += -g
 ;CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-PKGCONFIG += xmms2-client xmms2-client-cpp sigc++-2.0 
+PKGCONFIG += xmms2-client sigc++-2.0 
 
 ;CONFIG += avahi
 

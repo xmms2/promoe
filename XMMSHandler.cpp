@@ -1,4 +1,4 @@
-#include <xmmsclient/xmmsclient++.h>
+#include "xmmsclient_promoe.h"
 
 #include "XmmsQT4.h"
 #include "XMMSHandler.h"
@@ -242,12 +242,13 @@ XMMSHandler::PropDictToQHash (XMMSResultDict *res)
 	return h;
 }
 
+/*
 uint
 XMMSHandler::medialibQuery (QString q)
 {
 	XMMSResultDictList *r = m_xmmsc->medialib_select (q.toUtf8 ());
 	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_select));
-	return r->getCID ();
+	m_mlibqs->append (r);
 }
 
 void
@@ -262,6 +263,7 @@ XMMSHandler::medialib_select (XMMSResultDictList *res)
 
 	emit medialibResponse (res->getCID (), l);
 }
+*/
 
 void
 XMMSHandler::playlist_changed (XMMSResultDict *res)

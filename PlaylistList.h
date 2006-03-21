@@ -37,6 +37,7 @@ class PlaylistList : public QWidget {
 		void sizeChanged (QSize);
 	
 	private:
+		void showMenu (void);
 		void paintEvent (QPaintEvent *event);
 		void mousePressEvent (QMouseEvent *event);
 		void mouseMoveEvent (QMouseEvent *event);

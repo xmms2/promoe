@@ -1,4 +1,3 @@
-#include <xmmsclient/xmmsclient++.h>
 #include "MainWindow.h"
 
 #ifdef HAVE_SERVERBROWSER
