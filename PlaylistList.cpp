@@ -331,7 +331,7 @@ PlaylistList::mousePressEvent (QMouseEvent *event)
 		i = 0;
 	}
 
-	if (i > m_items->count ()) {
+	if (i > (m_items->count () - 1)) {
 		return;
 	}
 
