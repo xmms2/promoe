@@ -95,8 +95,11 @@ ShadedDisplay::setPlaytime (uint time)
 	sec = (time / 1000) % 60;
 	min = (time / 1000) / 60;
 
-	m_number->setNumber (min, 2);
-	m_number2->setNumber (sec, 2);
+	if (sec != m_number2->getNumber ()) {
+		m_number2->setNumber (sec, 2);
+	} else if (min != m_number->getNumber ()) {
+		m_number->setNumber (min, 2);
+	}
 }
 
 

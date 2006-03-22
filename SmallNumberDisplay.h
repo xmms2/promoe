@@ -14,6 +14,7 @@ class SmallNumberDisplay : public PixWidget
 		~SmallNumberDisplay () { };
 
 		void setNumber (int num, int len);
+		int getNumber (void) const { return m_num; }
 
 	public slots:
 		void setPixmaps (Skin *skin);

@@ -7,6 +7,7 @@
 
 #include <QObject>
 #include <QHash>
+#include <QTimer>
 
 class XMMSHandler : public QObject, public sigc::trackable {
 	Q_OBJECT
@@ -48,6 +49,7 @@ class XMMSHandler : public QObject, public sigc::trackable {
 
 	public slots:
 		void setPlaytime (uint pos);
+		void restartPlaytime (void);
 
 		void playlistClear () { delete m_xmmsc->playlist_clear (); }
 		void play () { delete m_xmmsc->playback_start (); }
@@ -77,6 +79,9 @@ class XMMSHandler : public QObject, public sigc::trackable {
 		void getVolume (uint);
 
 	private:
+		XMMSResultValue<uint> *m_playtime;
+		QTimer m_playtime_timer;
+
 		XMMSHandler (void);
 		QHash<QString, QString> PropDictToQHash (XMMSResultDict *res);
 		QHash<QString, QString> DictToQHash (XMMSResultDict *res);

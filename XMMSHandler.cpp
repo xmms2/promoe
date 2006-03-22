@@ -23,7 +23,7 @@ XMMSHandler *XMMSHandler::getInstance (void)
 	return singleton;
 }
 
-XMMSHandler::XMMSHandler () : sigc::trackable ()
+XMMSHandler::XMMSHandler () : QObject (), sigc::trackable ()
 {
 	m_xmmsc = new XMMSClient ("promoe");
 }
@@ -66,9 +66,16 @@ XMMSHandler::connect (const char *path)
 	XMMSResult *xr = m_xmmsc->broadcast_playback_volume_changed ();
 	xr->connect (sigc::mem_fun (this, &XMMSHandler::volume_changed));
 
+	QObject::connect (&m_playtime_timer, SIGNAL (timeout ()), this, SLOT (restartPlaytime ()));
+
 	return true;
 }
 
+void
+XMMSHandler::restartPlaytime (void)
+{
+	m_playtime->restart ();
+}
 
 void
 XMMSHandler::medialib_entry_changed (XMMSResultValue<uint> *res)
@@ -151,7 +158,8 @@ XMMSHandler::playback_playtime (XMMSResultValue<uint> *res)
 
 	emit playtimeChanged (i);
 	
-	res->restart ();
+	m_playtime = res;
+	m_playtime_timer.start (500);
 }
 
 void 
