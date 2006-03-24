@@ -218,8 +218,12 @@ PlaylistList::mediainfoChanged (uint id, const QHash<QString, QString> &h)
 		if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {
 			n = h.value("artist") + " - " + h.value("album") + " - " + h.value("title");
 		} else {
-			QString t = h.value("url");
-			n = t.section ("/", -1);
+			if (h.contains ("channel")) {
+				n = h.value("channel") + " - " + h.value("title");
+			} else {
+				QString t = h.value("url");
+				n = t.section ("/", -1);
+			}
 		}
 		i->setText (n);
 		if (h.contains ("duration")) {
