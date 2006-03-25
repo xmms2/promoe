@@ -328,6 +328,11 @@ XMMSHandler::volume_changed (XMMSResult *res)
 void
 XMMSHandler::volume_get (XMMSResultDict *res)
 {
+	if (res->isError()) {
+		qWarning ("couldn't get volume levels!");
+		return;
+	}
+
 	QHash<QString, QString> h (DictToQHash (res));
 	QList<QString> Values = h.values();
 	QListIterator<QString> vol (Values);
