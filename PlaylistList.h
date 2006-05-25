@@ -1,6 +1,7 @@
 #ifndef __PLAYLISTLIST_H__
 #define __PLAYLISTLIST_H__
 
+#include <xmmsclient/xmmsclient++.h>
 #include "Skin.h"
 #include <QWidget>
 #include <QHash>
@@ -29,7 +30,7 @@ class PlaylistList : public QWidget {
 		void mediainfoChanged (uint, const QHash<QString,QString> &);
 		void playlistChanged (const QHash<QString,QString> &);
 		void currentID (uint);
-		void setStatus (uint);
+		void setStatus (Xmms::Playback::Status s);
 		void settingsSaved ();
 		void deleteFiles ();
 	
@@ -69,7 +70,7 @@ class PlaylistList : public QWidget {
 		int m_drag_id;
 		int m_pos;
 		QPoint m_dragstart;
-		uint m_status;
+		Xmms::Playback::Status m_status;
 
 		QDrag *m_drag;
 		QMimeData *m_md;

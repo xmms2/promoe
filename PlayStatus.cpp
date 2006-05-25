@@ -1,17 +1,17 @@
+#include <xmmsclient/xmmsclient++.h>
 #include "PlayStatus.h"
 #include "Skin.h"
 
 PlayStatus::PlayStatus (QWidget *parent) : PixWidget (parent)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance();
-
 	setMinimumSize(11, 9);
 	setMaximumSize(11, 9);
 
-	m_status = XMMS_PLAYBACK_STATUS_STOP;
+	m_status = Xmms::Playback::STOPPED;
 
-	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
-	         this, SLOT(setStatus(uint)));
+	connect (&XMMSHandler::getInstance (),
+	         SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	         this, SLOT(setStatus(Xmms::Playback::Status)));
 }
 
 void
@@ -25,13 +25,14 @@ PlayStatus::setPixmaps (Skin *skin)
 }
 
 void
-PlayStatus::setStatus (uint status)
+PlayStatus::setStatus (Xmms::Playback::Status status)
 {
-	if (status == XMMS_PLAYBACK_STATUS_STOP) {
+	using Xmms::Playback;
+	if (status == Playback::STOPPED) {
 		m_pixmap = m_pixmap_stop;
-	} else if (status == XMMS_PLAYBACK_STATUS_PLAY) {
+	} else if (status == Playback::PLAYING) {
 		m_pixmap = m_pixmap_play;
-	} else if (status == XMMS_PLAYBACK_STATUS_PAUSE) {
+	} else if (status == Playback::PAUSED) {
 		m_pixmap = m_pixmap_pause;
 	}
 

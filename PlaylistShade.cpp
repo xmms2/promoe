@@ -8,7 +8,7 @@
 PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 {
 	QSettings s;
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 
 	if (!s.contains ("playlist/shadedsize"))
 		s.setValue ("playlist/shadedsize", 8);
@@ -18,10 +18,10 @@ PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
-	connect (xmmsh, SIGNAL(currentSong (QHash<QString, QString>)), 
+	connect (&xmmsh, SIGNAL(currentSong (QHash<QString, QString>)), 
 			 this, SLOT(setMediainfo (QHash<QString, QString>)));
 
-	connect (xmmsh, SIGNAL(settingsSaved ()), 
+	connect (&xmmsh, SIGNAL(settingsSaved ()), 
 			 this, SLOT(settingsSaved ()));
 
 	m_text = "Promoe 0.1 - A very neat XMMS2 client";

@@ -1,6 +1,7 @@
 #ifndef __PLAYSTATUS_H__
 #define __PLAYSTATUS_H__
 
+#include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
 #include "PixWidget.h"
 
@@ -14,10 +15,10 @@ class PlayStatus : public PixWidget
 
 	public slots:
 		void setPixmaps (Skin *skin);
-		void setStatus (uint status);
+		void setStatus (Xmms::Playback::Status status);
 
 	private:
-		int m_status;
+		Xmms::Playback::Status m_status;
 
 		QPixmap m_pixmap_stop;
 		QPixmap m_pixmap_play;

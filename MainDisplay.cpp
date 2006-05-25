@@ -1,3 +1,4 @@
+#include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
 #include "MainDisplay.h"
 #include "MainWindow.h"
@@ -19,8 +20,6 @@
 
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
-
 	m_tbar = new TitleBar(this, false);
 	m_tbar->move(0, 0);
 	m_tbar->resize(275, 14);
@@ -59,11 +58,12 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_vslider = new VolumeSlider(this);
 	m_vslider->move (107, 57);
 
-	connect (xmmsh, SIGNAL(currentSong (const QHash<QString, QString> &)), 
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
+	connect (&xmmsh, SIGNAL(currentSong (const QHash<QString, QString> &)), 
 			 this, SLOT(setMediainfo (const QHash<QString, QString> &)));
-	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
-	         this, SLOT(setStatus(uint)));
-	connect (xmmsh, SIGNAL(playtimeChanged(uint)),
+	connect (&xmmsh, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	         this, SLOT(setStatus(Xmms::Playback::Status)));
+	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
 	         this, SLOT(setPlaytime(uint)));
 }
 
@@ -97,9 +97,9 @@ MainDisplay::setPixmaps (Skin *skin)
 }
 
 void
-MainDisplay::setStatus (uint status)
+MainDisplay::setStatus (Xmms::Playback::Status status)
 {
-	if (status == XMMS_PLAYBACK_STATUS_STOP) {
+	if (status == Xmms::Playback::STOPPED) {
 		m_time->setTime(0);
 		m_slider->setPos (0);
 		m_slider->hideBar (true);
@@ -184,28 +184,28 @@ MainDisplay::toggleTime (void)
 void
 MainDisplay::SetupPushButtons (void)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 
 	/* Normal buttons */
 	m_prev = new Button (this, Skin::BTN_PREV_0, Skin::BTN_PREV_1);
 	m_prev->move(16, 88);
-	connect (m_prev, SIGNAL(clicked()), xmmsh, SLOT(prev()));
+	connect (m_prev, SIGNAL(clicked()), &xmmsh, SLOT(prev()));
 	
 	m_play = new Button (this, Skin::BTN_PLAY_0, Skin::BTN_PLAY_1);
 	m_play->move(39, 88);
-	connect (m_play, SIGNAL(clicked()), xmmsh, SLOT(play()));
+	connect (m_play, SIGNAL(clicked()), &xmmsh, SLOT(play()));
 
 	m_pause = new Button (this, Skin::BTN_PAUSE_0, Skin::BTN_PAUSE_1);
 	m_pause->move(62, 88);
-	connect (m_pause, SIGNAL(clicked()), xmmsh, SLOT(pause()));
+	connect (m_pause, SIGNAL(clicked()), &xmmsh, SLOT(pause()));
 
 	m_stop = new Button (this, Skin::BTN_STOP_0, Skin::BTN_STOP_1);
 	m_stop->move(85, 88);
-	connect (m_stop, SIGNAL(clicked()), xmmsh, SLOT(stop()));
+	connect (m_stop, SIGNAL(clicked()), &xmmsh, SLOT(stop()));
 
 	m_next = new Button (this, Skin::BTN_NEXT_0, Skin::BTN_NEXT_1);
 	m_next->move(108, 88);
-	connect (m_next, SIGNAL(clicked()), xmmsh, SLOT(next()));
+	connect (m_next, SIGNAL(clicked()), &xmmsh, SLOT(next()));
 
 	m_eject = new Button (this, Skin::BTN_EJECT_0, Skin::BTN_EJECT_1);
 	m_eject->move(136, 89);

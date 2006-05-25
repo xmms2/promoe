@@ -3,6 +3,7 @@
 
 class MainDisplay;
 
+#include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
 
 #include <iostream>
@@ -65,7 +66,7 @@ class MainDisplay : public SkinDisplay
 
 	public slots:
 		void setPixmaps(Skin *skin);
-		void setStatus (uint status);
+		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint time);
 		void setMediainfo (const QHash<QString,QString> &);
 		void togglePL(void);

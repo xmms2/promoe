@@ -1,3 +1,4 @@
+#include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
 
 #include "PlaylistList.h"
@@ -31,12 +32,11 @@ PlaylistItem::PlaylistItem (PlaylistList *pl, uint id, uint pos)
 QString
 PlaylistItem::text (void)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 
 	if (m_text.count() < 1) {
 
 		if (!m_req) {
-			xmmsh->requestMediainfo (m_id);
+			XMMSHandler::getInstance ().requestMediainfo (m_id);
 			m_req = true;
 		}
 
@@ -52,7 +52,7 @@ PlaylistItem::text (void)
 PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 {
 	QSettings s;
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 	Skin *skin = Skin::getInstance ();
 
 	if (!s.contains("playlist/fontsize"))
@@ -75,22 +75,22 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	m_status = XMMS_PLAYBACK_STATUS_STOP;
 	m_bar = -2;
 
-	connect (xmmsh, SIGNAL(playlistList(const QList<uint> &)),
+	connect (&xmmsh, SIGNAL(playlistList(const QList<uint> &)),
 	         this, SLOT(playlistList(const QList<uint> &)));
 
-	connect (xmmsh, SIGNAL(currentID(uint)),
+	connect (&xmmsh, SIGNAL(currentID(uint)),
 	         this, SLOT(currentID(uint)));
 
-	connect (xmmsh, SIGNAL(mediainfoChanged(uint, const QHash<QString, QString> &)), 
+	connect (&xmmsh, SIGNAL(mediainfoChanged(uint, const QHash<QString, QString> &)), 
 	         this, SLOT(mediainfoChanged(uint, const QHash<QString, QString> &)));
 
-	connect (xmmsh, SIGNAL(playlistChanged(const QHash<QString, QString> &)),
+	connect (&xmmsh, SIGNAL(playlistChanged(const QHash<QString, QString> &)),
 	         this, SLOT(playlistChanged(const QHash<QString, QString> &)));
 
-	connect (xmmsh, SIGNAL(playbackStatusChanged(uint)),
-	         this, SLOT(setStatus(uint)));
+	connect (&xmmsh, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	         this, SLOT(setStatus(Xmms::Playback::Status)));
 
-	connect (xmmsh, SIGNAL(settingsSaved()),
+	connect (&xmmsh, SIGNAL(settingsSaved()),
 	         this, SLOT(settingsSaved()));
 }
 
@@ -108,7 +108,7 @@ PlaylistList::settingsSaved ()
 }
 
 void
-PlaylistList::setStatus (uint s)
+PlaylistList::setStatus (Xmms::Playback::Status s)
 {
 	m_status = s;
 }
@@ -117,7 +117,7 @@ void
 PlaylistList::playlistChanged (const QHash<QString,QString> &h)
 {
 	int signal = h.value("type").toUInt();
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 	switch (signal) {
 		case XMMS_PLAYLIST_CHANGED_ADD:
 			{
@@ -184,7 +184,7 @@ PlaylistList::playlistChanged (const QHash<QString,QString> &h)
 				m_itemmap->clear ();
 
 				if (signal != XMMS_PLAYLIST_CHANGED_CLEAR) {
-					xmmsh->requestPlaylistList ();
+					xmmsh.requestPlaylistList ();
 				} else {
 					doResize ();
 				}
@@ -254,8 +254,6 @@ PlaylistList::playlistList (const QList<uint> &l)
 void
 PlaylistList::mouseDoubleClickEvent (QMouseEvent *event)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
-
 	if (m_items->count() < 1 || m_selected->count() < 1) {
 		return;
 	}
@@ -265,11 +263,12 @@ PlaylistList::mouseDoubleClickEvent (QMouseEvent *event)
 		return;
 	}
 
-	xmmsh->requestTrackChange (m_items->indexOf(it));
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
+	xmmsh.requestTrackChange (m_items->indexOf(it));
 	if (m_status == XMMS_PLAYBACK_STATUS_STOP ||
 		m_status == XMMS_PLAYBACK_STATUS_PAUSE)
 	{
-		xmmsh->play ();
+		xmmsh.play ();
 	}
 }
 
@@ -451,14 +450,14 @@ PlaylistList::dragLeaveEvent (QDragLeaveEvent *event)
 void
 PlaylistList::dropEvent (QDropEvent *event)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 
 	if (event->mimeData()->hasFormat("application/playlist.move")) {
 		if (m_bar == -2) {
 			m_items->insert (m_pos, m_itemmap->value (m_drag_id));
 		} else {
 			m_items->insert (m_bar + 1, m_itemmap->value (m_drag_id));
-			xmmsh->playlistMove (m_pos, m_bar + 1);
+			xmmsh.playlistMove (m_pos, m_bar + 1);
 		}
 		m_selected->append (m_drag_id);
 
@@ -521,9 +520,9 @@ PlaylistList::dropEvent (QDropEvent *event)
 
 		event->acceptProposedAction ();
 	}
-	*/
 	m_bar = -2;
 	update ();
+	*/
 }
 
 void
@@ -595,12 +594,12 @@ PlaylistList::keyPressEvent (QKeyEvent *event)
 void
 PlaylistList::deleteFiles ()
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 
-	/* Sort list and remove in reverse order */
+	//Sort list and remove in reverse order
 	qSort (*m_selected);
 	for (int i = (m_selected->count () - 1); i >= 0; i --) {
-		xmmsh->playlistRemove (m_selected->value (i));
+		xmmsh.playlistRemove (m_selected->value (i));
 	}
 	m_selected->clear ();
 }

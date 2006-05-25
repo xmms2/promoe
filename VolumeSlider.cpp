@@ -12,7 +12,7 @@
 
 VolumeSlider::VolumeSlider (QWidget *parent) : PixWidget (parent)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 
 	setMinimumSize (68, 13);
 	setMaximumSize (68, 13);
@@ -23,10 +23,10 @@ VolumeSlider::VolumeSlider (QWidget *parent) : PixWidget (parent)
 
 	m_pixmap = QPixmap (68, 13);
 
-	connect (xmmsh, SIGNAL(getVolume (uint)),
-		 this, SLOT(setVolume (uint)));
+	connect (&xmmsh, SIGNAL(getVolume (uint)),
+	         this, SLOT(setVolume (uint)));
 
-	xmmsh->volumeGet ();
+	xmmsh.volumeGet ();
 }
 
 VolumeSlider::~VolumeSlider ()
@@ -86,8 +86,7 @@ VolumeSlider::setPixmaps (Skin *skin)
 void
 VolumeSlider::changePixmap ()
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
-	xmmsh->volumeSet (m_volume_base100);
+	XMMSHandler::getInstance ().volumeSet (m_volume_base100);
 
 	m_volslider = m_skin->getVol (m_volume);
 	drawPixmaps ();

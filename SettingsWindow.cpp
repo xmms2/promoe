@@ -51,13 +51,12 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 void
 SettingsWindow::okButton (void)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	m_mainwindow->saveSettings ();
 	m_playlistwin->saveSettings ();
 	m_medialib->saveSettings ();
 	
 	close ();
-	xmmsh->updateSettings ();
+	XMMSHandler::getInstance ().updateSettings ();
 }
 
 SettingsTabMedialib::SettingsTabMedialib (QWidget *parent) : QWidget (parent)

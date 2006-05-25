@@ -3,6 +3,7 @@
 
 class ShadedDisplay;
 
+#include <xmmsclient/xmmsclient++.h>
 #include "Display.h"
 
 class MainWindow;
@@ -30,7 +31,7 @@ class ShadedDisplay : public SkinDisplay
 		Button *m_eject;
 
 	public slots:
-		void setStatus (uint status);
+		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint time);
 		void setMediainfo (const QHash<QString, QString> &h);
 };

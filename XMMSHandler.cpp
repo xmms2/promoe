@@ -1,7 +1,11 @@
-#include "xmmsclient_promoe.h"
+#include <xmmsclient/xmmsclient++.h>
 
 #include "XmmsQT4.h"
 #include "XMMSHandler.h"
+#include <iostream>
+
+#include <cstdlib>
+#include <string>
 
 #include <QErrorMessage>
 #include <QHash>
@@ -9,245 +13,200 @@
 #include <QFileDialog>
 #include <QDir>
 
-XMMSHandler *XMMSHandler::singleton = NULL;
-
-XMMSHandler *XMMSHandler::getInstance (void)
+static bool log ( /*const std::string& text = ""*/ )
 {
-	if (!singleton) {
-		singleton = new XMMSHandler ();
-#ifndef HAVE_SERVERBROWSER
-		singleton->connect (getenv ("XMMS_PATH"));
-#endif
-	}
+	return false;
+}
 
+static bool logUint ( const unsigned int & /*, const std::string& text = "" */ )
+{
+	return false;
+}
+
+XMMSHandler &XMMSHandler::getInstance ()
+{
+	static XMMSHandler singleton;
 	return singleton;
 }
 
-XMMSHandler::XMMSHandler () : QObject (), sigc::trackable ()
+XMMSHandler::XMMSHandler () : QObject (), m_client ("promoe")
 {
-	m_xmmsc = new XMMSClient ("promoe");
+	connect (std::getenv ( "XMMS_PATH" ));
 }
 
 bool
 XMMSHandler::connect (const char *path)
 {
-	if (!m_xmmsc->connect (path)) {
+	try {
+		m_client.connect (path ? path : "");
+	}
+	catch (Xmms::connection_error& e) {
 		QErrorMessage *err = new QErrorMessage ();
 		err->showMessage ("Couldn't connect to XMMS2, please try again.");
 		err->exec ();
+		delete err;
 		return false;
 	}
-	m_qt4 = new XmmsQT4 (m_xmmsc->getConn (), qApp);
+	m_qt4 = new XmmsQT4 (m_client.getConnection (), qApp);
 
-	XMMSResultValueList<uint> *l = m_xmmsc->playlist_list ();
-	l->connect (sigc::mem_fun (this, &XMMSHandler::playlist_list));
+	using Xmms::bind;
+	m_client.playlist.list (bind (&XMMSHandler::playlist_list, this));
+	m_client.playlist.broadcastChanged (
+		bind (&XMMSHandler::playlist_changed, this));
 
-	XMMSResultDict *p = m_xmmsc->broadcast_playlist_changed ();
-	p->connect (sigc::mem_fun (this, &XMMSHandler::playlist_changed));
+	m_client.medialib.broadcastEntryChanged (
+		bind (&XMMSHandler::medialib_entry_changed, this));
 
-	XMMSResultValue<uint> *r = m_xmmsc->signal_playback_playtime ();
-	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_playtime));
+	m_client.playback.currentID (
+		bind (&XMMSHandler::playback_current_id, this));
+	m_client.playback.broadcastCurrentID (
+		bind (&XMMSHandler::playback_current_id, this));
 
-	r = m_xmmsc->playback_current_id ();
-	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_current_id));
+	m_client.playback.getStatus (bind (&XMMSHandler::playback_status, this));
+	m_client.playback.broadcastStatus (
+		bind (&XMMSHandler::playback_status, this));
 
-	r = m_xmmsc->broadcast_playback_current_id ();
-	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_current_id));
+	m_client.playback.broadcastVolumeChanged (
+		bind (&XMMSHandler::volume_changed, this));
 
-	r = m_xmmsc->playback_status ();
-	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_status));
-
-	r = m_xmmsc->broadcast_playback_status ();
-	r->connect (sigc::mem_fun (this, &XMMSHandler::playback_status));
-
-	r = m_xmmsc->broadcast_medialib_entry_changed ();
-	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_entry_changed));
-
-	XMMSResult *xr = m_xmmsc->broadcast_playback_volume_changed ();
-	xr->connect (sigc::mem_fun (this, &XMMSHandler::volume_changed));
-
-	QObject::connect (&m_playtime_timer, SIGNAL (timeout ()), this, SLOT (restartPlaytime ()));
+	QObject::connect (&m_playtime_timer, SIGNAL (timeout ()),
+	                  this, SLOT (restartPlaytime ()));
+	m_playtime_timer.start(0);
 
 	return true;
 }
 
 void
-XMMSHandler::restartPlaytime (void)
+XMMSHandler::restartPlaytime ()
 {
-	m_playtime->restart ();
+	m_client.playback.getPlaytime (Xmms::bind (&XMMSHandler::playback_playtime,
+	                                           this));
+}
+
+bool
+XMMSHandler::medialib_entry_changed (const unsigned int &id)
+{
+	if (id > 0) {
+		requestMediainfo (id);
+	}
+	return true;
 }
 
 void
-XMMSHandler::medialib_entry_changed (XMMSResultValue<uint> *res)
+XMMSHandler::playlistAddURL (const QString &s)
 {
-	uint i;
-	res->getValue (&i);
-
-	if (i > 0) {
-		XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
-		r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
-	}
-
-	if (res->getClass() == XMMSC_RESULT_CLASS_DEFAULT) {
-		delete res;
-	}
+	m_client.playlist.addUrl (s.toAscii ().constData (), &log);
+}
+void
+XMMSHandler::playlistRemove (uint pos)
+{ 
+	m_client.playlist.remove (pos, &log);
 }
 
 void
-XMMSHandler::playlistAddURL (QString s)
+XMMSHandler::playlistMove (uint pos, uint newpos)
 {
-	delete m_xmmsc->playlist_add (s.toAscii ().constData ());
+	m_client.playlist.move (pos, newpos, &log);
 }
 
 void
 XMMSHandler::requestMediainfo (uint id)
 {
-	XMMSResultDict *r = m_xmmsc->medialib_get_info (id);
-	r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
+	m_client.medialib.getInfo (id,
+	                           Xmms::bind (&XMMSHandler::medialib_info, this));
 }
 
 void
-XMMSHandler::requestPlaylistList (void)
+XMMSHandler::requestPlaylistList ()
 {
-	XMMSResultValueList<uint> *r = m_xmmsc->playlist_list ();
-	r->connect (sigc::mem_fun (this, &XMMSHandler::playlist_list));
+	m_client.playlist.list (Xmms::bind (&XMMSHandler::playlist_list, this));
 }
 
 void
 XMMSHandler::requestTrackChange (int pos)
 {
-	XMMSResult *r = m_xmmsc->playlist_set_next (pos);
-	delete r;
-	XMMSResult *r2 = m_xmmsc->playback_tickle ();
-	delete r2;
+	m_client.playlist.setNext (pos, &logUint);
+	m_client.playback.tickle (&log);
 }
 
-void
-XMMSHandler::playlist_list (XMMSResultValueList<uint> *res) 
+bool
+XMMSHandler::playlist_list (const Xmms::List< unsigned int > &playlist)
 {
 	QList<uint> list;
-	for (;res->listValid (); res->listNext()) {
-		uint i;
-		if (res->getValue (&i)) {
-			list.append (i);
-		}
+	for (;playlist.isValid (); ++playlist) {
+		list.append (*playlist);
 	}
 	emit playlistList (list);
-
-	delete res;
+	return false;
 }
 
-void
-XMMSHandler::playback_status (XMMSResultValue<uint> *res)
+bool
+XMMSHandler::playback_status (const Xmms::Playback::Status &status)
 {
-	uint status;
-	res->getValue (&status);
-
 	emit playbackStatusChanged (status);
-
-	if (res->getClass() == XMMSC_RESULT_CLASS_DEFAULT) {
-		delete res;
-	}
+	return true;
 }
 
-void 
-XMMSHandler::playback_playtime (XMMSResultValue<uint> *res)
+bool 
+XMMSHandler::playback_playtime (const unsigned int &time)
 {
-	uint i;
-	res->getValue (&i);
-
-	emit playtimeChanged (i);
-	
-	m_playtime = res;
+	emit playtimeChanged (time);
 	m_playtime_timer.start (500);
+	return false;
 }
 
-void 
-XMMSHandler::playback_current_id (XMMSResultValue<uint> *res)
+bool 
+XMMSHandler::playback_current_id (const unsigned int &id)
 {
-	uint i;
-	res->getValue (&i);
+	m_currentid = id;
 
-	m_currentid = i;
-
-	if (i > 0) {
-		XMMSResultDict *r = m_xmmsc->medialib_get_info (i);
-		r->connect (sigc::mem_fun (this, &XMMSHandler::medialib_info));
+	if (id > 0) {
+		requestMediainfo (id);
 	}
 
-	emit currentID(i);
-
-	if (res->getClass() == XMMSC_RESULT_CLASS_DEFAULT) {
-		delete res;
-	}
+	emit currentID(id);
+	return true;
 }
 
 void
 XMMSHandler::setPlaytime (uint pos)
 {
-	delete m_xmmsc->playback_seek_ms (pos);
+	m_client.playback.seekMs (pos, &log);
 }
 
-QHash<QString, QString>
-XMMSHandler::DictToQHash (XMMSResultDict *res)
+void
+XMMSHandler::DictToQHash (const std::string &key,
+                          const Xmms::Dict::Variant &value,
+                          QHash<QString, QString> &hash)
 {
-	QHash<QString, QString> h;
-	std::list<const char *> l = res->getDictKeys ();
-
-	std::list<const char *>::const_iterator it;
-	for(it=l.begin(); it!=l.end(); ++it)
-	{
-		if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_UINT32) {
-			uint i;
-			res->getValue (*it, &i);
-			QString t;
-			t.setNum (i);
-			h.insert (QString::fromLatin1(*it), t);
-		} else if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_INT32) {
-			int i;
-			res->getValue (*it, &i);
-			QString t;
-			t.setNum (i);
-			h.insert (QString::fromLatin1(*it), t);
-		} else if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_STRING) {
-			char *c;
-			res->getValue (*it, &c);
-			h.insert (QString::fromLatin1(*it), QString::fromUtf8 (c));
-		}
+	if (value.type () == typeid (int)) {
+		hash.insert (QString::fromLatin1 (key.c_str ()),
+		             QString::number (boost::get< int > (value)));
+	} else if (value.type () == typeid (unsigned int)) {
+		hash.insert (QString::fromLatin1 (key.c_str ()),
+		             QString::number (boost::get< unsigned int > (value)));
+	} else if (value.type () == typeid (unsigned int)) {
+		hash.insert (QString::fromLatin1 (key.c_str ()),
+		             QString::fromUtf8 (boost::get< std::string > (value).c_str ()));
 	}
-
-	return h;
 }
 
-QHash<QString, QString>
-XMMSHandler::PropDictToQHash (XMMSResultDict *res)
+void
+XMMSHandler::PropDictToQHash (const std::string &key,
+                              const Xmms::Dict::Variant &value,
+                              const std::string &source,
+                              QHash<QString, QString> &hash)
 {
-	QHash<QString, QString> h;
-	std::list<const char *> l = res->getPropDictKeys ();
-
-	std::list<const char *>::const_iterator it;
-	for(it=l.begin(); it!=l.end(); ++it)
-	{
-		if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_UINT32) {
-			uint i;
-			res->getValue (*it, &i);
-			QString t;
-			t.setNum (i);
-			h.insert (QString::fromLatin1(*it), t);
-		} else if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_INT32) {
-			int i;
-			res->getValue (*it, &i);
-			QString t;
-			t.setNum (i);
-			h.insert (QString::fromLatin1(*it), t);
-		} else if (res->getDictValueType (*it) == XMMSC_RESULT_VALUE_TYPE_STRING) {
-			char *c;
-			res->getValue (*it, &c);
-			h.insert (QString::fromLatin1(*it), QString::fromUtf8 (c));
-		}
+	if (value.type () == typeid (int)) {
+		hash.insert (QString::fromLatin1 (key.c_str ()),
+		             QString::number (boost::get< int > (value)));
+	} else if (value.type () == typeid (unsigned int)) {
+		hash.insert (QString::fromLatin1 (key.c_str ()),
+		             QString::number (boost::get< unsigned int > (value)));
+	} else {
+		hash.insert (QString::fromLatin1 (key.c_str ()),
+		             QString::fromUtf8 (boost::get< std::string > (value).c_str()));
 	}
-
-	return h;
 }
 
 /*
@@ -273,68 +232,83 @@ XMMSHandler::medialib_select (XMMSResultDictList *res)
 }
 */
 
-void
-XMMSHandler::playlist_changed (XMMSResultDict *res)
+bool
+XMMSHandler::playlist_changed (const Xmms::Dict &list)
 {
-	QHash<QString, QString> h(DictToQHash (res));
-	emit playlistChanged (h);
+	QHash<QString, QString> hash;
+#ifdef foreach
+#undef foreach
+#endif
+	list.foreach (boost::bind (&XMMSHandler::DictToQHash, this,
+	                           _1, _2, boost::ref (hash)));
+	emit playlistChanged (hash);
+	return true;
 }
 
-void 
-XMMSHandler::medialib_info (XMMSResultDict *res)
+bool 
+XMMSHandler::medialib_info (const Xmms::PropDict &propdict)
 {
-	int id;
-	QHash<QString, QString> h(PropDictToQHash (res));
-	
-	res->getValue ("id", &id);
 
-	emit mediainfoChanged (id, h);
+	QHash<QString, QString> hash;	
+#ifdef foreach
+#undef foreach
+#endif
+	propdict.foreach (boost::bind (&XMMSHandler::PropDictToQHash, this,
+	                               _1, _2, _3, boost::ref (hash)));
+	unsigned int id = propdict.get<int>("id");
+	emit mediainfoChanged (id, hash);
 
 	if (id == m_currentid) {
-		emit currentSong (h);
+		emit currentSong (hash);
 	}
+	return false;
+}
 
-	delete res;
+bool
+XMMSHandler::volume_error (const std::string &error)
+{
+	qWarning ("couldn't get volume levels!");
+	return false;
 }
 
 void
-XMMSHandler::volumeGet (void)
+XMMSHandler::volumeGet ()
 {
-	XMMSResultDict *p = m_xmmsc->playback_volume_get ();
-	p->connect (sigc::mem_fun (this, &XMMSHandler::volume_get));
+	m_client.playback.volumeGet (Xmms::bind (&XMMSHandler::volume_get, this),
+	                             Xmms::bind (&XMMSHandler::volume_error, this));
 }
-
 
 void
 XMMSHandler::volumeSet (uint volume)
 {
 	if(m_masterchan)
 	{
-		delete m_xmmsc->playback_volume_set ("master", volume);
+		m_client.playback.volumeSet ("master", volume, &log);
 	}
 	else
 	{
-		delete m_xmmsc->playback_volume_set ("left", volume);
-		delete m_xmmsc->playback_volume_set ("right", volume);
+		m_client.playback.volumeSet ("left", volume, &log);
+		m_client.playback.volumeSet ("right", volume, &log);
 	}
 }
 
-void
-XMMSHandler::volume_changed (XMMSResult *res)
+bool
+XMMSHandler::volume_changed (const Xmms::Dict &levels)
 {
-	volumeGet ();
+	volume_get (levels);
+	return true;
 }
 
-void
-XMMSHandler::volume_get (XMMSResultDict *res)
+bool
+XMMSHandler::volume_get (const Xmms::Dict &levels)
 {
-	if (res->isError()) {
-		qWarning ("couldn't get volume levels!");
-		return;
-	}
-
-	QHash<QString, QString> h (DictToQHash (res));
-	QList<QString> Values = h.values();
+	QHash<QString, QString> hash;
+#ifdef foreach
+#undef foreach
+#endif
+	levels.foreach (boost::bind (&XMMSHandler::DictToQHash, this,
+	                             _1, _2, boost::ref (hash)));
+	QList<QString> Values = hash.values();
 	QListIterator<QString> vol (Values);
 
 	uint right = atol (vol.next().toAscii());
@@ -354,11 +328,43 @@ XMMSHandler::volume_get (XMMSResultDict *res)
 		emit getVolume (right);
 		m_masterchan = true;
 	}
+	return false;
 
+}
+
+
+void XMMSHandler::playlistClear ()
+{
+	m_client.playlist.clear (&log);
+}
+
+void XMMSHandler::play ()
+{
+	m_client.playback.start (&log);
+}
+
+void XMMSHandler::stop ()
+{
+	m_client.playback.stop (&log);
+}
+
+void XMMSHandler::pause ()
+{
+	m_client.playback.pause (&log);
+}
+
+void XMMSHandler::next ()
+{
+	m_client.playlist.setNextRel (1, &logUint);
+	m_client.playback.tickle (&log);
+}
+
+void XMMSHandler::prev ()
+{
+	m_client.playlist.setNextRel (-1, &logUint);
+	m_client.playback.tickle (&log);
 }
 
 XMMSHandler::~XMMSHandler ()
 {
-	delete m_xmmsc;
 }
-

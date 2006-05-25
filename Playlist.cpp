@@ -266,7 +266,6 @@ void
 PlaylistWidget::addButtons (void)
 {
 	PlaylistMenuButton *b;
-	XMMSHandler *xmmsh = XMMSHandler::getInstance();
 
 	m_add = new PlaylistMenu (this, Skin::PLS_ADD,
 							  Skin::PLS_ADD_DEC);
@@ -287,7 +286,8 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_MSC_BTN_1);
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_ALL_0,
 								Skin::PLS_DEL_ALL_1);
-	connect (b, SIGNAL(activated ()), xmmsh, SLOT (playlistClear ()));
+	connect (b, SIGNAL(activated ()),
+	         &XMMSHandler::getInstance(), SLOT (playlistClear ()));
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_CRP_0,
 								Skin::PLS_DEL_CRP_1);
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_FIL_0,
@@ -325,7 +325,6 @@ PlaylistWidget::addButtons (void)
 void
 PlaylistWidget::diveDir (const QString &dir)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance();
 	QDir d (dir);
 
 	d.setFilter (QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
@@ -337,7 +336,7 @@ PlaylistWidget::diveDir (const QString &dir)
 			diveDir (fileInfo.filePath ());
 		} else {
 			QString fname = fileInfo.filePath();
-			xmmsh->playlistAddURL ("file://" + fname);
+			XMMSHandler::getInstance ().playlistAddURL ("file://" + fname);
 		}
 	}
 }
@@ -355,7 +354,6 @@ PlaylistWidget::menuAddDir ()
 void
 PlaylistWidget::menuAddFile ()
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance();
 	QStringList files;
 
 	files = QFileDialog::getOpenFileNames (this, "Select files to play",
@@ -363,7 +361,7 @@ PlaylistWidget::menuAddFile ()
 	                                       "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
 
 	for (int i = 0; i < files.count(); i++) {
-		xmmsh->playlistAddURL ("file://" + files.value(i));
+		XMMSHandler::getInstance ().playlistAddURL ("file://" + files.value(i));
 	}
 
 }

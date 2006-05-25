@@ -1,7 +1,5 @@
 #include "XmmsQT4.h"
 
-using namespace std;
-
 static void CheckWrite (int i, void *userdata);
 
 XmmsQT4::XmmsQT4 (xmmsc_connection_t *xmmsc, QObject *parent) : QObject (parent)

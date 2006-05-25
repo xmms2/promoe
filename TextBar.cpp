@@ -6,7 +6,7 @@ TextScroller::TextScroller (QWidget *parent, uint w,
 							uint h, const QString &name) : 
 	QWidget (parent)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	//XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	Skin *skin = Skin::getInstance ();
 
 	connect (skin, SIGNAL (skinChanged (Skin *)),
@@ -42,7 +42,7 @@ TextScroller::TextScroller (QWidget *parent, uint w,
 
 	m_timer = new QTimer (this);
 	connect (m_timer, SIGNAL (timeout()), this, SLOT (addOffset ()));
-	connect (xmmsh, SIGNAL (settingsSaved ()), this, SLOT (settingsSaved ()));
+	//connect (xmmsh, SIGNAL (settingsSaved ()), this, SLOT (settingsSaved ()));
 }
 
 void

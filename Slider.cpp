@@ -152,10 +152,7 @@ Slider::setPos (uint p)
 void
 Slider::requestPos (float value)
 {
-	XMMSHandler *xmmsh = XMMSHandler::getInstance();
-
-	uint new_pos = (uint)(m_max * value);
-	xmmsh->setPlaytime (new_pos);
+	XMMSHandler::getInstance ().setPlaytime (m_max * value);
 }
 
 void

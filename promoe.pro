@@ -22,8 +22,7 @@ SOURCES += XmmsQT4.cpp \
 		   qtmd5.cpp \
 		   SettingsWindow.cpp \
 		   PlaylistMenu.cpp \
-		   VolumeSlider.cpp \
-		   xmmsclient_promoe.cpp
+		   VolumeSlider.cpp
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -50,8 +49,6 @@ HEADERS += XmmsQT4.h \
 		   SettingsWindow.h \
 		   PlaylistMenu.h \
 		   VolumeSlider.h \
-		   xmmsclient_promoe.h \
-		   xmmsclient_methods.h
 
 
 
@@ -67,7 +64,7 @@ CONFIG += link_pkgconfig
 ;QMAKE_CXXFLAGS += -g
 ;CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-PKGCONFIG += xmms2-client sigc++-2.0 
+PKGCONFIG += xmms2-client sigc++-2.0 xmms2-client-cpp
 
 ;CONFIG += avahi
 

@@ -54,7 +54,6 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 MainWindow::~MainWindow ()
 {
 	delete Skin::getInstance ();
-	delete XMMSHandler::getInstance();
 }
 
 void
