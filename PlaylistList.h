@@ -26,7 +26,7 @@ class PlaylistList : public QWidget {
 
 	public slots:
 		void setPixmaps (Skin *skin);
-		void playlistList (const QList<uint> &);
+		void playlistList (const Xmms::List< unsigned int > &);
 		void mediainfoChanged (uint, const Xmms::PropDict &);
 		void playlistChanged (const Xmms::Dict &);
 		void currentID (uint);

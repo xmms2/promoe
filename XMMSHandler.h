@@ -67,7 +67,7 @@ class XMMSHandler : public QObject {
 		void playtimeChanged (uint time);
 		void mediainfoChanged (uint, const Xmms::PropDict &);
 		void currentSong (const Xmms::PropDict &);
-		void playlistList (const QList<uint> &);
+		void playlistList (const Xmms::List< unsigned int > &);
 		void currentID (uint);
 		void playlistChanged (const Xmms::Dict &);
 		/*

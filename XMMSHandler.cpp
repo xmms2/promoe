@@ -5,6 +5,7 @@
 
 #include <cstdlib>
 #include <string>
+#include <iostream>
 
 #include <QErrorMessage>
 #include <QHash>
@@ -131,11 +132,7 @@ XMMSHandler::requestTrackChange (int pos)
 bool
 XMMSHandler::playlist_list (const Xmms::List< unsigned int > &playlist)
 {
-	QList<uint> list;
-	for (;playlist.isValid (); ++playlist) {
-		list.append (*playlist);
-	}
-	emit playlistList (list);
+	emit playlistList (playlist);
 	return false;
 }
 
@@ -241,7 +238,7 @@ XMMSHandler::playlist_changed (const Xmms::Dict &list)
 bool 
 XMMSHandler::medialib_info (const Xmms::PropDict &propdict)
 {
-	unsigned int id = propdict.get<uint32_t>("id");
+	unsigned int id = propdict.get<int32_t>("id");
 	emit mediainfoChanged (id, propdict);
 
 	if (id == m_currentid) {

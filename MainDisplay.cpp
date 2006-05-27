@@ -138,19 +138,19 @@ MainDisplay::setMediainfo (const Xmms::PropDict &info)
 	}
 	m_text->setText (n);
 	
-	m_kbps->setNumber (info.get<uint32_t> ("bitrate")/1000, 3);
+	m_kbps->setNumber (info.get<int32_t> ("bitrate")/1000, 3);
 	if (info.contains ("samplerate")) {
-		m_khz->setNumber (info.get<uint32_t> ("samplerate")/1000, 2);
+		m_khz->setNumber (info.get<int32_t> ("samplerate")/1000, 2);
 	} else {
 		m_khz->setNumber(0, 1);
 	}
 	if (info.contains ("channels:in") && 
-	    info.get<uint32_t> ("channels:in") > 1) {
+	    info.get<int32_t> ("channels:in") > 1) {
 		m_stereo->setStereoMono (1, 0);
 	} else {
 		m_stereo->setStereoMono (0, 1);
 	}
-	m_slider->setMax (info.get<uint32_t> ("duration"));
+	m_slider->setMax (info.get<int32_t> ("duration"));
 	m_slider->hideBar (false);
 }
 

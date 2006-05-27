@@ -75,8 +75,8 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	m_status = XMMS_PLAYBACK_STATUS_STOP;
 	m_bar = -2;
 
-	connect (&xmmsh, SIGNAL(playlistList(const QList<uint> &)),
-	         this, SLOT(playlistList(const QList<uint> &)));
+	connect (&xmmsh, SIGNAL(playlistList(const Xmms::List< unsigned int > &)),
+	         this, SLOT(playlistList(const Xmms::List< unsigned int > &)));
 
 	connect (&xmmsh, SIGNAL(currentID(uint)),
 	         this, SLOT(currentID(uint)));
@@ -234,7 +234,7 @@ PlaylistList::mediainfoChanged (uint id, const Xmms::PropDict &info)
 		i->setText (n);
 
 		if (info.contains ("duration")) {
-			unsigned int duration = info.get<uint32_t> ("duration");
+			unsigned int duration = info.get<int32_t> ("duration");
 			QString dur;
 			dur.sprintf ("%02d:%02d", duration/60000, (duration/1000)%60);
 			i->setDuration (dur);
@@ -246,13 +246,13 @@ PlaylistList::mediainfoChanged (uint id, const Xmms::PropDict &info)
 }
 
 void
-PlaylistList::playlistList (const QList<uint> &l)
+PlaylistList::playlistList (const Xmms::List< unsigned int > &list)
 {
-	for (int i = 0; i < l.count(); i++) {
-		if (m_itemmap->contains (l.value(i))) {
-			addItem (m_itemmap->value (l.value (i)));
+	for (list.first (); list.isValid (); ++list) {
+		if (m_itemmap->contains (*list)) {
+			addItem (m_itemmap->value (*list));
 		} else {
-			new PlaylistItem (this, l.value(i));
+			new PlaylistItem (this, *list);
 		}
 	}
 
