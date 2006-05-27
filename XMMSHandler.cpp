@@ -236,11 +236,8 @@ bool
 XMMSHandler::playlist_changed (const Xmms::Dict &list)
 {
 	QHash<QString, QString> hash;
-#ifdef foreach
-#undef foreach
-#endif
-	list.foreach (boost::bind (&XMMSHandler::DictToQHash, this,
-	                           _1, _2, boost::ref (hash)));
+	list.each (boost::bind (&XMMSHandler::DictToQHash, this,
+	                        _1, _2, boost::ref (hash)));
 	emit playlistChanged (hash);
 	return true;
 }
@@ -250,11 +247,8 @@ XMMSHandler::medialib_info (const Xmms::PropDict &propdict)
 {
 
 	QHash<QString, QString> hash;	
-#ifdef foreach
-#undef foreach
-#endif
-	propdict.foreach (boost::bind (&XMMSHandler::PropDictToQHash, this,
-	                               _1, _2, _3, boost::ref (hash)));
+	propdict.each (boost::bind (&XMMSHandler::PropDictToQHash, this,
+	                            _1, _2, _3, boost::ref (hash)));
 	unsigned int id = propdict.get<int>("id");
 	emit mediainfoChanged (id, hash);
 
@@ -303,11 +297,8 @@ bool
 XMMSHandler::volume_get (const Xmms::Dict &levels)
 {
 	QHash<QString, QString> hash;
-#ifdef foreach
-#undef foreach
-#endif
-	levels.foreach (boost::bind (&XMMSHandler::DictToQHash, this,
-	                             _1, _2, boost::ref (hash)));
+	levels.each (boost::bind (&XMMSHandler::DictToQHash, this,
+	                          _1, _2, boost::ref (hash)));
 	QList<QString> Values = hash.values();
 	QListIterator<QString> vol (Values);
 
