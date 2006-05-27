@@ -116,7 +116,7 @@ PlaylistList::setStatus (Xmms::Playback::Status s)
 void
 PlaylistList::playlistChanged (const Xmms::Dict &change)
 {
-	uint signal = change.get<int32_t> ("type");
+	int signal = change.get<int32_t> ("type");
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 	switch (signal) {
 		case XMMS_PLAYLIST_CHANGED_ADD:
@@ -132,7 +132,7 @@ PlaylistList::playlistChanged (const Xmms::Dict &change)
 		case XMMS_PLAYLIST_CHANGED_INSERT:
 			{
 				uint id = change.get<uint32_t> ("id");
-				uint pos = change.get<uint32_t> ("position");
+				int pos = change.get<int32_t> ("position");
 
 				if (m_itemmap->contains (id)) {
 					addItem (m_itemmap->value (id));
@@ -144,7 +144,7 @@ PlaylistList::playlistChanged (const Xmms::Dict &change)
 			break;
 		case XMMS_PLAYLIST_CHANGED_REMOVE:
 			{
-				uint pos = change.get<uint32_t> ("position");
+				int pos = change.get<int32_t> ("position");
 				PlaylistItem *i = m_items->value (pos);
 
 				if (!i) {
