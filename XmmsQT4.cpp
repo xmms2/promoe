@@ -22,6 +22,7 @@ XmmsQT4::XmmsQT4 (xmmsc_connection_t *xmmsc) :
 	m_wsock = new QSocketNotifier (m_fd, QSocketNotifier::Write, this);
 	connect (m_wsock, SIGNAL (activated (int)), SLOT (OnWrite ()));
 	m_wsock->setEnabled (false);
+	running_ = true;
 }
 
 
