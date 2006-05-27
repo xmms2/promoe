@@ -1,4 +1,5 @@
 #include "XMMSHandler.h"
+#include <xmmsclient/xmmsclient++.h>
 
 #include "PlaylistShade.h"
 #include "Playlist.h"
@@ -18,8 +19,8 @@ PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
-	connect (&xmmsh, SIGNAL(currentSong (QHash<QString, QString>)), 
-			 this, SLOT(setMediainfo (QHash<QString, QString>)));
+	connect (&xmmsh, SIGNAL(currentSong (const Xmms::PropDict &)), 
+			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
 
 	connect (&xmmsh, SIGNAL(settingsSaved ()), 
 			 this, SLOT(settingsSaved ()));
@@ -37,13 +38,18 @@ PlaylistShade::settingsSaved ()
 }
 
 void
-PlaylistShade::setMediainfo (QHash<QString, QString> h)
+PlaylistShade::setMediainfo (const Xmms::PropDict &info)
 {
 	QString n;
-	if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {
-		n = h.value("artist") + " - " + h.value("album") + " - " + h.value("title");
+	if (info.contains ("artist") && info.contains ("album") &&
+	    info.contains ("title")) {
+		n = QString::fromUtf8 (info.get<std::string> ("artist").c_str ())
+		    + " - " +
+		    QString::fromUtf8 (info.get<std::string> ("album").c_str ())
+		    + " - " +
+		    QString::fromUtf8 (info.get<std::string> ("title").c_str ());
 	} else {
-		n = h.value("url");
+		n = QString::fromUtf8 (info.get<std::string> ("url").c_str ());
 	}
 	m_text = (n);
 

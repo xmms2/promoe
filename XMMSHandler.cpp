@@ -2,7 +2,6 @@
 
 #include "XmmsQT4.h"
 #include "XMMSHandler.h"
-#include <iostream>
 
 #include <cstdlib>
 #include <string>
@@ -179,13 +178,13 @@ XMMSHandler::DictToQHash (const std::string &key,
                           const Xmms::Dict::Variant &value,
                           QHash<QString, QString> &hash)
 {
-	if (value.type () == typeid (int)) {
+	if (value.type () == typeid (int32_t)) {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
-		             QString::number (boost::get< int > (value)));
-	} else if (value.type () == typeid (unsigned int)) {
+		             QString::number (boost::get< int32_t > (value)));
+	} else if (value.type () == typeid (uint32_t)) {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
-		             QString::number (boost::get< unsigned int > (value)));
-	} else if (value.type () == typeid (unsigned int)) {
+		             QString::number (boost::get< uint32_t > (value)));
+	} else if (value.type () == typeid (std::string)) {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
 		             QString::fromUtf8 (boost::get< std::string > (value).c_str ()));
 	}
@@ -197,12 +196,12 @@ XMMSHandler::PropDictToQHash (const std::string &key,
                               const std::string &source,
                               QHash<QString, QString> &hash)
 {
-	if (value.type () == typeid (int)) {
+	if (value.type () == typeid (int32_t)) {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
-		             QString::number (boost::get< int > (value)));
-	} else if (value.type () == typeid (unsigned int)) {
+		             QString::number (boost::get< int32_t > (value)));
+	} else if (value.type () == typeid (uint32_t)) {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
-		             QString::number (boost::get< unsigned int > (value)));
+		             QString::number (boost::get< uint32_t > (value)));
 	} else {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
 		             QString::fromUtf8 (boost::get< std::string > (value).c_str()));
@@ -235,25 +234,18 @@ XMMSHandler::medialib_select (XMMSResultDictList *res)
 bool
 XMMSHandler::playlist_changed (const Xmms::Dict &list)
 {
-	QHash<QString, QString> hash;
-	list.each (boost::bind (&XMMSHandler::DictToQHash, this,
-	                        _1, _2, boost::ref (hash)));
-	emit playlistChanged (hash);
+	emit playlistChanged (list);
 	return true;
 }
 
 bool 
 XMMSHandler::medialib_info (const Xmms::PropDict &propdict)
 {
-
-	QHash<QString, QString> hash;	
-	propdict.each (boost::bind (&XMMSHandler::PropDictToQHash, this,
-	                            _1, _2, _3, boost::ref (hash)));
-	unsigned int id = propdict.get<int>("id");
-	emit mediainfoChanged (id, hash);
+	unsigned int id = propdict.get<uint32_t>("id");
+	emit mediainfoChanged (id, propdict);
 
 	if (id == m_currentid) {
-		emit currentSong (hash);
+		emit currentSong (propdict);
 	}
 	return false;
 }

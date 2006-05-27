@@ -63,18 +63,23 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
 	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
 	         this, SLOT(setPlaytime(uint)));
-	connect (&xmmsh, SIGNAL(currentSong (const QHash<QString, QString> &)), 
-			 this, SLOT(setMediainfo (const QHash<QString, QString> &)));
+	connect (&xmmsh, SIGNAL(currentSong (const Xmms::PropDict &)), 
+			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
 }
 
 void
-ShadedDisplay::setMediainfo (const QHash<QString, QString> &h)
+ShadedDisplay::setMediainfo (const Xmms::PropDict &info)
 {
 	QString n;
-	if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {
-		n = h.value("artist") + " - " + h.value("album") + " - " + h.value("title");
+	if (info.contains ("artist") && info.contains ("album") &&
+	    info.contains ("title")) {
+		n = QString::fromUtf8 (info.get<std::string> ("artist").c_str ())
+		    + " - " +
+		    QString::fromUtf8 (info.get<std::string> ("album").c_str ())
+		    + " - " +
+		    QString::fromUtf8 (info.get<std::string> ("title").c_str ());
 	} else {
-		n = h.value("url");
+		n = QString::fromUtf8 (info.get<std::string> ("url").c_str ());
 	}
 	m_title->setText (n);
 }

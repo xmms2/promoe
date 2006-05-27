@@ -65,11 +65,11 @@ class XMMSHandler : public QObject {
 		void settingsSaved ();
 		void playbackStatusChanged (Xmms::Playback::Status status);
 		void playtimeChanged (uint time);
-		void mediainfoChanged (uint, const QHash<QString, QString> &);
-		void currentSong (const QHash<QString, QString> &);
+		void mediainfoChanged (uint, const Xmms::PropDict &);
+		void currentSong (const Xmms::PropDict &);
 		void playlistList (const QList<uint> &);
 		void currentID (uint);
-		void playlistChanged (const QHash<QString, QString> &);
+		void playlistChanged (const Xmms::Dict &);
 		/*
 		void medialibResponse (uint, const QList<QHash<QString, QString> > &);
 		*/
@@ -93,7 +93,7 @@ class XMMSHandler : public QObject {
 		bool volume_error (const std::string &error);
 
 		XmmsQT4 *m_qt4;
-		int m_currentid;
+		unsigned int m_currentid;
 		bool m_masterchan;
 };
 

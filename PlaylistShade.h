@@ -1,6 +1,7 @@
 #ifndef __PLAYLISTSHADE_H__
 #define __PLAYLISTSHADE_H__
 
+#include <xmmsclient/xmmsclient++.h>
 #include "Skin.h"
 
 #include <QWidget>
@@ -19,7 +20,7 @@ class PlaylistShade : public QWidget {
 
 	public slots:
 		void setPixmaps (Skin *skin);
-		void setMediainfo (QHash<QString, QString> h);
+		void setMediainfo (const Xmms::PropDict &info);
 		void settingsSaved ();
 
 	private:

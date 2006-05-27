@@ -81,11 +81,11 @@ PlaylistList::PlaylistList (QWidget *parent) : QWidget (parent)
 	connect (&xmmsh, SIGNAL(currentID(uint)),
 	         this, SLOT(currentID(uint)));
 
-	connect (&xmmsh, SIGNAL(mediainfoChanged(uint, const QHash<QString, QString> &)), 
-	         this, SLOT(mediainfoChanged(uint, const QHash<QString, QString> &)));
+	connect (&xmmsh, SIGNAL(mediainfoChanged(uint, const Xmms::PropDict &)), 
+	         this, SLOT(mediainfoChanged(uint, const Xmms::PropDict &)));
 
-	connect (&xmmsh, SIGNAL(playlistChanged(const QHash<QString, QString> &)),
-	         this, SLOT(playlistChanged(const QHash<QString, QString> &)));
+	connect (&xmmsh, SIGNAL(playlistChanged(const Xmms::Dict &)),
+	         this, SLOT(playlistChanged(const Xmms::Dict &)));
 
 	connect (&xmmsh, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
@@ -114,14 +114,14 @@ PlaylistList::setStatus (Xmms::Playback::Status s)
 }
 
 void
-PlaylistList::playlistChanged (const QHash<QString,QString> &h)
+PlaylistList::playlistChanged (const Xmms::Dict &change)
 {
-	int signal = h.value("type").toUInt();
+	uint signal = change.get<uint32_t> ("type");
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 	switch (signal) {
 		case XMMS_PLAYLIST_CHANGED_ADD:
 			{
-				uint id = h.value("id").toUInt();
+				uint id = change.get<uint32_t> ("id");
 				if (m_itemmap->contains (id)) {
 					addItem (m_itemmap->value (id));
 				} else {
@@ -131,8 +131,8 @@ PlaylistList::playlistChanged (const QHash<QString,QString> &h)
 			break;
 		case XMMS_PLAYLIST_CHANGED_INSERT:
 			{
-				uint id = h.value("id").toUInt ();
-				uint pos = h.value("position").toUInt ();
+				uint id = change.get<uint32_t> ("id");
+				uint pos = change.get<uint32_t> ("position");
 
 				if (m_itemmap->contains (id)) {
 					addItem (m_itemmap->value (id));
@@ -144,7 +144,7 @@ PlaylistList::playlistChanged (const QHash<QString,QString> &h)
 			break;
 		case XMMS_PLAYLIST_CHANGED_REMOVE:
 			{
-				int pos = h.value("position").toUInt();
+				uint pos = change.get<uint32_t> ("position");
 				PlaylistItem *i = m_items->value (pos);
 
 				if (!i) {
@@ -210,28 +210,36 @@ PlaylistList::currentID (uint id)
 }
 
 void
-PlaylistList::mediainfoChanged (uint id, const QHash<QString, QString> &h)
+PlaylistList::mediainfoChanged (uint id, const Xmms::PropDict &info)
 {
 	PlaylistItem *i = m_itemmap->value (id);
 	if (i) {
 		QString n;
-		if (h.contains ("artist") && h.contains ("album") && h.contains ("title")) {
-			n = h.value("artist") + " - " + h.value("album") + " - " + h.value("title");
+		if (info.contains ("artist") && info.contains ("album") &&
+		    info.contains ("title")) {
+			n = QString::fromUtf8 (info.get<std::string> ("artist").c_str ())
+			    + " - " +
+			    QString::fromUtf8 (info.get<std::string> ("album").c_str ())
+			    + " - " +
+			    QString::fromUtf8 (info.get<std::string> ("title").c_str ());
+		} else if (info.contains ("channel")) {
+			n = QString::fromUtf8 (info.get<std::string> ("channel").c_str ())
+			    + " - " +
+			    QString::fromUtf8 (info.get<std::string> ("title").c_str ());
 		} else {
-			if (h.contains ("channel")) {
-				n = h.value("channel") + " - " + h.value("title");
-			} else {
-				QString t = h.value("url");
-				n = t.section ("/", -1);
-			}
+			n = QString::fromUtf8 (info.get<std::string> ("url").c_str ());
+			n = n.section ("/", -1);
 		}
+
 		i->setText (n);
-		if (h.contains ("duration")) {
-			int d = h.value("duration").toInt();
+
+		if (info.contains ("duration")) {
+			unsigned int duration = info.get<uint32_t> ("duration");
 			QString dur;
-			dur.sprintf ("%02d:%02d", d/60000, (d/1000)%60);
+			dur.sprintf ("%02d:%02d", duration/60000, (duration/1000)%60);
 			i->setDuration (dur);
 		}
+
 	}
 		
 	update ();

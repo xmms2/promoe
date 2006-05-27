@@ -68,7 +68,7 @@ class MainDisplay : public SkinDisplay
 		void setPixmaps(Skin *skin);
 		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint time);
-		void setMediainfo (const QHash<QString,QString> &);
+		void setMediainfo (const Xmms::PropDict &);
 		void togglePL(void);
 		void toggleTime(void);
 
