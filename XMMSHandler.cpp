@@ -47,7 +47,7 @@ XMMSHandler::connect (const char *path)
 		delete err;
 		return false;
 	}
-	m_qt4 = new XmmsQT4 (m_client.getConnection (), qApp);
+	m_client.setMainloop (new XmmsQT4 (m_client.getConnection ()));
 
 	using Xmms::bind;
 	m_client.playlist.list (bind (&XMMSHandler::playlist_list, this));

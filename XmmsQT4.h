@@ -1,21 +1,20 @@
 #ifndef __XMMSQT4_H__
 #define __XMMSQT4_H__
 
-#include <iostream>
+#include <xmmsclient/xmmsclient++/mainloop.h>
 
 #include <QApplication>
 #include <QObject>
 #include <QSocketNotifier>
 
-#include <xmmsclient/xmmsclient.h>
-
-
-class XmmsQT4 : public QObject
+class XmmsQT4 : public QObject, public Xmms::MainloopInterface
 {
 	Q_OBJECT
 	public:
-		XmmsQT4(xmmsc_connection_t *xmmsc = 0, QObject *parent = 0);
+		XmmsQT4(xmmsc_connection_t *xmmsc);
 		~XmmsQT4();
+
+		void run ();
 
 		void ToggleWrite(bool toggle);
 		xmmsc_connection_t *GetXmmsConnection();
