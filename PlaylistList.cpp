@@ -116,7 +116,7 @@ PlaylistList::setStatus (Xmms::Playback::Status s)
 void
 PlaylistList::playlistChanged (const Xmms::Dict &change)
 {
-	uint signal = change.get<uint32_t> ("type");
+	uint signal = change.get<int32_t> ("type");
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 	switch (signal) {
 		case XMMS_PLAYLIST_CHANGED_ADD:
