@@ -64,7 +64,7 @@ CONFIG += link_pkgconfig
 ;QMAKE_CXXFLAGS += -g
 ;CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-PKGCONFIG += xmms2-client sigc++-2.0 xmms2-client-cpp
+PKGCONFIG += xmms2-client xmms2-client-cpp
 
 ;CONFIG += avahi
 
