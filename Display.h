@@ -27,8 +27,8 @@ class SkinDisplay : public QWidget
 		void mousePressEvent (QMouseEvent *);
 		void mouseMoveEvent (QMouseEvent *);
 		void paintEvent (QPaintEvent *event);
-		void SkinDisplay::enterEvent (QEvent *event);
-		void SkinDisplay::leaveEvent (QEvent *event);
+		void enterEvent (QEvent *event);
+		void leaveEvent (QEvent *event);
 
 		QWidget *m_mw;
 		QWidget *m_tbar;

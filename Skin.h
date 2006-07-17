@@ -251,7 +251,7 @@ class Skin : public QWidget
 		Skin() {};
 		static Skin *singleton;
 
-		QPixmap *Skin::getPixmap (const QString& file);
+		QPixmap *getPixmap (const QString& file);
 		void BuildLetterMap (void);
 		void BuildButtons (void);
 		void BuildToggleButtons (void);
