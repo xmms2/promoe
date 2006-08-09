@@ -155,8 +155,13 @@ MainDisplay::setMediainfo (const Xmms::PropDict &info)
 	} else {
 		m_stereo->setStereoMono (0, 1);
 	}
-	m_slider->setMax (info.get<int32_t> ("duration"));
-	m_slider->hideBar (false);
+
+	if (info.contains ("duration")) {
+		m_slider->setMax (info.get<int32_t> ("duration"));
+		m_slider->hideBar (false);
+	} else {
+		m_slider->hideBar (true);
+	}
 }
 
 void
