@@ -138,7 +138,12 @@ MainDisplay::setMediainfo (const Xmms::PropDict &info)
 	}
 	m_text->setText (n);
 	
-	m_kbps->setNumber (info.get<int32_t> ("bitrate")/1000, 3);
+	if (info.contains ("bitrate")) {
+		m_kbps->setNumber (info.get<int32_t> ("bitrate")/1000, 3);
+	} else {
+		m_kbps->setNumber (0, 1);
+	}
+
 	if (info.contains ("samplerate")) {
 		m_khz->setNumber (info.get<int32_t> ("samplerate")/1000, 2);
 	} else {
