@@ -357,8 +357,7 @@ PlaylistWidget::menuAddFile ()
 	QStringList files;
 
 	files = QFileDialog::getOpenFileNames (this, "Select files to play",
-	                                       QDir::homePath(),
-	                                       "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
+	                                       QDir::homePath());
 
 	for (int i = 0; i < files.count(); i++) {
 		XMMSHandler::getInstance ().playlistAddURL ("file://" + files.value(i));

@@ -63,8 +63,7 @@ SkinDisplay::fileOpen (void)
 	QStringList files;
 
 	files = QFileDialog::getOpenFileNames (this, "Select files to play",
-	                                       QDir::homePath(),
-	                                       "Music (*.mp3 *.ogg *.flac *.wav *.mpc *.mp4)");
+	                                       QDir::homePath());
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance();
 	if (files.count() > 0) {
