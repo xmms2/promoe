@@ -32,6 +32,9 @@ BarButton::getPos (void)
 void
 BarButton::mousePressEvent (QMouseEvent *event)
 {
+	QPoint p (event->pos ());
+
+	m_diffx = p.x();
 	m_moving = true;
 }
 
@@ -53,21 +56,21 @@ BarButton::mouseMoveEvent (QMouseEvent *event)
 	/** @todo this could be cleaned up */
 	if (m_slider->getVertical ()) {
 		int npos = pos().x() + p.x() - m_diffx;
-		if (npos >= 0 && npos + rect().width() <= m_slider->rect().width()) {
+		if (npos >= 0 && (npos + rect().width()) <= m_slider->rect().width()) {
 			move (npos, 0);
 		} else if (npos < 0) {
 			move (0, 0);
 		} else if (npos + rect().width() > m_slider->rect().width()) {
-			move (m_slider->rect().width()-rect().width(), 0);
+			move (m_slider->rect().width() - rect().width(), 0);
 		}
 	} else {
-		int npos = pos().y()+p.y()-m_diffy;
-		if (npos >= 0 && npos + rect().height() <= m_slider->rect().height()) {
+		int npos = pos().y() + p.y() - m_diffy;
+		if (npos >= 0 && (npos + rect().height()) <= m_slider->rect().height()) {
 			move (npos, 0);
 		} else if (npos < 0) {
 			move (0, 0);
 		} else if (npos + rect().height() > m_slider->rect().height()) {
-			move (m_slider->rect().height()-rect().height(), 0);
+			move (m_slider->rect().height() - rect().height(), 0);
 		}
 	}
 
