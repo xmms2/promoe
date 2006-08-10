@@ -126,15 +126,20 @@ void
 MainDisplay::setMediainfo (const Xmms::PropDict &info)
 {
 	QString n;
-	if (info.contains ("artist") &&	info.contains ("album") &&
-		info.contains ("title")) {
-		n = QString::fromUtf8 (info.get<std::string> ("artist").c_str ())
-		    + " - " +
-		    QString::fromUtf8 (info.get<std::string> ("album").c_str ())
-		    + " - " +
+	if (info.contains ("title")) {
+		if (info.contains ("artist")) {
+			n = QString::fromUtf8 (info.get<std::string> ("artist").c_str ()) + " - ";
+		}
+		if (info.contains ("album")) {
+			n += QString::fromUtf8 (info.get<std::string> ("album").c_str ()) + " - ";
+		}
+		n += QString::fromUtf8 (info.get<std::string> ("title").c_str ());
+	} else if (info.contains ("channel")) {
+		n = QString::fromUtf8 (info.get<std::string> ("channel").c_str ()) + " - " +
 		    QString::fromUtf8 (info.get<std::string> ("title").c_str ());
 	} else {
 		n = QString::fromUtf8 (info.get<std::string> ("url").c_str ());
+		n = n.section ("/", -1);
 	}
 	m_text->setText (n);
 	
