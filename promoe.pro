@@ -22,7 +22,9 @@ SOURCES += XmmsQT4.cpp \
 		   qtmd5.cpp \
 		   SettingsWindow.cpp \
 		   PlaylistMenu.cpp \
-		   VolumeSlider.cpp
+		   VolumeSlider.cpp \
+		   ClutterBar.cpp \
+
 
 HEADERS += XmmsQT4.h \
 		   PixWidget.h \
@@ -49,6 +51,7 @@ HEADERS += XmmsQT4.h \
 		   SettingsWindow.h \
 		   PlaylistMenu.h \
 		   VolumeSlider.h \
+		   ClutterBar.h \
 
 
 

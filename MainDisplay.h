@@ -40,6 +40,7 @@ class Slider;
 class VolumeSlider;
 class PlayStatus;
 class MainWindow;
+class ClutterBar;
 
 class MainDisplay : public SkinDisplay 
 {
@@ -89,6 +90,8 @@ class MainDisplay : public SkinDisplay
 		ToggleButton *m_repeat;
 
 		MainWindow *m_mw;
+
+		ClutterBar *m_clutterbar;
 
 };
 

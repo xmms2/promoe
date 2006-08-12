@@ -14,6 +14,7 @@
 #include "PlayStatus.h"
 #include "VolumeSlider.h"
 #include "Playlist.h"
+#include "ClutterBar.h"
 
 #include <QFileDialog>
 #include <QSettings>
@@ -46,6 +47,9 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_stereo = new StereoMono (this);
 	m_stereo->move (212, 41);
 	m_stereo->setStereoMono (0, 0);
+
+	m_clutterbar = new ClutterBar (this);
+	m_clutterbar->move (10, 22);
 
 	m_slider = new Slider (this, Skin::POSBAR, 
 						   Skin::POSBAR_BTN_0, 
