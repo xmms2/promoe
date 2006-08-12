@@ -368,6 +368,15 @@ Skin::BuildTitleBar (void)
 		m_items[STATUSBAR_0] = img->copy(27, 29, 275, 14);
 		m_items[STATUSBAR_1] = img->copy(27, 29+13, 275, 14);
 	
+		m_items[CLUTTER_ON]  = img->copy(304+8*0, 0, 8, 43);
+		m_items[CLUTTER_OFF] = img->copy(304+8*1, 0, 8, 43);
+
+		m_items[CLUTTER_O] = img->copy(304+8*0, 44, 8, 43);
+		m_items[CLUTTER_A] = img->copy(304+8*1, 44, 8, 43);
+		m_items[CLUTTER_I] = img->copy(304+8*2, 44, 8, 43);
+		m_items[CLUTTER_D] = img->copy(304+8*3, 44, 8, 43);
+		m_items[CLUTTER_V] = img->copy(304+8*4, 44, 8, 43);
+
 		delete img;
 	}
 	else

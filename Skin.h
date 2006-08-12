@@ -153,6 +153,13 @@ class Skin : public QWidget
 			POSBAR_BTN_1,
 			VOLBAR_BTN_0,
 			VOLBAR_BTN_1,
+			CLUTTER_ON,
+			CLUTTER_OFF,
+			CLUTTER_O,
+			CLUTTER_A,
+			CLUTTER_I,
+			CLUTTER_D,
+			CLUTTER_V,
 		};
 		enum PlaylistParts {
 			PLS_CORNER_UL_0,
