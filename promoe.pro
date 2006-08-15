@@ -24,6 +24,7 @@ SOURCES += XmmsQT4.cpp \
 		   PlaylistMenu.cpp \
 		   VolumeSlider.cpp \
 		   ClutterBar.cpp \
+		   Equalizer.cpp \
 
 
 HEADERS += XmmsQT4.h \
@@ -52,6 +53,7 @@ HEADERS += XmmsQT4.h \
 		   PlaylistMenu.h \
 		   VolumeSlider.h \
 		   ClutterBar.h \
+		   Equalizer.h \
 
 
 

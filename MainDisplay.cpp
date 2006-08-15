@@ -189,6 +189,10 @@ MainDisplay::SetupToggleButtons (void)
 	m_eq = new ToggleButton (this, Skin::EQ_ON_0, Skin::EQ_ON_1,
 							 Skin::EQ_OFF_0, Skin::EQ_OFF_1);
 	m_eq->move(219, 58);
+	if (!s.value ("equalizer/hidden").toBool ())
+		m_pls->toggleOn ();
+
+	connect (m_eq, SIGNAL(clicked()), this, SLOT(toggleEQ()));
 
 	m_shuffle = new ToggleButton (this, Skin::SHUFFLE_ON_0, Skin::SHUFFLE_ON_1,
 								  Skin::SHUFFLE_OFF_0, Skin::SHUFFLE_OFF_1);
@@ -204,6 +208,13 @@ MainDisplay::togglePL (void)
 {
 	m_mw->togglePL(false);
 }
+
+void
+MainDisplay::toggleEQ (void)
+{
+	m_mw->toggleEQ(false);
+}
+
 void
 MainDisplay::toggleTime (void)
 {

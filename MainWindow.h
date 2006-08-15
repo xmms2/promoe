@@ -28,6 +28,7 @@ class Skin;
 class MainDisplay;
 class ShadedDisplay;
 class PlaylistWindow;
+class EqualizerWindow;
 
 class MainWindow : public QMainWindow
 {
@@ -41,9 +42,13 @@ class MainWindow : public QMainWindow
 		PlaylistWindow *getPL () { return m_playlistwin; }
 
 		void setPL (PlaylistWindow *p) { m_playlistwin = p; }
+		void setEQ (EqualizerWindow *e) { m_equalizer = e; }
+
 		void raisePL (void);
 		void moveEvent (QMoveEvent *event);
+
 		void togglePL (bool UpdateButton);
+		void toggleEQ (bool UpdateButton);
 		bool isTimemodeReverse(void) { QSettings s; return s.value("MainWindow/timemodereverse").toBool(); }
 		void setTimemodeReverse(bool b) { QSettings s; return s.setValue("MainWindow/timemodereverse",b); }
 
@@ -56,6 +61,7 @@ class MainWindow : public QMainWindow
 		MainDisplay *m_display;
 		ShadedDisplay *m_shaded;
 		PlaylistWindow *m_playlistwin;
+		EqualizerWindow *m_equalizer;
 };
 
 

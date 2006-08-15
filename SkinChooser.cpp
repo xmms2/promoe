@@ -40,7 +40,7 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 
 	QString path;
 	path.append (QDir::homePath());
-	path.append ("/.xmms2/clients/promoe/skins/");
+	path.append ("/.config/xmms2/clients/promoe/skins/");
 	QDir d;
 			
 	new SkinChooserItem (QIcon (":CleanAMP/main.png"), "CleanAMP (default)", ":CleanAMP/", this);

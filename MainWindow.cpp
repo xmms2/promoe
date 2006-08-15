@@ -7,6 +7,7 @@
 #include "Playlist.h"
 #include "MainDisplay.h"
 #include "ShadedDisplay.h"
+#include "Equalizer.h"
 
 #include <QSettings>
 #include <QIcon>
@@ -111,6 +112,25 @@ MainWindow::togglePL (bool UpdateButton)
 }
 
 
+void 
+MainWindow::toggleEQ (bool UpdateButton) 
+{ 
+	QSettings s;
+
+	if(UpdateButton)
+	{
+		getMD()->GetEq()->toggleOn();
+	}
+
+	if (s.value ("equalizer/hidden").toBool ()) {
+		m_equalizer->show (); 
+		s.setValue ("equalizer/hidden", false);
+	} else {
+		m_equalizer->hide (); 
+		s.setValue ("equalizer/hidden", true);
+	} 
+}
+
 int 
 main (int argc, char **argv)
 {
@@ -132,6 +152,7 @@ main (int argc, char **argv)
 	MainWindow *mw = new MainWindow (NULL);
 
 	PlaylistWindow *playlistwin = new PlaylistWindow (mw);
+	EqualizerWindow *eqwin = new EqualizerWindow (mw);
 
 	/*
 	 * Now that everything is initialized
@@ -147,6 +168,7 @@ main (int argc, char **argv)
 
 	mw->show ();
 	mw->setPL (playlistwin);
+	mw->setEQ (eqwin);
 
 	if (!settings.contains ("playlist/pos"))
 		settings.setValue ("playlist/pos", QPoint (mw->pos().x(),
@@ -161,6 +183,12 @@ main (int argc, char **argv)
 		playlistwin->hide ();
 	else
 		playlistwin->show ();
+
+	if (settings.value("equalizer/hidden").toBool ())
+		eqwin->hide ();
+	else
+		eqwin->show ();
+
 
 #ifdef HAVE_SERVERBROWSER
 	ServerBrowserWindow *browser = new ServerBrowserWindow (mw);

@@ -49,6 +49,7 @@ class MainDisplay : public SkinDisplay
 		MainDisplay (QWidget *parent);
 		~MainDisplay ();
 		ToggleButton *GetPls() {return m_pls;};
+		ToggleButton *GetEq() {return m_eq;};
 
 		TextScroller *m_text;
 		TimeDisplay *m_time;
@@ -71,6 +72,7 @@ class MainDisplay : public SkinDisplay
 		void setPlaytime (uint time);
 		void setMediainfo (const Xmms::PropDict &);
 		void togglePL(void);
+		void toggleEQ(void);
 		void toggleTime(void);
 
 	protected:

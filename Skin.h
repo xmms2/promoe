@@ -160,7 +160,20 @@ class Skin : public QWidget
 			CLUTTER_I,
 			CLUTTER_D,
 			CLUTTER_V,
+			EQ_WIN_BG,
+			EQ_WIN_ON_0,
+			EQ_WIN_ON_1,
+			EQ_WIN_OFF_0,
+			EQ_WIN_OFF_1,
+			EQ_WIN_AUTO_ON_0,
+			EQ_WIN_AUTO_ON_1,
+			EQ_WIN_AUTO_OFF_0,
+			EQ_WIN_AUTO_OFF_1,
+			EQ_WIN_PRESET_0,
+			EQ_WIN_PRESET_1,
+			EQ_WIN_GRAPH_BG,
 		};
+
 		enum PlaylistParts {
 			PLS_CORNER_UL_0,
 			PLS_CORNER_UL_1,
@@ -253,7 +266,6 @@ class Skin : public QWidget
 			PLS_LST_OPN_0,
 			PLS_LST_OPN_1
 		};
-
 	private:
 		Skin() {};
 		static Skin *singleton;
@@ -268,6 +280,7 @@ class Skin : public QWidget
 		void BuildNumbers (void);
 		void BuildPlaylist (void);
 		void ParsePLEdit (void);
+		void BuildEqualizer (void);
 
 
 		QString m_skinname;
@@ -279,6 +292,7 @@ class Skin : public QWidget
 		QMap<uint, QPixmap> m_balance;
 		QMap<uint, QPixmap> m_numbers;
 		QMap<uint, QPixmap> m_playlist;
+		QMap<uint, QPixmap> m_equalizer;
 
 		QMap<QByteArray, QByteArray> m_pledit_txt;
 		QList<QPixmap *> m_buttons;
