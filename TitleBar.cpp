@@ -2,9 +2,7 @@
 #include "TitleBar.h"
 #include "Display.h"
 #include "SkinChooser.h"
-/*
-#include "Medialib.h"
-*/
+#include "MedialibWindow.h"
 #include "SettingsWindow.h"
 #include "Button.h"
 
@@ -45,9 +43,7 @@ TitleBar::showMenu (void)
 
 	a = new QAction (tr ("Medialib browser"), this);
 	a->setShortcut (tr ("Alt+M"));
-	/*
 	connect (a, SIGNAL (triggered ()), this, SLOT (showMlib ()));
-	*/
 	qm.addAction (a);
 	qm.addSeparator ();
 	a = new QAction (tr ("Theme settings"), this);
@@ -74,10 +70,8 @@ TitleBar::showMenu (void)
 void
 TitleBar::showMlib ()
 {
-	/*
 	MedialibWindow *mw = new MedialibWindow (window ());
 	mw->show ();
-	*/
 }
 
 void

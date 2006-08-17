@@ -4,16 +4,16 @@
 #include <xmmsclient/xmmsclient++.h>
 
 #include "XmmsQT4.h"
+#include "XMMSSocket.h"
 
 #include <QObject>
 #include <QHash>
 #include <QTimer>
 
-class XMMSHandler : public QObject {
+class XMMSHandler : public QObject, XMMSSocket {
 	Q_OBJECT
 	public:
 		static XMMSHandler &getInstance ();
-		~XMMSHandler ();
 
 		bool connect (const char *path);
 
@@ -76,11 +76,10 @@ class XMMSHandler : public QObject {
 		void getVolume (uint);
 
 	private:
-		Xmms::Client m_client;
-
 		QTimer m_playtime_timer;
 
 		XMMSHandler ();
+		~XMMSHandler () {};
 		void DictToQHash (const std::string &key,
 		                  const Xmms::Dict::Variant &value,
 		                  QHash<QString, QString> &hash);

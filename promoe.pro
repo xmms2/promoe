@@ -10,6 +10,7 @@ SOURCES += XmmsQT4.cpp \
 		   NumberDisplay.cpp \
 		   TimeDisplay.cpp \
 		   XMMSHandler.cpp \
+		   XMMSSocket.cpp \
 		   SmallNumberDisplay.cpp \
 		   StereoMono.cpp \
 		   Slider.cpp \
@@ -25,7 +26,10 @@ SOURCES += XmmsQT4.cpp \
 		   VolumeSlider.cpp \
 		   ClutterBar.cpp \
 		   Equalizer.cpp \
-		   FileDialog.cpp 
+		   FileDialog.cpp \
+		   MedialibView.cpp \
+		   MedialibWindow.cpp \
+		   MedialibTreeModel.cpp
 
 
 HEADERS += XmmsQT4.h \
@@ -40,6 +44,7 @@ HEADERS += XmmsQT4.h \
 		   NumberDisplay.h \
 		   TimeDisplay.h \
 		   XMMSHandler.h \
+		   XMMSSocket.h \
 		   SmallNumberDisplay.h \
 		   StereoMono.h \
 		   Slider.h \
@@ -55,7 +60,10 @@ HEADERS += XmmsQT4.h \
 		   VolumeSlider.h \
 		   ClutterBar.h \
 		   Equalizer.h \
-		   FileDialog.h
+		   FileDialog.h \
+		   MedialibView.h \
+		   MedialibWindow.h \
+		   MedialibTreeModel.h
 
 
 
