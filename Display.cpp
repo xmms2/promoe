@@ -3,7 +3,7 @@
 
 #include "TitleBar.h"
 
-#include <QFileDialog>
+#include "FileDialog.h"
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 {
@@ -60,10 +60,10 @@ SkinDisplay::paintEvent (QPaintEvent *event)
 void
 SkinDisplay::fileOpen (void)
 {
+	FileDialog fd (this, "main_addfiles");
 	QStringList files;
 
-	files = QFileDialog::getOpenFileNames (this, "Select files to play",
-	                                       QDir::homePath());
+	files = fd.getFiles ();
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance();
 	if (files.count() > 0) {
