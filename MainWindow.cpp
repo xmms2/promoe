@@ -145,8 +145,8 @@ main (int argc, char **argv)
 #ifdef Q_OS_MACX 
 	/** This is soooo wrong, there must exsist a flag for
 	  * static plugins
-	  */
 	Q_IMPORT_PLUGIN(QJpegPlugin);
+	  */
 #endif
 
 	MainWindow *mw = new MainWindow (NULL);

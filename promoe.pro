@@ -8,7 +8,7 @@ SOURCES += XmmsQT4.cpp \
 		   Button.cpp \
 		   TextBar.cpp \
 		   NumberDisplay.cpp \
-			 TimeDisplay.cpp \
+		   TimeDisplay.cpp \
 		   XMMSHandler.cpp \
 		   SmallNumberDisplay.cpp \
 		   StereoMono.cpp \
@@ -25,6 +25,7 @@ SOURCES += XmmsQT4.cpp \
 		   VolumeSlider.cpp \
 		   ClutterBar.cpp \
 		   Equalizer.cpp \
+		   FileDialog.cpp 
 
 
 HEADERS += XmmsQT4.h \
@@ -54,14 +55,16 @@ HEADERS += XmmsQT4.h \
 		   VolumeSlider.h \
 		   ClutterBar.h \
 		   Equalizer.h \
+		   FileDialog.h
 
 
 
 RESOURCES = promoe.qrc
 macx:RC_FILE = promoe.icns
+macx:INCLUDEPATH = /sw/include
 
 QT += network
-macx:QTPLUGIN += qjpeg
+;macx:QTPLUGIN += qjpeg
 QMAKE_LFLAGS += -L$$[QT_INSTALL_PLUGINS]/imageformats
 
 CONFIG += link_pkgconfig

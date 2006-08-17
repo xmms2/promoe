@@ -4,6 +4,7 @@
 
 #include "PlaylistShade.h"
 #include "PlaylistMenu.h"
+#include "FileDialog.h"
 
 #include <QMouseEvent>
 #include <QPaintEvent>
@@ -344,20 +345,26 @@ PlaylistWidget::diveDir (const QString &dir)
 void
 PlaylistWidget::menuAddDir ()
 {
+	/*
 	QString dir;
 	dir = QFileDialog::getExistingDirectory (this, "Select files to play",
 											 QDir::homePath ());
-	
 	diveDir (dir);
+	*/
+
+	FileDialog fd (this, "playlist_add_dir");
+	QString dir = fd.getDirectory ();
+	if (!dir.isNull ())
+		diveDir (dir);
 }
 
 void
 PlaylistWidget::menuAddFile ()
 {
 	QStringList files;
+	FileDialog fd (this, "playlist_add_files");
 
-	files = QFileDialog::getOpenFileNames (this, "Select files to play",
-	                                       QDir::homePath());
+	files = fd.getFiles ();
 
 	for (int i = 0; i < files.count(); i++) {
 		XMMSHandler::getInstance ().playlistAddURL ("file://" + files.value(i));
