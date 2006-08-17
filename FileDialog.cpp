@@ -36,4 +36,3 @@ FileDialog::getDirectory ()
 	return ret;
 
 }
-
