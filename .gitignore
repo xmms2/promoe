@@ -1,0 +1,14 @@
+*.a
+*.o
+*.so
+*.os
+*.pyc
+*.dylib
+*.bundle
+*.swp
+*~
+moc_*
+promoe.app
+qrc*
+.gdb*
+Makefile
