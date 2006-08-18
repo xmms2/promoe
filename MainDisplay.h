@@ -36,7 +36,7 @@ class TextScroller;
 class TimeDisplay;
 class SmallNumberDisplay;
 class StereoMono;
-class Slider;
+class PosBar;
 class VolumeSlider;
 class PlayStatus;
 class MainWindow;
@@ -58,7 +58,7 @@ class MainDisplay : public SkinDisplay
 		SmallNumberDisplay *m_khz;
 
 		StereoMono *m_stereo;
-		Slider *m_slider;
+		PosBar *m_posbar;
 		VolumeSlider *m_vslider;
 		
 		PlayStatus *m_playstatus;

@@ -4,12 +4,12 @@
 #include "PixWidget.h"
 #include "Button.h"
 
-class Slider;
+class PosBar;
 
-class BarButton : public Button
+class PosButton : public Button
 {
 	public:
-		BarButton (QWidget *, uint, uint);
+		PosButton (QWidget *, uint, uint);
 
 		void mouseMoveEvent (QMouseEvent *);
 		void mousePressEvent (QMouseEvent *);
@@ -19,18 +19,18 @@ class BarButton : public Button
 		uint getPos (void);
 
 	private:
-		Slider *m_slider;
+		PosBar *m_slider;
 		bool m_moving;
 		uint m_pos;
 };
 
-class Slider : public PixWidget
+class PosBar : public PixWidget
 {
 	Q_OBJECT
 
 	public:
-		Slider (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vertical=true);
-		~Slider () { }
+		PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vertical=true);
+		~PosBar () { }
 
 		void setSize (uint, uint);
 		uint getPos (void);
@@ -50,7 +50,7 @@ class Slider : public PixWidget
 		int m_bg;
 		uint m_max;
 		uint m_pix;
-		BarButton *m_button;
+		PosButton *m_button;
 
 };
 

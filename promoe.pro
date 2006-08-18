@@ -13,7 +13,7 @@ SOURCES += XmmsQT4.cpp \
 		   XMMSSocket.cpp \
 		   SmallNumberDisplay.cpp \
 		   StereoMono.cpp \
-		   Slider.cpp \
+		   PosBar.cpp \
 		   PlayStatus.cpp \
 		   ShadedDisplay.cpp \
 		   Playlist.cpp \
@@ -47,7 +47,7 @@ HEADERS += XmmsQT4.h \
 		   XMMSSocket.h \
 		   SmallNumberDisplay.h \
 		   StereoMono.h \
-		   Slider.h \
+		   PosBar.h \
 		   PlayStatus.h \
 		   ShadedDisplay.h \
 		   Playlist.h \
