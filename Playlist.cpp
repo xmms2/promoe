@@ -395,7 +395,25 @@ PlaylistWidget::resizeEvent (QResizeEvent *event)
 {
 	m_view->resize (size().width()-30, size().height()-20-38);
 	m_list->setSize (m_view->size().width(), m_view->size().height());
+
+	/* since the sizes has changed we need to move the buttons */
+	m_scroller->move (size().width()-m_rfill3.width()-m_rfill2.width(),
+					  m_corner2.height());
+	m_scroller->resize (m_rfill2.width(),
+						size().height()-m_corner2.height()-m_corner4.height());
+
 	m_scroller->setMax (m_list->height() - m_view->height());
+
+	/* drag corner */
+	m_drag->move (size().width()-30,
+				  size().height()-30);
+
+	/* move add menu */
+	m_add->move (11, height() - m_add->height() - 12);
+	m_del->move (40, height() - m_del->height() - 12);
+	m_sel->move (69, height() - m_sel->height() - 12);
+	m_msc->move (98, height() - m_msc->height() - 12);
+	m_lst->move (width()-22-25, height() - m_lst->height() - 12);
 }
 
 void
@@ -542,22 +560,5 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 	paint.drawPixmap (r, m_rfill, m_rfill.rect());
 
 	paint.end ();
-
-	/* since the sizes has changed we need to move the buttons */
-	m_scroller->move (size().width()-m_rfill3.width()-m_rfill2.width(),
-					  m_corner2.height());
-	m_scroller->resize (m_rfill2.width(),
-						size().height()-m_corner2.height()-m_corner4.height());
-
-	/* drag corner */
-	m_drag->move (size().width()-30,
-				  size().height()-30);
-
-	/* move add menu */
-	m_add->move (11, height() - m_add->height() - 12);
-	m_del->move (40, height() - m_del->height() - 12);
-	m_sel->move (69, height() - m_sel->height() - 12);
-	m_msc->move (98, height() - m_msc->height() - 12);
-	m_lst->move (width()-22-25, height() - m_lst->height() - 12);
 }
 
