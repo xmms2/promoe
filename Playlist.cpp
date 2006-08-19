@@ -462,7 +462,6 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 {
 	QPainter paint;
 	QRect r;
-	QRect er = event->rect ();
 
 	paint.begin (this);
 	
@@ -470,48 +469,41 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 	r.setRect (0, 0, 
 			   m_corner1.width(),
 			   m_corner1.height());
-	if (er.contains (r)) 
-		paint.drawPixmap (r, m_corner1, m_corner1.rect ());
+	paint.drawPixmap (r, m_corner1, m_corner1.rect ());
 
 	/* drawing the upper right corner */
 	r.setRect (width()-m_corner2.width(), 0, m_corner2.width(), m_corner2.height());
-	if (er.contains (r))
-		paint.drawPixmap (r, m_corner2, m_corner2.rect());
+	paint.drawPixmap (r, m_corner2, m_corner2.rect());
 
 	/* Drawing the lower left corner */
 	r.setRect (0, size().height()-m_corner3.height(), 
 			   m_corner3.width(), m_corner3.height());
-	if (er.contains (r))
-		paint.drawPixmap (r, m_corner3, m_corner3.rect());
+	paint.drawPixmap (r, m_corner3, m_corner3.rect());
 
 	/* drawing the lower right corner */
 	r.setRect (size().width()-m_corner4.width(),
 			   size().height()-m_corner4.height(),
 			   m_corner4.width(),
 			   m_corner4.height());
-	if (er.contains (r))
-		paint.drawPixmap (r, m_corner4, m_corner4.rect());
+	paint.drawPixmap (r, m_corner4, m_corner4.rect());
 
 	/* calculate middle of the bar */
 	int midx = (size().width()/2) - (m_titlebar.width()/2);
 
 	/* Add the titlebar */
 	r.setRect (midx, 0, m_titlebar.width(), m_titlebar.height());
-	if (er.contains (r))
-		paint.drawPixmap (r, m_titlebar, m_titlebar.rect());
+	paint.drawPixmap (r, m_titlebar, m_titlebar.rect());
 
 	/* left fill */
 	r.setRect (m_corner1.width(), 0, midx - m_corner1.width(), m_tfill.height());
-	if (er.contains (r))
-		paint.drawPixmap (r, m_tfill, m_tfill.rect());
+	paint.drawPixmap (r, m_tfill, m_tfill.rect());
 
 	/* Calculate middle pixel to the right side of the titlebar */
 	int midx2 = midx + m_titlebar.width();
 
 	/* right fill */
 	r.setRect (midx2, 0, width()-midx2-m_corner2.width(), m_tfill.height());
-	if (er.contains (r))
-		paint.drawPixmap (r, m_tfill, m_tfill.rect());
+	paint.drawPixmap (r, m_tfill, m_tfill.rect());
 
 	/* calculate the size of the bottom side */
 	int bsize = m_corner3.width()+m_corner4.width();
@@ -525,8 +517,7 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 		/* Draw the bottom filling */
 		r.setRect (m_corner3.width(), size().height()-m_bfill.height(), 
 				   pad_to, m_bfill.height());
-		if (er.contains (r))
-			paint.drawPixmap (r, m_bfill, m_bfill.rect());
+		paint.drawPixmap (r, m_bfill, m_bfill.rect());
 	}
 
 	/* The slider bar consists of three elements L|S|R (left, slider, right)
@@ -534,13 +525,11 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 	 */
 	r.setRect (0, m_corner1.height(), m_lfill.width(), 
 			   size().height()-m_corner3.height()-m_corner1.height());
-	if (er.contains (r))
-		paint.drawPixmap (r,m_lfill, m_lfill.rect());
+	paint.drawPixmap (r,m_lfill, m_lfill.rect());
 
 	r.setRect (size().width()-m_rfill3.width(), m_corner2.height(), m_rfill3.width(),
 			   size().height()-m_corner2.height()-m_corner3.height());
-	if (er.contains (r))
-		paint.drawPixmap (r, m_rfill3, m_rfill3.rect());
+	paint.drawPixmap (r, m_rfill3, m_rfill3.rect());
 
 	/* figure out where to place the last padding */
 	int x = size().width();
@@ -550,8 +539,7 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 
 	r.setRect (x, m_corner2.height(), m_rfill.width(), 
 			   size().height()-m_corner2.height()-m_corner3.height());
-	if (er.contains (r))
-		paint.drawPixmap (r, m_rfill, m_rfill.rect());
+	paint.drawPixmap (r, m_rfill, m_rfill.rect());
 
 	paint.end ();
 
