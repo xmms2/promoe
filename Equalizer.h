@@ -6,6 +6,7 @@ class Button;
 class MainWindow;
 class TitleBar;
 class ToggleButton;
+class Slider;
 
 #include <iostream>
 
@@ -34,6 +35,8 @@ class EqualizerWidget : public QWidget
 		ToggleButton *m_enable;
 		ToggleButton *m_auto;
 		Button *m_preset;
+		Slider *m_preamp;
+		Slider *m_bands[10];
 };
 
 class EqualizerWindow : public QMainWindow

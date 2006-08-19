@@ -59,8 +59,13 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_playstatus = new PlayStatus (this);
 	m_playstatus->move (24, 28);
 
-	m_vslider = new VolumeSlider(this);
+	m_vslider = new Slider(this, Skin::VOLUMEBAR_POS_0, Skin::VOLUMEBAR_POS_27,
+	                       Skin::VOLBAR_BTN_0, Skin::VOLBAR_BTN_1, 0, 100);
 	m_vslider->move (107, 57);
+
+	m_bslider = new Slider(this, Skin::BALANCE_POS_0, Skin::BALANCE_POS_27,
+	                       Skin::BALANCE_BTN_0, Skin::BALANCE_BTN_1, -20, 20);
+	m_bslider->move (177, 57);
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 	connect (&xmmsh, SIGNAL(currentSong (const Xmms::PropDict &)), 
@@ -69,6 +74,23 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
 	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
 	         this, SLOT(setPlaytime(uint)));
+	connect (&xmmsh, SIGNAL(getVolume(uint)), this, SLOT(updateVolume(uint)));
+	connect (m_vslider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
+	xmmsh.volumeGet();
+}
+
+
+void
+MainDisplay::updateVolume (uint volume)
+{
+	m_vslider->setValue((int)volume);
+}
+
+void
+MainDisplay::setVolume (int volume)
+{
+	XMMSHandler &xmmsh = XMMSHandler::getInstance();
+	xmmsh.volumeSet((uint)volume);
 }
 
 void 

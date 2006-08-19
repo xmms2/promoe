@@ -2,6 +2,7 @@
 #include "TitleBar.h"
 #include "Equalizer.h"
 #include "Button.h"
+#include "VolumeSlider.h"
 
 EqualizerWindow::EqualizerWindow (QWidget *parent) : QMainWindow (parent)
 {
@@ -53,6 +54,16 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	m_preset->move(217, 18);
 
 	connect(m_preset, SIGNAL(clicked()), parent, SLOT(setEnabled()));
+
+	m_preamp = new Slider(this, Skin::EQ_WIN_BAR_POS_0, Skin::EQ_WIN_BAR_POS_27,
+	                      Skin::EQ_WIN_BAR_BTN_0, Skin::EQ_WIN_BAR_BTN_1, -20, 20);
+	m_preamp->move(21, 38);
+
+	for (int i=0; i < 10; i++) {
+		m_bands[i] = new Slider(this, Skin::EQ_WIN_BAR_POS_0, Skin::EQ_WIN_BAR_POS_27,
+		                        Skin::EQ_WIN_BAR_BTN_0, Skin::EQ_WIN_BAR_BTN_1, -20, 20);
+		m_bands[i]->move(78+i*18, 38);
+	}
 }
 
 EqualizerWidget::~EqualizerWidget (void)

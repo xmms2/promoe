@@ -37,7 +37,7 @@ class TimeDisplay;
 class SmallNumberDisplay;
 class StereoMono;
 class PosBar;
-class VolumeSlider;
+class Slider;
 class PlayStatus;
 class MainWindow;
 class ClutterBar;
@@ -59,7 +59,8 @@ class MainDisplay : public SkinDisplay
 
 		StereoMono *m_stereo;
 		PosBar *m_posbar;
-		VolumeSlider *m_vslider;
+		Slider *m_vslider;
+		Slider *m_bslider;
 		
 		PlayStatus *m_playstatus;
 		MainWindow *getMW(void) { return m_mw; }
@@ -74,6 +75,8 @@ class MainDisplay : public SkinDisplay
 		void togglePL(void);
 		void toggleEQ(void);
 		void toggleTime(void);
+		void updateVolume (uint volume);
+		void setVolume (int volume);
 
 	protected:
 		void SetupPushButtons (void);

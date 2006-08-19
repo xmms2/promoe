@@ -184,6 +184,9 @@ main (int argc, char **argv)
 	else
 		playlistwin->show ();
 
+	if (!settings.contains ("equalizer/hidden"))
+		settings.setValue ("equalizer/hidden", true);
+
 	if (settings.value("equalizer/hidden").toBool ())
 		eqwin->hide ();
 	else
