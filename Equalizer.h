@@ -24,7 +24,6 @@ class EqualizerWidget : public QWidget
 	public:
 		EqualizerWidget(QWidget *parent);
 		~EqualizerWidget();
-		void mouseMoveEvent(QMouseEvent *);
 		void paintEvent (QPaintEvent *event);
 
 	public slots:
@@ -45,6 +44,9 @@ class EqualizerWindow : public QMainWindow
 	public:
 		EqualizerWindow(QWidget *parent);
 		~EqualizerWindow();
+		void mouseMoveEvent(QMouseEvent *);
+		void mousePressEvent(QMouseEvent *);
+		void moveEvent(QMoveEvent *event);
 
 	public slots:
 		void setEnabled (void);
@@ -52,6 +54,8 @@ class EqualizerWindow : public QMainWindow
 	private:
 		MainWindow *m_mw;
 		EqualizerWidget *m_equalizer;
+		int m_diffx;
+		int m_diffy;
 };
 
 

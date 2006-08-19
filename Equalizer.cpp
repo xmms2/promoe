@@ -31,6 +31,27 @@ EqualizerWindow::setEnabled (void)
 }
 
 
+void
+EqualizerWindow::mousePressEvent (QMouseEvent *event)
+{
+	m_diffx = event->pos().x();
+	m_diffy = event->pos().y();
+}
+
+void
+EqualizerWindow::mouseMoveEvent (QMouseEvent *event)
+{
+	move(event->globalPos().x() - m_diffx,
+		 event->globalPos().y() - m_diffy);
+}
+
+void
+EqualizerWindow::moveEvent (QMoveEvent *event)
+{
+	QSettings s;
+	s.setValue ("equalizer/pos", pos ());
+}
+
 EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
@@ -67,11 +88,6 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 }
 
 EqualizerWidget::~EqualizerWidget (void)
-{
-}
-
-void
-EqualizerWidget::mouseMoveEvent (QMouseEvent *event)
 {
 }
 
