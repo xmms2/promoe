@@ -1,7 +1,6 @@
 #include "XMMSSocket.h"
 #include "MedialibWindow.h"
 #include "MedialibView.h"
-#include "MedialibTreeModel.h"
 
 #include <QMainWindow>
 
@@ -15,7 +14,8 @@ MedialibWindow::MedialibWindow (QWidget *parent) : QMainWindow (parent)
 	setAttribute (Qt::WA_DeleteOnClose);
 
 	m_view = new MedialibView (this);
-	m_view->setModel (new MedialibTreeModel (this));
 
 	setCentralWidget (m_view);
+
+	resize (500, 600);
 }

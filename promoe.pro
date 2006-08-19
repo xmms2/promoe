@@ -10,7 +10,6 @@ SOURCES += XmmsQT4.cpp \
 		   NumberDisplay.cpp \
 		   TimeDisplay.cpp \
 		   XMMSHandler.cpp \
-		   XMMSSocket.cpp \
 		   SmallNumberDisplay.cpp \
 		   StereoMono.cpp \
 		   Slider.cpp \
@@ -26,10 +25,7 @@ SOURCES += XmmsQT4.cpp \
 		   VolumeSlider.cpp \
 		   ClutterBar.cpp \
 		   Equalizer.cpp \
-		   FileDialog.cpp \
-		   MedialibView.cpp \
-		   MedialibWindow.cpp \
-		   MedialibTreeModel.cpp
+		   FileDialog.cpp 
 
 
 HEADERS += XmmsQT4.h \
@@ -44,7 +40,6 @@ HEADERS += XmmsQT4.h \
 		   NumberDisplay.h \
 		   TimeDisplay.h \
 		   XMMSHandler.h \
-		   XMMSSocket.h \
 		   SmallNumberDisplay.h \
 		   StereoMono.h \
 		   Slider.h \
@@ -60,10 +55,7 @@ HEADERS += XmmsQT4.h \
 		   VolumeSlider.h \
 		   ClutterBar.h \
 		   Equalizer.h \
-		   FileDialog.h \
-		   MedialibView.h \
-		   MedialibWindow.h \
-		   MedialibTreeModel.h
+		   FileDialog.h
 
 
 
@@ -77,7 +69,7 @@ QMAKE_LFLAGS += -L$$[QT_INSTALL_PLUGINS]/imageformats
 
 CONFIG += link_pkgconfig
 
-;QMAKE_CXXFLAGS += -g
+QMAKE_CXXFLAGS += -g
 ;CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp

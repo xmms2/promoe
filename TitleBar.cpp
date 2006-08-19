@@ -70,8 +70,10 @@ TitleBar::showMenu (void)
 void
 TitleBar::showMlib ()
 {
+	/*
 	MedialibWindow *mw = new MedialibWindow (window ());
 	mw->show ();
+	*/
 }
 
 void

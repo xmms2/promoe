@@ -4,13 +4,12 @@
 #include <xmmsclient/xmmsclient++.h>
 
 #include "XmmsQT4.h"
-#include "XMMSSocket.h"
 
 #include <QObject>
 #include <QHash>
 #include <QTimer>
 
-class XMMSHandler : public QObject, XMMSSocket {
+class XMMSHandler : public QObject {
 	Q_OBJECT
 	public:
 		static XMMSHandler &getInstance ();
@@ -91,6 +90,7 @@ class XMMSHandler : public QObject, XMMSSocket {
 		bool volume_get (const Xmms::Dict &levels);
 		bool volume_error (const std::string &error);
 
+		Xmms::Client m_client;
 		XmmsQT4 *m_qt4;
 		unsigned int m_currentid;
 		bool m_masterchan;

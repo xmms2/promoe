@@ -1,7 +1,6 @@
 #include <xmmsclient/xmmsclient++.h>
 
 #include "XmmsQT4.h"
-#include "XMMSSocket.h"
 #include "XMMSHandler.h"
 
 #include <cstdlib>
@@ -30,7 +29,7 @@ XMMSHandler &XMMSHandler::getInstance ()
 	return singleton;
 }
 
-XMMSHandler::XMMSHandler () : QObject (), XMMSSocket ()
+XMMSHandler::XMMSHandler () : QObject (), m_client ("Prome_Main")
 {
 	connect (std::getenv ( "XMMS_PATH" ));
 }
@@ -38,8 +37,18 @@ XMMSHandler::XMMSHandler () : QObject (), XMMSSocket ()
 bool
 XMMSHandler::connect (const char *path)
 {
-	if (!XMMSSocket::connect (path))
+	try {
+		m_client.connect (path ? path : "");
+	}
+	catch (Xmms::connection_error& e) {
+		QErrorMessage *err = new QErrorMessage ();
+		err->showMessage ("Couldn't connect to XMMS2, please try again.");
+		err->exec ();
+		delete err;
 		return false;
+	}
+
+	m_client.setMainloop (new XmmsQT4 (m_client.getConnection ()));
 
 	using Xmms::bind;
 	m_client.playlist.list (bind (&XMMSHandler::playlist_list, this));
