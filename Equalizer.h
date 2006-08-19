@@ -6,6 +6,7 @@ class Button;
 class MainWindow;
 class TitleBar;
 class ToggleButton;
+class Slider;
 
 #include <iostream>
 
@@ -23,7 +24,6 @@ class EqualizerWidget : public QWidget
 	public:
 		EqualizerWidget(QWidget *parent);
 		~EqualizerWidget();
-		void mouseMoveEvent(QMouseEvent *);
 		void paintEvent (QPaintEvent *event);
 
 	public slots:
@@ -34,6 +34,8 @@ class EqualizerWidget : public QWidget
 		ToggleButton *m_enable;
 		ToggleButton *m_auto;
 		Button *m_preset;
+		Slider *m_preamp;
+		Slider *m_bands[10];
 };
 
 class EqualizerWindow : public QMainWindow
@@ -42,6 +44,9 @@ class EqualizerWindow : public QMainWindow
 	public:
 		EqualizerWindow(QWidget *parent);
 		~EqualizerWindow();
+		void mouseMoveEvent(QMouseEvent *);
+		void mousePressEvent(QMouseEvent *);
+		void moveEvent(QMoveEvent *event);
 
 	public slots:
 		void setEnabled (void);
@@ -49,6 +54,8 @@ class EqualizerWindow : public QMainWindow
 	private:
 		MainWindow *m_mw;
 		EqualizerWidget *m_equalizer;
+		int m_diffx;
+		int m_diffy;
 };
 
 

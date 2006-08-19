@@ -1,297 +1,227 @@
 #include "XMMSHandler.h"
+#include <math.h>
 
 #include "VolumeSlider.h"
 #include <QMouseEvent>
 
 #include "Skin.h"
+#include "Button.h"
 
-// NOTE!
-// This file has lots of seemingly strange math.
-// I will document it as we go, but please keep in mind
-// that all of the coord-space and normalization is pixel-space dependent.
+#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
-VolumeSlider::VolumeSlider (QWidget *parent) : PixWidget (parent)
+Slider::Slider (QWidget *parent, uint name_min, uint name_max,
+                uint name_on, uint name_off, int min, int max) : PixWidget (parent)
 {
-	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
+	m_name_min = name_min;
+	m_name_max = name_max;
+	m_name_on = name_on;
+	m_name_off = name_off;
+	
+	m_min = min;
+	m_max = max;
 
-	setMinimumSize (68, 13);
-	setMaximumSize (68, 13);
-	m_volume = 0;
-	m_position = 0;
-	m_hasvolbtn = false;
-	m_volbtn = NULL;
+	m_button = 0;
 
-	m_pixmap = QPixmap (68, 13);
-
-	connect (&xmmsh, SIGNAL(getVolume (uint)),
-	         this, SLOT(setVolume (uint)));
-
-	xmmsh.volumeGet ();
-}
-
-VolumeSlider::~VolumeSlider ()
-{
-
+	m_value = 0;
+	m_value_index = (uint)((abs(m_min) / (double)(abs(m_min)+abs(m_max))) * (name_max-name_min));
 }
 
 void
-VolumeSlider::setPixmaps (Skin *skin)
+Slider::setPixmaps (Skin *skin)
 {
 	m_skin = skin;
 
-	if(m_skin->getVolBtn())
-	{
-		m_hasvolbtn = true;
-		if(m_volbtn)
-			delete m_volbtn;
+	m_pixmap_slider = m_skin->getItem(m_name_min+m_value_index);
+	m_vertical = (m_pixmap_slider.height() > m_pixmap_slider.width()) ? true : false;
 
-		m_volbtn = new VolButton (this, Skin::VOLBAR_BTN_0, Skin::VOLBAR_BTN_1);
+	setMinimumSize(m_pixmap_slider.size());
+	setMaximumSize(m_pixmap_slider.size());
 
-		// If we are out of scope high or low, we clamp the values.
-		if(m_volume <= 0)
-			m_volbtn->move (0, 1);
-		else if(m_volume >= 27)
-			m_volbtn->move (54, 1);
-		else
-		{
-			// If we are not.. we do two things.
+	resize(m_pixmap_slider.size());
 
-			// First, we normalize the difference between the current position
-			// and the maximum position. This will give us the progress ratio.
-			float temp = ((float)(m_volume) / (float)(27.0f));
-
-			// Now, we multiply that by the number of possible positions in our
-			// space. This gives us our relative position according to the progress
-			// ratio.
-			m_volbtn->move ((int)(49 * temp), 1);
+	if (!skin->getItem(m_name_on).isNull() && !skin->getItem(m_name_off).isNull()) {
+		if (m_button) {
+			delete m_button;
 		}
-		m_volbtn->setPixmaps (m_skin);
-		m_volbtn->show ();
-	}
-	else
-	{
-		m_hasvolbtn = false;
-		if(m_volbtn)
-		{
-			delete m_volbtn;
-			m_volbtn = NULL;
+
+		m_button = new SliderButton (this, m_name_on, m_name_off, m_vertical);
+		m_button->setPixmaps (m_skin);
+		m_button->show ();
+
+		int tmp = (uint)((ceil(abs(m_min) / (double)(abs(m_min)+abs(m_max)))) * (m_name_max-m_name_min));
+		if (m_vertical) {
+			m_button->move(1, height()-m_button->height()-tmp);
+		} else {
+			m_button->move(tmp, 1);
+		}
+	} else {
+		if (m_button) {
+			delete m_button;
+			m_button = NULL;
 		}
 	}
 
-	m_volslider = m_skin->getVol (m_volume);
-
-	drawPixmaps ();
+	update();
 }
 
 void
-VolumeSlider::changePixmap ()
+Slider::changePixmap ()
 {
-	XMMSHandler::getInstance ().volumeSet (m_volume_base100);
-
-	m_volslider = m_skin->getVol (m_volume);
-	drawPixmaps ();
+	m_pixmap_slider = m_skin->getItem (m_name_min+m_value_index);
+	update();
 }
 
 void
-VolumeSlider::drawPixmaps ()
+Slider::paintEvent (QPaintEvent *event)
 {
 	QPainter paint;
-	paint.begin (&m_pixmap);
-
-	paint.drawPixmap (QRect (0, 0, 68, 13),
-					  m_volslider,
-					  m_pixmap.rect ());
+	paint.begin (this);
+	paint.drawPixmap (rect(), m_pixmap_slider, m_pixmap_slider.rect ());
 	paint.end ();
-
-	update ();
 }
 
 void 
-VolumeSlider::mousePressEvent (QMouseEvent *event)
+Slider::mousePressEvent (QMouseEvent *event)
 {
 	updatePos (event);
-	if(m_hasvolbtn)
-	{
-		m_volbtn->mousePressEvent (event);
-	}
 }
 
 void
-VolumeSlider::mouseMoveEvent (QMouseEvent *event)
+Slider::mouseMoveEvent (QMouseEvent *event)
 {
 	updatePos (event);
-	if(m_hasvolbtn)
-	{
-		m_volbtn->mouseMoveEvent (event);
-	}
 }
 
 void
-VolumeSlider::mouseReleaseEvent (QMouseEvent *event)
+Slider::mouseReleaseEvent (QMouseEvent *event)
 {
 	updatePos (event);
-	if(m_hasvolbtn)
-	{
-		m_volbtn->mouseReleaseEvent (event);
-	}
 }
 
 void
-VolumeSlider::updatePos (QMouseEvent *event)
+Slider::updatePos (QMouseEvent *event)
 {
 	QPoint p (event->pos ());
+	int value;
 
-	int curx = p.x ();
-
-	// Check for scope and clamp.
-	if(curx <= 0)
-	{
-		m_volume = 0;
-		m_volume_base100 = 0;
-	}
-	else if(curx >= 68)
-	{
-		m_volume = 27;
-		m_volume_base100 = 100;
-	}
-	else
-	{
-		// Normalize the same way we do above, except this time
-		// we calculate a base-100 value as well.
-		float temp = ((float)(curx - 5) / (float)(width() - 5));
-		m_volume_base100 = (int)(100 * temp);
-		m_volume = (int)(28 * temp);
+	if (m_vertical) {
+		value = CLAMP(p.y(), 0, height());
+	} else {
+		value = CLAMP(p.x(), 0, width());
 	}
 
-	changePixmap ();
-}
-
-void
-VolumeSlider::setVolume (uint volume_base100)
-{
-	m_volume_base100 = volume_base100;
-	if(volume_base100 > 100)
-		volume_base100 = 100;
-
-	m_volume = (int)((float)(volume_base100) *.28);
-	if(m_volume > 27)
-		m_volume = 27;
-
-	if(m_hasvolbtn)
-		m_volbtn->setVolume (volume_base100);
-
-	changePixmap ();
-}
-
-VolButton::VolButton (QWidget *parent, uint normal, uint pressed) : PixWidget (parent)
-{
-	m_volslider = dynamic_cast<VolumeSlider *>(parent);
-	setMinimumSize (14, 11);
-	setMaximumSize (14, 11);
-
-	m_normal = normal;
-	m_pressed = pressed;
-
-	m_pixmap = QPixmap (14, 11);
-}
-
-VolButton::~VolButton ()
-{
-
-}
-
-void
-VolButton::mousePressEvent (QMouseEvent *event)
-{
-	QPoint p (event->globalPos ());
-	QPoint np = m_volslider->mapFromGlobal (p);
-
-	move (np.x() - 7, 1);
-
-	changePixmap (true);
-}
-
-void
-VolButton::mouseReleaseEvent (QMouseEvent *event)
-{
-	changePixmap (false);
-}
-
-void
-VolButton::mouseMoveEvent (QMouseEvent *event)
-{
-	QPoint p = m_volslider->mapFromGlobal (event->globalPos ());
-	int volume = 0;
-	int curx = p.x ();
-
-	// Same deal, clamp then normalize.
-	if(curx < 7)
-	{
-		volume = 0;
-		m_volslider->setVolume (0);
-	}
-	else if(curx > 61)
-	{
-		volume = 54;
-		m_volslider->setVolume (100);
-	}
-	else
-	{
-		float temp = ((float)(((float)curx) / (float)(68.0f)));
-		float b100temp = ((float)(((float)curx - 12) / (float)(68.0f - 19)));
-		volume = (int)(68 * temp) - 7;
-		// This is to make sure the volume slider itself reflects our changes.
-		m_volslider->setVolume ((int)(100 * b100temp));
+	setPos(value, true);
+	if (m_button != 0) {
+		m_button->setPos(value);
 	}
 
-	move (volume, 1);
+	emit valueChanged (m_value);
 }
 
 void
-VolButton::setVolume (uint volume_base100)
+Slider::setValue (int value)
 {
-	int volume = (int)((float)(volume_base100) *.68);
+	double frac;
+	int pos;
 
-	if(volume < 0)
-		volume = 0;
-	else if(volume > 54)
-		volume = 54;
+   	frac = abs(value)/(double)(abs(m_min)+abs(m_max));
+	if (m_vertical) {
+		pos = (int)(height() * frac);
+	} else {
+		pos = (int)(width() * frac);
+	}
 
-	move (volume,1);
+	setPos(pos, false);
+	if (m_button != 0) {
+		m_button->setPos(pos);
+	}
+}
+
+void
+Slider::setPos (int value, bool tell)
+{
+	double frac;
+
+	if (m_vertical) {
+		frac = (height() - value) / (double) height();
+	} else {
+		frac = value / (double) width();
+	}
+
+	/* calculate m_min <= m_value <= m_max */
+	m_value = (uint)(frac * (abs(m_min) + abs(m_max)) + m_min);
+
+	/* calculate m_name_min <= m_value_index <= m_name_max */
+	m_value_index = (uint) ceil (frac * (m_name_max - m_name_min));
+
+
+	changePixmap();
+
+	if (tell) {
+		emit valueChanged (m_value);
+	}
+}
+
+
+SliderButton::SliderButton (QWidget *parent, uint normal, uint pressed,
+                            bool vertical) : Button (parent, normal, pressed, false)
+{
+	m_slider = dynamic_cast<Slider *>(parent);
+	m_vertical = vertical;
+	m_diff = 0;
+	m_moving = false;
+
+	if (m_vertical) {
+		move(1, 0);
+	} else {
+		move(0, 1);
+	}
 }
 
 
 void
-VolButton::setPixmaps (Skin *skin)
+SliderButton::mousePressEvent (QMouseEvent *event)
 {
-	m_skin = skin;
-
-	m_volbtn = m_skin->getItem (m_normal);
-
-	drawPixmaps ();
+	if (m_vertical) {
+		m_diff = y() - event->pos().y();
+	} else {
+		m_diff = x() - event->pos().x();
+	}
+	m_moving = true;
 }
 
-void
-VolButton::changePixmap (bool pressed)
-{
-	if(pressed)
-		m_volbtn = m_skin->getItem (m_pressed);
-	else
-		m_volbtn = m_skin->getItem (m_normal);
 
-	drawPixmaps ();
+void
+SliderButton::mouseReleaseEvent (QMouseEvent *event)
+{
+	m_moving = false;
 }
 
+
 void
-VolButton::drawPixmaps ()
+SliderButton::setPos (uint pos)
 {
-	QPainter paint;
-	paint.begin (&m_pixmap);
+	if (m_vertical) {
+		int ypos = MIN(pos, (uint)m_slider->height()-height());
+		move(1, ypos);
+	} else {
+		int xpos = MIN(pos, (uint)m_slider->width()-width());
+		move(xpos, 1);
+	}
+}
 
-	paint.drawPixmap (QRect (0, 0, 14, 11),
-					  m_volbtn,
-					  m_pixmap.rect ());
-	paint.end ();
 
-	update ();
+void
+SliderButton::mouseMoveEvent (QMouseEvent *event)
+{
+	QPoint p = m_slider->mapFromGlobal (event->globalPos ());
+	int value;
+	if (m_vertical) {
+		value = CLAMP(p.y(), 0, m_slider->height());
+	} else {
+		value = CLAMP(p.x(), 0, m_slider->width());
+	}
+
+	m_slider->setPos(value, true);
+	setPos (value);
 }

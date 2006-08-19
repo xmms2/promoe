@@ -123,6 +123,7 @@ MainWindow::toggleEQ (bool UpdateButton)
 	}
 
 	if (s.value ("equalizer/hidden").toBool ()) {
+		m_equalizer->move (s.value("equalizer/pos").toPoint ());
 		m_equalizer->show (); 
 		s.setValue ("equalizer/hidden", false);
 	} else {
@@ -174,7 +175,6 @@ main (int argc, char **argv)
 		settings.setValue ("playlist/pos", QPoint (mw->pos().x(),
 												   mw->pos().y()+mw->size().height()));
 	playlistwin->move (settings.value("playlist/pos").toPoint ());
-	playlistwin->move (settings.value("playlist/pos").toPoint ());
 
 	if (!settings.contains ("playlist/hidden"))
 		settings.setValue ("playlist/hidden", true);
@@ -183,6 +183,15 @@ main (int argc, char **argv)
 		playlistwin->hide ();
 	else
 		playlistwin->show ();
+
+
+	if (!settings.contains ("equalizer/pos"))
+		settings.setValue ("equalizer/pos", QPoint (mw->pos().x(),
+												   mw->pos().y()+mw->size().height()));
+	eqwin->move (settings.value("equalizer/pos").toPoint ());
+
+	if (!settings.contains ("equalizer/hidden"))
+		settings.setValue ("equalizer/hidden", true);
 
 	if (settings.value("equalizer/hidden").toBool ())
 		eqwin->hide ();

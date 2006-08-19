@@ -32,6 +32,16 @@ Skin::BuildEqualizer (void)
 
 		m_items[EQ_WIN_GRAPH_BG] = img->copy (0, 294, 113, 19);
 
+		for (int i = 0; i < 14; i++) {
+			m_items[EQ_WIN_BAR_POS_0+i] = img->copy (13+15*i, 164, 14, 63);
+		}
+		for (int i = 0; i < 14; i++) {
+			m_items[EQ_WIN_BAR_POS_14+i] = img->copy (13+15*i, 229, 14, 63);
+		}
+
+		m_items[EQ_WIN_BAR_BTN_1] = img->copy (0, 164, 11, 11);
+		m_items[EQ_WIN_BAR_BTN_0] = img->copy (0, 176, 11, 11);
+
 		delete img;
 	} else {
 		setSkin(":CleanAMP/");
@@ -481,52 +491,51 @@ Skin::BuildSliders (void)
 	QPixmap *img;
 
 	img = getPixmap("posbar");
-	if(img)
-	{
+	if (img) {
 		m_items[POSBAR] = img->copy (0, 0, 248, 10);
 		m_items[POSBAR_BTN_0] = img->copy (248, 0, 29, 10);
 		m_items[POSBAR_BTN_1] = img->copy (278, 0, 29, 10);
+
 		delete img;
-	}
-	else
+	} else {
 		setSkin(":CleanAMP/");
+	}
 
 	img = getPixmap("volume");
-	if(img)
-	{
-		for (int i = VOLUMEBAR_POS_MIN; i <= VOLUMEBAR_POS_MAX; i++) {
-			m_volume_bar[i] = img->copy(0, i*15, 68, 13);
+	if (img) {
+		for (int i = 0; i <= 27; i++) {
+			m_items[VOLUMEBAR_POS_0+i] = img->copy(0, i*15, 68, 13);
 		}
-		if(img->height() > 420)
-		{
+
+		if (img->height() > 420) {
 			m_items[VOLBAR_BTN_1] = img->copy (0, 422, 14, 11);
 			m_items[VOLBAR_BTN_0] = img->copy (15, 422, 14, 11);
-			m_volbtn = true;
-		}
-		else
-		{
-			m_volbtn = false;
 		}
 	
 		delete img;
-	}
-	else
+	} else {
 		setSkin(":CleanAMP/");
+	}
 
 	img = getPixmap("balance");
 	if (!img) {
 		img = getPixmap("volume");
 	}
 
-	if(img)
-	{
-		for (int i = BALANCE_POS_MIN; i <= BALANCE_POS_MAX; i++) {
-			m_balance[i] = img->copy(9, i*15, 38, 13);
+	if (img) {
+		for (int i = 0; i < 28; i++) {
+			m_items[BALANCE_POS_0+i] = img->copy(9, i*15, 38, 13);
 		}
+
+		if (img->height() > 421) {
+			m_items[BALANCE_BTN_0] = img->copy(0, 422, 14, 11);
+			m_items[BALANCE_BTN_1] = img->copy(15, 422, 14, 11);
+		}
+
 		delete img;
-	}
-	else
+	} else {
 		setSkin(":CleanAMP/");
+	}
 }
 
 

@@ -36,8 +36,8 @@ class TextScroller;
 class TimeDisplay;
 class SmallNumberDisplay;
 class StereoMono;
+class PosBar;
 class Slider;
-class VolumeSlider;
 class PlayStatus;
 class MainWindow;
 class ClutterBar;
@@ -58,8 +58,9 @@ class MainDisplay : public SkinDisplay
 		SmallNumberDisplay *m_khz;
 
 		StereoMono *m_stereo;
-		Slider *m_slider;
-		VolumeSlider *m_vslider;
+		PosBar *m_posbar;
+		Slider *m_vslider;
+		Slider *m_bslider;
 		
 		PlayStatus *m_playstatus;
 		MainWindow *getMW(void) { return m_mw; }
@@ -74,6 +75,8 @@ class MainDisplay : public SkinDisplay
 		void togglePL(void);
 		void toggleEQ(void);
 		void toggleTime(void);
+		void updateVolume (uint volume);
+		void setVolume (int volume);
 
 	protected:
 		void SetupPushButtons (void);

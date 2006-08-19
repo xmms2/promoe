@@ -10,7 +10,7 @@
 #include "TimeDisplay.h"
 #include "SmallNumberDisplay.h"
 #include "StereoMono.h"
-#include "Slider.h"
+#include "PosBar.h"
 #include "PlayStatus.h"
 #include "VolumeSlider.h"
 #include "Playlist.h"
@@ -51,16 +51,21 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_clutterbar = new ClutterBar (this);
 	m_clutterbar->move (10, 22);
 
-	m_slider = new Slider (this, Skin::POSBAR, 
+	m_posbar = new PosBar (this, Skin::POSBAR, 
 						   Skin::POSBAR_BTN_0, 
 						   Skin::POSBAR_BTN_1);
-	m_slider->move (16, 72);
+	m_posbar->move (16, 72);
 
 	m_playstatus = new PlayStatus (this);
 	m_playstatus->move (24, 28);
 
-	m_vslider = new VolumeSlider(this);
+	m_vslider = new Slider(this, Skin::VOLUMEBAR_POS_0, Skin::VOLUMEBAR_POS_27,
+	                       Skin::VOLBAR_BTN_0, Skin::VOLBAR_BTN_1, 0, 100);
 	m_vslider->move (107, 57);
+
+	m_bslider = new Slider(this, Skin::BALANCE_POS_0, Skin::BALANCE_POS_27,
+	                       Skin::BALANCE_BTN_0, Skin::BALANCE_BTN_1, -20, 20);
+	m_bslider->move (177, 57);
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 	connect (&xmmsh, SIGNAL(currentSong (const Xmms::PropDict &)), 
@@ -69,6 +74,23 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
 	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
 	         this, SLOT(setPlaytime(uint)));
+	connect (&xmmsh, SIGNAL(getVolume(uint)), this, SLOT(updateVolume(uint)));
+	connect (m_vslider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
+	xmmsh.volumeGet();
+}
+
+
+void
+MainDisplay::updateVolume (uint volume)
+{
+	m_vslider->setValue((int)volume);
+}
+
+void
+MainDisplay::setVolume (int volume)
+{
+	XMMSHandler &xmmsh = XMMSHandler::getInstance();
+	xmmsh.volumeSet((uint)volume);
 }
 
 void 
@@ -105,8 +127,8 @@ MainDisplay::setStatus (Xmms::Playback::Status status)
 {
 	if (status == Xmms::Playback::STOPPED) {
 		m_time->setTime(0);
-		m_slider->setPos (0);
-		m_slider->hideBar (true);
+		m_posbar->setPos (0);
+		m_posbar->hideBar (true);
 	}
 }
 
@@ -115,7 +137,7 @@ MainDisplay::setPlaytime (uint time)
 {
 	uint showtime;
 	if (m_mw->isTimemodeReverse()) {
-		uint maxtime = m_slider->getMax();
+		uint maxtime = m_posbar->getMax();
 		showtime = -(maxtime - time); 
 	} else {
 		showtime = time;
@@ -123,7 +145,7 @@ MainDisplay::setPlaytime (uint time)
 	m_time->setTime (showtime);
 
 	// update slider
-	m_slider->setPos (time);
+	m_posbar->setPos (time);
 }
 
 void
@@ -166,10 +188,10 @@ MainDisplay::setMediainfo (const Xmms::PropDict &info)
 	}
 
 	if (info.contains ("duration")) {
-		m_slider->setMax (info.get<int32_t> ("duration"));
-		m_slider->hideBar (false);
+		m_posbar->setMax (info.get<int32_t> ("duration"));
+		m_posbar->hideBar (false);
 	} else {
-		m_slider->hideBar (true);
+		m_posbar->hideBar (true);
 	}
 }
 

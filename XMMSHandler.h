@@ -42,7 +42,6 @@ class XMMSHandler : public QObject {
 		void medialibQueryAdd (QString q) { delete m_xmmsc->medialib_add_to_playlist (q.toUtf8 ()); }
 		*/
 
-		void volumeSet (uint volume);
 		void volumeGet ();
 
 		//const XMMSClient *getXMMS () { return m_xmmsc; }
@@ -59,6 +58,7 @@ class XMMSHandler : public QObject {
 		void pause ();
 		void next ();
 		void prev ();
+		void volumeSet (uint volume);
 
 	signals:
 		void settingsSaved ();

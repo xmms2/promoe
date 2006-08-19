@@ -1,21 +1,21 @@
 #include "MainWindow.h"
 
-#include "Slider.h"
+#include "PosBar.h"
 #include "Skin.h"
 
 #include <QWidget>
 #include <QMouseEvent>
 
-BarButton::BarButton (QWidget *parent, uint normal, uint pressed) : Button (parent, normal, pressed)
+PosButton::PosButton (QWidget *parent, uint normal, uint pressed) : Button (parent, normal, pressed)
 {
-	m_slider = dynamic_cast<Slider *>(parent);
+	m_slider = dynamic_cast<PosBar *>(parent);
 	setMinimumSize (29, 10);
 	setMaximumSize (29, 10);
 	m_moving = false;
 }
 
 void
-BarButton::setPos (uint pos)
+PosButton::setPos (uint pos)
 {
 	m_pos = pos;
 	if (!m_moving) {
@@ -24,13 +24,13 @@ BarButton::setPos (uint pos)
 }
 
 uint
-BarButton::getPos (void)
+PosButton::getPos (void)
 {
 	return m_pos;
 }
 
 void
-BarButton::mousePressEvent (QMouseEvent *event)
+PosButton::mousePressEvent (QMouseEvent *event)
 {
 	QPoint p (event->pos ());
 
@@ -39,7 +39,7 @@ BarButton::mousePressEvent (QMouseEvent *event)
 }
 
 void
-BarButton::mouseReleaseEvent (QMouseEvent *event)
+PosButton::mouseReleaseEvent (QMouseEvent *event)
 {
 	m_moving = false;
 
@@ -49,7 +49,7 @@ BarButton::mouseReleaseEvent (QMouseEvent *event)
 }
 
 void
-BarButton::mouseMoveEvent (QMouseEvent *event)
+PosButton::mouseMoveEvent (QMouseEvent *event)
 {
 	QPoint p (event->pos ());
 
@@ -77,7 +77,7 @@ BarButton::mouseMoveEvent (QMouseEvent *event)
 }
 
 
-Slider::Slider (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vertical) : PixWidget (parent)
+PosBar::PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vertical) : PixWidget (parent)
 {
 	m_bg = bg;
 	m_vertical = vertical;
@@ -87,7 +87,7 @@ Slider::Slider (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vert
 
 	m_max = 0;
 
-	m_button = new BarButton (this, bnormal, bpressed);
+	m_button = new PosButton (this, bnormal, bpressed);
 	m_button->move (0, 0);
 
 	if (m_vertical) {
@@ -101,7 +101,7 @@ Slider::Slider (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vert
 }
 
 void
-Slider::setSize (uint x, uint y)
+PosBar::setSize (uint x, uint y)
 {
 	setMinimumSize (x, y);
 	setMaximumSize (x, y);
@@ -115,7 +115,7 @@ Slider::setSize (uint x, uint y)
 }
 
 uint
-Slider::getPos (void)
+PosBar::getPos (void)
 {
 
 	if (m_vertical) {
@@ -126,7 +126,7 @@ Slider::getPos (void)
 }
 
 void
-Slider::hideBar (bool b)
+PosBar::hideBar (bool b)
 {
 	
 	if (b) { 
@@ -139,7 +139,7 @@ Slider::hideBar (bool b)
 }
 
 void
-Slider::setPos (uint p)
+PosBar::setPos (uint p)
 {
 	if (!m_max) {
 		return;
@@ -153,13 +153,13 @@ Slider::setPos (uint p)
 }
 
 void
-Slider::requestPos (float value)
+PosBar::requestPos (float value)
 {
 	XMMSHandler::getInstance ().setPlaytime (m_max * value);
 }
 
 void
-Slider::setPixmaps (Skin *skin)
+PosBar::setPixmaps (Skin *skin)
 {
 	m_pixmap = skin->getItem (m_bg);
 }

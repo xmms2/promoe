@@ -2,6 +2,7 @@
 #include "TitleBar.h"
 #include "Equalizer.h"
 #include "Button.h"
+#include "VolumeSlider.h"
 
 EqualizerWindow::EqualizerWindow (QWidget *parent) : QMainWindow (parent)
 {
@@ -30,6 +31,27 @@ EqualizerWindow::setEnabled (void)
 }
 
 
+void
+EqualizerWindow::mousePressEvent (QMouseEvent *event)
+{
+	m_diffx = event->pos().x();
+	m_diffy = event->pos().y();
+}
+
+void
+EqualizerWindow::mouseMoveEvent (QMouseEvent *event)
+{
+	move(event->globalPos().x() - m_diffx,
+		 event->globalPos().y() - m_diffy);
+}
+
+void
+EqualizerWindow::moveEvent (QMoveEvent *event)
+{
+	QSettings s;
+	s.setValue ("equalizer/pos", pos ());
+}
+
 EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
@@ -53,14 +75,19 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	m_preset->move(217, 18);
 
 	connect(m_preset, SIGNAL(clicked()), parent, SLOT(setEnabled()));
+
+	m_preamp = new Slider(this, Skin::EQ_WIN_BAR_POS_0, Skin::EQ_WIN_BAR_POS_27,
+	                      Skin::EQ_WIN_BAR_BTN_0, Skin::EQ_WIN_BAR_BTN_1, -20, 20);
+	m_preamp->move(21, 38);
+
+	for (int i=0; i < 10; i++) {
+		m_bands[i] = new Slider(this, Skin::EQ_WIN_BAR_POS_0, Skin::EQ_WIN_BAR_POS_27,
+		                        Skin::EQ_WIN_BAR_BTN_0, Skin::EQ_WIN_BAR_BTN_1, -20, 20);
+		m_bands[i]->move(78+i*18, 38);
+	}
 }
 
 EqualizerWidget::~EqualizerWidget (void)
-{
-}
-
-void
-EqualizerWidget::mouseMoveEvent (QMouseEvent *event)
 {
 }
 
