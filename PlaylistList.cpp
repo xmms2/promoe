@@ -236,9 +236,11 @@ PlaylistList::mediainfoChanged (uint id, const Xmms::PropDict &info)
 
 		if (info.contains ("duration")) {
 			unsigned int duration = info.get<int32_t> ("duration");
-			QString dur;
-			dur.sprintf ("%02d:%02d", duration/60000, (duration/1000)%60);
-			i->setDuration (dur);
+			if (duration != (uint)-1) {
+				QString dur;
+				dur.sprintf ("%02d:%02d", duration/60000, (duration/1000)%60);
+				i->setDuration (dur);
+			}
 		}
 
 	}
