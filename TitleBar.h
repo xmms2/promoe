@@ -18,6 +18,7 @@ class TitleBar : public PixWidget
 	public slots:
 		void setPixmaps (Skin *skin);
 		void showMenu (void);
+		void showServerB (void);
 		void showTheme (void);
 		void showMlib (void);
 		void showSettings (void);

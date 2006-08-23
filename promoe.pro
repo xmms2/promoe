@@ -25,7 +25,9 @@ SOURCES += XmmsQT4.cpp \
 		   VolumeSlider.cpp \
 		   ClutterBar.cpp \
 		   Equalizer.cpp \
-		   FileDialog.cpp 
+		   FileDialog.cpp \
+		   BrowseModel.cpp \
+		   BrowseDialog.cpp
 
 
 HEADERS += XmmsQT4.h \
@@ -55,7 +57,9 @@ HEADERS += XmmsQT4.h \
 		   VolumeSlider.h \
 		   ClutterBar.h \
 		   Equalizer.h \
-		   FileDialog.h
+		   FileDialog.h \
+		   BrowseModel.h \
+		   BrowseDialog.h
 
 
 

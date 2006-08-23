@@ -77,6 +77,13 @@ XMMSHandler::connect (const char *path)
 	return true;
 }
 
+
+Xmms::Client *
+XMMSHandler::getClient ()
+{
+	return &m_client;
+}
+
 void
 XMMSHandler::restartPlaytime ()
 {

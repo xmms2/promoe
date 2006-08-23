@@ -48,6 +48,8 @@ class XMMSHandler : public QObject {
 
 		void updateSettings () { emit settingsSaved (); }
 
+		Xmms::Client *getClient ();
+
 	public slots:
 		void setPlaytime (uint pos);
 		void restartPlaytime ();

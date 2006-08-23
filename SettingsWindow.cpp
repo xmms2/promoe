@@ -41,11 +41,15 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 
 	m_mainwindow = new SettingsTabMain (NULL);
 	m_playlistwin = new SettingsTabPlaylist (NULL);
+	/*
 	m_medialib = new SettingsTabMedialib (NULL);
+	*/
 
 	tab->addTab (m_mainwindow, tr ("Main Window"));
 	tab->addTab (m_playlistwin, tr ("Playlist Window"));
+	/*
 	tab->addTab (m_medialib, tr ("Medialib"));
+	*/
 }
 
 void
@@ -53,12 +57,11 @@ SettingsWindow::okButton (void)
 {
 	m_mainwindow->saveSettings ();
 	m_playlistwin->saveSettings ();
-	m_medialib->saveSettings ();
-	
+
 	close ();
-	XMMSHandler::getInstance ().updateSettings ();
 }
 
+/*
 SettingsTabMedialib::SettingsTabMedialib (QWidget *parent) : QWidget (parent)
 {
 	QSettings s;
@@ -231,6 +234,7 @@ SettingsTabMedialib::saveSettings ()
 	s.setValue ("medialib_album/size", m_albumsize->currentText ());
 	s.setValue ("medialib_song/size", m_songsize->currentText ());
 }
+*/
 
 SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)
 {
@@ -269,7 +273,25 @@ SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)
 
 	l = new QLabel (tr ("Playlist shaded mode fontsize"), c);
 	h->addWidget (l, 1);
+
+	QFrame *f = new QFrame (dummy);
+	f->setFrameStyle (QFrame::HLine | QFrame::Raised);
+	vbox->addWidget (f);
+
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
 	
+	vbox->addWidget (c, 1);
+
+	m_remote_fs = new QCheckBox (c);
+	if (!s.contains ("useremote"))
+		s.setValue ("useremote", false);
+	m_remote_fs->setCheckState (s.value ("useremote").toBool () ? Qt::Checked : Qt::Unchecked);
+	h->addWidget (m_remote_fs);
+
+	l = new QLabel (tr ("Use remote filebrowsing"), c);
+	h->addWidget (l, 1);
+
 	s.endGroup ();
 }
 
@@ -279,6 +301,7 @@ SettingsTabPlaylist::saveSettings (void)
 	QSettings s;
 	s.setValue ("playlist/fontsize", m_fontsize->value ());
 	s.setValue ("playlist/shadedsize", m_shadesize->value ());
+	s.setValue ("playlist/useremote", m_remote_fs->checkState () == Qt::Checked);
 }
 
 SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)

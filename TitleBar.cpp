@@ -5,6 +5,7 @@
 #include "MedialibWindow.h"
 #include "SettingsWindow.h"
 #include "Button.h"
+#include "BrowseDialog.h"
 
 #include <QMenu>
 
@@ -45,6 +46,10 @@ TitleBar::showMenu (void)
 	a->setShortcut (tr ("Alt+M"));
 	connect (a, SIGNAL (triggered ()), this, SLOT (showMlib ()));
 	qm.addAction (a);
+	a = new QAction (tr ("Server-side browser"), this);
+	a->setShortcut (tr ("Alt+S"));
+	connect (a, SIGNAL (triggered ()), this, SLOT (showServerB ()));
+	qm.addAction (a);
 	qm.addSeparator ();
 	a = new QAction (tr ("Theme settings"), this);
 	a->setShortcut (tr ("Alt+T"));
@@ -74,6 +79,13 @@ TitleBar::showMlib ()
 	MedialibWindow *mw = new MedialibWindow (window ());
 	mw->show ();
 	*/
+}
+
+void
+TitleBar::showServerB ()
+{
+	BrowseDialog *bd = new BrowseDialog (window ());
+	bd->show ();
 }
 
 void

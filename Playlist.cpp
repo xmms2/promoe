@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "BrowseDialog.h"
 #include "Playlist.h"
 #include "PlaylistList.h"
 
@@ -361,13 +362,23 @@ PlaylistWidget::menuAddDir ()
 void
 PlaylistWidget::menuAddFile ()
 {
+	QSettings s;
 	QStringList files;
-	FileDialog fd (this, "playlist_add_files");
 
-	files = fd.getFiles ();
+	if (s.value ("playlist/useremote").toBool () == true) {
+		BrowseDialog bd (window ());
+		files = bd.getFiles ();
+		for (int i = 0; i < files.count(); i++) {
+			XMMSHandler::getInstance ().playlistAddURL (files.value (i));
+		}
+	} else {
+		FileDialog fd (this, "playlist_add_files");
 
-	for (int i = 0; i < files.count(); i++) {
-		XMMSHandler::getInstance ().playlistAddURL ("file://" + files.value(i));
+		files = fd.getFiles ();
+
+		for (int i = 0; i < files.count(); i++) {
+			XMMSHandler::getInstance ().playlistAddURL ("file://" + files.value(i));
+		}
 	}
 
 }
