@@ -7,6 +7,16 @@
 #include <QWidget>
 
 
+bool
+BrowseModelItem::itemCompare (BrowseModelItem *s1, BrowseModelItem *s2)
+{
+	if (QString::localeAwareCompare (s1->m_vals["name"].toLower (),
+									 s2->m_vals["name"].toLower ()) < 0) {
+		return true;
+	}
+	return false;
+}
+
 BrowseModel::BrowseModel (QWidget *parent) : QAbstractTableModel ()
 {
 	m_columns.append ("Name");
@@ -85,9 +95,20 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 		if (d.contains ("name")) {
 			name = QString::fromStdString (d.get<std::string> ("name"));
 		} else {
-			if (d.contains ("title") && d.contains ("artist")) {
-				name += QString::fromStdString (d.get<std::string> ("artist"));
-				name += " - ";
+			if (d.contains ("title")) {
+				if (d.contains ("artist")) {
+					name += QString::fromStdString (d.get<std::string> ("artist"));
+					name += " - ";
+				}
+				if (d.contains ("album")) {
+					name += QString::fromStdString (d.get<std::string> ("album"));
+					name += " - ";
+				}
+				if (d.contains ("tracknr")) {
+					name += QString::number (d.get<uint32_t>
+											 ("tracknr")).rightJustified(2, '0');
+					name += " - ";
+				}
 				name += QString::fromStdString (d.get<std::string> ("title"));
 			} else {
 				const char *tmp;
@@ -107,11 +128,13 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 		m_list.append (new BrowseModelItem (path, name, isdir));
 	}
 
+	qSort (m_list.begin (), m_list.end (), BrowseModelItem::itemCompare);
+
+	qDebug ("%s", qPrintable(m_list.at(0)->data("name")));
+
 	reset ();
 
 	emit dirChanged (m_current_dir);
-
-	qDebug ("done");
 
 	return true;
 }

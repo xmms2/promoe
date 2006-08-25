@@ -28,6 +28,8 @@ class BrowseModelItem
 		bool isDir () {
 			return m_isdir;
 		};
+		
+		static bool itemCompare (BrowseModelItem *s1, BrowseModelItem *s2);
 
 	protected:
 		QHash<QString, QString> m_vals;
