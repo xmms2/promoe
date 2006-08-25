@@ -74,21 +74,28 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 	}
 
 	for (res.first (); res.isValid (); ++res) {
-		const char *tmp;
 		Xmms::Dict d = *res;
 
 		if (!d.contains ("path"))
 			continue;
 
-		tmp = xmmsc_result_decode_url (NULL, d.get<std::string> ("path").c_str ());
-		QString path = QString::fromUtf8 (tmp);
-		free ((char *)tmp);
+		QString path = QString::fromStdString (d.get<std::string> ("path"));
 
 		QString name;
 		if (d.contains ("name")) {
 			name = QString::fromStdString (d.get<std::string> ("name"));
 		} else {
-			name = path.mid (path.lastIndexOf ("/")+1);
+			if (d.contains ("title") && d.contains ("artist")) {
+				name += QString::fromStdString (d.get<std::string> ("artist"));
+				name += " - ";
+				name += QString::fromStdString (d.get<std::string> ("title"));
+			} else {
+				const char *tmp;
+				QString tmp2 = path.mid (path.lastIndexOf ("/")+1);
+				tmp = xmmsc_result_decode_url (NULL, tmp2.toAscii ());
+				name = QString::fromUtf8 (tmp);
+				free ((char *)tmp);
+			}
 		}
 
 		bool isdir = d.get<int32_t> ("isdir");
