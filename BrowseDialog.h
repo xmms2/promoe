@@ -4,6 +4,7 @@
 #include "BrowseModel.h"
 
 #include <QDialog>
+#include <QTreeView>
 #include <QListView>
 #include <QGridLayout>
 #include <QPushButton>
@@ -27,7 +28,7 @@ class BrowseDialog : public QDialog
 		QStringList getFiles ();
 
 	private:
-		QListView *m_list;
+		QTreeView *m_list;
 		QComboBox *m_lookInCombo;
 		QLineEdit *m_lookInEdit;
 		QLineEdit *m_fileNameEdit;

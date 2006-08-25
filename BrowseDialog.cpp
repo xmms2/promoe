@@ -11,20 +11,22 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QToolButton>
+#include <QTreeView>
 
 BrowseDialog::BrowseDialog (QWidget *parent) : QDialog (parent)
 {
     setSizeGripEnabled(true);
     QGridLayout *grid = new QGridLayout (this);
 
-	m_list = new QListView (this);
+	m_list = new QTreeView (this);
 
 	m_model = new BrowseModel (this);
 	m_list->setModel (m_model);
     m_list->setSelectionMode (QAbstractItemView::ExtendedSelection);
     m_list->setSelectionBehavior (QAbstractItemView::SelectRows);
-    m_list->setWrapping (true);
-    m_list->setResizeMode (QListView::Adjust);
+//	m_list->setWrapping (true);
+	m_list->setIndentation (0);
+    //m_list->setResizeMode (QListView::Adjust);
     m_list->setEditTriggers (QAbstractItemView::EditKeyPressed);
     m_list->setContextMenuPolicy (Qt::CustomContextMenu);
 

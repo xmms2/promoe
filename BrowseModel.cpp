@@ -86,12 +86,12 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 
 		QString name;
 		if (d.contains ("name")) {
-			name = QString::fromStdString ((*res).get<std::string> ("name"));
+			name = QString::fromStdString (d.get<std::string> ("name"));
 		} else {
 			name = path.mid (path.lastIndexOf ("/")+1);
 		}
 
-		bool isdir = (*res).get<int32_t> ("isdir");
+		bool isdir = d.get<int32_t> ("isdir");
 
 		if (m_filter_dot && name.startsWith ("."))
 			// skip these files 
@@ -103,6 +103,8 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 	reset ();
 
 	emit dirChanged (m_current_dir);
+
+	qDebug ("done");
 
 	return true;
 }
