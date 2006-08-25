@@ -2,6 +2,7 @@
 
 #include <QSettings>
 #include <QFileDialog>
+#include <QString>
 
 
 FileDialog::FileDialog (QWidget *parent, const QString &name) : QFileDialog (parent)
@@ -22,6 +23,9 @@ FileDialog::getFiles ()
 	QStringList ret = getOpenFileNames (NULL, "Choose files");
 	if (ret.size() > 0)
 		s.setValue ("filedialog/" + m_name, directory ().absolutePath ());
+
+	qSort (ret);
+
 	return ret;
 
 }
@@ -33,6 +37,7 @@ FileDialog::getDirectory ()
 	QString ret = getExistingDirectory (NULL, "Choose directory");
 	if (!ret.isNull())
 		s.setValue ("filedialog/" + m_name, directory ().absolutePath ());
+
 	return ret;
 
 }
