@@ -74,11 +74,11 @@ Skin::BuildPlaylist (void)
 		m_playlist[PLS_VISMINI_0] = img->copy(205, 0, 75, 38);
 	
 		m_playlist[PLS_LFILL_0] = img->copy(0, 42, 12, 29);
-	
+
 		m_playlist[PLS_RFILL_0] = img->copy(31, 42, 5, 29);
 		m_playlist[PLS_RFILL2_0] = img->copy(36, 42, 8, 29);
 		m_playlist[PLS_RFILL3_0] = img->copy(44, 42, 7, 29);
-	
+
 		tmp = m_playlist[PLS_CORNER_UR_0];
 	
 		m_playlist[PLS_CLOSE_BTN_0] = tmp.copy(14, 3, 9, 9);

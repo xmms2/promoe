@@ -32,7 +32,7 @@ class ShadedDisplay : public SkinDisplay
 
 	public slots:
 		void setStatus (Xmms::Playback::Status status);
-		void setPlaytime (uint time);
+		void setPlaytime (uint32_t time);
 		void setMediainfo (const Xmms::PropDict &info);
 };
 

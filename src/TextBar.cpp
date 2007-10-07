@@ -69,8 +69,7 @@ void
 TextScroller::setPixmaps (Skin *skin)
 {
 	QPalette pal = palette ();
-	QBrush b = QBrush (Qt::TexturePattern);
-	b.setTexture (skin->getItem (Skin::TEXTBG));
+	QBrush b = QBrush (skin->getItem (Skin::TEXTBG));
 	pal.setBrush (QPalette::Window, b);
 	setPalette (pal);
 

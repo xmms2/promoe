@@ -72,8 +72,10 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
 	connect (&xmmsh, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
-	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
-	         this, SLOT(setPlaytime(uint)));
+//	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
+//	         this, SLOT(setPlaytime(uint)));
+	connect (xmmsh.cache () , SIGNAL (playtime (uint32_t)),
+	         this,  SLOT (setPlaytime (uint32_t)));
 	connect (&xmmsh, SIGNAL(getVolume(uint)), this, SLOT(updateVolume(uint)));
 	connect (m_vslider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
 	xmmsh.volumeGet();
@@ -113,8 +115,7 @@ void
 MainDisplay::setPixmaps (Skin *skin)
 {
 	QPalette palette = QPalette();
-	QBrush brush = QBrush(Qt::TexturePattern);
-	brush.setTexture(skin->getItem(Skin::MAIN_WINDOW));
+	QBrush brush = QBrush(skin->getItem(Skin::MAIN_WINDOW));
 	palette.setBrush(QPalette::Background, brush);
 	setPalette(palette);
 
@@ -133,9 +134,9 @@ MainDisplay::setStatus (Xmms::Playback::Status status)
 }
 
 void
-MainDisplay::setPlaytime (uint time)
+MainDisplay::setPlaytime (uint32_t time)
 {
-	uint showtime;
+	uint32_t showtime;
 	if (m_mw->isTimemodeReverse()) {
 		uint maxtime = m_posbar->getMax();
 		showtime = -(maxtime - time); 

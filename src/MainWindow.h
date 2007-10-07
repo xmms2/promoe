@@ -14,7 +14,7 @@ class MainWindow;
 #include <QHash>
 #include <QSettings>
 
-#include "XmmsQT4.h"
+#include "xmmsqt4.h"
 
 /*
 #include "Skin.h"

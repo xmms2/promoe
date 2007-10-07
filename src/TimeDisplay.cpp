@@ -65,8 +65,7 @@ TimeDisplay::drawMinus ()
 	Skin *skin = Skin::getInstance ();
 
 	// Draw background
-	QBrush b (Qt::TexturePattern);
-	b.setTexture (skin->getNumber (10));
+	QBrush b (skin->getNumber (10));
 
 	QPainter paint;
 	paint.begin (&m_pixmap);

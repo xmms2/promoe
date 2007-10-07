@@ -10,6 +10,12 @@
 
 class PlaylistItem;
 
+class PlaylistView : public QWidget {
+	public:
+		PlaylistView (QWidget *parent) : QWidget (parent) {}
+		~PlaylistView () {}
+};
+
 class PlaylistList : public QWidget {
 	Q_OBJECT
 

@@ -70,7 +70,7 @@ class MainDisplay : public SkinDisplay
 	public slots:
 		void setPixmaps(Skin *skin);
 		void setStatus (Xmms::Playback::Status status);
-		void setPlaytime (uint time);
+		void setPlaytime (uint32_t time);
 		void setMediainfo (const Xmms::PropDict &);
 		void togglePL(void);
 		void toggleEQ(void);

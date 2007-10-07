@@ -21,8 +21,7 @@ NumberDisplay::NumberDisplay (QWidget *parent, TimeDisplay *td,uint w, uint star
 void
 NumberDisplay::setPixmaps (Skin *skin)
 {
-	QBrush b (Qt::TexturePattern);
-	b.setTexture (skin->getNumber (10));
+	QBrush b (skin->getNumber (10));
 
 	QPainter paint;
 	paint.begin (&m_pixmap);

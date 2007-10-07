@@ -3,18 +3,24 @@
 
 #include <xmmsclient/xmmsclient++.h>
 
-#include "XmmsQT4.h"
+#include "xclient.h"
+#include "xmmsqt4.h"
 
 #include <QObject>
 #include <QHash>
 #include <QTimer>
 
-class XMMSHandler : public QObject {
+class PlaylistModel;
+
+class XMMSHandler : public XClient {
 	Q_OBJECT
 	public:
 		static XMMSHandler &getInstance ();
 
-		bool connect (const char *path);
+		XMMSHandler (QObject *parent, const std::string &name);
+		~XMMSHandler () {};
+
+		bool connect_handler (const char *ipcpath = NULL, const bool &sync = false, QWidget *parent = NULL);
 
 		bool playback_playtime (const unsigned int &time);
 		bool playlist_list (const Xmms::List< unsigned int > &playlist);
@@ -50,6 +56,8 @@ class XMMSHandler : public QObject {
 
 		Xmms::Client *getClient ();
 
+		PlaylistModel *getPlaylistModel () {return m_playlist_model; }
+
 	public slots:
 		void setPlaytime (uint pos);
 		void restartPlaytime ();
@@ -79,12 +87,10 @@ class XMMSHandler : public QObject {
 	private:
 		QTimer m_playtime_timer;
 
-		XMMSHandler ();
-		~XMMSHandler () {};
 		void DictToQHash (const std::string &key,
 		                  const Xmms::Dict::Variant &value,
 		                  QHash<QString, QString> &hash);
-		void PropDictToQHash (const std::string &key,
+	void PropDictToQHash (const std::string &key,
 		                      const Xmms::Dict::Variant &value,
 		                      const std::string &source,
 		                      QHash<QString, QString> &hash);
@@ -92,8 +98,8 @@ class XMMSHandler : public QObject {
 		bool volume_get (const Xmms::Dict &levels);
 		bool volume_error (const std::string &error);
 
-		Xmms::Client m_client;
 		XmmsQT4 *m_qt4;
+		PlaylistModel *m_playlist_model;
 		unsigned int m_currentid;
 		bool m_masterchan;
 };

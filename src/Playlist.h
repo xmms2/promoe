@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QFont>
+#include <QScrollBar>
 
 class MainWindow;
 class PlaylistWidget;
@@ -13,9 +14,37 @@ class PlaylistScroller;
 #include "Button.h"
 
 class Skin;
-class PlaylistList;
+//class PlaylistList;
+class PlaylistView;
 class PlaylistShade;
 class PlaylistMenu;
+
+
+
+class PlaylistScrollBar : public QScrollBar {
+	Q_OBJECT
+
+	public:
+		PlaylistScrollBar (QWidget *parent = NULL);
+		~PlaylistScrollBar () {}
+
+	public slots:
+		void mouseMoveEvent (QMouseEvent *event);
+		void mousePressEvent (QMouseEvent *event);
+		void mouseReleaseEvent (QMouseEvent *event);
+		void paintEvent (QPaintEvent *event);
+		void setPixmaps (Skin *skin);
+
+	private:
+		int sliderPositionFromValue ();
+		int sliderValueFromPosition (int position);
+
+		int m_sliderOffset;
+		QPixmap m_pixmap;
+		QPixmap m_slider;
+		QPixmap m_slider_down;
+};
+
 
 class dragButton : public Button {
 	public:
@@ -25,47 +54,6 @@ class dragButton : public Button {
 		void mouseMoveEvent (QMouseEvent *event);
 };
 
-class PlaylistScrollButton : public Button {
-	public:
-		PlaylistScrollButton (PlaylistScroller *parent, uint normal, uint pressed);
-		~PlaylistScrollButton () {}
-	private:
-		PlaylistScroller *m_slider;
-		void mouseMoveEvent (QMouseEvent *event);
-};
-
-class PlaylistScroller : public QWidget{
-	Q_OBJECT
-	public:
-		PlaylistScroller (PlaylistWidget *arent);
-		~PlaylistScroller () {}
-		void doScroll (void) { emit scrolled(getPos ()); }
-
-		uint getPos (void);
-		uint getMax (void);
-		void setMax (uint max);
-
-		void repositionButton (void);
-
-	public slots:
-		void setPixmaps (Skin *skin);
-
-	signals:
-		void scrolled (int);
-
-	private:
-		void paintEvent (QPaintEvent *event);
-		QPixmap m_pixmap;
-		PlaylistScrollButton *m_button;
-
-		uint m_max;
-};
-
-class PlaylistView : public QWidget {
-	public:
-		PlaylistView (QWidget *parent) : QWidget (parent) {}
-		~PlaylistView () {}
-};
 
 class PlaylistWidget : public QWidget {
 	Q_OBJECT
@@ -76,12 +64,9 @@ class PlaylistWidget : public QWidget {
 
 		void setActive (bool);
 		void switchDisplay (void);
-		uint getOffset (void);
 
 	public slots:
 		void setPixmaps (Skin *skin);
-		void doScroll (int);
-		void sizeChangedList (QSize);
 
 		void menuAddUrl () {}
 		void menuAddDir ();
@@ -110,8 +95,7 @@ class PlaylistWidget : public QWidget {
 		bool m_active;
 
 		PlaylistView *m_view;
-		PlaylistList *m_list;
-		PlaylistScroller *m_scroller;
+		QScrollBar *m_scrollBar;
 		dragButton *m_drag;
 
 		PlaylistMenu *m_add;
@@ -145,12 +129,13 @@ class PlaylistWindow : public QMainWindow {
 	private:
 		PlaylistWidget *m_playlist;
 		PlaylistShade *m_shaded;
-		
+
 		int m_diffx;
 		int m_diffy;
 
 		Button *m_shadebtn;
 		Button *m_closebtn;
+		uint getOffset (void);
 		MainWindow *m_mw;
 
 };

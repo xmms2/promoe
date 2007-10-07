@@ -61,8 +61,8 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 
 	connect (&xmmsh, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
-	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
-	         this, SLOT(setPlaytime(uint)));
+	connect (xmmsh.cache (), SIGNAL (playtime (uint32_t)),
+	         this, SLOT ( setPlaytime(uint32_t)));
 	connect (&xmmsh, SIGNAL(currentSong (const Xmms::PropDict &)), 
 			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
 }
@@ -94,18 +94,15 @@ ShadedDisplay::setStatus (Xmms::Playback::Status status)
 }
 
 void
-ShadedDisplay::setPlaytime (uint time)
+ShadedDisplay::setPlaytime (uint32_t time)
 {
 	uint sec, min;
 
 	sec = (time / 1000) % 60;
 	min = (time / 1000) / 60;
 
-	if (sec != m_number2->getNumber ()) {
 		m_number2->setNumber (sec, 2);
-	} else if (min != m_number->getNumber ()) {
 		m_number->setNumber (min, 2);
-	}
 }
 
 

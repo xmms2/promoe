@@ -1,7 +1,8 @@
 #include "MainWindow.h"
 #include "BrowseDialog.h"
 #include "Playlist.h"
-#include "PlaylistList.h"
+#include "PlaylistView.h"
+#include "playlistmodel.h"
 
 #include "PlaylistShade.h"
 #include "PlaylistMenu.h"
@@ -15,30 +16,139 @@
 #include <QSettings>
 #include <QFileDialog>
 
-PlaylistScrollButton::PlaylistScrollButton (PlaylistScroller *parent, uint normal, uint pressed) : Button (parent, normal, pressed, true)
+/*
+ *
+ * PlaylistScrollBar
+ *
+ */
+PlaylistScrollBar::PlaylistScrollBar (QWidget *parent) :
+                   QScrollBar (Qt::Vertical, parent)
 {
-	m_slider = parent;
+	Skin *skin = Skin::getInstance ();
+
+	setContextMenuPolicy(Qt::NoContextMenu);
+
+	m_pixmap = QPixmap (0, 0);
+	m_slider = QPixmap (0, 0);
+	m_slider_down = QPixmap (0, 0);
+
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
 }
 
 void
-PlaylistScrollButton::mouseMoveEvent (QMouseEvent *event)
+PlaylistScrollBar::mouseMoveEvent (QMouseEvent *event)
 {
-	QPoint p (event->pos ());
+	if (!isSliderDown ())
+		return;
 
-	int npos = pos().y()+p.y()-m_diffy;
-	if (npos >= 0 && npos + rect().height() <= m_slider->rect().height()) {
-		move (0, npos);
-	} else if (npos < 0) {
-		move (0, 0);
-		npos = 0;
-	} else if (npos + rect().height() > m_slider->rect().height()) {
-		move (0, m_slider->rect().height()-rect().height());
-		npos = m_slider->rect().height()-rect().height();
-	}
+	int tmp = sliderValueFromPosition(event->y () - m_sliderOffset);
+	if (tmp == value())
+		return;
 
-	m_slider->doScroll ();
+	setValue(tmp);
+
+	//TODO only repaint necessyry range
+	repaint ();
 }
 
+void
+PlaylistScrollBar::mousePressEvent (QMouseEvent *event)
+{
+	if (event->button() == Qt::RightButton) {
+		event->ignore();
+		return;
+	}
+
+	if (maximum () == minimum ())
+		return;
+
+	int sliderBase = sliderPositionFromValue();
+	if (event->y () < sliderBase) {
+		triggerAction (QAbstractSlider::SliderPageStepSub);
+	} else if (event->y () > sliderBase + m_slider.height ()) {
+		triggerAction (QAbstractSlider::SliderPageStepAdd);
+	} else {
+		m_sliderOffset = event->y () - sliderBase;
+		setSliderDown (true);
+	}
+
+	//TODO only repaint necessary range
+	repaint ();
+}
+
+void
+PlaylistScrollBar::mouseReleaseEvent (QMouseEvent *event)
+{
+	if (event->button() == Qt::RightButton) {
+		event->ignore();
+		return;
+	}
+
+	if (isSliderDown ()) {
+		setValue(sliderValueFromPosition(event->y () - m_sliderOffset));
+		setSliderDown (false);
+	}
+
+	//TODO only repaint necessary range
+	repaint ();
+}
+
+void
+PlaylistScrollBar::paintEvent (QPaintEvent *event)
+{
+	if (m_pixmap.isNull ()) {
+		return;
+	}
+
+// TODO remove, in here for debuging
+//	qDebug("%i %i %i %i %i %i %i", event->rect ().x(), event->rect ().y(), event->rect ().width(), event->rect ().height(), 
+//	       minimum(), maximum (), sliderPosition ());
+
+	QPainter (paint);
+	paint.begin (this);
+	/* draw background */
+	paint.drawPixmap (event->rect (), m_pixmap, m_pixmap.rect ());
+	/* draw slider */
+	QPixmap *slider = isSliderDown () ? &m_slider_down : &m_slider ;
+	QRect rect (slider->rect ());
+	rect.moveTop (sliderPositionFromValue ());
+	paint.drawPixmap (rect , *slider, slider->rect ());
+	paint.end ();
+}
+
+
+void
+PlaylistScrollBar::setPixmaps (Skin *skin)
+{
+	m_pixmap = skin->getPls (Skin::PLS_RFILL2_0);
+	m_slider = skin->getPls (Skin::PLS_SCROLL_0);
+	m_slider_down = skin->getPls (Skin::PLS_SCROLL_1);
+}
+
+
+int
+PlaylistScrollBar::sliderPositionFromValue ()
+{
+	return QStyle::sliderPositionFromValue (minimum (), maximum (),
+	                                        sliderPosition (),
+	                                        height () - m_slider.height (),
+	                                        false);
+}
+
+int
+PlaylistScrollBar::sliderValueFromPosition (int position)
+{
+	return  QStyle::sliderValueFromPosition (minimum (), maximum (),
+	                                         position,
+	                                         height () - m_slider.height (),
+                                             false);
+}
+
+
+/*
+ * dragButton
+ */
 void
 dragButton::mouseMoveEvent (QMouseEvent *event)
 {
@@ -47,68 +157,10 @@ dragButton::mouseMoveEvent (QMouseEvent *event)
 				pw->size().height()+(event->pos().y()-m_diffy));
 }
 
-PlaylistScroller::PlaylistScroller (PlaylistWidget *parent) : QWidget (parent)
-{
-	Skin *skin = Skin::getInstance ();
 
-	m_pixmap = QPixmap(0,0);
-
-	connect (skin, SIGNAL (skinChanged (Skin *)),
-	         this, SLOT (setPixmaps(Skin *)));
-
-	m_button = new PlaylistScrollButton (this, Skin::PLS_SCROLL_0, Skin::PLS_SCROLL_1);
-	m_button->move (0, 0);
-}
-		
-void
-PlaylistScroller::setMax (uint max) 
-{ 
-	m_max = max;
-	repositionButton ();
-}
-
-uint
-PlaylistScroller::getMax (void)
-{
-	return rect().height()-m_button->rect().height();
-}
-
-uint
-PlaylistScroller::getPos (void)
-{
-	return (int)((float)(m_button->pos ().y ()) / (float)getMax() * (float)m_max);
-}
-
-void
-PlaylistScroller::setPixmaps (Skin *skin)
-{
-	m_pixmap = skin->getPls (Skin::PLS_RFILL2_0);
-}
-
-void
-PlaylistScroller::repositionButton (void)
-{
-	PlaylistWidget *pw = dynamic_cast<PlaylistWidget *>(parent ());
-	/*  x = 182.6 / (454 - 242) * 224 */
-	int bpos = (int)((float)(pw->getOffset ()) / (float)m_max * (float) getMax ());
-	if (bpos > getMax ()) 
-		bpos = getMax ();
-	m_button->move (0, bpos);
-}
-
-void 
-PlaylistScroller::paintEvent (QPaintEvent *event)
-{
-	if (m_pixmap.isNull ()) {
-		return;
-	}
-
-	QPainter (paint);
-	paint.begin (this);
-	paint.drawPixmap (event->rect (), m_pixmap, m_pixmap.rect ());
-	paint.end ();
-}
-
+/*
+ * PlaylistWindow
+ */
 PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 {
 	QSettings s;
@@ -236,6 +288,9 @@ PlaylistWindow::leaveEvent (QEvent *event)
 }
 
 
+/*
+ * PlaylistWidget
+ */
 PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
@@ -248,12 +303,26 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	m_view = new PlaylistView (this);
 	m_view->move (10, 20);
 	m_view->resize (size().width()-30, size().height()-20-38);
+	m_view->setModel (XMMSHandler::getInstance().getPlaylistModel());
 
-	m_list = new PlaylistList (m_view);
+	//m_list = new PlaylistList (m_view);
 
-	m_scroller = new PlaylistScroller (this);
-	connect (m_scroller, SIGNAL(scrolled(int)), this, SLOT(doScroll (int)));
-	connect (m_list, SIGNAL(sizeChanged(QSize)), this, SLOT(sizeChangedList (QSize)));
+	/*
+	 * This is a hack to make PlaylistScrollBar work with PlaylistView.
+	 * It is necessery because of limitations and at least one Bug in the
+	 *  QT library (as of Version 4.3
+	 * TODO: This might in a future Qt version. Try to find a better solution
+	 */
+	//m_scroller = new  PlaylistScrollBar (this);
+	m_scrollBar = new PlaylistScrollBar (this);
+	m_view->setVerticalScrollBar (m_scrollBar);
+	m_scrollBar->setParent(this);
+	m_scrollBar->show();
+	/* Workarounds for another QT bug (at least in my opinion) */
+	connect (m_scrollBar, SIGNAL(actionTriggered (int)),
+			 m_view, SLOT(verticalScrollbarAction (int)));
+	connect (m_scrollBar, SIGNAL(valueChanged (int)),
+	         m_view, SLOT(verticalScrollbarValueChanged (int)));
 
 	m_drag = new dragButton (this);
 	m_drag->resize (30, 30);
@@ -294,7 +363,7 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_DEL_CRP_1);
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_FIL_0,
 								Skin::PLS_DEL_FIL_1);
-	connect (b, SIGNAL(activated ()), m_list, SLOT (deleteFiles ()));
+//	connect (b, SIGNAL(activated ()), m_list, SLOT (deleteFiles ()));
 
 	m_sel = new PlaylistMenu (this, Skin::PLS_SEL,
 							  Skin::PLS_SEL_DEC);
@@ -384,42 +453,21 @@ PlaylistWidget::menuAddFile ()
 }
 
 void
-PlaylistWidget::sizeChangedList (QSize s)
-{
-	m_scroller->setMax (s.height() - m_view->height());
-}
-
-void
-PlaylistWidget::doScroll (int pos)
-{
-	m_list->setOffset (pos);
-	if (pos == 0) {
-		m_list->update ();
-	} else {
-		m_list->scroll (0, pos);
-	}
-	QApplication::sendPostedEvents (m_list, 0);
-}
-
-void
 PlaylistWidget::resizeEvent (QResizeEvent *event)
 {
 	m_view->resize (size().width()-30, size().height()-20-38);
-	m_list->setSize (m_view->size().width(), m_view->size().height());
 
 	/* since the sizes has changed we need to move the buttons */
-	m_scroller->move (size().width()-m_rfill3.width()-m_rfill2.width(),
+	m_scrollBar->move (size().width()-m_rfill3.width()-m_rfill2.width(),
 					  m_corner2.height());
-	m_scroller->resize (m_rfill2.width(),
+	m_scrollBar->resize (m_rfill2.width(),
 						size().height()-m_corner2.height()-m_corner4.height());
-
-	m_scroller->setMax (m_list->height() - m_view->height());
 
 	/* drag corner */
 	m_drag->move (size().width()-30,
 				  size().height()-30);
 
-	/* move add menu */
+	/* move menus */
 	m_add->move (11, height() - m_add->height() - 12);
 	m_del->move (40, height() - m_del->height() - 12);
 	m_sel->move (69, height() - m_sel->height() - 12);
@@ -467,13 +515,6 @@ PlaylistWidget::setActive (bool active)
 	}
 
 	update ();
-}
-
-
-uint 
-PlaylistWidget::getOffset (void)
-{ 
-	return m_list->getOffset (); 
 }
 
 void

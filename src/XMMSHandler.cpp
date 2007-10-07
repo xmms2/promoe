@@ -1,7 +1,8 @@
 #include <xmmsclient/xmmsclient++.h>
 
-#include "XmmsQT4.h"
+#include "xmmsqt4.h"
 #include "XMMSHandler.h"
+#include "playlistmodel.h"
 
 #include <cstdlib>
 #include <string>
@@ -18,27 +19,24 @@ static bool log ( /*const std::string& text = ""*/ )
 	return false;
 }
 
-static bool logUint ( const unsigned int & /*, const std::string& text = "" */ )
-{
-	return false;
-}
-
 XMMSHandler &XMMSHandler::getInstance ()
 {
-	static XMMSHandler singleton;
+	static XMMSHandler singleton(NULL, "Prome_Main");
 	return singleton;
 }
 
-XMMSHandler::XMMSHandler () : QObject (), m_client ("Prome_Main")
+XMMSHandler::XMMSHandler (QObject *parent, const std::string &name) : XClient (parent, name)
 {
-	connect (std::getenv ( "XMMS_PATH" ));
+	connect_handler();
 }
 
 bool
-XMMSHandler::connect (const char *path)
+XMMSHandler::connect_handler (const char *ipcpath, const bool &sync, QWidget *parent)
 {
-	try {
-		m_client.connect (path ? path : "");
+/*	try {
+		m_client.connect(path);
+		//TODO reenable checking of path
+		//m_client.connect (path ? path : "");
 	}
 	catch (Xmms::connection_error& e) {
 		QErrorMessage *err = new QErrorMessage ();
@@ -49,30 +47,30 @@ XMMSHandler::connect (const char *path)
 	}
 
 	m_client.setMainloop (new XmmsQT4 (m_client.getConnection ()));
+*/
+	//TODO must be moved elsewere later
+	m_playlist_model = new PlaylistModel(NULL, this, "_active");
+
+	connect(ipcpath, sync, parent);
 
 	using Xmms::bind;
-	m_client.playlist.list (bind (&XMMSHandler::playlist_list, this));
-	m_client.playlist.broadcastChanged (
-		bind (&XMMSHandler::playlist_changed, this));
+//	m_client->playlist.listEntries () (bind (&XMMSHandler::playlist_list, this));
+//	m_client->playlist.broadcastChanged () (bind (&XMMSHandler::playlist_changed, this));
 
-	m_client.medialib.broadcastEntryChanged (
-		bind (&XMMSHandler::medialib_entry_changed, this));
+	m_client->medialib.broadcastEntryChanged () (bind (&XMMSHandler::medialib_entry_changed, this));
 
-	m_client.playback.currentID (
-		bind (&XMMSHandler::playback_current_id, this));
-	m_client.playback.broadcastCurrentID (
-		bind (&XMMSHandler::playback_current_id, this));
+	m_client->playback.currentID () (bind (&XMMSHandler::playback_current_id, this));
+	m_client->playback.broadcastCurrentID () (bind (&XMMSHandler::playback_current_id, this));
 
-	m_client.playback.getStatus (bind (&XMMSHandler::playback_status, this));
-	m_client.playback.broadcastStatus (
-		bind (&XMMSHandler::playback_status, this));
+	m_client->playback.getStatus () (bind (&XMMSHandler::playback_status, this));
+	m_client->playback.broadcastStatus () (bind (&XMMSHandler::playback_status, this));
 
-	m_client.playback.broadcastVolumeChanged (
-		bind (&XMMSHandler::volume_changed, this));
+	m_client->playback.broadcastVolumeChanged () (bind (&XMMSHandler::volume_changed, this));
 
-	QObject::connect (&m_playtime_timer, SIGNAL (timeout ()),
-	                  this, SLOT (restartPlaytime ()));
-	m_playtime_timer.start(0);
+	// TODO: Disabled for now. Seems to cause problems on startup
+//	QObject::connect (&m_playtime_timer, SIGNAL (timeout ()),
+//	                  this, SLOT (restartPlaytime ()));
+//	m_playtime_timer.start(0);
 
 	return true;
 }
@@ -81,14 +79,13 @@ XMMSHandler::connect (const char *path)
 Xmms::Client *
 XMMSHandler::getClient ()
 {
-	return &m_client;
+	return m_client;
 }
 
 void
 XMMSHandler::restartPlaytime ()
 {
-	m_client.playback.getPlaytime (Xmms::bind (&XMMSHandler::playback_playtime,
-	                                           this));
+	m_client->playback.getPlaytime () (Xmms::bind (&XMMSHandler::playback_playtime, this));
 }
 
 bool
@@ -103,38 +100,37 @@ XMMSHandler::medialib_entry_changed (const unsigned int &id)
 void
 XMMSHandler::playlistAddURL (const QString &s)
 {
-	m_client.playlist.addUrl (s.toAscii ().constData (), &log);
+	m_client->playlist.addUrl (s.toAscii ().constData ()) ();
 }
 void
 XMMSHandler::playlistRemove (uint pos)
 { 
-	m_client.playlist.remove (pos, &log);
+	m_client->playlist.removeEntry (pos) ();
 }
 
 void
 XMMSHandler::playlistMove (uint pos, uint newpos)
 {
-	m_client.playlist.move (pos, newpos, &log);
+	m_client->playlist.moveEntry (pos, newpos) ();
 }
 
 void
 XMMSHandler::requestMediainfo (uint id)
 {
-	m_client.medialib.getInfo (id,
-	                           Xmms::bind (&XMMSHandler::medialib_info, this));
+	m_client->medialib.getInfo (id) (Xmms::bind (&XMMSHandler::medialib_info, this));
 }
 
 void
 XMMSHandler::requestPlaylistList ()
 {
-	m_client.playlist.list (Xmms::bind (&XMMSHandler::playlist_list, this));
+//	m_client->playlist.listEntries () (Xmms::bind (&XMMSHandler::playlist_list, this));
 }
 
 void
 XMMSHandler::requestTrackChange (int pos)
 {
-	m_client.playlist.setNext (pos, &logUint);
-	m_client.playback.tickle (&log);
+	m_client->playlist.setNext (pos) ();
+	m_client->playback.tickle () ();
 }
 
 bool
@@ -175,7 +171,7 @@ XMMSHandler::playback_current_id (const unsigned int &id)
 void
 XMMSHandler::setPlaytime (uint pos)
 {
-	m_client.playback.seekMs (pos, &log);
+	m_client->playback.seekMs (pos) ();
 }
 
 void
@@ -265,7 +261,7 @@ XMMSHandler::volume_error (const std::string &error)
 void
 XMMSHandler::volumeGet ()
 {
-	m_client.playback.volumeGet (Xmms::bind (&XMMSHandler::volume_get, this),
+	m_client->playback.volumeGet () (Xmms::bind (&XMMSHandler::volume_get, this),
 	                             Xmms::bind (&XMMSHandler::volume_error, this));
 }
 
@@ -274,12 +270,12 @@ XMMSHandler::volumeSet (uint volume)
 {
 	if(m_masterchan)
 	{
-		m_client.playback.volumeSet ("master", volume, &log);
+		m_client->playback.volumeSet ("master", volume) ();
 	}
 	else
 	{
-		m_client.playback.volumeSet ("left", volume, &log);
-		m_client.playback.volumeSet ("right", volume, &log);
+		m_client->playback.volumeSet ("left", volume) ();
+		m_client->playback.volumeSet ("right", volume) ();
 	}
 }
 
@@ -323,33 +319,33 @@ XMMSHandler::volume_get (const Xmms::Dict &levels)
 
 void XMMSHandler::playlistClear ()
 {
-	m_client.playlist.clear (&log);
+	m_client->playlist.clear () ();
 }
 
 void XMMSHandler::play ()
 {
-	m_client.playback.start (&log);
+	m_client->playback.start () ();
 }
 
 void XMMSHandler::stop ()
 {
-	m_client.playback.stop (&log);
+	m_client->playback.stop () ();
 }
 
 void XMMSHandler::pause ()
 {
-	m_client.playback.pause (&log);
+	m_client->playback.pause () ();
 }
 
 void XMMSHandler::next ()
 {
-	m_client.playlist.setNextRel (1, &logUint);
-	m_client.playback.tickle (&log);
+	m_client->playlist.setNextRel (1) ();
+	m_client->playback.tickle () ();
 }
 
 void XMMSHandler::prev ()
 {
-	m_client.playlist.setNextRel (-1, &logUint);
-	m_client.playback.tickle (&log);
+	m_client->playlist.setNextRel (-1) ();
+	m_client->playback.tickle () ();
 }
 
