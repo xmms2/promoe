@@ -67,11 +67,6 @@ XMMSHandler::connect_handler (const char *ipcpath, const bool &sync, QWidget *pa
 
 	m_client->playback.broadcastVolumeChanged () (bind (&XMMSHandler::volume_changed, this));
 
-	// TODO: Disabled for now. Seems to cause problems on startup
-//	QObject::connect (&m_playtime_timer, SIGNAL (timeout ()),
-//	                  this, SLOT (restartPlaytime ()));
-//	m_playtime_timer.start(0);
-
 	return true;
 }
 
@@ -80,12 +75,6 @@ Xmms::Client *
 XMMSHandler::getClient ()
 {
 	return m_client;
-}
-
-void
-XMMSHandler::restartPlaytime ()
-{
-	m_client->playback.getPlaytime () (Xmms::bind (&XMMSHandler::playback_playtime, this));
 }
 
 bool
@@ -119,13 +108,13 @@ XMMSHandler::requestMediainfo (uint id)
 {
 	m_client->medialib.getInfo (id) (Xmms::bind (&XMMSHandler::medialib_info, this));
 }
-
+/*
 void
 XMMSHandler::requestPlaylistList ()
 {
 //	m_client->playlist.listEntries () (Xmms::bind (&XMMSHandler::playlist_list, this));
 }
-
+*/
 void
 XMMSHandler::requestTrackChange (int pos)
 {
@@ -145,14 +134,6 @@ XMMSHandler::playback_status (const Xmms::Playback::Status &status)
 {
 	emit playbackStatusChanged (status);
 	return true;
-}
-
-bool 
-XMMSHandler::playback_playtime (const unsigned int &time)
-{
-	emit playtimeChanged (time);
-	m_playtime_timer.start (500);
-	return false;
 }
 
 bool 

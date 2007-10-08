@@ -1,5 +1,5 @@
 Required dependencys:
-	* QT4.1.x           http://www.trolltech.no/
+	* QT4.2.x           http://www.trolltech.no/
 	* XMMS2             http://xmms2.xmms.org/
 	* XMMS2 C++ bindings (make sure to have boost_signals when compiling xmms2) 
 

@@ -22,7 +22,6 @@ class XMMSHandler : public XClient {
 
 		bool connect_handler (const char *ipcpath = NULL, const bool &sync = false, QWidget *parent = NULL);
 
-		bool playback_playtime (const unsigned int &time);
 		bool playlist_list (const Xmms::List< unsigned int > &playlist);
 		bool playback_current_id (const unsigned int &id);
 		bool medialib_info (const Xmms::PropDict &propdict);
@@ -32,7 +31,7 @@ class XMMSHandler : public XClient {
 		bool playlist_changed (const Xmms::Dict &list);
 
 		void requestMediainfo (uint id);
-		void requestPlaylistList ();
+//		void requestPlaylistList ();
 		void requestTrackChange (int pos);
 		void playlistAddURL (const QString& url);
 		void playlistRemove (uint pos);
@@ -60,7 +59,6 @@ class XMMSHandler : public XClient {
 
 	public slots:
 		void setPlaytime (uint pos);
-		void restartPlaytime ();
 
 		void playlistClear ();
 		void play ();

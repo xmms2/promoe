@@ -16,8 +16,9 @@ EqualizerWindow::EqualizerWindow (QWidget *parent) : QMainWindow (parent)
 
 	setCentralWidget (m_equalizer);
 
-	setMinimumSize (275, 116);
-	setMaximumSize (275, 116);
+	setFixedSize (275, 116);
+//	setMinimumSize (275, 116);
+//	setMaximumSize (275, 116);
 }
 
 EqualizerWindow::~EqualizerWindow (void)

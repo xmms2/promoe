@@ -76,6 +76,7 @@ TextScroller::setPixmaps (Skin *skin)
 	setText (m_text);
 	update();
 }
+
 void 
 TextScroller::addOffset ()
 {
