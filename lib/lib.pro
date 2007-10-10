@@ -4,12 +4,14 @@ include (../config.pri)
 
 SOURCES += xclient.cpp \
 		   xclientcache.cpp \
+		   xsettings.cpp \
 		   playlistmodel.cpp \
 		   xmmsqt4.cpp
 
 
 HEADERS += xclient.h \
 		   xclientcache.h \
+		   xsettings.h \
 		   playlistmodel.h \
 		   xmmsqt4.h \
 		   debug.h

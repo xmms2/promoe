@@ -29,7 +29,9 @@ class XClient;
 #include <QWidget>
 
 #include "xclientcache.h"
+#include "xsettings.h"
 
+/*
 class XSettings : public QObject
 {
 	Q_OBJECT
@@ -40,6 +42,7 @@ class XSettings : public QObject
 	signals:
 		void settingsChanged ();
 };
+*/
 
 class XClient : public QObject {
 	Q_OBJECT

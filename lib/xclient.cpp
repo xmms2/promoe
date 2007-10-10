@@ -27,9 +27,10 @@
 #include "xmmsqt4.h"
 #include "debug.h"
 
+/*
 XSettings::XSettings (QObject *parent) : QObject (parent)
 {
-	/* dummy */
+//	* dummy *
 }
 
 void
@@ -37,6 +38,7 @@ XSettings::change_settings ()
 {
 	emit settingsChanged ();
 }
+*/
 
 QString
 XClient::stdToQ (const std::string &str)
@@ -71,7 +73,7 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
 	m_client = NULL;
     m_isconnected = false;
 	m_cache = new XClientCache (this, this);
-	m_settings = new XSettings (this);
+	m_settings = new XSettings (this, this);
 	m_name = name;
 }
 

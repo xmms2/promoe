@@ -14,11 +14,6 @@
 #include <QFileDialog>
 #include <QDir>
 
-static bool log ( /*const std::string& text = ""*/ )
-{
-	return false;
-}
-
 XMMSHandler &XMMSHandler::getInstance ()
 {
 	static XMMSHandler singleton(NULL, "Prome_Main");
@@ -54,9 +49,6 @@ XMMSHandler::connect_handler (const char *ipcpath, const bool &sync, QWidget *pa
 	connect(ipcpath, sync, parent);
 
 	using Xmms::bind;
-//	m_client->playlist.listEntries () (bind (&XMMSHandler::playlist_list, this));
-//	m_client->playlist.broadcastChanged () (bind (&XMMSHandler::playlist_changed, this));
-
 	m_client->medialib.broadcastEntryChanged () (bind (&XMMSHandler::medialib_entry_changed, this));
 
 	m_client->playback.currentID () (bind (&XMMSHandler::playback_current_id, this));
