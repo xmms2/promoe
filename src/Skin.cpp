@@ -492,9 +492,9 @@ Skin::BuildSliders (void)
 
 	img = getPixmap("posbar");
 	if (img) {
-		m_items[POSBAR] = img->copy (0, 0, 248, 10);
-		m_items[POSBAR_BTN_0] = img->copy (248, 0, 29, 10);
-		m_items[POSBAR_BTN_1] = img->copy (278, 0, 29, 10);
+		m_items[POSBAR] = img->copy (0, 0, 248, img->height ());
+		m_items[POSBAR_BTN_0] = img->copy (248, 0, 29, img->height ());
+		m_items[POSBAR_BTN_1] = img->copy (278, 0, 29, img->height ());
 
 		delete img;
 	} else {
