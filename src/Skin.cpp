@@ -492,9 +492,9 @@ Skin::BuildSliders (void)
 
 	img = getPixmap("posbar");
 	if (img) {
-		m_items[POSBAR] = img->copy (0, 0, 248, img->height ());
-		m_items[POSBAR_BTN_0] = img->copy (248, 0, 29, img->height ());
-		m_items[POSBAR_BTN_1] = img->copy (278, 0, 29, img->height ());
+		m_items[POSBAR] = img->copy (0, 0, 248, qMin (10, img->height ()));
+		m_items[POSBAR_BTN_0] = img->copy (248, 0, 29, qMin (10, img->height ()));
+		m_items[POSBAR_BTN_1] = img->copy (278, 0, 29, qMin (10, img->height ()));
 
 		delete img;
 	} else {
@@ -507,9 +507,9 @@ Skin::BuildSliders (void)
 			m_items[VOLUMEBAR_POS_0+i] = img->copy(0, i*15, 68, 13);
 		}
 
-		if (img->height() > 420) {
-			m_items[VOLBAR_BTN_1] = img->copy (0, 422, 14, 11);
-			m_items[VOLBAR_BTN_0] = img->copy (15, 422, 14, 11);
+		if (img->height() > 421) {
+			m_items[VOLBAR_BTN_1] = img->copy (0, 422, 14, qMin (11, img->height () - 422));
+			m_items[VOLBAR_BTN_0] = img->copy (15, 422, 14, qMin (11, img->height () - 422));
 		}
 	
 		delete img;
@@ -528,8 +528,8 @@ Skin::BuildSliders (void)
 		}
 
 		if (img->height() > 421) {
-			m_items[BALANCE_BTN_0] = img->copy(0, 422, 14, 11);
-			m_items[BALANCE_BTN_1] = img->copy(15, 422, 14, 11);
+			m_items[BALANCE_BTN_0] = img->copy(0, 422, 14, qMin (11, img->height () - 422));//11);
+			m_items[BALANCE_BTN_1] = img->copy(15, 422, 14, qMin (11, img->height () - 422)); //11);
 		}
 
 		delete img;
