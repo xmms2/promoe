@@ -37,6 +37,7 @@ class PlaylistView : public QListView {
 		void contextMenuEvent (QContextMenuEvent *e);
 
 		void handleStatus (const Xmms::Playback::Status st);
+		void invertSelection (void);
 		void settingsSaved (void);
 		void setPixmaps (Skin *skin);
 

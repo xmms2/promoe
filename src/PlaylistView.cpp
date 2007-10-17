@@ -110,6 +110,16 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 }
 
 void
+PlaylistView::invertSelection () {
+	QItemSelection selection = QItemSelection (model ()->index (0, 0),
+	                           model ()->index (model ()->rowCount ()-1, 0));
+	selectionModel ()->select (selection, QItemSelectionModel::Toggle |
+	                                      QItemSelectionModel::Columns);
+	selectionModel()->setCurrentIndex(model ()->index (0, 0),
+	                                  QItemSelectionModel::NoUpdate);
+}
+
+void
 PlaylistView::setModel (QAbstractItemModel *model) {
 	QListView::setModel (model);
 	setModelColumn(0);

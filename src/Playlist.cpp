@@ -339,6 +339,7 @@ PlaylistWidget::addButtons (void)
 {
 	PlaylistMenuButton *b;
 
+	/* Add menu */
 	m_add = new PlaylistMenu (this, Skin::PLS_ADD,
 							  Skin::PLS_ADD_DEC);
 	b = new PlaylistMenuButton (m_add, Skin::PLS_ADD_URL_0,
@@ -351,7 +352,7 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_ADD_FIL_1);
 	connect (b, SIGNAL(activated ()), this, SLOT (menuAddFile ()));
 
-
+	/* Del menu */
 	m_del = new PlaylistMenu (this, Skin::PLS_DEL,
 							  Skin::PLS_DEL_DEC);
 	b = new PlaylistMenuButton (m_del, Skin::PLS_MSC_BTN_0,
@@ -366,15 +367,23 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_DEL_FIL_1);
 //	connect (b, SIGNAL(activated ()), m_list, SLOT (deleteFiles ()));
 
+	/* Selection menu */
 	m_sel = new PlaylistMenu (this, Skin::PLS_SEL,
 							  Skin::PLS_SEL_DEC);
 	b = new PlaylistMenuButton (m_sel, Skin::PLS_SEL_INV_0,
 								Skin::PLS_SEL_INV_1);
+	connect (b, SIGNAL (activated ()),
+	         m_view, SLOT (invertSelection ()));
 	b = new PlaylistMenuButton (m_sel, Skin::PLS_SEL_NIL_0,
 								Skin::PLS_SEL_NIL_1);
+	connect (b, SIGNAL (activated ()),
+	         m_view, SLOT (clearSelection ()));
 	b = new PlaylistMenuButton (m_sel, Skin::PLS_SEL_ALL_0,
 								Skin::PLS_SEL_ALL_1);
+	connect (b, SIGNAL (activated ()),
+	         m_view, SLOT (selectAll ()));
 
+	/* misc menu */
 	m_msc = new PlaylistMenu (this, Skin::PLS_MSC,
 							  Skin::PLS_MSC_DEC);
 	b = new PlaylistMenuButton (m_msc, Skin::PLS_MSC_SRT_0,
@@ -383,7 +392,7 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_MSC_INF_1);
 	b = new PlaylistMenuButton (m_msc, Skin::PLS_MSC_OPT_0,
 								Skin::PLS_MSC_OPT_1);
-
+	/* playlist menu */
 	m_lst = new PlaylistMenu (this, Skin::PLS_LST,
 							  Skin::PLS_LST_DEC);
 	b = new PlaylistMenuButton (m_lst, Skin::PLS_LST_NEW_0,
