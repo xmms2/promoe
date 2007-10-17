@@ -19,6 +19,7 @@
 #include <QAbstractTableModel>
 #include <QHash>
 #include <QVariant>
+#include <QIcon>
 #include <QMimeData>
 #include <QSettings>
 #include <QUrl>
@@ -513,4 +514,24 @@ QList<uint32_t>
 PlaylistModel::get_all_id ()
 {
 	return m_plist;
+}
+
+void
+PlaylistModel::removeRows (QModelIndexList index_list)
+{
+	QList<uint32_t> idlist;
+
+	for (int i = 0; i < index_list.size (); ++i) {
+		QModelIndex idx = index_list.at(i);
+		if (idx.column () != 0)
+			continue;
+
+		idlist.append (idx.row ());
+	}
+	qSort (idlist);
+
+	/* Update of m_plist is done in handle_change through server notification */
+	for (int i = idlist.size () - 1; i >= 0; --i){
+		m_client->playlist ()->removeEntry (idlist.at(i));
+	}
 }

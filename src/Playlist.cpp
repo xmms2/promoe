@@ -359,12 +359,16 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_MSC_BTN_1);
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_ALL_0,
 								Skin::PLS_DEL_ALL_1);
-	connect (b, SIGNAL(activated ()),
+	connect (b, SIGNAL (activated ()),
 	         &XMMSHandler::getInstance(), SLOT (playlistClear ()));
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_CRP_0,
 								Skin::PLS_DEL_CRP_1);
+	connect (b, SIGNAL (activated ()),
+	         m_view, SLOT (cropSelected  ()));
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_FIL_0,
 								Skin::PLS_DEL_FIL_1);
+	connect (b, SIGNAL (activated ()),
+	         m_view, SLOT (removeSelected ()));
 //	connect (b, SIGNAL(activated ()), m_list, SLOT (deleteFiles ()));
 
 	/* Selection menu */

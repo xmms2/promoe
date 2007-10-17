@@ -111,6 +111,8 @@ class PlaylistModel : public QAbstractItemModel
 
 		void set_playlist (const QString &);
 
+		void removeRows (QModelIndexList);
+
 	protected:
 		XClient *m_client;
 		QList < unsigned int > m_plist;

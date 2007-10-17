@@ -1,4 +1,4 @@
-// TODO might not need those
+// TODO might not need those two
 #include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
 
@@ -120,6 +120,18 @@ PlaylistView::invertSelection () {
 }
 
 void
+PlaylistView::cropSelected () {
+	invertSelection ();
+	removeSelected ();
+	selectAll ();
+}
+
+void
+PlaylistView::removeSelected () {
+	qobject_cast<PlaylistModel *> (model ())->removeRows (selectedIndexes ());
+}
+
+void
 PlaylistView::setModel (QAbstractItemModel *model) {
 	QListView::setModel (model);
 	setModelColumn(0);
@@ -144,6 +156,7 @@ PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 	qm.addAction (a);
 
 	a = new QAction (tr ("Remove selected"), this);
+	connect (a, SIGNAL (triggered ()), this, SLOT (removeSelected ()));
 	qm.addAction (a);
 
 	qm.addSeparator ();
@@ -222,7 +235,6 @@ PlaylistView::mouseDoubleClickEvent (QMouseEvent *event)
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 	xmmsh.requestTrackChange (index.row());
-	// TODO check for status first. 
 	if (m_status == XMMS_PLAYBACK_STATUS_STOP ||
 	    m_status == XMMS_PLAYBACK_STATUS_PAUSE) {
 			xmmsh.play ();

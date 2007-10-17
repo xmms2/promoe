@@ -38,6 +38,8 @@ class PlaylistView : public QListView {
 
 		void handleStatus (const Xmms::Playback::Status st);
 		void invertSelection (void);
+		void cropSelected (void);
+		void removeSelected (void);
 		void settingsSaved (void);
 		void setPixmaps (Skin *skin);
 
