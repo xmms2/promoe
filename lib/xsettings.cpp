@@ -1,3 +1,19 @@
+/**
+ *	This file is a part of Promoe, an XMMS2 Client
+ *
+ *	Copyright (C) 2007 Thomas Frauendorfer
+ *
+ *	This program is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU General Public License
+ *	as published by the Free Software Foundation; either version 2
+ *	of the License, or (at your option) any later version.
+ *
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ */
+
 #include <xmmsclient/xmmsclient++.h>
 
 #include "xsettings.h"
@@ -15,14 +31,14 @@ XSettings::XSettings (QObject *parent, XClient *client) : QObject (parent)
 }
 
 QString
-XSettings::valueGet (QString key)
+XSettings::value_get (QString key)
 {
 	/* local cache should be identical to serverside config */
 	return m_config_cache.value (key);
 }
 
 void
-XSettings::valueSet (QString key, QString val)
+XSettings::value_get (QString key, QString val)
 {
 	/* Only send change request to server here
 	 * update of local cache will be done through handle_config_value_changed
@@ -31,7 +47,7 @@ XSettings::valueSet (QString key, QString val)
 }
 
 void
-XSettings::valueRegister (QString key, QString defval)
+XSettings::value_register (QString key, QString defval)
 {
 	m_client->config ()->valueRegister (key.toStdString (),
 	                                    defval.toStdString ());

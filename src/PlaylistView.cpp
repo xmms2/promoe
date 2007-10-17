@@ -70,7 +70,6 @@ PlaylistDelegate::sizeHint ( const QStyleOptionViewItem &option,
 /*
  * PlaylistView
  */
-//PlaylistView::PlaylistView (QWidget *parent) : QTableView (parent)
 PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 {
 	QSettings s;

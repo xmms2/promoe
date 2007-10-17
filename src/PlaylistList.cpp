@@ -1,3 +1,4 @@
+// old File, not in use any more
 #include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
 

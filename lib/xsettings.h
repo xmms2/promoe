@@ -31,9 +31,9 @@ class XSettings : public QObject
 	public:
 		XSettings (QObject *parent, XClient *client);
 
-		QString valueGet (QString key);
-		void valueSet (QString key, QString value);
-		void valueRegister (QString key, QString defval);
+		QString value_get (QString key);
+		void value_set (QString key, QString value);
+		void value_register (QString key, QString defval);
 
 	signals:
 		void configChanged(QString key, QString value);

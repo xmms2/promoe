@@ -48,7 +48,7 @@ PlaylistScrollBar::mouseMoveEvent (QMouseEvent *event)
 
 	setValue(tmp);
 
-	//TODO only repaint necessyry range
+	//TODO only repaint necessary range
 	repaint ();
 }
 
@@ -303,6 +303,7 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	m_view = new PlaylistView (this);
 	m_view->move (10, 20);
 	m_view->resize (size().width()-30, size().height()-20-38);
+	// TODO: creation of Playlistmodel should be done elsewhere
 	m_view->setModel (XMMSHandler::getInstance().getPlaylistModel());
 
 	//m_list = new PlaylistList (m_view);
@@ -313,7 +314,6 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	 *  QT library (as of Version 4.3
 	 * TODO: This might in a future Qt version. Try to find a better solution
 	 */
-	//m_scroller = new  PlaylistScrollBar (this);
 	m_scrollBar = new PlaylistScrollBar (this);
 	m_view->setVerticalScrollBar (m_scrollBar);
 	m_scrollBar->setParent(this);
@@ -323,6 +323,7 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 			 m_view, SLOT(verticalScrollbarAction (int)));
 	connect (m_scrollBar, SIGNAL(valueChanged (int)),
 	         m_view, SLOT(verticalScrollbarValueChanged (int)));
+
 
 	m_drag = new dragButton (this);
 	m_drag->resize (30, 30);
