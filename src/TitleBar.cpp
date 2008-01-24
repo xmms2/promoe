@@ -3,7 +3,7 @@
 #include "Display.h"
 #include "SkinChooser.h"
 // #include "MedialibWindow.h"
-#include "SettingsWindow.h"
+#include "settingsdialog.h"
 #include "Button.h"
 #include "BrowseDialog.h"
 
@@ -45,6 +45,7 @@ TitleBar::showMenu (void)
 	a = new QAction (tr ("Medialib browser"), this);
 	a->setShortcut (tr ("Alt+M"));
 	connect (a, SIGNAL (triggered ()), this, SLOT (showMlib ()));
+	a->setEnabled(false); // FIXME: disabled for now, as Mlib-browser doesn't work
 	qm.addAction (a);
 	a = new QAction (tr ("Server-side browser"), this);
 	a->setShortcut (tr ("Alt+S"));
@@ -61,6 +62,7 @@ TitleBar::showMenu (void)
 	qm.addAction (a);
 	a = new QAction (tr ("Server settings"), this);
 	a->setShortcut (tr ("Alt+S"));
+	a->setEnabled(false); // FIXME: disabled for now, not yet implemented
 	qm.addAction (a);
 	qm.addSeparator ();
 	a = new QAction (tr ("Quit"), this);
@@ -91,7 +93,7 @@ TitleBar::showServerB ()
 void
 TitleBar::showSettings ()
 {
-	SettingsWindow *sw = new SettingsWindow (window ());
+	SettingsDialog *sw = new SettingsDialog (window ());
 	sw->show ();
 }
 

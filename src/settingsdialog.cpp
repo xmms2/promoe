@@ -1,29 +1,36 @@
 #include "MainWindow.h"
-#include "SettingsWindow.h"
+#include "settingsdialog.h"
 
-#include <QCheckBox>
 #include <QSettings>
 
-SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
+#include <QLabel>
+#include <QCheckBox>
+#include <QSpinBox>
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QTabWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
+SettingsDialog::SettingsDialog (QWidget *parent) : QDialog (parent)
 {
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 	setWindowTitle ("Promoe - Settings window");
-	setWindowFlags (Qt::Dialog);
+//	setWindowFlags (Qt::Dialog);
 	setWindowModality (Qt::ApplicationModal);
 	setAttribute (Qt::WA_DeleteOnClose);
 
 	resize (400, 500);
 
-	QWidget *dummy = new QWidget (this);
-	setCentralWidget (dummy);
+	QVBoxLayout *vbox = new QVBoxLayout (this);//dummy);
+	setLayout(vbox);
 
-	QVBoxLayout *vbox = new QVBoxLayout (dummy);
-
-	QTabWidget *tab = new QTabWidget (dummy);
+	QTabWidget *tab = new QTabWidget (this);//dummy);
 	vbox->addWidget (tab);
 
+/*  Use a QDialogButtonBox for this
 	QWidget *dummy2 = new QWidget (dummy);
 	QHBoxLayout *hbox = new QHBoxLayout (dummy2);
 	vbox->addWidget (dummy2);
@@ -38,6 +45,12 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 	hbox->addWidget (new QWidget (dummy2), 1);
 	hbox->addWidget (cancel);
 	hbox->addWidget (ok);
+ */
+	QDialogButtonBox *buttonbox = new QDialogButtonBox(QDialogButtonBox::Ok
+	                                                   | QDialogButtonBox::Cancel);
+	connect (buttonbox, SIGNAL (accepted()), this, SLOT (okButton ()));
+	connect (buttonbox, SIGNAL (rejected()), this, SLOT (close ()));
+    vbox->addWidget (buttonbox);
 
 	m_mainwindow = new SettingsTabMain (NULL);
 	m_playlistwin = new SettingsTabPlaylist (NULL);
@@ -53,7 +66,7 @@ SettingsWindow::SettingsWindow (QWidget *parent) : QMainWindow (parent)
 }
 
 void
-SettingsWindow::okButton (void)
+SettingsDialog::okButton (void)
 {
 	m_mainwindow->saveSettings ();
 	m_playlistwin->saveSettings ();
@@ -320,6 +333,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	if (s.contains ("promoe/quitonclose"))
 		s.setValue ("promoe/quitonclose", false);
 	m_quitonclose->setCheckState (s.value ("promoe/quitonclose").toBool () ? Qt::Checked : Qt::Unchecked);
+	m_quitonclose->setEnabled (false); // FIXME: disabled for now, not working
 	h->addWidget (m_quitonclose);
 
 	c = new QWidget (dummy);

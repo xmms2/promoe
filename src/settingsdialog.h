@@ -1,15 +1,13 @@
 #ifndef __SETTINGSWINDOW_H__
 #define __SETTINGSWINDOW_H__
 
-#include <QMainWindow>
-#include <QTabWidget>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QCheckBox>
-#include <QHBoxLayout>
-#include <QSpinBox>
-#include <QLabel>
-#include <QComboBox>
+#include <QWidget>
+#include <QDialog>
+
+class QCheckBox;
+class QSpinBox;
+class QComboBox;
+
 
 class SettingsTabMedialib : public QWidget {
 	Q_OBJECT
@@ -57,11 +55,11 @@ class SettingsTabMain : public QWidget {
 		QCheckBox *m_shadescroll;
 };
 
-class SettingsWindow : public QMainWindow {
+class SettingsDialog : public QDialog {
 	Q_OBJECT
 	public:
-		SettingsWindow (QWidget *parent);
-		~SettingsWindow () {}
+		SettingsDialog (QWidget *parent);
+		~SettingsDialog () {}
 
 	public slots:
 		void okButton (void);

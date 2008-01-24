@@ -18,7 +18,7 @@ HEADERS += PixWidget.h \
            PlayStatus.h \
            ShadedDisplay.h \
            SkinChooser.h \
-           SettingsWindow.h \
+           settingsdialog.h \
            VolumeSlider.h \
            ClutterBar.h \
            FileDialog.h \
@@ -43,7 +43,7 @@ SOURCES += main.cpp \
            PlayStatus.cpp \
            ShadedDisplay.cpp \
            SkinChooser.cpp \
-           SettingsWindow.cpp \
+           settingsdialog.cpp \
            VolumeSlider.cpp \
            ClutterBar.cpp \
            FileDialog.cpp \

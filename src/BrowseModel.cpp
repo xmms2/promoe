@@ -60,7 +60,8 @@ BrowseModel::list_root ()
 	}
 
 	m_list.append (new BrowseModelItem ("file:///", "Files", true));
-	m_list.append (new BrowseModelItem ("daap://", "DAAP", true));
+	// FIXME: removed for now, crashes application
+//	m_list.append (new BrowseModelItem ("daap://", "DAAP", true));
 	emit dirChanged ("");
 
 	reset ();
