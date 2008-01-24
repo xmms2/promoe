@@ -1,8 +1,8 @@
 #include "XMMSHandler.h"
 #include <xmmsclient/xmmsclient++.h>
 
-#include "PlaylistShade.h"
-#include "Playlist.h"
+#include "playlistshade.h"
+#include "playlist.h"
 
 #include <QSettings>
 

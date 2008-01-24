@@ -4,10 +4,10 @@
 #include "ServerBrowser.h"
 #endif
 
-#include "Playlist.h"
+#include "playlist.h"
 #include "MainDisplay.h"
 #include "ShadedDisplay.h"
-#include "Equalizer.h"
+#include "equalizer.h"
 
 #include <QSettings>
 #include <QIcon>

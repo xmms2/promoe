@@ -13,7 +13,7 @@
 #include "PosBar.h"
 #include "PlayStatus.h"
 #include "VolumeSlider.h"
-#include "Playlist.h"
+#include "playlist.h"
 #include "ClutterBar.h"
 
 #include <QFileDialog>

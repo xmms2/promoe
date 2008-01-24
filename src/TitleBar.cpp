@@ -2,7 +2,7 @@
 #include "TitleBar.h"
 #include "Display.h"
 #include "SkinChooser.h"
-#include "MedialibWindow.h"
+// #include "MedialibWindow.h"
 #include "SettingsWindow.h"
 #include "Button.h"
 #include "BrowseDialog.h"

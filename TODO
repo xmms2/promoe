@@ -13,6 +13,7 @@ Todo:
 	* jump to entry when it's played.
 	* accept drops from other applications
 * Skin
+	+ Numbers in playtime display can have variable height
 	* Compressed file reader
 	* Manage with faulty skins
 	* make cool effects when switching skin?

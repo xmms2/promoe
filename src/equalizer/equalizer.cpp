@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 #include "TitleBar.h"
-#include "Equalizer.h"
+#include "equalizer.h"
 #include "Button.h"
 #include "VolumeSlider.h"
 
@@ -17,8 +17,6 @@ EqualizerWindow::EqualizerWindow (QWidget *parent) : QMainWindow (parent)
 	setCentralWidget (m_equalizer);
 
 	setFixedSize (275, 116);
-//	setMinimumSize (275, 116);
-//	setMaximumSize (275, 116);
 }
 
 EqualizerWindow::~EqualizerWindow (void)

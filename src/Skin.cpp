@@ -553,7 +553,7 @@ Skin::BuildNumbers (void)
 	if(img)
 	{
 		for (uint i = 0; i < num; i++) {
-			m_numbers[i] = img->copy (i*9, 0, 9, 13);
+			m_numbers[i] = img->copy (i*9, 0, 9, qMin (13, img->height ()));
 		}
 		delete img;
 	}

@@ -2,9 +2,9 @@
 #include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
 
-#include "PlaylistView.h"
+#include "playlistview.h"
 #include "playlistmodel.h"
-#include "Playlist.h"
+#include "playlist.h"
 
 #include <QColor>
 #include <QMenu>

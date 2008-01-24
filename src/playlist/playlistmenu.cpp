@@ -1,4 +1,4 @@
-#include "PlaylistMenu.h"
+#include "playlistmenu.h"
 
 #include <QMouseEvent>
 #include <QWidget>

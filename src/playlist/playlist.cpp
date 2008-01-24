@@ -1,11 +1,11 @@
 #include "MainWindow.h"
 #include "BrowseDialog.h"
-#include "Playlist.h"
-#include "PlaylistView.h"
+#include "playlist.h"
+#include "playlistview.h"
 #include "playlistmodel.h"
 
-#include "PlaylistShade.h"
-#include "PlaylistMenu.h"
+#include "playlistshade.h"
+#include "playlistmenu.h"
 #include "FileDialog.h"
 
 #include <QMouseEvent>
@@ -311,8 +311,8 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	/*
 	 * This is a hack to make PlaylistScrollBar work with PlaylistView.
 	 * It is necessery because of limitations and at least one Bug in the
-	 *  QT library (as of Version 4.3
-	 * TODO: This might in a future Qt version. Try to find a better solution
+	 *  QT library (as of Version 4.3)
+	 * TODO: This might break in a future Qt version. Try to find a better solution
 	 */
 	m_scrollBar = new PlaylistScrollBar (this);
 	m_view->setVerticalScrollBar (m_scrollBar);
