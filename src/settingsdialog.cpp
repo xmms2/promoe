@@ -18,34 +18,17 @@ SettingsDialog::SettingsDialog (QWidget *parent) : QDialog (parent)
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 	setWindowTitle ("Promoe - Settings window");
-//	setWindowFlags (Qt::Dialog);
 	setWindowModality (Qt::ApplicationModal);
 	setAttribute (Qt::WA_DeleteOnClose);
 
 	resize (400, 500);
 
-	QVBoxLayout *vbox = new QVBoxLayout (this);//dummy);
+	QVBoxLayout *vbox = new QVBoxLayout (this);
 	setLayout(vbox);
 
-	QTabWidget *tab = new QTabWidget (this);//dummy);
+	QTabWidget *tab = new QTabWidget (this);
 	vbox->addWidget (tab);
 
-/*  Use a QDialogButtonBox for this
-	QWidget *dummy2 = new QWidget (dummy);
-	QHBoxLayout *hbox = new QHBoxLayout (dummy2);
-	vbox->addWidget (dummy2);
-
-	QPushButton *cancel = new QPushButton (tr ("Cancel"));
-	cancel->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
-	QPushButton *ok = new QPushButton (tr ("OK"));
-	ok->setSizePolicy (QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed));
-	connect (ok, SIGNAL (clicked ()), this, SLOT (okButton ()));
-	connect (cancel, SIGNAL (clicked ()), this, SLOT (close ()));
-
-	hbox->addWidget (new QWidget (dummy2), 1);
-	hbox->addWidget (cancel);
-	hbox->addWidget (ok);
- */
 	QDialogButtonBox *buttonbox = new QDialogButtonBox(QDialogButtonBox::Ok
 	                                                   | QDialogButtonBox::Cancel);
 	connect (buttonbox, SIGNAL (accepted()), this, SLOT (okButton ()));
