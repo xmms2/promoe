@@ -25,7 +25,8 @@ HEADERS += PixWidget.h \
            BrowseModel.h \
            BrowseDialog.h
 
-SOURCES += PixWidget.cpp \
+SOURCES += main.cpp \
+		   PixWidget.cpp \
            Skin.cpp \
            MainWindow.cpp \
            Display.cpp \
