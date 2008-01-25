@@ -17,6 +17,8 @@
 #include "playlist.h"
 #include "equalizer.h"
 #include "Skin.h"
+//TODO: change to xclient.h sometime later
+#include "XMMSHandler.h"
 
 #ifdef HAVE_SERVERBROWSER
 #include "Serverbrowser.h"
@@ -29,9 +31,12 @@ main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
 
-	QCoreApplication::setOrganizationName("XMMS2 Team");
+	QCoreApplication::setOrganizationName("xmms2");
 	QCoreApplication::setOrganizationDomain("xmms.org");
 	QCoreApplication::setApplicationName("Promoe");
+
+	//TODO: Change to XClient sometime later
+	XMMSHandler &client = XMMSHandler::getInstance ();
 
 	QSettings settings;
 

@@ -67,18 +67,18 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	                       Skin::BALANCE_BTN_0, Skin::BALANCE_BTN_1, -20, 20);
 	m_bslider->move (177, 57);
 
-	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
-	connect (&xmmsh, SIGNAL(currentSong (const Xmms::PropDict &)), 
+	XMMSHandler &client = XMMSHandler::getInstance ();
+	connect (&client, SIGNAL(currentSong (const Xmms::PropDict &)), 
 			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
-	connect (&xmmsh, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	connect (&client, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
 //	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
 //	         this, SLOT(setPlaytime(uint)));
-	connect (xmmsh.cache () , SIGNAL (playtime (uint32_t)),
+	connect (client.cache () , SIGNAL (playtime (uint32_t)),
 	         this,  SLOT (setPlaytime (uint32_t)));
-	connect (&xmmsh, SIGNAL(getVolume(uint)), this, SLOT(updateVolume(uint)));
+	connect (&client, SIGNAL(getVolume(uint)), this, SLOT(updateVolume(uint)));
 	connect (m_vslider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
-	xmmsh.volumeGet();
+	client.volumeGet();
 }
 
 
@@ -181,8 +181,8 @@ MainDisplay::setMediainfo (const Xmms::PropDict &info)
 	} else {
 		m_khz->setNumber(0, 1);
 	}
-	if (info.contains ("channels:in") && 
-	    info.get<int32_t> ("channels:in") > 1) {
+	if (info.contains ("channels") &&
+	    info.get<int32_t> ("channels") > 1) {
 		m_stereo->setStereoMono (1, 0);
 	} else {
 		m_stereo->setStereoMono (0, 1);
