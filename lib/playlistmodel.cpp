@@ -155,7 +155,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 	if (chg.contains ("name")) {
 		s = XClient::stdToQ (chg.get<std::string> ("name"));
 	}
-    
+
 	if (s != m_name) {
 		return true;
 	}
@@ -194,7 +194,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
             m_client->cache ()->invalidate (m_plist[pos]);
 			beginRemoveRows (idx, pos, pos);
 			m_plist.removeAt (pos);
-			endRemoveRows ();			
+			endRemoveRows ();
 			break;
 		case XMMS_PLAYLIST_CHANGED_SHUFFLE:
 		case XMMS_PLAYLIST_CHANGED_SORT:
@@ -494,6 +494,10 @@ PlaylistModel::headerData (int section, Qt::Orientation orientation, int role) c
 Qt::ItemFlags
 PlaylistModel::flags (const QModelIndex &idx) const
 {
+	// TODO: For now a workaround to enable drag and drop in promoe
+	if (!idx.isValid()) {
+		return 0;
+	}
 	unsigned int id = m_plist[idx.row ()];
 	PlaylistModel *fake = const_cast<PlaylistModel*> (this);
 	QHash<QString, QVariant> d = fake->m_client->cache ()->get_info (id);

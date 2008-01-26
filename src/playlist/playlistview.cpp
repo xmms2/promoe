@@ -80,9 +80,8 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 
 	setAttribute (Qt::WA_NoBackground);
 	// TODO make drag and drop work
-	//setDragEnabled(true);
-	//setAcceptDrops(true);
-	//setDropIndicatorShown (true);
+	setDragEnabled(true);
+	setAcceptDrops(true);
 	// end DragandDrop
 	setFrameStyle(QFrame::NoFrame);
 	setFocusPolicy (Qt::StrongFocus);
@@ -147,12 +146,13 @@ PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 
 	a = new QAction (tr ("Show file info"), this);
 	a->setShortcut (tr ("Ctrl+Enter"));
-	// connect (a, SIGNAL (triggered ()), this, SLOT (showMlib ()));
+	a->setEnabled(false); // FIXME: Disabled for now
 	qm.addAction (a);
 	qm.addSeparator ();
 
 	a = new QAction (tr ("Add file"), this);
 	a->setShortcut (tr ("Ctrl+F"));
+	a->setEnabled(false); // FIXME: Disabled for now
 	qm.addAction (a);
 
 	a = new QAction (tr ("Remove selected"), this);
@@ -162,6 +162,8 @@ PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 	qm.addSeparator ();
 
 	a = new QAction (tr ("Medialib browser"), this);
+	// connect (a, SIGNAL (triggered ()), this, SLOT (showMlib ()));
+	a->setEnabled(false); //FIXME: Disabled for now
 	qm.addAction (a);
 
 	e->accept ();
