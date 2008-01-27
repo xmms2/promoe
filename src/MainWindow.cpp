@@ -113,8 +113,9 @@ MainWindow::togglePL (bool UpdateButton)
 
 	if(UpdateButton)
 	{
-		getMD()->GetPls()->toggleOn();
+		 getMD()->GetPls()->toggle();
 	}
+
 
 	if (s.value ("playlist/hidden").toBool ()) {
 		m_playlistwin->move (s.value("playlist/pos").toPoint ());
@@ -134,7 +135,7 @@ MainWindow::toggleEQ (bool UpdateButton)
 
 	if(UpdateButton)
 	{
-		getMD()->GetEq()->toggleOn();
+		getMD()->GetEq()->toggle();
 	}
 
 	if (s.value ("equalizer/hidden").toBool ()) {

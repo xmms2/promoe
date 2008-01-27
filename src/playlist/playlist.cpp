@@ -163,18 +163,6 @@ PlaylistScrollBar::sliderValueFromPosition (int position)
 
 
 /*
- * dragButton
- */
-void
-dragButton::mouseMoveEvent (QMouseEvent *event)
-{
-	PlaylistWindow *pw = dynamic_cast<PlaylistWindow *>(window ());
-	pw->resize (pw->size().width()+(event->pos().x()-m_diffx),
-				pw->size().height()+(event->pos().y()-m_diffy));
-}
-
-
-/*
  * PlaylistWindow
  */
 PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
@@ -210,11 +198,13 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 		s.setValue ("shaded", false);
 	else
 		s.setValue ("shaded", !s.value("shaded").toBool ());
-	
+
 	switchDisplay ();
 
 	s.endGroup ();
 
+	// FIXME: flickering
+	//setSizeIncrement (25, 29);
 }
 
 void 
@@ -340,17 +330,16 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	connect (m_scrollBar, SIGNAL(valueChanged (int)),
 	         m_view, SLOT(verticalScrollbarValueChanged (int)));
 
+	m_sizegrip = new PlaylistSizeGrip(this);
+	m_sizegrip->resize (20, 20);
 
-	m_drag = new dragButton (this);
-	m_drag->resize (30, 30);
-	
 	addButtons ();
 
 	setMinimumSize (275, 116);
 	resize (275, 300);
 }
 
-void 
+void
 PlaylistWidget::addButtons (void)
 {
 	PlaylistMenuButton *b;
@@ -493,9 +482,9 @@ PlaylistWidget::resizeEvent (QResizeEvent *event)
 	m_scrollBar->resize (m_rfill2.width(),
 						size().height()-m_corner2.height()-m_corner4.height());
 
-	/* drag corner */
-	m_drag->move (size().width()-30,
-				  size().height()-30);
+	/* place the sizegrip in the lower right corner */
+	m_sizegrip->move( size().width() - m_sizegrip->width(),
+	                  size().height() - m_sizegrip->height() );
 
 	/* move menus */
 	m_add->move (11, height() - m_add->height() - 12);

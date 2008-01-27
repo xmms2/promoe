@@ -220,7 +220,7 @@ MainDisplay::SetupToggleButtons (void)
 							  Skin::PLS_OFF_0, Skin::PLS_OFF_1);
 	m_pls->move(242, 58);
 	if (!s.value ("playlist/hidden").toBool ())
-		m_pls->toggleOn ();
+	m_pls->toggle ();
 
 	connect (m_pls, SIGNAL(clicked()), this, SLOT(togglePL()));
 
@@ -228,8 +228,8 @@ MainDisplay::SetupToggleButtons (void)
 							 Skin::EQ_OFF_0, Skin::EQ_OFF_1);
 	m_eq->move(219, 58);
 	if (!s.value ("equalizer/hidden").toBool ())
-		m_pls->toggleOn ();
-	m_eq->setEnabled(false); // FIXME: Disabled for now, equalizer is not yet usable
+		m_pls->toggle ();
+    m_eq->setEnabled(false); // FIXME: Disabled for now, equalizer doesn't work yet
 
 	connect (m_eq, SIGNAL(clicked()), this, SLOT(toggleEQ()));
 

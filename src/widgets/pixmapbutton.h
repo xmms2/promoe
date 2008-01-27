@@ -26,8 +26,8 @@ class PixmapButton : public QAbstractButton {
 	Q_OBJECT
 
 	public:
-		PixmapButton (QWidget *parent);
-		~PixmapButton ();
+		PixmapButton (QWidget *parent) : QAbstractButton (parent) {}
+		~PixmapButton () {};
 
 	protected:
 		void paintEvent ( QPaintEvent * event );

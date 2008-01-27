@@ -2,6 +2,9 @@ TEMPLATE = lib
 CONFIG += static
 include (../config.pri)
 
+MOC_DIR     = .moc
+OBJECTS_DIR = .obj
+
 SOURCES += xclient.cpp \
 		   xclientcache.cpp \
 		   xsettings.cpp \

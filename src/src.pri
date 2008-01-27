@@ -1,3 +1,4 @@
+include($$PWD/widgets/widgets.pri)
 include($$PWD/playlist/playlist.pri)
 include($$PWD/equalizer/equalizer.pri)
 

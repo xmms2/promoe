@@ -21,6 +21,8 @@ class MainDisplay;
 class Button;
 
 #include "Button.h"
+#include "PixWidget.h"
+#include "Skin.h"
 
 class SliderButton : public Button
 {

@@ -44,12 +44,14 @@ PosButton::getPos (void)
 	return m_pos;
 }
 
+
 void
 PosButton::mousePressEvent (QMouseEvent *event)
 {
 	QPoint p (event->pos ());
 
 	m_diffx = p.x();
+	m_diffy = p.y();
 	m_moving = true;
 }
 

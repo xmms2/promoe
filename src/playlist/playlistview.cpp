@@ -94,17 +94,17 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 	if (!s.contains ("playlist/fontsize"))
 		s.setValue ("playlist/fontsize", 10);
 
+	// Background is painted by PlaylistWidget
 	setAttribute (Qt::WA_NoBackground);
-	// TODO make drag and drop work
-	setDragEnabled(true);
-	setAcceptDrops(true);
-	// end DragandDrop
 	setFrameStyle(QFrame::NoFrame);
 	setFocusPolicy (Qt::StrongFocus);
-	setSelectionMode (QAbstractItemView::ExtendedSelection);
-	setUniformItemSizes(true);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+	setSelectionMode (QAbstractItemView::ExtendedSelection);
+	setUniformItemSizes(true);
+	setDragEnabled(true);
+	setAcceptDrops(true);
 
 	// TODO make sure delegate gets deleted
 	setItemDelegate (new PlaylistDelegate (this));

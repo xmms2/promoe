@@ -22,6 +22,7 @@
 #include <QMainWindow>
 #include <QFont>
 #include <QScrollBar>
+#include <QSizeGrip>
 
 class MainWindow;
 class PlaylistWidget;
@@ -35,7 +36,17 @@ class PlaylistView;
 class PlaylistShade;
 class PlaylistMenu;
 
+class PlaylistSizeGrip : public QSizeGrip {
+	Q_OBJECT
+	
+	public:
+		PlaylistSizeGrip (QWidget *parent) : QSizeGrip (parent) {}
+		~PlaylistSizeGrip () {}
 
+	public slots:
+		void paintEvent (QPaintEvent *event) {}
+
+};
 
 class PlaylistScrollBar : public QScrollBar {
 	Q_OBJECT
@@ -59,15 +70,6 @@ class PlaylistScrollBar : public QScrollBar {
 		QPixmap m_pixmap;
 		QPixmap m_slider;
 		QPixmap m_slider_down;
-};
-
-
-class dragButton : public Button {
-	public:
-		dragButton (QWidget *parent) : Button (parent) {}
-		~dragButton () {}
-
-		void mouseMoveEvent (QMouseEvent *event);
 };
 
 
@@ -112,7 +114,7 @@ class PlaylistWidget : public QWidget {
 
 		PlaylistView *m_view;
 		QScrollBar *m_scrollBar;
-		dragButton *m_drag;
+		PlaylistSizeGrip *m_sizegrip;
 
 		PlaylistMenu *m_add;
 		PlaylistMenu *m_del;

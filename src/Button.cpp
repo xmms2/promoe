@@ -18,21 +18,30 @@
 
 #include "Skin.h"
 
+#include <QIcon>
+#include <QPixmap>
 #include <QMouseEvent>
 
-Button::Button (QWidget *parent) : PixWidget (parent)
+Button::Button (QWidget *parent) : PixmapButton (parent)
 {
 	m_name_normal = 0;
 	m_name_pressed = 0;
+
+	Skin *skin = Skin::getInstance();
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
+
 }
 
-Button::Button (QWidget *parent, uint normal, uint pressed, bool pls) : PixWidget (parent)
+Button::Button (QWidget *parent, uint normal, uint pressed, bool pls) : PixmapButton (parent)
 {
 	m_name_normal = normal;
 	m_name_pressed = pressed;
-	m_diffx = 0;
-	m_diffy = 0;
 	m_pls = pls;
+
+	Skin *skin = Skin::getInstance();
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
 }
 
 Button::~Button ()
@@ -46,6 +55,9 @@ Button::setPixmaps(Skin *skin)
 		return;
 	}
 
+	QIcon icon;
+	QPixmap m_pixmap_normal, m_pixmap_pressed;
+
 	if (m_pls) {
 		m_pixmap_normal = skin->getPls (m_name_normal);
 		m_pixmap_pressed = skin->getPls (m_name_pressed);
@@ -53,7 +65,8 @@ Button::setPixmaps(Skin *skin)
 		m_pixmap_normal = skin->getItem (m_name_normal);
 		m_pixmap_pressed = skin->getItem (m_name_pressed);
 	}
-	m_pixmap = m_pixmap_normal;
+	icon.addPixmap(m_pixmap_normal);
+	icon.addPixmap(m_pixmap_pressed, QIcon::Active);
 
 	if (!m_pixmap_normal || m_pixmap_normal.isNull()) {
 		qDebug ("OPPP! %d return NULL!", m_name_normal);
@@ -62,87 +75,51 @@ Button::setPixmaps(Skin *skin)
 		qDebug ("OPPP! %d return NULL!", m_name_pressed);
 	}
 
-	setMinimumSize (m_pixmap.size ());
-	setMaximumSize (m_pixmap.size ());
-
+	setIcon(icon);
+	setFixedSize (m_pixmap_normal.size ());
 	update();
 }
 
-void 
-Button::mousePressEvent (QMouseEvent *event)
-{
-	m_pixmap = m_pixmap_pressed;
-
-	m_diffx = event->pos().x();
-	m_diffy = event->pos().y();
-
-	update ();
-}
-
-void 
-Button::mouseReleaseEvent (QMouseEvent *event)
-{
-	m_pixmap = m_pixmap_normal;
-	update();
-	emit clicked();
-}
-
+/*
+ *
+ * ToggleButton
+ *
+ */
 ToggleButton::ToggleButton (QWidget *parent, uint on_normal, uint on_pressed,
-							uint off_normal, uint off_pressed) : 
-					Button (parent, off_normal, off_pressed)
+							uint off_normal, uint off_pressed) :
+					PixmapButton (parent)
 {
+	setCheckable (true);
 
 	m_name_on_normal = on_normal;
 	m_name_on_pressed = on_pressed;
 	m_name_off_normal = off_normal;
 	m_name_off_pressed = off_pressed;
-	m_toggled_on = false;
 
-	connect (this, SIGNAL(clicked()), this, SLOT (toggleOn()));
+	Skin *skin = Skin::getInstance();
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
 }
 
 
 void
 ToggleButton::setPixmaps(Skin *skin)
 {
-	m_pixmap_on_normal = skin->getItem(m_name_on_normal);
-	m_pixmap_on_pressed = skin->getItem(m_name_on_pressed);
-	m_pixmap_off_normal = skin->getItem(m_name_off_normal);
-	m_pixmap_off_pressed = skin->getItem(m_name_off_pressed);
+	QIcon icon;
+	QPixmap p = skin->getItem( m_name_on_normal );
 
-	setCurrentPix ();
+	icon.addPixmap( p, QIcon::Normal, QIcon::On );
+	icon.addPixmap( skin->getItem(m_name_on_pressed), QIcon::Active,
+	                QIcon::On );
+	icon.addPixmap( skin->getItem(m_name_off_normal), QIcon::Normal,
+	                QIcon::Off );
+	icon.addPixmap( skin->getItem(m_name_off_pressed), QIcon::Active,
+	                QIcon::Off );
+	setIcon(icon);
 
-	setMinimumSize (m_pixmap.size ());
-	setMaximumSize (m_pixmap.size ());
+	setFixedSize (p.size ());
 
 	update();
-}
-
-void
-ToggleButton::setCurrentPix ()
-{
-	if (m_toggled_on) {
-		m_pixmap_normal = m_pixmap_on_normal;
-		m_pixmap_pressed = m_pixmap_on_pressed;
-	} else {
-		m_pixmap_normal = m_pixmap_off_normal;
-		m_pixmap_pressed = m_pixmap_off_pressed;
-	}
-
-	m_pixmap = m_pixmap_normal;
-}
-
-void
-ToggleButton::toggleOn ()
-{
-	if (!m_toggled_on) {
-		m_toggled_on = true;
-	} else {
-		m_toggled_on = false;
-	}
-
-	setCurrentPix ();
-	update ();
 }
 
 ToggleButton::~ToggleButton ()

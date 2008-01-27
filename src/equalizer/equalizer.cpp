@@ -66,6 +66,11 @@ EqualizerWindow::moveEvent (QMoveEvent *event)
 	s.setValue ("equalizer/pos", pos ());
 }
 
+/**
+ *
+ * EqualizerWidget
+ *
+ */
 EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
@@ -76,17 +81,20 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	m_enable = new ToggleButton(this, Skin::EQ_WIN_ON_0, Skin::EQ_WIN_ON_1,
 	                            Skin::EQ_WIN_OFF_0, Skin::EQ_WIN_OFF_1);
 	m_enable->move(14, 18);
+	m_enable->setEnabled(false); // FIXME: needs to be implemented
 
 	connect(m_enable, SIGNAL(clicked()), parent, SLOT(setEnabled()));
 
 	m_auto = new ToggleButton(this, Skin::EQ_WIN_AUTO_ON_0, Skin::EQ_WIN_AUTO_ON_1,
 	                          Skin::EQ_WIN_AUTO_OFF_0, Skin::EQ_WIN_AUTO_OFF_1);
 	m_auto->move(39, 18);
+	m_auto->setEnabled(false); // FIXME: needs to be implemented
 
 	connect(m_auto, SIGNAL(clicked()), parent, SLOT(setEnabled()));
 
 	m_preset = new Button(this, Skin::EQ_WIN_PRESET_0, Skin::EQ_WIN_PRESET_1);
 	m_preset->move(217, 18);
+	m_preset->setEnabled(false); // FIXME: needs to be implemented
 
 	connect(m_preset, SIGNAL(clicked()), parent, SLOT(setEnabled()));
 
