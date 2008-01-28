@@ -13,7 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
+// #include "mainwindow.h"
 #include "settingsdialog.h"
 
 #include <QSettings>

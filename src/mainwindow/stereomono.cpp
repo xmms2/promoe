@@ -13,7 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include "StereoMono.h"
+#include "stereomono.h"
 #include "Skin.h"
 
 StereoMono::StereoMono (QWidget *parent) : PixWidget (parent)

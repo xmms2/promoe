@@ -16,7 +16,7 @@
 #include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
 
-#include "ShadedDisplay.h"
+#include "shadeddisplay.h"
 #include "TitleBar.h"
 #include "Button.h"
 

@@ -13,7 +13,6 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
 #include "Button.h"
 
 #include "Skin.h"

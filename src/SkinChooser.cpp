@@ -13,7 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
+#include "mainwindow.h"
 #include "Skin.h"
 #include "SkinChooser.h"
 

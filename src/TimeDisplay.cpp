@@ -13,11 +13,10 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainDisplay.h"
+#include "mainwindow.h"
+#include "maindisplay.h"
 #include "TimeDisplay.h"
 #include "NumberDisplay.h"
-
-#include "MainWindow.h"
 
 #include <QPen>
 

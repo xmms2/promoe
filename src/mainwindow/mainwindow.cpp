@@ -13,15 +13,15 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
+#include "mainwindow.h"
 
 #ifdef HAVE_SERVERBROWSER
 #include "ServerBrowser.h"
 #endif
 
 #include "playlist.h"
-#include "MainDisplay.h"
-#include "ShadedDisplay.h"
+#include "maindisplay.h"
+#include "shadeddisplay.h"
 #include "equalizer.h"
 
 #include <QSettings>

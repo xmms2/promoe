@@ -14,7 +14,7 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
+#include "mainwindow.h"
 #include "BrowseDialog.h"
 #include "playlist.h"
 #include "playlistview.h"

@@ -557,12 +557,12 @@ Skin::BuildSliders (void)
 void
 Skin::BuildNumbers (void)
 {
-	uint num = 11;
+	uint num = 12;
 
-	QPixmap *img = getPixmap("numbers");
+	QPixmap *img = getPixmap("nums_ex");
 	if (!img) {
-		num = 12;
-		img = getPixmap ("nums_ex");
+		num = 11;
+		img = getPixmap ("numbers");
 	}
 
 	if(img)

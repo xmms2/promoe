@@ -15,8 +15,8 @@
 
 #include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
-#include "MainDisplay.h"
-#include "MainWindow.h"
+#include "maindisplay.h"
+#include "mainwindow.h"
 
 #include "TitleBar.h"
 #include "Button.h"
@@ -24,12 +24,12 @@
 #include "NumberDisplay.h"
 #include "TimeDisplay.h"
 #include "SmallNumberDisplay.h"
-#include "StereoMono.h"
+#include "stereomono.h"
 #include "PosBar.h"
 #include "PlayStatus.h"
 #include "VolumeSlider.h"
 #include "playlist.h"
-#include "ClutterBar.h"
+#include "clutterbar.h"
 
 #include <QFileDialog>
 #include <QSettings>

@@ -13,9 +13,10 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
 #include "Display.h"
 #include "TextBar.h"
+
+#include <QSettings>
 
 TextScroller::TextScroller (QWidget *parent, uint w, 
 							uint h, const QString &name) : 

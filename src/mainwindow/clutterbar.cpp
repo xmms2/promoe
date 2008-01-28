@@ -13,7 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include "ClutterBar.h"
+#include "clutterbar.h"
 #include "Skin.h"
 
 ClutterBar::ClutterBar (QWidget *parent) : PixWidget (parent)

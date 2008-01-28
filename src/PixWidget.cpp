@@ -13,8 +13,6 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
-
 #include "Skin.h"
 #include "PixWidget.h"
 

@@ -13,7 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
+#include "mainwindow.h"
 #include "playlist.h"
 #include "equalizer.h"
 #include "Skin.h"

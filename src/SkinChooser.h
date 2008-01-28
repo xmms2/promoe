@@ -13,12 +13,13 @@
  *  GNU General Public License for more details.
  */
 
-#include "MainWindow.h"
 
 #include <QListWidget>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QMainWindow>
+
+class MainWindow;
 
 class SkinList : public QListWidget
 {

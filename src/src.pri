@@ -1,12 +1,11 @@
 include($$PWD/widgets/widgets.pri)
+include($$PWD/mainwindow/mainwindow.pri)
 include($$PWD/playlist/playlist.pri)
 include($$PWD/equalizer/equalizer.pri)
 
 HEADERS += PixWidget.h \
            Skin.h \
-           MainWindow.h \
            Display.h \
-           MainDisplay.h \
            TitleBar.h \
            Button.h \
            TextBar.h \
@@ -14,14 +13,11 @@ HEADERS += PixWidget.h \
            TimeDisplay.h \
            XMMSHandler.h \
            SmallNumberDisplay.h \
-           StereoMono.h \
            PosBar.h \
            PlayStatus.h \
-           ShadedDisplay.h \
            SkinChooser.h \
            settingsdialog.h \
            VolumeSlider.h \
-           ClutterBar.h \
            FileDialog.h \
            BrowseModel.h \
            BrowseDialog.h
@@ -29,9 +25,7 @@ HEADERS += PixWidget.h \
 SOURCES += main.cpp \
 		   PixWidget.cpp \
            Skin.cpp \
-           MainWindow.cpp \
            Display.cpp \
-           MainDisplay.cpp \
            TitleBar.cpp \
            Button.cpp \
            TextBar.cpp \
@@ -39,14 +33,11 @@ SOURCES += main.cpp \
            TimeDisplay.cpp \
            XMMSHandler.cpp \
            SmallNumberDisplay.cpp \
-           StereoMono.cpp \
            PosBar.cpp \
            PlayStatus.cpp \
-           ShadedDisplay.cpp \
            SkinChooser.cpp \
            settingsdialog.cpp \
            VolumeSlider.cpp \
-           ClutterBar.cpp \
            FileDialog.cpp \
            BrowseModel.cpp \
            BrowseDialog.cpp
