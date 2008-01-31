@@ -1,9 +1,11 @@
-HEADERS += playlist.h \
+HEADERS += playlistwindow.h \
+           playlistwidget.h \
 		   playlistmenu.h \
 		   playlistshade.h \
 		   playlistview.h
 
-SOURCES += playlist.cpp \
+SOURCES += playlistwindow.cpp \
+           playlistwidget.cpp \
 		   playlistmenu.cpp \
 		   playlistshade.cpp \
 		   playlistview.cpp

@@ -14,8 +14,8 @@
  *  GNU General Public License for more details.
  */
 
-#ifndef __PLAYLIST_H__
-#define __PLAYLIST_H__
+#ifndef __PLAYLISTWIDGET_H__
+#define __PLAYLISTWIDGET_H__
 
 #include "XMMSHandler.h"
 
@@ -121,41 +121,6 @@ class PlaylistWidget : public QWidget {
 		PlaylistMenu *m_sel;
 		PlaylistMenu *m_msc;
 		PlaylistMenu *m_lst;
-};
-
-
-class PlaylistWindow : public QMainWindow {
-	Q_OBJECT
-
-	public:
-		PlaylistWindow (QWidget *parent);
-		~PlaylistWindow () {}
-
-		void setActive (bool);
-
-		void mousePressEvent (QMouseEvent *event);
-		void mouseMoveEvent (QMouseEvent *event);
-		void enterEvent (QEvent *event);
-		void leaveEvent (QEvent *event);
-		void moveEvent (QMoveEvent *event);
-		void resizeEvent (QResizeEvent *event);
-
-	public slots:
-		void switchDisplay (void);
-		void togglePL (void);
-
-	private:
-		PlaylistWidget *m_playlist;
-		PlaylistShade *m_shaded;
-
-		int m_diffx;
-		int m_diffy;
-
-		Button *m_shadebtn;
-		Button *m_closebtn;
-		uint getOffset (void);
-		MainWindow *m_mw;
-
 };
 
 #endif

@@ -19,10 +19,11 @@
 #include "ServerBrowser.h"
 #endif
 
-#include "playlist.h"
+#include "playlistwindow.h"
 #include "maindisplay.h"
 #include "shadeddisplay.h"
 #include "equalizer.h"
+#include "Button.h"
 
 #include <QSettings>
 #include <QIcon>

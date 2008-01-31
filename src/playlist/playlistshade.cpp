@@ -17,7 +17,7 @@
 #include <xmmsclient/xmmsclient++.h>
 
 #include "playlistshade.h"
-#include "playlist.h"
+#include "playlistwindow.h"
 
 #include <QSettings>
 

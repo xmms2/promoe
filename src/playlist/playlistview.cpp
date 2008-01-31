@@ -20,7 +20,7 @@
 
 #include "playlistview.h"
 #include "playlistmodel.h"
-#include "playlist.h"
+#include "playlistwidget.h"
 
 #include <QColor>
 #include <QMenu>

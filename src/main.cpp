@@ -14,7 +14,7 @@
  */
 
 #include "mainwindow.h"
-#include "playlist.h"
+#include "playlistwindow.h"
 #include "equalizer.h"
 #include "Skin.h"
 //TODO: change to xclient.h sometime later
