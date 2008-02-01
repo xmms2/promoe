@@ -94,7 +94,7 @@ class XClient : public QObject {
 
 	signals:
 		void gotConnection (XClient *);
-
+		void disconnected (XClient *);
 
 	protected:
 		Xmms::Client *m_client;

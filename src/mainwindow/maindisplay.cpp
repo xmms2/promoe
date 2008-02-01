@@ -219,10 +219,12 @@ MainDisplay::SetupToggleButtons (void)
 	m_pls = new ToggleButton (this, Skin::PLS_ON_0, Skin::PLS_ON_1,
 							  Skin::PLS_OFF_0, Skin::PLS_OFF_1);
 	m_pls->move(242, 58);
-	if (!s.value ("playlist/hidden").toBool ())
-	m_pls->toggle ();
+	m_pls->setChecked (m_mw->getPL ()->isVisible ());
+	connect (m_pls, SIGNAL (toggled (bool)),
+	         m_mw->getPL (), SLOT (setVisible (bool)));
+	connect (m_mw->getPL (), SIGNAL (visibilityChanged (bool)),
+	         m_pls, SLOT (setChecked (bool)));
 
-	connect (m_pls, SIGNAL(clicked()), this, SLOT(togglePL()));
 
 	m_eq = new ToggleButton (this, Skin::EQ_ON_0, Skin::EQ_ON_1,
 							 Skin::EQ_OFF_0, Skin::EQ_OFF_1);
@@ -242,12 +244,6 @@ MainDisplay::SetupToggleButtons (void)
 								 Skin::REPEAT_OFF_0, Skin::REPEAT_OFF_1);
 	m_repeat->move(210, 89);
 	m_repeat->setEnabled(false); // FIXME: Disabled button for now, not yet implemented
-}
-
-void
-MainDisplay::togglePL (void)
-{
-	m_mw->togglePL(false);
 }
 
 void

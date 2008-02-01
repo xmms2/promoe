@@ -87,7 +87,6 @@ class MainDisplay : public SkinDisplay
 		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint32_t time);
 		void setMediainfo (const Xmms::PropDict &);
-		void togglePL(void);
 		void toggleEQ(void);
 		void toggleTime(void);
 		void updateVolume (uint volume);

@@ -1,7 +1,7 @@
 /**
  *	This file is a part of Promoe, an XMMS2 Client
  *
- *	Copyright (C) 2007 Thomas Frauendorfer
+ *	Copyright (C) 2007,2008 Thomas Frauendorfer
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU General Public License
@@ -32,18 +32,23 @@ class XSettings : public QObject
 		XSettings (QObject *parent, XClient *client);
 
 		QString value_get (QString key);
-		void value_set (QString key, QString value);
-		void value_register (QString key, QString defval);
+		bool value_set (QString key, QString value);
+		bool value_register (QString key, QString defval);
+
+		bool isReady (void) {return m_ready;}
 
 	signals:
 		void configChanged(QString key, QString value);
 
 	public slots:
-		void got_connection(XClient *);
+		void on_connect (XClient *);
+		void on_disconnect (XClient *);
 
 	private:
+		bool handle_config_value (const Xmms::Dict &value);
 		bool handle_config_value_changed (const Xmms::Dict &value);
 
+		bool m_ready;
 		QHash < QString, QString > m_config_cache;
 		XClient *m_client;
 };

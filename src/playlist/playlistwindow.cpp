@@ -2,7 +2,7 @@
  *  This file is a part of Prome, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2007 XMMS2 Team
- *  Copyright (C) 2007 Thomas Frauendorfer
+ *  Copyright (C) 2008 Thomas Frauendorfer
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 	if (!s.contains ("size")) {
 		s.setValue ("size", QSize (275, 350));
 	}
-	resize (s.value("size").toSize ());
+	resize (s.value ("size").toSize ());
 
 	m_playlist = new PlaylistWidget (this);
 	setCentralWidget (m_playlist);
@@ -54,7 +54,7 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 	m_shadebtn->move(size().width() - 21, 3);
 
 	m_closebtn = new Button (this, Skin::PLS_CLOSE_BTN_0, Skin::PLS_CLOSE_BTN_1, true);
-	connect (m_closebtn, SIGNAL (clicked()), this, SLOT (togglePL ()));
+	connect (m_closebtn, SIGNAL (clicked()), this, SLOT (hide ()));
 	m_closebtn->move(size().width() - 11, 3);
 
 	if (!s.contains ("shaded"))
@@ -70,11 +70,24 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
 	//setSizeIncrement (25, 29);
 }
 
-void 
-PlaylistWindow::togglePL (void)
+void
+PlaylistWindow::hideEvent (QHideEvent *event)
 {
-	m_mw->togglePL(true);
+	QSettings s;
+	s.setValue ("playlist/visible", false);
+
+	emit visibilityChanged (false);
 }
+
+void
+PlaylistWindow::showEvent (QShowEvent *event)
+{
+	QSettings s;
+	s.setValue ("playlist/visible", true);
+
+	emit visibilityChanged (true);
+}
+
 
 void
 PlaylistWindow::switchDisplay (void)

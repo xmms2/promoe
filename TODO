@@ -24,3 +24,5 @@ Todo:
 * Textbox
 	* redraw text in textbox when switching skin.
 	* figure out something smart on osx.
+* xclient:
+	* connect disconnected callback, so that it emits 'disconnected ()'

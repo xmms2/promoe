@@ -81,7 +81,9 @@ void XClient::disconnect ()
 {
 	delete m_client;
 	m_client = NULL;
-    m_isconnected = false;
+	m_isconnected = false;
+
+	emit disconnected (this);
 }
 
 bool

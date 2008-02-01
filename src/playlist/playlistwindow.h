@@ -2,6 +2,7 @@
  *  This file is a part of Prome, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2007 XMMS2 Team
+ *  Copyright (C) 2008 Thomas Frauendorfer
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,12 +18,14 @@
 #define _PLAYLISTWINDOW_
 
 // Qt classes
- #include <QMainWindow>
+#include <QMainWindow>
 
 class QEvent;
 class QMouseEvent;
 class QMoveEvent;
 class QResizeEvent;
+class QHideEvent;
+class QShowEvent;
 
 // our own classes
 class Button;
@@ -39,6 +42,15 @@ class PlaylistWindow : public QMainWindow {
 
 		void setActive (bool);
 
+	signals:
+		void visibilityChanged(bool visible);
+
+	public slots:
+		void switchDisplay (void);
+
+	protected slots:
+		void hideEvent (QHideEvent *event);
+		void showEvent (QShowEvent *event);
 		void mousePressEvent (QMouseEvent *event);
 		void mouseMoveEvent (QMouseEvent *event);
 		void enterEvent (QEvent *event);
@@ -46,9 +58,6 @@ class PlaylistWindow : public QMainWindow {
 		void moveEvent (QMoveEvent *event);
 		void resizeEvent (QResizeEvent *event);
 
-	public slots:
-		void switchDisplay (void);
-		void togglePL (void);
 
 	private:
 		PlaylistWidget *m_playlist;
@@ -59,7 +68,6 @@ class PlaylistWindow : public QMainWindow {
 
 		Button *m_shadebtn;
 		Button *m_closebtn;
-		uint getOffset (void);
 		MainWindow *m_mw;
 
 };

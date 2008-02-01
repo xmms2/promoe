@@ -32,7 +32,7 @@
 
 MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 {
-	QSettings settings;
+	QSettings s;
 
 	setWindowFlags(Qt::FramelessWindowHint);
 	setGeometry(100, 100, 275, 116);
@@ -40,10 +40,24 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 
-	if (!settings.contains ("mainwindow/shaded"))
+	if (!s.contains ("mainwindow/shaded"))
 		setShaded (true);
 	else
 		setShaded (!isShaded ());
+
+	/*
+	 * Setup PlaylistWindow
+	 */
+	m_playlistwin = new PlaylistWindow (this);
+	if (!s.contains ("playlist/pos")) {
+		s.setValue ("playlist/pos", QPoint (pos().x(),
+		                                    pos().y()+size().height()));
+	}
+	m_playlistwin->move (s.value("playlist/pos").toPoint ());
+	// FIXME: this should be done in PlaylistWindow.
+	// But promoe segfaults if done so
+	m_playlistwin->setVisible (s.value("playlist/visible",
+	                                   false).toBool ());
 
 	/* 
 	 * The MainDisplay is the mainwindow non-shaded mode
@@ -60,12 +74,10 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 
 	switchDisplay ();
 
-	m_playlistwin = NULL;
+	if (!s.contains ("mainwindow/pos"))
+		s.setValue ("mainwindow/pos", QPoint (100, 100));
 
-	if (!settings.contains ("mainwindow/pos"))
-		settings.setValue ("mainwindow/pos", QPoint (100, 100));
-
-	move (settings.value("mainwindow/pos").toPoint ());
+	move (s.value("mainwindow/pos").toPoint ());
 }
 
 MainWindow::~MainWindow ()
@@ -106,28 +118,6 @@ MainWindow::moveEvent (QMoveEvent *event)
 	QSettings s;
 	s.setValue ("mainwindow/pos", pos ());
 }
-
-void 
-MainWindow::togglePL (bool UpdateButton) 
-{ 
-	QSettings s;
-
-	if(UpdateButton)
-	{
-		 getMD()->GetPls()->toggle();
-	}
-
-
-	if (s.value ("playlist/hidden").toBool ()) {
-		m_playlistwin->move (s.value("playlist/pos").toPoint ());
-		m_playlistwin->show (); 
-		s.setValue ("playlist/hidden", false);
-	} else {
-		m_playlistwin->hide (); 
-		s.setValue ("playlist/hidden", true);
-	} 
-}
-
 
 void 
 MainWindow::toggleEQ (bool UpdateButton) 

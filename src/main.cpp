@@ -49,7 +49,6 @@ main (int argc, char **argv)
 
 	MainWindow *mw = new MainWindow (NULL);
 
-	PlaylistWindow *playlistwin = new PlaylistWindow (mw);
 	EqualizerWindow *eqwin = new EqualizerWindow (mw);
 
 	/*
@@ -65,22 +64,7 @@ main (int argc, char **argv)
 	Skin::getInstance()->setSkin (settings.value("skin/path").toString ());
 
 	mw->show ();
-	mw->setPL (playlistwin);
 	mw->setEQ (eqwin);
-
-	if (!settings.contains ("playlist/pos"))
-		settings.setValue ("playlist/pos", QPoint (mw->pos().x(),
-												   mw->pos().y()+mw->size().height()));
-	playlistwin->move (settings.value("playlist/pos").toPoint ());
-
-	if (!settings.contains ("playlist/hidden"))
-		settings.setValue ("playlist/hidden", true);
-
-	if (settings.value("playlist/hidden").toBool ())
-		playlistwin->hide ();
-	else
-		playlistwin->show ();
-
 
 	if (!settings.contains ("equalizer/pos"))
 		settings.setValue ("equalizer/pos", QPoint (mw->pos().x(),

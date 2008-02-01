@@ -121,6 +121,3 @@ ToggleButton::setPixmaps(Skin *skin)
 	update();
 }
 
-ToggleButton::~ToggleButton ()
-{
-}

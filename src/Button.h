@@ -43,7 +43,7 @@ class ToggleButton : public PixmapButton
 	Q_OBJECT
 	public:
 		ToggleButton (QWidget *parent, uint, uint, uint, uint);
-		~ToggleButton ();
+		~ToggleButton () {}
 
 	public slots:
 		void setPixmaps(Skin *skin);
