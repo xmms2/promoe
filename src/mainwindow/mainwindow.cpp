@@ -13,6 +13,8 @@
  *  GNU General Public License for more details.
  */
 
+#include "XMMSHandler.h"
+
 #include "mainwindow.h"
 
 #ifdef HAVE_SERVERBROWSER
@@ -22,7 +24,7 @@
 #include "playlistwindow.h"
 #include "maindisplay.h"
 #include "shadeddisplay.h"
-#include "equalizer.h"
+#include "equalizerwindow.h"
 #include "Button.h"
 
 #include <QSettings>

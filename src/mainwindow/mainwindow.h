@@ -16,8 +16,6 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-#include "XMMSHandler.h"
-
 #include <QMainWindow>
 #include <QSettings>
 

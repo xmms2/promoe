@@ -13,64 +13,14 @@
  *  GNU General Public License for more details.
  */
 
+#include "XMMSHandler.h"
+
+#include "equalizerwidget.h"
+
 #include "mainwindow.h"
-#include "TitleBar.h"
-#include "equalizer.h"
 #include "Button.h"
 #include "VolumeSlider.h"
 
-EqualizerWindow::EqualizerWindow (QWidget *parent) : QMainWindow (parent)
-{
-	m_mw = dynamic_cast<MainWindow *>(parent);
-
-	setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
-	setAttribute (Qt::WA_DeleteOnClose);
-
-	m_equalizer = new EqualizerWidget (this);
-	m_equalizer->show();
-
-	setCentralWidget (m_equalizer);
-
-	setFixedSize (275, 116);
-}
-
-EqualizerWindow::~EqualizerWindow (void)
-{
-}
-
-void
-EqualizerWindow::setEnabled (void)
-{
-	qDebug ("test");
-}
-
-
-void
-EqualizerWindow::mousePressEvent (QMouseEvent *event)
-{
-	m_diffx = event->pos().x();
-	m_diffy = event->pos().y();
-}
-
-void
-EqualizerWindow::mouseMoveEvent (QMouseEvent *event)
-{
-	move(event->globalPos().x() - m_diffx,
-		 event->globalPos().y() - m_diffy);
-}
-
-void
-EqualizerWindow::moveEvent (QMoveEvent *event)
-{
-	QSettings s;
-	s.setValue ("equalizer/pos", pos ());
-}
-
-/**
- *
- * EqualizerWidget
- *
- */
 EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();

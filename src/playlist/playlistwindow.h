@@ -14,8 +14,8 @@
  *  GNU General Public License for more details.
  */
 
-#ifndef _PLAYLISTWINDOW_
-#define _PLAYLISTWINDOW_
+#ifndef __PLAYLISTWINDOW_H__
+#define __PLAYLISTWINDOW_H__
 
 // Qt classes
 #include <QMainWindow>
@@ -72,4 +72,4 @@ class PlaylistWindow : public QMainWindow {
 
 };
 
-#endif // _PLAYLISTWINDOW_
+#endif // __PLAYLISTWINDOW_H__

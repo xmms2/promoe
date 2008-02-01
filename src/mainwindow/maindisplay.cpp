@@ -230,8 +230,8 @@ MainDisplay::SetupToggleButtons (void)
 							 Skin::EQ_OFF_0, Skin::EQ_OFF_1);
 	m_eq->move(219, 58);
 	if (!s.value ("equalizer/hidden").toBool ())
-		m_pls->toggle ();
-    m_eq->setEnabled(false); // FIXME: Disabled for now, equalizer doesn't work yet
+		m_eq->toggle ();
+	m_eq->setEnabled(false); // FIXME: Disabled for now, equalizer doesn't work yet
 
 	connect (m_eq, SIGNAL(clicked()), this, SLOT(toggleEQ()));
 

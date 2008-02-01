@@ -13,25 +13,19 @@
  *  GNU General Public License for more details.
  */
 
-#ifndef __EQUALIZER_H__
-#define __EQUALIZER_H__
+#ifndef __EQUALIZERWIDGET_H__
+#define __EQUALIZERWIDGET_H__
+
+#include <QWidget>
+class QPixmap;
+class QPaintEvent;
 
 class Skin;
 class Button;
-class MainWindow;
-class TitleBar;
 class ToggleButton;
 class Slider;
 
-#include <iostream>
-
-#include <QPixmap>
-#include <QWidget>
-#include <QMouseEvent>
-#include <QPaintEvent>
-#include <QMainWindow>
-
-#include "Display.h"
+//#include <iostream>
 
 class EqualizerWidget : public QWidget
 {
@@ -43,6 +37,7 @@ class EqualizerWidget : public QWidget
 
 	public slots:
 		void setPixmaps(Skin *skin);
+
 	private:
 		QPixmap m_pixmap;
 		QPixmap m_graph;
@@ -51,26 +46,6 @@ class EqualizerWidget : public QWidget
 		Button *m_preset;
 		Slider *m_preamp;
 		Slider *m_bands[10];
-};
-
-class EqualizerWindow : public QMainWindow
-{
-	Q_OBJECT
-	public:
-		EqualizerWindow(QWidget *parent);
-		~EqualizerWindow();
-		void mouseMoveEvent(QMouseEvent *);
-		void mousePressEvent(QMouseEvent *);
-		void moveEvent(QMoveEvent *event);
-
-	public slots:
-		void setEnabled (void);
-
-	private:
-		MainWindow *m_mw;
-		EqualizerWidget *m_equalizer;
-		int m_diffx;
-		int m_diffy;
 };
 
 

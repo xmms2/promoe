@@ -13,6 +13,8 @@
  *  GNU General Public License for more details.
  */
 
+#include "XMMSHandler.h"
+
 #include "mainwindow.h"
 #include "maindisplay.h"
 #include "TimeDisplay.h"

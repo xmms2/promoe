@@ -13,12 +13,13 @@
  *  GNU General Public License for more details.
  */
 
+#include "XMMSHandler.h"
+
 #include "mainwindow.h"
-#include "playlistwindow.h"
-#include "equalizer.h"
+// #include "playlistwindow.h"
+#include "equalizerwindow.h"
 #include "Skin.h"
 //TODO: change to xclient.h sometime later
-#include "XMMSHandler.h"
 
 #ifdef HAVE_SERVERBROWSER
 #include "Serverbrowser.h"

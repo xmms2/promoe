@@ -1,6 +1,8 @@
-HEADERS += equalizer.h
+HEADERS += equalizerwindow.h \
+           equalizerwidget.h
 
-SOURCES += equalizer.cpp
+SOURCES += equalizerwindow.cpp \
+           equalizerwidget.cpp
 
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
