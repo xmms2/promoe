@@ -21,6 +21,8 @@
 class QWidget;
 class QMouseEvent;
 class QMoveEvent;
+class QHideEvent;
+class QShowEvent;
 
 class MainWindow;
 class EqualizerWidget;
@@ -30,13 +32,21 @@ class EqualizerWindow : public QMainWindow
 	Q_OBJECT
 	public:
 		EqualizerWindow(QWidget *parent);
-		~EqualizerWindow();
+		~EqualizerWindow() {}
+
+	signals:
+		void visibilityChanged(bool visible);
+
+	public slots:
+		void setEnabled (void);
+
+	protected:
+		void hideEvent (QHideEvent *event);
+		void showEvent (QShowEvent *event);
 		void mouseMoveEvent(QMouseEvent *);
 		void mousePressEvent(QMouseEvent *);
 		void moveEvent(QMoveEvent *event);
 
-	public slots:
-		void setEnabled (void);
 
 	private:
 		MainWindow *m_mw;

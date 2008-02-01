@@ -29,6 +29,7 @@
 #include "PlayStatus.h"
 #include "VolumeSlider.h"
 #include "playlistwindow.h"
+#include "equalizerwindow.h"
 #include "clutterbar.h"
 
 #include <QFileDialog>
@@ -216,6 +217,16 @@ MainDisplay::SetupToggleButtons (void)
 {
 	QSettings s;
 
+	m_eq = new ToggleButton (this, Skin::EQ_ON_0, Skin::EQ_ON_1,
+							 Skin::EQ_OFF_0, Skin::EQ_OFF_1);
+	m_eq->move(219, 58);
+	m_eq->setChecked (m_mw->getEQ ()->isVisible ());
+	connect (m_eq, SIGNAL (toggled (bool)),
+	         m_mw->getEQ (), SLOT (setVisible (bool)));
+	connect (m_mw->getEQ (), SIGNAL (visibilityChanged (bool)),
+	         m_eq, SLOT (setChecked (bool)));
+	m_eq->setEnabled(false); // FIXME: Disabled for now, equalizer doesn't work yet
+
 	m_pls = new ToggleButton (this, Skin::PLS_ON_0, Skin::PLS_ON_1,
 							  Skin::PLS_OFF_0, Skin::PLS_OFF_1);
 	m_pls->move(242, 58);
@@ -226,15 +237,6 @@ MainDisplay::SetupToggleButtons (void)
 	         m_pls, SLOT (setChecked (bool)));
 
 
-	m_eq = new ToggleButton (this, Skin::EQ_ON_0, Skin::EQ_ON_1,
-							 Skin::EQ_OFF_0, Skin::EQ_OFF_1);
-	m_eq->move(219, 58);
-	if (!s.value ("equalizer/hidden").toBool ())
-		m_eq->toggle ();
-	m_eq->setEnabled(false); // FIXME: Disabled for now, equalizer doesn't work yet
-
-	connect (m_eq, SIGNAL(clicked()), this, SLOT(toggleEQ()));
-
 	m_shuffle = new ToggleButton (this, Skin::SHUFFLE_ON_0, Skin::SHUFFLE_ON_1,
 								  Skin::SHUFFLE_OFF_0, Skin::SHUFFLE_OFF_1);
 	m_shuffle->move(164, 89);
@@ -243,14 +245,9 @@ MainDisplay::SetupToggleButtons (void)
 	m_repeat = new ToggleButton (this, Skin::REPEAT_ON_0, Skin::REPEAT_ON_1,
 								 Skin::REPEAT_OFF_0, Skin::REPEAT_OFF_1);
 	m_repeat->move(210, 89);
-	m_repeat->setEnabled(false); // FIXME: Disabled button for now, not yet implemented
+//	m_repeat->setEnabled(false); // FIXME: Disabled button for now, not yet implemented
 }
 
-void
-MainDisplay::toggleEQ (void)
-{
-	m_mw->toggleEQ(false);
-}
 
 void
 MainDisplay::toggleTime (void)
@@ -290,6 +287,3 @@ MainDisplay::SetupPushButtons (void)
 
 }
 
-MainDisplay::~MainDisplay (void)
-{
-}

@@ -48,20 +48,30 @@ MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
 		setShaded (!isShaded ());
 
 	/*
-	 * Setup PlaylistWindow
+	 * initialize EqualizerWindow
+	 */
+	m_equalizer = new EqualizerWindow (this);
+	if (!s.contains ("equalizer/pos")) {
+		s.setValue ("equalizer/pos", QPoint (pos ().x (),
+		                                     pos ().y ()+size ().height ()));
+	}
+	m_equalizer->move (s.value ("equalizer/pos").toPoint ());
+	m_equalizer->setVisible (s.value ("equalizer/visible", false).toBool ());
+
+	/*
+	 * initialtize PlaylistWindow
 	 */
 	m_playlistwin = new PlaylistWindow (this);
 	if (!s.contains ("playlist/pos")) {
-		s.setValue ("playlist/pos", QPoint (pos().x(),
-		                                    pos().y()+size().height()));
+		s.setValue ("playlist/pos", QPoint (pos ().x (),
+		                                    pos ().y ()+size ().height ()));
 	}
-	m_playlistwin->move (s.value("playlist/pos").toPoint ());
+	m_playlistwin->move (s.value ("playlist/pos").toPoint ());
 	// FIXME: this should be done in PlaylistWindow.
 	// But promoe segfaults if done so
-	m_playlistwin->setVisible (s.value("playlist/visible",
-	                                   false).toBool ());
+	m_playlistwin->setVisible (s.value("playlist/visible", false).toBool ());
 
-	/* 
+	/*
 	 * The MainDisplay is the mainwindow non-shaded mode
 	 */
 	m_display = new MainDisplay (this);
@@ -121,22 +131,3 @@ MainWindow::moveEvent (QMoveEvent *event)
 	s.setValue ("mainwindow/pos", pos ());
 }
 
-void 
-MainWindow::toggleEQ (bool UpdateButton) 
-{ 
-	QSettings s;
-
-	if(UpdateButton)
-	{
-		getMD()->GetEq()->toggle();
-	}
-
-	if (s.value ("equalizer/hidden").toBool ()) {
-		m_equalizer->move (s.value("equalizer/pos").toPoint ());
-		m_equalizer->show (); 
-		s.setValue ("equalizer/hidden", false);
-	} else {
-		m_equalizer->hide (); 
-		s.setValue ("equalizer/hidden", true);
-	} 
-}

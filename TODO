@@ -5,9 +5,8 @@ Todo:
 	* ApplicationConfig
 * Balance
 * Playlist
-	+ Display Playtime
+	+ Make displayed Information configurable
 	+ Add scrollbuttons to slider
-	+ Make drag and drop work again
 	* Jump entry to dialog
 	* drag and drop outside viewport
 	* jump to entry when it's played.

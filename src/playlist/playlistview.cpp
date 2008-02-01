@@ -27,6 +27,7 @@
 #include <QPaintEvent>
 #include <QPalette>
 #include <QSettings>
+#include <QFontMetrics>
 
 #include <QSizePolicy>
 
@@ -60,17 +61,33 @@ PlaylistDelegate::paint( QPainter *painter, const QStyleOptionViewItem& option,
 	/* generate string */
 	//TODO Add album and playtime
 	QVariant tmp;
-	QString s = QString ("%1. ").arg (index.row () + 1);
+	QModelIndex m;
+	QRect r = option.rect;
+	QString s;
+	// Get playtime and if it exists, draw it
+	m = index.sibling (index.row (), 2);
+	tmp = m.data ();
+	if (tmp.isValid ()) {
+		int seconds = tmp.toInt () / 1000;
+		s = QString ("%1:%2").arg (seconds / 60, 2)
+		                     .arg (seconds % 60, 2, 10, QLatin1Char ('0'));
+		painter->drawText (r, Qt::AlignVCenter | Qt::AlignRight, s);
+		// now adjust der paintrectangle for the remaining text
+		r.setWidth (r.width () - option.fontMetrics.width (s));
+	}
+
+	// now build String for Artis Title and Position
+	s = QString ("%1. ").arg (index.row () + 1);
 	tmp = index.data ();
 	if (tmp.isValid ())
 		s.append (tmp.toString ()).append (" - ");
-	QModelIndex m = index.sibling (index.row (), 1);
+	m = index.sibling (index.row (), 1);
 	tmp = m.data ();
 	if (tmp.isValid ())
 		s.append (tmp.toString ());
-	s = option.fontMetrics.elidedText(s, Qt::ElideRight, option.rect.width());
+	s = option.fontMetrics.elidedText(s, Qt::ElideRight, r.width());
 
-	painter->drawText (option.rect, Qt::AlignVCenter, s);
+	painter->drawText (r, Qt::AlignVCenter, s);
 	painter->restore ();
 }
 

@@ -40,8 +40,22 @@ EqualizerWindow::EqualizerWindow (QWidget *parent) : QMainWindow (parent)
 	setFixedSize (275, 116);
 }
 
-EqualizerWindow::~EqualizerWindow (void)
+void
+EqualizerWindow::hideEvent (QHideEvent *event)
 {
+	QSettings s;
+	s.setValue ("equalizer/visible", false);
+
+	emit visibilityChanged (false);
+}
+
+void
+EqualizerWindow::showEvent (QShowEvent *event)
+{
+	QSettings s;
+	s.setValue ("equalizer/visible", true);
+
+	emit visibilityChanged (true);
 }
 
 void

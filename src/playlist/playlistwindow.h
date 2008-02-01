@@ -48,7 +48,7 @@ class PlaylistWindow : public QMainWindow {
 	public slots:
 		void switchDisplay (void);
 
-	protected slots:
+	protected:
 		void hideEvent (QHideEvent *event);
 		void showEvent (QShowEvent *event);
 		void mousePressEvent (QMouseEvent *event);

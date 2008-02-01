@@ -32,10 +32,12 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &n
 //	m_columns.append ("#");
 	m_columns.append ("Artist");
 	m_columns.append ("Title");
+	m_columns.append ("Duration");
 
 //	m_colfallback.append ("");
 	m_colfallback.append ("");
 	m_colfallback.append ("url");
+	m_colfallback.append ("");
 
 	m_cached_size.append (QSize ());
 	m_cached_size.append (QSize ());

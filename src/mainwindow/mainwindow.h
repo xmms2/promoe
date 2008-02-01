@@ -36,13 +36,12 @@ class MainWindow : public QMainWindow
 		MainDisplay *getMD () { return m_display; }
 		ShadedDisplay *getSD () { return m_shaded; }
 		PlaylistWindow *getPL () { return m_playlistwin; }
+		EqualizerWindow *getEQ () { return m_equalizer; }
 
-		void setEQ (EqualizerWindow *e) { m_equalizer = e; }
 
 		void raisePL (void);
 		void moveEvent (QMoveEvent *event);
 
-		void toggleEQ (bool UpdateButton);
 		bool isTimemodeReverse(void) { QSettings s; return s.value("MainWindow/timemodereverse").toBool(); }
 		void setTimemodeReverse(bool b) { QSettings s; return s.setValue("MainWindow/timemodereverse",b); }
 

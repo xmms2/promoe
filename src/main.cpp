@@ -16,10 +16,7 @@
 #include "XMMSHandler.h"
 
 #include "mainwindow.h"
-// #include "playlistwindow.h"
-#include "equalizerwindow.h"
 #include "Skin.h"
-//TODO: change to xclient.h sometime later
 
 #ifdef HAVE_SERVERBROWSER
 #include "Serverbrowser.h"
@@ -50,8 +47,6 @@ main (int argc, char **argv)
 
 	MainWindow *mw = new MainWindow (NULL);
 
-	EqualizerWindow *eqwin = new EqualizerWindow (mw);
-
 	/*
 	 * Now that everything is initialized
 	 * open the skin and send the
@@ -65,21 +60,6 @@ main (int argc, char **argv)
 	Skin::getInstance()->setSkin (settings.value("skin/path").toString ());
 
 	mw->show ();
-	mw->setEQ (eqwin);
-
-	if (!settings.contains ("equalizer/pos"))
-		settings.setValue ("equalizer/pos", QPoint (mw->pos().x(),
-												   mw->pos().y()+mw->size().height()));
-	eqwin->move (settings.value("equalizer/pos").toPoint ());
-
-	if (!settings.contains ("equalizer/hidden"))
-		settings.setValue ("equalizer/hidden", true);
-
-	if (settings.value("equalizer/hidden").toBool ())
-		eqwin->hide ();
-	else
-		eqwin->show ();
-
 
 #ifdef HAVE_SERVERBROWSER
 	ServerBrowserWindow *browser = new ServerBrowserWindow (mw);

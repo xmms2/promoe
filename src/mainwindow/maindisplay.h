@@ -31,19 +31,6 @@ class MainDisplay;
 #include <QPalette>
 
 #include "Display.h"
-/*
-#include "TitleBar.h"
-#include "Button.h"
-#include "TextBar.h"
-#include "NumberDisplay.h"
-#include "TimeDisplay.h"
-#include "SmallNumberDisplay.h"
-#include "StereoMono.h"
-#include "Slider.h"
-#include "PlayStatus.h"
-#include "VolumeSlider.h"
-#include "MainWindow.h"
-*/
 
 class Button;
 class ToggleButton;
@@ -57,14 +44,12 @@ class PlayStatus;
 class MainWindow;
 class ClutterBar;
 
-class MainDisplay : public SkinDisplay 
+class MainDisplay : public SkinDisplay
 {
 	Q_OBJECT
 	public:
 		MainDisplay (QWidget *parent);
-		~MainDisplay ();
-		ToggleButton *GetPls() {return m_pls;};
-		ToggleButton *GetEq() {return m_eq;};
+		~MainDisplay () {}
 
 		TextScroller *m_text;
 		TimeDisplay *m_time;
@@ -76,7 +61,7 @@ class MainDisplay : public SkinDisplay
 		PosBar *m_posbar;
 		Slider *m_vslider;
 		Slider *m_bslider;
-		
+
 		PlayStatus *m_playstatus;
 		MainWindow *getMW(void) { return m_mw; }
 
@@ -87,7 +72,6 @@ class MainDisplay : public SkinDisplay
 		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint32_t time);
 		void setMediainfo (const Xmms::PropDict &);
-		void toggleEQ(void);
 		void toggleTime(void);
 		void updateVolume (uint volume);
 		void setVolume (int volume);
