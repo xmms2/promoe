@@ -22,6 +22,8 @@
 
 XSettings::XSettings (QObject *parent, XClient *client) : QObject (parent)
 {
+	m_ready = false;
+
 	connect (client, SIGNAL (gotConnection (XClient *)),
 	         this, SLOT (on_connect (XClient *)));
 
@@ -53,6 +55,10 @@ XSettings::value_set (QString key, QString val)
 	if (!m_client->isConnected ()) {
 		return false;
 	}
+	// Only send change, if the value really changed;
+	if (val == value_get (key))
+		return true;
+
 	m_client->config ()->valueSet (key.toStdString (), val.toStdString ());
 
 	return true;

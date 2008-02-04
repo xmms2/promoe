@@ -38,7 +38,7 @@ class XSettings : public QObject
 		bool isReady (void) {return m_ready;}
 
 	signals:
-		void configChanged(QString key, QString value);
+		void configChanged (QString key, QString value);
 
 	public slots:
 		void on_connect (XClient *);

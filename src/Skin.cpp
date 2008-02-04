@@ -32,15 +32,15 @@ Skin::BuildEqualizer (void)
 	QPixmap *img = getPixmap ("eqmain");
 	if (img) {
 		m_items[EQ_WIN_BG] = img->copy (0, 0, 275, 116);
-		m_items[EQ_WIN_ON_0] = img->copy (10, 119, 25, 12);
-		m_items[EQ_WIN_ON_1] = img->copy (128, 119, 25, 12);
-		m_items[EQ_WIN_OFF_1] = img->copy (187, 119, 25, 12);
-		m_items[EQ_WIN_OFF_0] = img->copy (69, 119, 25, 12);
+		m_items[EQ_WIN_OFF_0] = img->copy (10, 119, 25, 12);
+		m_items[EQ_WIN_OFF_1] = img->copy (128, 119, 25, 12);
+		m_items[EQ_WIN_ON_1] = img->copy (187, 119, 25, 12);
+		m_items[EQ_WIN_ON_0] = img->copy (69, 119, 25, 12);
 
-		m_items[EQ_WIN_AUTO_ON_0] = img->copy (35, 119, 33, 12);
-		m_items[EQ_WIN_AUTO_ON_1] = img->copy (153, 119, 33, 12);
-		m_items[EQ_WIN_AUTO_OFF_1] = img->copy (212, 119, 33, 12);
-		m_items[EQ_WIN_AUTO_OFF_0] = img->copy (94, 119, 33, 12);
+		m_items[EQ_WIN_AUTO_OFF_0] = img->copy (35, 119, 33, 12);
+		m_items[EQ_WIN_AUTO_OFF_1] = img->copy (153, 119, 33, 12);
+		m_items[EQ_WIN_AUTO_ON_1] = img->copy (212, 119, 33, 12);
+		m_items[EQ_WIN_AUTO_ON_0] = img->copy (94, 119, 33, 12);
 
 		m_items[EQ_WIN_PRESET_0] = img->copy (224, 164, 44, 12);
 		m_items[EQ_WIN_PRESET_1] = img->copy (224, 176, 44, 12);
