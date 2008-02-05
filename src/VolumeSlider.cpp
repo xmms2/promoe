@@ -184,7 +184,6 @@ SliderButton::SliderButton (QWidget *parent, uint normal, uint pressed,
 	m_slider = dynamic_cast<Slider *>(parent);
 	m_vertical = vertical;
 	m_diff = 0;
-	m_moving = false;
 
 	if (m_vertical) {
 		move(1, 0);
@@ -202,14 +201,14 @@ SliderButton::mousePressEvent (QMouseEvent *event)
 	} else {
 		m_diff = x() - event->pos().x();
 	}
-	m_moving = true;
+	setDown (true);
 }
 
 
 void
 SliderButton::mouseReleaseEvent (QMouseEvent *event)
 {
-	m_moving = false;
+	setDown (false);
 }
 
 

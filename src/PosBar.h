@@ -35,7 +35,6 @@ class PosButton : public Button
 
 	private:
 		PosBar *m_slider;
-		bool m_moving;
 		uint m_pos;
 		uint m_diffx;
 		uint m_diffy;

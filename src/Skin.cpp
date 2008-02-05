@@ -54,8 +54,8 @@ Skin::BuildEqualizer (void)
 			m_items[EQ_WIN_BAR_POS_14+i] = img->copy (13+15*i, 229, 14, 63);
 		}
 
-		m_items[EQ_WIN_BAR_BTN_1] = img->copy (0, 164, 11, 11);
-		m_items[EQ_WIN_BAR_BTN_0] = img->copy (0, 176, 11, 11);
+		m_items[EQ_WIN_BAR_BTN_0] = img->copy (0, 164, 11, 11);
+		m_items[EQ_WIN_BAR_BTN_1] = img->copy (0, 176, 11, 11);
 
 		delete img;
 	} else {

@@ -43,7 +43,6 @@ class SliderButton : public Button
 		Slider *m_slider;
 		bool m_vertical;
 		int m_diff;
-		bool m_moving;
 };
 
 class Slider : public PixWidget

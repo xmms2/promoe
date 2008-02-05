@@ -28,14 +28,13 @@ PosButton::PosButton (QWidget *parent, uint normal, uint pressed) : Button (pare
 	m_slider = dynamic_cast<PosBar *>(parent);
 	setMinimumSize (29, 10);
 	setMaximumSize (29, 10);
-	m_moving = false;
 }
 
 void
 PosButton::setPos (uint pos)
 {
 	m_pos = pos;
-	if (!m_moving) {
+	if (!isDown ()) {
 		move (pos, 0);
 	}
 }
@@ -54,13 +53,13 @@ PosButton::mousePressEvent (QMouseEvent *event)
 
 	m_diffx = p.x();
 	m_diffy = p.y();
-	m_moving = true;
+	setDown (true);
 }
 
 void
 PosButton::mouseReleaseEvent (QMouseEvent *event)
 {
-	m_moving = false;
+	setDown (false);
 
 	float value = pos().x() / (float)(m_slider->width() - width());
 
