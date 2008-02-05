@@ -1,9 +1,9 @@
 Todo:
 
-* Config
-	* ServerConfig
-	* ApplicationConfig
-* Balance
++ Mainwindow
+	+ Balancebackgrounds are wrong
+	+ enable repeat button
+	+ enable random play (will have to wait for a randomplay service client)
 * Playlist
 	+ Make displayed Information configurable
 	+ Add scrollbuttons to slider
@@ -23,5 +23,3 @@ Todo:
 * Textbox
 	* redraw text in textbox when switching skin.
 	* figure out something smart on osx.
-* xclient:
-	* connect disconnected callback, so that it emits 'disconnected ()'

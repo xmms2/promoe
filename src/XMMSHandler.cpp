@@ -179,6 +179,7 @@ XMMSHandler::DictToQHash (const std::string &key,
 	}
 }
 
+/*
 void
 XMMSHandler::PropDictToQHash (const std::string &key,
                               const Xmms::Dict::Variant &value,
@@ -196,7 +197,7 @@ XMMSHandler::PropDictToQHash (const std::string &key,
 		             QString::fromUtf8 (boost::get< std::string > (value).c_str()));
 	}
 }
-
+*/
 /*
 uint
 XMMSHandler::medialibQuery (QString q)

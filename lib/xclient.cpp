@@ -73,7 +73,7 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
 	m_client = NULL;
     m_isconnected = false;
 	m_cache = new XClientCache (this, this);
-	m_settings = new XSettings (this, this);
+	m_config = new XConfig (this, this);
 	m_name = name;
 }
 

@@ -74,6 +74,7 @@ SkinDisplay::paintEvent (QPaintEvent *event)
 	paint.end();
 }
 
+
 void
 SkinDisplay::fileOpen (void)
 {

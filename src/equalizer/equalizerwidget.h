@@ -23,7 +23,7 @@ class QPixmap;
 class QPaintEvent;
 
 #include "VolumeSlider.h"
-class XSettings;
+class XConfig;
 class Skin;
 class Button;
 class ToggleButton;
@@ -66,7 +66,7 @@ class EqualizerWidget : public QWidget
 		void updateServerBands (int value, int id);
 
 	private:
-		XSettings *m_xsettings;
+		XConfig *m_xconfig;
 		QPixmap m_pixmap;
 		QPixmap m_graph;
 		ToggleButton *m_enable;

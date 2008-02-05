@@ -14,7 +14,7 @@
  */
 
 #include "XMMSHandler.h"
-#include "xsettings.h"
+#include "xconfig.h"
 
 #include "equalizerwidget.h"
 
@@ -49,7 +49,7 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
 	XMMSHandler &client = XMMSHandler::getInstance ();
-	m_xsettings = client.settings ();
+	m_xconfig = client.xconfig ();
 
 	connect (skin, SIGNAL(skinChanged(Skin *)),
 	         this, SLOT(setPixmaps(Skin *)));
@@ -93,25 +93,25 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 		         this, SLOT (updateServerBands (int, int)));
 	}
 
-	connect (m_xsettings, SIGNAL (configChanged (QString, QString)),
+	connect (m_xconfig, SIGNAL (configChanged (QString, QString)),
 	         this, SLOT (serverConfigChanged (QString, QString)));
 
-	// if the settings from the server were already loaded, we will only
+	// if the config from the server were already loaded, we will only
 	// receive configChanged signals for values that really change
 	// so we must request the existing values manually
-	if (m_xsettings->isReady()) {
+	if (m_xconfig->isReady()) {
 		QString key;
 		QString value;
 		// set enabled checkbox
 		key = QString ("equalizer.enabled");
-		value = m_xsettings->value_get (key);
+		value = m_xconfig->value_get (key);
 		serverConfigChanged (key, value);
 		// set preamp
 
 		// Set band-sliders
 		for (int i=0; i < 10; i++) {
 			key = QString ("equalizer.legacy%1").arg(i);
-			value = m_xsettings->value_get (key);
+			value = m_xconfig->value_get (key);
 			serverConfigChanged (key, value);
 		}
 	}
@@ -185,22 +185,22 @@ EqualizerWidget::serverConfigChanged (QString key, QString value)
 void
 EqualizerWidget::setEqualizerEnabled (bool enabled) {
 	if (enabled) {
-		m_xsettings->value_set ("equalizer.enabled", "1");
-		m_xsettings->value_set ("equalizer.use_legacy", "1");
+		m_xconfig->value_set ("equalizer.enabled", "1");
+		m_xconfig->value_set ("equalizer.use_legacy", "1");
 	} else {
-		m_xsettings->value_set ("equalizer.enabled", "0");
+		m_xconfig->value_set ("equalizer.enabled", "0");
 	}
 }
 
 void
 EqualizerWidget::updateServerPreamp (int value)
 {
-	m_xsettings->value_set ("equalizer.preamp", QString::number (value));
+	m_xconfig->value_set ("equalizer.preamp", QString::number (value));
 }
 
 void
 EqualizerWidget::updateServerBands (int value, int id)
 {
 	QString key = QString ("equalizer.legacy%1").arg (id);
-	m_xsettings->value_set (key, QString::number (value));
+	m_xconfig->value_set (key, QString::number (value));
 }

@@ -16,11 +16,11 @@
 
 #include <xmmsclient/xmmsclient++.h>
 
-#include "xsettings.h"
+#include "xconfig.h"
 
 #include <QList>
 
-XSettings::XSettings (QObject *parent, XClient *client) : QObject (parent)
+XConfig::XConfig (QObject *parent, XClient *client) : QObject (parent)
 {
 	m_ready = false;
 
@@ -36,10 +36,10 @@ XSettings::XSettings (QObject *parent, XClient *client) : QObject (parent)
 }
 
 QString
-XSettings::value_get (QString key)
+XConfig::value_get (QString key)
 {
-	/* if XSettings is ready, the local cache should be in sync with the
-	 * serverside settings, otherwise the cache is empty */
+	/* if XConfig is ready, the local cache should be in sync with the
+	 * serverside configuration, otherwise the cache is empty */
 	if (!m_ready) {
 		return QString ();
 	}
@@ -47,7 +47,7 @@ XSettings::value_get (QString key)
 }
 
 bool
-XSettings::value_set (QString key, QString val)
+XConfig::value_set (QString key, QString val)
 {
 	/* Only send change request to server here
 	 * update of local cache will be done through handle_config_value_changed
@@ -65,7 +65,7 @@ XSettings::value_set (QString key, QString val)
 }
 
 bool
-XSettings::value_register (QString key, QString defval)
+XConfig::value_register (QString key, QString defval)
 {
 	if (!m_client->isConnected ()) {
 		return false;
@@ -77,19 +77,19 @@ XSettings::value_register (QString key, QString defval)
 }
 
 void
-XSettings::on_connect (XClient *client)
+XConfig::on_connect (XClient *client)
 {
 	client->config ()->valueList ()
-	        (Xmms::bind (&XSettings::handle_config_value, this));
+	        (Xmms::bind (&XConfig::handle_config_value, this));
 
 	client->config ()->broadcastValueChanged ()
-	        (Xmms::bind (&XSettings::handle_config_value_changed, this));
+	        (Xmms::bind (&XConfig::handle_config_value_changed, this));
 
 	m_client = client;
 }
 
 void
-XSettings::on_disconnect (XClient *client)
+XConfig::on_disconnect (XClient *client)
 {
 	/* We don't emit any signals here, as every class must be able to
 	 * react on the configChanged signal, which will be fired for every
@@ -100,7 +100,7 @@ XSettings::on_disconnect (XClient *client)
 }
 
 bool
-XSettings::handle_config_value (const Xmms::Dict &value)
+XConfig::handle_config_value (const Xmms::Dict &value)
 {
 	bool ok = handle_config_value_changed (value);
 	if (ok) {
@@ -110,7 +110,7 @@ XSettings::handle_config_value (const Xmms::Dict &value)
 }
 
 bool
-XSettings::handle_config_value_changed (const Xmms::Dict &value)
+XConfig::handle_config_value_changed (const Xmms::Dict &value)
 {
 	QHash <QString, QVariant> tmp = XClient::convert_dict(value); 
 

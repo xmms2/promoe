@@ -14,10 +14,8 @@
  *	GNU General Public License for more details.
  */
 
-#ifndef __XSETTINGS__
-#define __XSETTINGS__
-
-class XSettings;
+#ifndef __XConfig__
+#define __XConfig__
 
 #include "xclient.h"
 
@@ -25,11 +23,11 @@ class XSettings;
 #include <QHash>
 #include <QString>
 
-class XSettings : public QObject
+class XConfig : public QObject
 {
 	Q_OBJECT
 	public:
-		XSettings (QObject *parent, XClient *client);
+		XConfig (QObject *parent, XClient *client);
 
 		QString value_get (QString key);
 		bool value_set (QString key, QString value);

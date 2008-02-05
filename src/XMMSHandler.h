@@ -103,10 +103,10 @@ class XMMSHandler : public XClient {
 		void DictToQHash (const std::string &key,
 		                  const Xmms::Dict::Variant &value,
 		                  QHash<QString, QString> &hash);
-	void PropDictToQHash (const std::string &key,
-		                      const Xmms::Dict::Variant &value,
-		                      const std::string &source,
-		                      QHash<QString, QString> &hash);
+//	void PropDictToQHash (const std::string &key,
+//		                      const Xmms::Dict::Variant &value,
+//		                      const std::string &source,
+//		                      QHash<QString, QString> &hash);
 
 		bool volume_get (const Xmms::Dict &levels);
 		bool volume_error (const std::string &error);

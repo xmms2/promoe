@@ -19,22 +19,18 @@
 
 #include "XMMSHandler.h"
 
-#include <QMainWindow>
-#include <QFont>
 #include <QScrollBar>
 #include <QSizeGrip>
 
-class MainWindow;
 class PlaylistWidget;
 class PlaylistScroller;
 
 #include "Button.h"
 
 class Skin;
-//class PlaylistList;
 class PlaylistView;
-class PlaylistShade;
 class PlaylistMenu;
+
 
 class PlaylistSizeGrip : public QSizeGrip {
 	Q_OBJECT

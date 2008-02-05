@@ -180,17 +180,17 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 
 	m_view = new PlaylistView (this);
 	m_view->move (10, 20);
-	m_view->resize (size().width()-30, size().height()-20-38);
+//	m_view->resize (size().width()-30, size().height()-20-38);
 	// TODO: creation of Playlistmodel should be done elsewhere
 	m_view->setModel (XMMSHandler::getInstance().getPlaylistModel());
-
-	//m_list = new PlaylistList (m_view);
 
 	/*
 	 * This is a hack to make PlaylistScrollBar work with PlaylistView.
 	 * It is necessery because of limitations and at least one Bug in the
 	 *  QT library (as of Version 4.3)
 	 * TODO: This might break in a future Qt version. Try to find a better solution
+	 * FIXME: scrollbar is only visible if playlist was closed on startup or
+	 * after resizing the playlist
 	 */
 	m_scrollBar = new PlaylistScrollBar (this);
 	m_view->setVerticalScrollBar (m_scrollBar);
@@ -208,7 +208,7 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	addButtons ();
 
 	setMinimumSize (275, 116);
-	resize (275, 300);
+//	resize (275, 300);
 }
 
 void
@@ -246,7 +246,6 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_DEL_FIL_1);
 	connect (b, SIGNAL (activated ()),
 	         m_view, SLOT (removeSelected ()));
-//	connect (b, SIGNAL(activated ()), m_list, SLOT (deleteFiles ()));
 
 	/* Selection menu */
 	m_sel = new PlaylistMenu (this, Skin::PLS_SEL,
@@ -370,7 +369,8 @@ void
 PlaylistWidget::setPixmaps (Skin *skin)
 {
 	setActive (m_active);
-	resize (size().width(), size().height());
+
+	update ();
 }
 
 void

@@ -29,7 +29,9 @@ class XClient;
 #include <QWidget>
 
 #include "xclientcache.h"
-#include "xsettings.h"
+#include "xconfig.h"
+
+class XConfig;
 
 /*
 class XSettings : public QObject
@@ -67,8 +69,8 @@ class XClient : public QObject {
 			return m_cache;
 		};
 
-		XSettings *settings () const {
-			return m_settings;
+		XConfig *xconfig () const {
+			return m_config;
 		};
 
 		const Xmms::Client *sync () const {
@@ -103,7 +105,7 @@ class XClient : public QObject {
 		std::string m_name;
 //		Xmms::Client *m_client;
 		XClientCache *m_cache;
-		XSettings *m_settings;
+		XConfig *m_config;
         bool m_isconnected;
 
 		Xmms::Client m_sync;
