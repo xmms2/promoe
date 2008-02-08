@@ -2,6 +2,7 @@ include($$PWD/widgets/widgets.pri)
 include($$PWD/mainwindow/mainwindow.pri)
 include($$PWD/playlist/playlist.pri)
 include($$PWD/equalizer/equalizer.pri)
+include($$PWD/dialogs/dialogs.pri)
 
 HEADERS += PixWidget.h \
            Skin.h \

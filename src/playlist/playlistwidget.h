@@ -86,6 +86,9 @@ class PlaylistWidget : public QWidget {
 		void menuAddDir ();
 		void menuAddFile ();
 
+	protected slots:
+		void openPlaylistChooser ();
+
 	private:
 		void resizeEvent (QResizeEvent *event);
 		void paintEvent (QPaintEvent *event);

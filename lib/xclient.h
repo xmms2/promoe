@@ -32,6 +32,7 @@ class XClient;
 #include "xconfig.h"
 
 class XConfig;
+class XCollection;
 
 /*
 class XSettings : public QObject
@@ -73,6 +74,10 @@ class XClient : public QObject {
 			return m_config;
 		};
 
+		XCollection *xcollection () const {
+			return m_collection;
+		}
+
 		const Xmms::Client *sync () const {
 			return &m_sync;
 		};
@@ -106,6 +111,7 @@ class XClient : public QObject {
 //		Xmms::Client *m_client;
 		XClientCache *m_cache;
 		XConfig *m_config;
+		XCollection *m_collection;
         bool m_isconnected;
 
 		Xmms::Client m_sync;

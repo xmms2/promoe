@@ -49,7 +49,7 @@ XConfig::value_get (QString key)
 bool
 XConfig::value_set (QString key, QString val)
 {
-	/* Only send change request to server here
+	/* Only send change request to server from here
 	 * update of local cache will be done through handle_config_value_changed
 	 */
 	if (!m_client->isConnected ()) {

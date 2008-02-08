@@ -1,0 +1,108 @@
+<ui version="4.0" >
+ <class>PlaylistChooser</class>
+ <widget class="QDialog" name="PlaylistChooser" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>260</width>
+    <height>301</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Playlists</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QLineEdit" name="playlistTextEdit" />
+     </item>
+     <item>
+      <widget class="QPushButton" name="playlistCreateButton" >
+       <property name="text" >
+        <string>Create</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="playlistsListWidget" >
+     <property name="verticalScrollBarPolicy" >
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy" >
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QPushButton" name="playlistRemoveButton" >
+       <property name="text" >
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="closeButton" >
+       <property name="text" >
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>closeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>PlaylistChooser</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>217</x>
+     <y>279</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>129</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>playlistsListWidget</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>playlistTextEdit</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>129</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>87</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

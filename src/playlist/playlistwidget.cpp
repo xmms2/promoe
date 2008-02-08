@@ -26,6 +26,7 @@
 #include "playlistshade.h"
 #include "playlistmenu.h"
 #include "FileDialog.h"
+#include "playlistchooser.h"
 
 #include <QMouseEvent>
 #include <QPaintEvent>
@@ -277,6 +278,8 @@ PlaylistWidget::addButtons (void)
 							  Skin::PLS_LST_DEC);
 	b = new PlaylistMenuButton (m_lst, Skin::PLS_LST_NEW_0,
 								Skin::PLS_LST_NEW_1);
+	connect (b, SIGNAL (activated ()),
+	         this, SLOT(openPlaylistChooser ()));
 	b = new PlaylistMenuButton (m_lst, Skin::PLS_LST_SAV_0,
 								Skin::PLS_LST_SAV_1);
 	b = new PlaylistMenuButton (m_lst, Skin::PLS_LST_OPN_0,
@@ -505,3 +508,10 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 	paint.end ();
 }
 
+void
+PlaylistWidget::openPlaylistChooser ()
+{
+	XMMSHandler &client = XMMSHandler::getInstance ();
+	PlaylistChooser *tmp = new PlaylistChooser (this, client.xcollection ());
+	tmp->show ();
+}

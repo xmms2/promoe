@@ -24,6 +24,7 @@
 #include <QSettings>
 
 #include "xclient.h"
+#include "xcollection.h"
 #include "xmmsqt4.h"
 #include "debug.h"
 
@@ -74,6 +75,7 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
     m_isconnected = false;
 	m_cache = new XClientCache (this, this);
 	m_config = new XConfig (this, this);
+	m_collection = new XCollection (this);
 	m_name = name;
 }
 
@@ -128,7 +130,7 @@ try_again:
 		    qWarning ("Couldn't establish sync connection!");
 	    }
     }
-    
+
     m_isconnected = true;
 	emit gotConnection (this);
 
