@@ -32,14 +32,21 @@ class PlaylistChooser : public QDialog,  private Ui::PlaylistChooser {
 
 
 	private slots:
+		// XCollection change handlers
 		void handle_playlists_modified (QString, QString, int, QString);
+		void handle_active_pls_changed (QString, QString);
 
-		void on_playlistCreateButton_clicked ();
-		void on_playlistRemoveButton_clicked ();
-
-		void on_playlistsListWidget_itemDoubleClicked (QListWidgetItem* item);
+		// autoconnect Slots
+		void on_removeButton_clicked ();
+		void on_createButton_clicked ();
+		void on_selectButton_clicked ();
+		void on_listWidget_itemDoubleClicked (QListWidgetItem* item);
+		void on_listWidget_itemSelectionChanged ();
+		void on_textEdit_textChanged ();
 
 	private:
+		bool playlistExists (QString name);
+
 		XCollection* m_collection;
 };
 

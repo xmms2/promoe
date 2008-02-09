@@ -27,7 +27,7 @@ class XConfig : public QObject
 {
 	Q_OBJECT
 	public:
-		XConfig (QObject *parent, XClient *client);
+		XConfig (XClient *parent);
 
 		QString value_get (QString key);
 		bool value_set (QString key, QString value);

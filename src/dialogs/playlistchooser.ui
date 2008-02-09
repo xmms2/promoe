@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>260</width>
-    <height>301</height>
+    <width>266</width>
+    <height>302</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -16,10 +16,10 @@
    <item>
     <layout class="QHBoxLayout" >
      <item>
-      <widget class="QLineEdit" name="playlistTextEdit" />
+      <widget class="QLineEdit" name="textEdit" />
      </item>
      <item>
-      <widget class="QPushButton" name="playlistCreateButton" >
+      <widget class="QPushButton" name="createButton" >
        <property name="text" >
         <string>Create</string>
        </property>
@@ -28,7 +28,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="playlistsListWidget" >
+    <widget class="QListWidget" name="listWidget" >
      <property name="verticalScrollBarPolicy" >
       <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
@@ -40,7 +40,7 @@
    <item>
     <layout class="QHBoxLayout" >
      <item>
-      <widget class="QPushButton" name="playlistRemoveButton" >
+      <widget class="QPushButton" name="removeButton" >
        <property name="text" >
         <string>Remove</string>
        </property>
@@ -58,6 +58,19 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="selectButton" >
+       <property name="toolTip" >
+        <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Set the currently selected playlist as active playlist&lt;/p>&lt;/body>&lt;/html></string>
+       </property>
+       <property name="text" >
+        <string>Select</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="closeButton" >
@@ -89,9 +102,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>playlistsListWidget</sender>
+   <sender>listWidget</sender>
    <signal>currentTextChanged(QString)</signal>
-   <receiver>playlistTextEdit</receiver>
+   <receiver>textEdit</receiver>
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel" >

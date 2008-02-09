@@ -39,6 +39,11 @@ XCollection::on_connect (XClient *client)
 	client->collection ()->list ("Playlists")
 	        (Xmms::bind (&XCollection::handle_playlists_list, this));
 
+	client->playlist ()->currentActive ()
+	        (Xmms::bind (&XCollection::handle_active_pls_changed, this));
+	client->playlist ()->broadcastLoaded ()
+	        (Xmms::bind (&XCollection::handle_active_pls_changed, this));
+
 	m_client = client;
 }
 
@@ -94,6 +99,19 @@ XCollection::on_collection_modified (const Xmms::Dict &value)
 }
 
 bool
+XCollection::remove (QString name, QString ns) {
+	if (!m_client->isConnected ()) return false;
+
+	m_client->collection ()->remove (name.toStdString (), ns.toAscii ());
+
+	return true;
+}
+
+/*
+ *  idList (Playlist) stuff
+ */
+
+bool
 XCollection::handle_playlists_list (const Xmms::List< std::string > &list)
 {
 	m_playlists.clear ();
@@ -125,21 +143,22 @@ XCollection::setActivePlaylist (QString name) {
 	return true;
 }
 
+bool
+XCollection::handle_active_pls_changed (const std::string &name) {
+	QString tmp = m_activePlaylist;
+	m_activePlaylist = XClient::stdToQ (name);
+
+	emit activePlaylistChanged (m_activePlaylist, tmp);
+
+	return true;
+}
+
 // FIXME: should be done in a more generic way
 bool
 XCollection::addIdlist (QString name) {
 	if (!m_client->isConnected ()) return false;
 
 	m_client->playlist ()->create (name.toStdString ());
-
-	return true;
-}
-
-bool
-XCollection::remove (QString name, QString ns) {
-	if (!m_client->isConnected ()) return false;
-
-	m_client->collection ()->remove (name.toStdString (), ns.toAscii ());
 
 	return true;
 }

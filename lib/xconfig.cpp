@@ -20,18 +20,18 @@
 
 #include <QList>
 
-XConfig::XConfig (QObject *parent, XClient *client) : QObject (parent)
+XConfig::XConfig (XClient *parent) : QObject (parent)
 {
 	m_ready = false;
 
-	connect (client, SIGNAL (gotConnection (XClient *)),
+	connect (parent, SIGNAL (gotConnection (XClient *)),
 	         this, SLOT (on_connect (XClient *)));
 
-	connect (client, SIGNAL (disconnected (XClient *)),
+	connect (parent, SIGNAL (disconnected (XClient *)),
 	         this, SLOT (on_disconnect (XClient *)));
 
-	if (client->isConnected ()) {
-		on_connect (client);
+	if (parent->isConnected ()) {
+		on_connect (parent);
 	}
 }
 
