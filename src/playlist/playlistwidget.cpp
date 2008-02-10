@@ -27,6 +27,7 @@
 #include "playlistmenu.h"
 #include "FileDialog.h"
 #include "playlistchooser.h"
+#include "urlopen.h"
 
 #include <QMouseEvent>
 #include <QPaintEvent>
@@ -287,6 +288,14 @@ PlaylistWidget::addButtons (void)
 }
 
 void
+PlaylistWidget::menuAddUrl ()
+{
+	XMMSHandler &client = XMMSHandler::getInstance ();
+	UrlOpen *tmp = new UrlOpen (this, client.xcollection ());
+	tmp->show ();
+}
+
+void
 PlaylistWidget::diveDir (const QString &dir)
 {
 	QDir d (dir);
@@ -515,3 +524,5 @@ PlaylistWidget::openPlaylistChooser ()
 	PlaylistChooser *tmp = new PlaylistChooser (this, client.xcollection ());
 	tmp->show ();
 }
+
+

@@ -8,6 +8,7 @@ PRE_TARGETDEPS = $$COMPONENTS
 
 MOC_DIR     = .moc
 OBJECTS_DIR = .obj
+UI_DIR      = .ui
 
 include(src.pri)
 

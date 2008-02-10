@@ -17,6 +17,7 @@
 
 #include <QHash>
 #include <QString>
+#include <QUrl>
 
 XCollection::XCollection (XClient * client) : QObject ( client)
 {
@@ -159,6 +160,24 @@ XCollection::addIdlist (QString name) {
 	if (!m_client->isConnected ()) return false;
 
 	m_client->playlist ()->create (name.toStdString ());
+
+	return true;
+}
+
+bool
+XCollection::playlistAddUrl (QUrl url, QString plsname)
+{
+	//TODO: more tests if file is valid
+	if (!url.isValid ()) {
+		return false;
+	}
+
+	if (plsname == "") {
+		plsname = m_activePlaylist;
+	}
+
+	m_client->playlist ()->addUrl (url.toString ().toStdString (),
+	                               plsname.toStdString ());
 
 	return true;
 }

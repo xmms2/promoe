@@ -82,7 +82,7 @@ class PlaylistWidget : public QWidget {
 	public slots:
 		void setPixmaps (Skin *skin);
 
-		void menuAddUrl () {}
+		void menuAddUrl ();
 		void menuAddDir ();
 		void menuAddFile ();
 

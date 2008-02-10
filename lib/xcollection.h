@@ -21,6 +21,7 @@
 #include <QObject>
 class QString;
 class QStringList;
+class QUrl;
 
 class XCollection : public QObject
 {
@@ -35,6 +36,7 @@ class XCollection : public QObject
 		bool setActivePlaylist (QString name);
 		QString activePlaylist () {return m_activePlaylist;}
 		bool addIdlist (QString name);
+		bool playlistAddUrl (QUrl url, QString plsname = "");
 
 	signals:
 		void collectionModified (QString collection, QString ns, int type,
