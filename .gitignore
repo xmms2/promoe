@@ -6,9 +6,13 @@
 *.dylib
 *.bundle
 *.swp
+*.obj
+*.moc
+*.ui
 *~
 moc_*
 promoe.app
+promoe
 qrc*
 .gdb*
 Makefile
