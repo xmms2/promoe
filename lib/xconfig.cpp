@@ -17,8 +17,10 @@
 #include <xmmsclient/xmmsclient++.h>
 
 #include "xconfig.h"
+#include "xclient.h"
 
 #include <QList>
+#include <QVariant>
 
 XConfig::XConfig (XClient *parent) : QObject (parent)
 {

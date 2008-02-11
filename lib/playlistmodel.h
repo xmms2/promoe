@@ -20,12 +20,12 @@
 
 #include <xmmsclient/xmmsclient++.h>
 
+class XClient;
+
 #include <QAbstractTableModel>
 #include <QVariant>
 #include <QHash>
 #include <QIcon>
-
-#include "xclient.h"
 
 /**
  * @class PlaylistModel playlistmodel.h

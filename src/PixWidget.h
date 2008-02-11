@@ -16,11 +16,8 @@
 #ifndef __PIXWIDGET_H__
 #define __PIXWIDGET_H__
 
-#include <iostream>
-
-#include <QPixmap>
-#include <QPainter>
 #include <QWidget>
+class QPixmap;
 
 class Skin;
 

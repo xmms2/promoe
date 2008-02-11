@@ -16,6 +16,7 @@
 
 
 #include "xclientcache.h"
+#include "xclient.h"
 
 #include <QObject>
 #include <QIcon>
@@ -26,10 +27,11 @@
 #include <QPixmapCache>
 #include <QSettings>
 
-XClientCache::XClientCache (QObject *parent, XClient *client) : QObject (parent)
+XClientCache::XClientCache (XClient *client) : QObject (client)
 {
 	QSettings s;
-	connect (client, SIGNAL (gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
+	connect (client, SIGNAL (gotConnection (XClient *)),
+	         this, SLOT (got_connection (XClient *)));
 	QPixmapCache::setCacheLimit (s.value ("core/pixmapcache").toInt ());
 }
 
@@ -37,10 +39,13 @@ void
 XClientCache::got_connection (XClient *client)
 {
 	m_client = client;
-	client->playback ()->signalPlaytime () (Xmms::bind (&XClientCache::handle_playtime, this));
-	client->playback ()->getPlaytime () (Xmms::bind (&XClientCache::handle_playtime, this));
+	client->playback ()->signalPlaytime () (
+	         Xmms::bind (&XClientCache::handle_playtime, this));
+	client->playback ()->getPlaytime () (
+	         Xmms::bind (&XClientCache::handle_playtime, this));
 
-	client->medialib ()->broadcastEntryChanged () (Xmms::bind (&XClientCache::handle_mlib_entry_changed, this));
+	client->medialib ()->broadcastEntryChanged () (
+	         Xmms::bind (&XClientCache::handle_mlib_entry_changed, this));
 }
 
 bool
@@ -129,7 +134,7 @@ XClientCache::get_pixmap (uint32_t id)
 
 		if (!QPixmapCache::find (hash, p)) {
 			m_client->bindata ()->retrieve (hash.toStdString ()) (
-										boost::bind (&XClientCache::handle_bindata, this, _1, hash));
+			     boost::bind (&XClientCache::handle_bindata, this, _1, hash));
 			QPixmapCache::insert (hash, QPixmap ());
 			m_icon_map[hash].append (id);
 		}
@@ -143,8 +148,10 @@ QHash<QString, QVariant>
 XClientCache::get_info (uint32_t id)
 {
 	if (!m_info.contains (id)) {
-		m_client->medialib ()->getInfo (id) (Xmms::bind (&XClientCache::handle_medialib_info, this),
-		                                 boost::bind (&XClientCache::handle_medialib_info_error, this, _1, id));
+		m_client->medialib ()->getInfo (id) (
+		               Xmms::bind (&XClientCache::handle_medialib_info, this),
+		               boost::bind (&XClientCache::handle_medialib_info_error,
+					                this, _1, id));
 		m_info[id] = QHash<QString, QVariant> ();
 	}
 

@@ -21,6 +21,7 @@ class TitleBar;
 #include "PixWidget.h"
 
 class Button;
+class Skin;
 
 class TitleBar : public PixWidget
 {

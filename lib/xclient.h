@@ -20,32 +20,16 @@
 
 #include <xmmsclient/xmmsclient++.h>
 
-class XClient;
-
 #include <QObject>
 #include <QHash>
 #include <QVariant>
-#include <QDir>
-#include <QWidget>
+class QWidget;
 
-#include "xclientcache.h"
-#include "xconfig.h"
-
+class XClientCache;
 class XConfig;
+class XPlayback;
 class XCollection;
 
-/*
-class XSettings : public QObject
-{
-	Q_OBJECT
-	public:
-		XSettings (QObject *);
-		void change_settings ();
-
-	signals:
-		void settingsChanged ();
-};
-*/
 
 class XClient : public QObject {
 	Q_OBJECT
@@ -53,7 +37,8 @@ class XClient : public QObject {
 		XClient (QObject *, const std::string &);
 
 		void disconnect ();
-		bool connect (const char *path = NULL, const bool &sync = false, QWidget* parent = NULL);
+		bool connect (const char *path = NULL, const bool &sync = false,
+		               QWidget* parent = NULL);
 		static void propDictToQHash (const std::string &key,
 									 const Xmms::Dict::Variant &value,
 									 const std::string &source,
@@ -74,6 +59,10 @@ class XClient : public QObject {
 			return m_config;
 		};
 
+		XPlayback *xplayback () const {
+			return m_playback;
+		}
+
 		XCollection *xcollection () const {
 			return m_collection;
 		}
@@ -89,7 +78,7 @@ class XClient : public QObject {
             return m_isconnected;
         };
         
-        static QDir esperanza_dir ();
+//        static QDir esperanza_dir ();
 		void setDisconnectCallback (const Xmms::DisconnectCallback::slot_type &slot) { m_client->setDisconnectCallback (slot); }
 		const Xmms::Collection* collection () { if (m_client && m_client->isConnected ()) return &m_client->collection; else return NULL; }
 		const Xmms::Playlist* playlist () { if (m_client && m_client->isConnected ()) return &m_client->playlist; else return NULL; }
@@ -111,6 +100,7 @@ class XClient : public QObject {
 //		Xmms::Client *m_client;
 		XClientCache *m_cache;
 		XConfig *m_config;
+		XPlayback *m_playback;
 		XCollection *m_collection;
         bool m_isconnected;
 

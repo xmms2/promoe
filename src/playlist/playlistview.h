@@ -19,11 +19,12 @@
 
 //include "Playlist.h"
 #include <xmmsclient/xmmsclient++.h>
-#include "Skin.h"
+class Skin;
+
 #include <QObject>
 #include <QAbstractItemDelegate>
 #include <QListView>
-#include <QWidget>
+class QWidget;
 
 class PlaylistDelegate : public QAbstractItemDelegate {
 	Q_OBJECT

@@ -13,14 +13,14 @@
  *  GNU General Public License for more details.
  */
 
-#ifndef __XCollection_H__
-#define __XCollection_H__
+#ifndef __XCOLLECTION_H__
+#define __XCOLLECTION_H__
 
-#include "xclient.h"
+class XClient;
 
 #include <QObject>
-class QString;
 class QStringList;
+class QString;
 class QUrl;
 
 class XCollection : public QObject
@@ -32,9 +32,10 @@ class XCollection : public QObject
 		QStringList list (QString ns = "Playlists");
 
 		bool remove (QString name, QString ns);
+
 		// idlist specific
 		bool setActivePlaylist (QString name);
-		QString activePlaylist () {return m_activePlaylist;}
+		QString activePlaylist ();
 		bool addIdlist (QString name);
 		bool playlistAddUrl (QUrl url, QString plsname = "");
 
@@ -48,14 +49,10 @@ class XCollection : public QObject
 		void on_connect (XClient *);
 
 	private:
-		bool on_collection_modified (const Xmms::Dict &value);
-		bool handle_playlists_list (const Xmms::List< std::string > &list);
-		bool handle_active_pls_changed (const std::string &name);
+		class Private;
+		Private* d;
 
 		XClient *m_client;
-		QStringList m_playlists;
-
-		QString m_activePlaylist;
 };
 
 #endif

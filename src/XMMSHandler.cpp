@@ -25,9 +25,6 @@
 
 #include <QErrorMessage>
 #include <QHash>
-#include <QFile>
-#include <QFileDialog>
-#include <QDir>
 
 XMMSHandler &XMMSHandler::getInstance ()
 {
@@ -64,15 +61,22 @@ XMMSHandler::connect_handler (const char *ipcpath, const bool &sync, QWidget *pa
 	connect(ipcpath, sync, parent);
 
 	using Xmms::bind;
-	m_client->medialib.broadcastEntryChanged () (bind (&XMMSHandler::medialib_entry_changed, this));
+	m_client->medialib.broadcastEntryChanged () (
+	                    bind (&XMMSHandler::medialib_entry_changed, this));
 
-	m_client->playback.currentID () (bind (&XMMSHandler::playback_current_id, this));
-	m_client->playback.broadcastCurrentID () (bind (&XMMSHandler::playback_current_id, this));
+	m_client->playback.currentID () (
+	                    bind (&XMMSHandler::playback_current_id, this));
+	m_client->playback.broadcastCurrentID () (
+	                    bind (&XMMSHandler::playback_current_id, this));
 
-	m_client->playback.getStatus () (bind (&XMMSHandler::playback_status, this));
-	m_client->playback.broadcastStatus () (bind (&XMMSHandler::playback_status, this));
 
-	m_client->playback.broadcastVolumeChanged () (bind (&XMMSHandler::volume_changed, this));
+	m_client->playback.getStatus () (
+	                    bind (&XMMSHandler::playback_status, this));
+	m_client->playback.broadcastStatus () (
+	                    bind (&XMMSHandler::playback_status, this));
+
+	m_client->playback.broadcastVolumeChanged () (
+	                    bind (&XMMSHandler::volume_changed, this));
 
 	return true;
 }
@@ -98,42 +102,19 @@ XMMSHandler::playlistAddURL (const QString &s)
 {
 	m_client->playlist.addUrl (s.toAscii ().constData ()) ();
 }
-void
-XMMSHandler::playlistRemove (uint pos)
-{ 
-	m_client->playlist.removeEntry (pos) ();
-}
-
-void
-XMMSHandler::playlistMove (uint pos, uint newpos)
-{
-	m_client->playlist.moveEntry (pos, newpos) ();
-}
 
 void
 XMMSHandler::requestMediainfo (uint id)
 {
-	m_client->medialib.getInfo (id) (Xmms::bind (&XMMSHandler::medialib_info, this));
+	m_client->medialib.getInfo (id) (
+	                    Xmms::bind (&XMMSHandler::medialib_info, this));
 }
-/*
-void
-XMMSHandler::requestPlaylistList ()
-{
-//	m_client->playlist.listEntries () (Xmms::bind (&XMMSHandler::playlist_list, this));
-}
-*/
+
 void
 XMMSHandler::requestTrackChange (int pos)
 {
 	m_client->playlist.setNext (pos) ();
 	m_client->playback.tickle () ();
-}
-
-bool
-XMMSHandler::playlist_list (const Xmms::List< unsigned int > &playlist)
-{
-	emit playlistList (playlist);
-	return false;
 }
 
 bool
@@ -146,21 +127,15 @@ XMMSHandler::playback_status (const Xmms::Playback::Status &status)
 bool 
 XMMSHandler::playback_current_id (const unsigned int &id)
 {
-	m_currentid = id;
+       m_currentid = id;
 
-	if (id > 0) {
-		requestMediainfo (id);
-	}
+       if (id > 0) {
+               requestMediainfo (id);
+       }
 
-	emit currentID(id);
-	return true;
+       return true;
 }
 
-void
-XMMSHandler::setPlaytime (uint pos)
-{
-	m_client->playback.seekMs (pos) ();
-}
 
 void
 XMMSHandler::DictToQHash (const std::string &key,
@@ -220,13 +195,6 @@ XMMSHandler::medialib_select (XMMSResultDictList *res)
 	emit medialibResponse (res->getCID (), l);
 }
 */
-
-bool
-XMMSHandler::playlist_changed (const Xmms::Dict &list)
-{
-	emit playlistChanged (list);
-	return true;
-}
 
 bool 
 XMMSHandler::medialib_info (const Xmms::PropDict &propdict)
@@ -310,31 +278,3 @@ void XMMSHandler::playlistClear ()
 {
 	m_client->playlist.clear () ();
 }
-
-void XMMSHandler::play ()
-{
-	m_client->playback.start () ();
-}
-
-void XMMSHandler::stop ()
-{
-	m_client->playback.stop () ();
-}
-
-void XMMSHandler::pause ()
-{
-	m_client->playback.pause () ();
-}
-
-void XMMSHandler::next ()
-{
-	m_client->playlist.setNextRel (1) ();
-	m_client->playback.tickle () ();
-}
-
-void XMMSHandler::prev ()
-{
-	m_client->playlist.setNextRel (-1) ();
-	m_client->playback.tickle () ();
-}
-

@@ -26,6 +26,8 @@
 #include <QFileInfo>
 
 #include "playlistmodel.h"
+#include "xclient.h"
+#include "xclientcache.h"
 
 PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &name) : QAbstractItemModel (parent)
 {

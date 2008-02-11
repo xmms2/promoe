@@ -18,23 +18,31 @@
 #ifndef __XCLIENTCACHE_H__
 #define __XCLIENTCACHE_H__
 
-class XClientCache;
+// for Xmms::bin definition
+#include "xmmsclient/xmmsclient++/result.h"
 
-#include "xclient.h"
+class XClient;
+namespace Xmms {
+	class Dict;
+	class PropDict;
+}
+// class XClientCache;
+
+// #include "xclient.h"
 
 #include <QObject>
-#include <QIcon>
-#include <QPixmap>
 #include <QHash>
 #include <QList>
 #include <QVariant>
-#include <QPixmapCache>
+class QIcon;
+class QPixmap;
+//#include <QPixmapCache>
 
 class XClientCache : public QObject
 {
 	Q_OBJECT
 	public:
-		XClientCache (QObject *, XClient *);
+		XClientCache (XClient *);
 
 		QHash<QString, QVariant> get_info (uint32_t id);
 		QIcon get_icon (uint32_t id);

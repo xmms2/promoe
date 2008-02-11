@@ -20,6 +20,7 @@
 
 #include "mainwindow.h"
 #include "Button.h"
+#include "Skin.h"
 #include "VolumeSlider.h"
 
 

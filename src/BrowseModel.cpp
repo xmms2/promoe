@@ -20,7 +20,7 @@
 #include <QString>
 #include <QIcon>
 #include <QWidget>
-
+#include <QStyle>
 
 bool
 BrowseModelItem::itemCompare (BrowseModelItem *s1, BrowseModelItem *s2)

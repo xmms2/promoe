@@ -13,43 +13,28 @@
  *  GNU General Public License for more details.
  */
 
+#include <xmmsclient/xmmsclient++.h>
+
 #include "xcollection.h"
+#include "xcollection_p.h"
+#include "xclient.h"
 
 #include <QHash>
 #include <QString>
+#include <QStringList>
 #include <QUrl>
+#include <QVariant>
 
-XCollection::XCollection (XClient * client) : QObject ( client)
+/*
+ * Private implemention to hide <xmmsclient/xmmsclient++> from collection.h
+ */
+
+XCollection::Private::Private (XCollection *collection) : QObject (collection)
 {
-	m_client = client;
-
-	connect (client, SIGNAL (gotConnection (XClient *)),
-	         this, SLOT (on_connect (XClient *)));
-
-	if (client->isConnected ()) {
-		on_connect (client);
-	}
-}
-
-void
-XCollection::on_connect (XClient *client)
-{
-	client->collection ()->broadcastCollectionChanged ()
-	        (Xmms::bind (&XCollection::on_collection_modified, this));
-
-	client->collection ()->list ("Playlists")
-	        (Xmms::bind (&XCollection::handle_playlists_list, this));
-
-	client->playlist ()->currentActive ()
-	        (Xmms::bind (&XCollection::handle_active_pls_changed, this));
-	client->playlist ()->broadcastLoaded ()
-	        (Xmms::bind (&XCollection::handle_active_pls_changed, this));
-
-	m_client = client;
 }
 
 bool
-XCollection::on_collection_modified (const Xmms::Dict &value)
+XCollection::Private::on_collection_modified (const Xmms::Dict &value)
 {
 	QString newname = QString ();
 	QHash<QString, QVariant> tmp = XClient::convert_dict (value);
@@ -99,6 +84,48 @@ XCollection::on_collection_modified (const Xmms::Dict &value)
 	return true;
 }
 
+
+
+/*
+ * The XCollection class
+ */
+XCollection::XCollection (XClient * client) : QObject ( client)
+{
+	m_client = client;
+	d = new XCollection::Private (this);
+
+	connect (client, SIGNAL (gotConnection (XClient *)),
+	         this, SLOT (on_connect (XClient *)));
+
+	// emit signals from private implementation as our own
+	connect (d, SIGNAL (collectionModified(QString, QString, int, QString)),
+	         this, SIGNAL (collectionModified(QString, QString, int, QString)));
+	connect (d, SIGNAL (activePlaylistChanged (QString, QString)),
+	         this, SIGNAL (activePlaylistChanged (QString, QString)));
+
+
+	if (client->isConnected ()) {
+		on_connect (client);
+	}
+}
+
+void
+XCollection::on_connect (XClient *client)
+{
+	client->collection ()->broadcastCollectionChanged ()
+	        (Xmms::bind (&XCollection::Private::on_collection_modified, d));
+
+	client->collection ()->list ("Playlists")
+	        (Xmms::bind (&XCollection::Private::handle_playlists_list, d));
+
+	client->playlist ()->currentActive ()
+	        (Xmms::bind (&XCollection::Private::handle_active_pls_changed, d));
+	client->playlist ()->broadcastLoaded ()
+	        (Xmms::bind (&XCollection::Private::handle_active_pls_changed, d));
+
+	m_client = client;
+}
+
 bool
 XCollection::remove (QString name, QString ns) {
 	if (!m_client->isConnected ()) return false;
@@ -111,9 +138,15 @@ XCollection::remove (QString name, QString ns) {
 /*
  *  idList (Playlist) stuff
  */
+QString
+XCollection::activePlaylist ()
+{
+	return d->m_activePlaylist;
+}
+
 
 bool
-XCollection::handle_playlists_list (const Xmms::List< std::string > &list)
+XCollection::Private::handle_playlists_list (const Xmms::List< std::string > &list)
 {
 	m_playlists.clear ();
 
@@ -130,7 +163,7 @@ QStringList
 XCollection::list (QString ns) {
 	// FIXME: use the ns parameter.
 	// We will need to handle querying the serverside playlists bettter...
-	return m_playlists;
+	return d->m_playlists;
 }
 
 
@@ -145,7 +178,7 @@ XCollection::setActivePlaylist (QString name) {
 }
 
 bool
-XCollection::handle_active_pls_changed (const std::string &name) {
+XCollection::Private::handle_active_pls_changed (const std::string &name) {
 	QString tmp = m_activePlaylist;
 	m_activePlaylist = XClient::stdToQ (name);
 
@@ -173,7 +206,7 @@ XCollection::playlistAddUrl (QUrl url, QString plsname)
 	}
 
 	if (plsname == "") {
-		plsname = m_activePlaylist;
+		plsname = d->m_activePlaylist;
 	}
 
 	m_client->playlist ()->addUrl (url.toString ().toStdString (),

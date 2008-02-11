@@ -16,16 +16,12 @@
 #ifndef __SKINDISPLAY_H__
 #define __SKINDISPLAY_H__
 
-#include <iostream>
-
-#include <QPixmap>
-#include <QPainter>
 #include <QWidget>
-#include <QHash>
-#include <QMouseEvent>
-#include <QPaintEvent>
+class QEvent;
+class QMouseEvent;
+class QPaintEvent;
 
-#include "Skin.h"
+class Skin;
 
 class SkinDisplay : public QWidget
 {

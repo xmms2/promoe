@@ -8,6 +8,7 @@ OBJECTS_DIR = .obj
 SOURCES += xclient.cpp \
 		   xclientcache.cpp \
 		   xconfig.cpp \
+		   xplayback.cpp \
 		   xcollection.cpp \
 		   playlistmodel.cpp \
 		   xmmsqt4.cpp
@@ -16,7 +17,9 @@ SOURCES += xclient.cpp \
 HEADERS += xclient.h \
 		   xclientcache.h \
 		   xconfig.h \
+		   xplayback.h \
 		   xcollection.h \
+		   xcollection_p.h \
 		   playlistmodel.h \
 		   xmmsqt4.h \
 		   debug.h

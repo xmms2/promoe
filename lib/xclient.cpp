@@ -24,7 +24,10 @@
 #include <QSettings>
 
 #include "xclient.h"
+#include "xclientcache.h"
+#include "xplayback.h"
 #include "xcollection.h"
+#include "xconfig.h"
 #include "xmmsqt4.h"
 #include "debug.h"
 
@@ -53,6 +56,7 @@ XClient::qToStd (const QString &str)
 	return std::string (str.toUtf8 ().data ());
 }
 
+/*
 QDir
 XClient::esperanza_dir ()
 {
@@ -68,13 +72,15 @@ XClient::esperanza_dir ()
     }
     return QDir ();
 }
+*/
 
 XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), m_sync (name + "-sync")
 {
 	m_client = NULL;
     m_isconnected = false;
-	m_cache = new XClientCache (this, this);
+	m_cache = new XClientCache (this);
 	m_config = new XConfig (this);
+	m_playback = new XPlayback (this);
 	m_collection = new XCollection (this);
 	m_name = name;
 }

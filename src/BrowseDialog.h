@@ -16,17 +16,15 @@
 #ifndef __BROWSEDIALOG_H__
 #define __BROWSEDIALOG_H__
 
-#include "BrowseModel.h"
+class BrowseModel;
 
 #include <QDialog>
-#include <QTreeView>
-#include <QListView>
-#include <QGridLayout>
-#include <QPushButton>
-#include <QLabel>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QItemSelectionModel>
+class QTreeView;
+class QComboBox;
+class QLineEdit;
+class QItemSelectionModel;
+class QModelIndex;
+class QString;
 
 class BrowseDialog : public QDialog
 {

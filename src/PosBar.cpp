@@ -14,6 +14,7 @@
  */
 
 #include "XMMSHandler.h"
+#include "xplayback.h"
 
 #include "mainwindow.h"
 
@@ -173,7 +174,7 @@ PosBar::setPos (uint p)
 void
 PosBar::requestPos (float value)
 {
-	XMMSHandler::getInstance ().setPlaytime (m_max * value);
+	XMMSHandler::getInstance ().xplayback ()->seekMs (m_max * value);
 }
 
 void

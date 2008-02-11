@@ -1,5 +1,5 @@
 /**
- *  This file is a part of Promoe, an XMMS2 client
+ *  This file is a part of Promoe, an XMMS2 Client.
  *
  *  Copyright (C) 2008 Thomas Frauendorfer
  *
@@ -14,28 +14,36 @@
  *  GNU General Public License for more details.
  */
 
-#include <QUrl>
+#ifndef __XPLAYBACK_H__
+#define __XPLAYBACK_H__
 
-#include "urlopen.h"
-#include "xcollection.h"
+class XClient;
 
-UrlOpen::UrlOpen (QWidget *parent, XCollection *coll) : QDialog (parent)
-{
-	setupUi (this);
-	setAttribute (Qt::WA_DeleteOnClose);
+#include <QObject>
 
-	m_collection = coll;
-}
+/**
+ * @class XPlayback
+ * @brief Thin wrapper around Xmms::Playback providing QT Signals and Slots
+ *
+ */
+class XPlayback : public QObject {
+	Q_OBJECT
 
-void
-UrlOpen::on_openButton_clicked ()
-{
-	QUrl url(urlEdit->text ());
+	public:
+	XPlayback (XClient *);
 
-	if (url.isValid ()) {
-		bool b = m_collection->playlistAddUrl (url);
-		if (b) {
-			close ();
-		}
-	}
-}
+	public slots:
+	void play ();
+	void pause ();
+	void stop ();
+	void prev ();
+	void next ();
+
+	void seekMs (uint milliseconds);
+	void seekMsRel (int milliseconds);
+
+	private:
+		XClient *m_client;
+};
+
+#endif

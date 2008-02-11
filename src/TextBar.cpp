@@ -48,7 +48,7 @@ TextScroller::TextScroller (QWidget *parent, uint w,
 	m_x2_off = 0;
 	m_fontsize = s.value ("fontsize").toInt ();
 	m_ttf = s.value ("ttf").toBool ();
-	m_text = "Promoe 0.1";
+	m_text = "Promoe " PROMOE_VERSION;
 	m_scroll = s.value ("scroll").toBool ();
 
 	s.endGroup ();

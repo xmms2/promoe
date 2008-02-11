@@ -22,7 +22,7 @@ class Button;
 
 #include "Button.h"
 #include "PixWidget.h"
-#include "Skin.h"
+class Skin;
 
 class SliderButton : public Button
 {

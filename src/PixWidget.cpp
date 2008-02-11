@@ -16,6 +16,9 @@
 #include "Skin.h"
 #include "PixWidget.h"
 
+#include <QPainter>
+#include <QPixmap>
+
 PixWidget::PixWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance();

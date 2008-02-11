@@ -14,10 +14,13 @@
  *	GNU General Public License for more details.
  */
 
-#ifndef __XConfig__
-#define __XConfig__
+#ifndef __XConfig_H__
+#define __XConfig_H__
 
-#include "xclient.h"
+class XClient;
+namespace Xmms {
+	class Dict;
+}
 
 #include <QObject>
 #include <QHash>

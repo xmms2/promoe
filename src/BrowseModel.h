@@ -20,9 +20,9 @@
 
 #include <QHash>
 #include <QString>
-#include <QStyle>
 #include <QStringList>
 #include <QAbstractTableModel>
+class QStyle;
 
 class BrowseModelItem
 {

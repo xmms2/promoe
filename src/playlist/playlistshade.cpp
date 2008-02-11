@@ -40,7 +40,7 @@ PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 	connect (&xmmsh, SIGNAL(settingsSaved ()), 
 			 this, SLOT(settingsSaved ()));
 
-	m_text = "Promoe 0.1 - A very neat XMMS2 client";
+	m_text = "Promoe " PROMOE_VERSION  " - A very neat XMMS2 client";
 }
 
 void

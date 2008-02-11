@@ -17,10 +17,12 @@
 // FIXME should not need those two
 #include <xmmsclient/xmmsclient++.h>
 #include "XMMSHandler.h"
+#include "xplayback.h"
 
 #include "playlistview.h"
 #include "playlistmodel.h"
 #include "playlistwidget.h"
+#include "Skin.h"
 
 #include <QColor>
 #include <QMenu>
@@ -272,6 +274,6 @@ PlaylistView::mouseDoubleClickEvent (QMouseEvent *event)
 	xmmsh.requestTrackChange (index.row());
 	if (m_status == XMMS_PLAYBACK_STATUS_STOP ||
 	    m_status == XMMS_PLAYBACK_STATUS_PAUSE) {
-			xmmsh.play ();
+			xmmsh.xplayback ()->play ();
 	}
 }

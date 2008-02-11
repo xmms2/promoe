@@ -19,6 +19,7 @@
 #include "maindisplay.h"
 #include "TimeDisplay.h"
 #include "NumberDisplay.h"
+#include "Skin.h"
 
 #include <QPen>
 

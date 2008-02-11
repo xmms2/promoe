@@ -17,10 +17,13 @@
 
 #include "mainwindow.h"
 #include "Display.h"
+#include "Skin.h"
 
 #include "TitleBar.h"
 
 #include "FileDialog.h"
+
+#include <QMouseEvent>
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 {

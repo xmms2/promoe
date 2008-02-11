@@ -23,6 +23,7 @@
 #include "settingsdialog.h"
 #include "Button.h"
 #include "BrowseDialog.h"
+#include "Skin.h"
 
 #include <QMenu>
 

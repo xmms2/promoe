@@ -19,15 +19,12 @@
 class PlaylistMenu;
 
 #include "XMMSHandler.h"
-#include "Skin.h"
 #include "PixWidget.h"
-
-/*
-#include <QWidget>
-#include <QPixmap>
-*/
-
+#include "Skin.h"
 class PlaylistMenu;
+
+#include <QObject>
+class QWidget;
 
 class PlaylistMenuBar : public PixWidget {
 	Q_OBJECT
