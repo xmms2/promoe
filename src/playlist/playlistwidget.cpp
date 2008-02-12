@@ -36,6 +36,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QFileDialog>
+#include <QPainter>
 
 /*
  *

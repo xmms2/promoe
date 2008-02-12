@@ -19,10 +19,9 @@
 #include <iostream>
 
 #include <QPixmap>
-#include <QPainter>
 #include <QWidget>
 #include <QMap>
-#include <QDir>
+class QDir;
 
 class Skin : public QWidget
 {

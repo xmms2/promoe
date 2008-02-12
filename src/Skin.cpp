@@ -15,6 +15,9 @@
 
 #include "Skin.h"
 
+#include <QDir>
+#include <QPainter>
+
 Skin *Skin::singleton = NULL;
 
 Skin *Skin::getInstance (void)

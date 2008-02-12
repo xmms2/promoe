@@ -18,6 +18,8 @@
 #include "TimeDisplay.h"
 #include "Skin.h"
 
+#include <QPainter>
+
 NumberDisplay::NumberDisplay (QWidget *parent, TimeDisplay *td,uint w, uint startpx) : PixWidget (parent)
 {
 	m_td = td;

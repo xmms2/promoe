@@ -27,6 +27,7 @@
 #include <QColor>
 #include <QMenu>
 #include <QPaintEvent>
+#include <QPainter>
 #include <QPalette>
 #include <QSettings>
 #include <QFontMetrics>

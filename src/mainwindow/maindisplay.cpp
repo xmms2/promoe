@@ -17,6 +17,7 @@
 #include "XMMSHandler.h"
 #include "xclientcache.h"
 #include "xplayback.h"
+#include "xconfig.h"
 
 #include "maindisplay.h"
 #include "mainwindow.h"
@@ -40,6 +41,9 @@
 
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
+	XMMSHandler &client = XMMSHandler::getInstance ();
+	m_xconfig = client.xconfig ();
+
 	m_tbar = new TitleBar(this, false);
 	m_tbar->move(0, 0);
 	m_tbar->resize(275, 14);
@@ -86,7 +90,6 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	                       Skin::BALANCE_BTN_0, Skin::BALANCE_BTN_1, -20, 20);
 	m_bslider->move (177, 57);
 
-	XMMSHandler &client = XMMSHandler::getInstance ();
 	connect (&client, SIGNAL(currentSong (const Xmms::PropDict &)), 
 			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
 	connect (&client, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
@@ -98,6 +101,8 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	connect (&client, SIGNAL(getVolume(uint)), this, SLOT(updateVolume(uint)));
 	connect (m_vslider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
 	client.volumeGet();
+
+	setupServerConfig ();
 }
 
 
@@ -249,7 +254,9 @@ MainDisplay::SetupToggleButtons (void)
 	m_repeat = new ToggleButton (this, Skin::REPEAT_ON_0, Skin::REPEAT_ON_1,
 								 Skin::REPEAT_OFF_0, Skin::REPEAT_OFF_1);
 	m_repeat->move(210, 89);
-	m_repeat->setEnabled(false); // FIXME: Disabled button for now, not yet implemented
+	connect (m_repeat, SIGNAL (clicked (bool)),
+	         this, SLOT (setRepeatAllEnabled (bool)));
+	//m_repeat->setEnabled(false); // FIXME: Disabled button for now, not yet implemented
 }
 
 
@@ -291,3 +298,43 @@ MainDisplay::SetupPushButtons (void)
 
 }
 
+
+/*
+ * Methods for interaction with the server configuration
+ */
+void
+MainDisplay::setupServerConfig ()
+{
+	connect (m_xconfig, SIGNAL (configChanged (QString, QString)),
+	         this, SLOT (serverConfigChanged (QString, QString)));
+
+	if (m_xconfig->isReady ()) {
+		QString key;
+		QString value;
+		// set repeat button
+		key = QString ("playlist.repeat_all");
+		value = m_xconfig->value_get (key);
+		serverConfigChanged (key, value);
+	}
+}
+
+void
+MainDisplay::serverConfigChanged (QString key, QString value)
+{
+	if (key == "playlist.repeat_all") {
+		if (value != "0") {
+			m_repeat->setChecked (true);
+		} else {
+			m_repeat->setChecked (false);
+		}
+	}
+}
+
+void
+MainDisplay::setRepeatAllEnabled (bool enabled) {
+	if (enabled) {
+		m_xconfig->value_set ("playlist.repeat_all", "1");
+	} else {
+		m_xconfig->value_set ("playlist.repeat_all", "0");
+	}
+}

@@ -20,6 +20,7 @@
 #include "playlistwindow.h"
 
 #include <QSettings>
+#include <QPainter>
 
 PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 {

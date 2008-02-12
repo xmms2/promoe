@@ -22,6 +22,16 @@
 class QPaintEvent;
 class QWidget;
 
+/*
+ * QIcon::Normal for normal apperance
+ * QIcon::Active for pressed state
+ *
+ * QIcon::Off for uncecked state
+ * QIcon::On for checked state
+ *
+ * only QIcon::Normal QIcon::Off combination is necessary
+ */
+
 class PixmapButton : public QAbstractButton {
 	Q_OBJECT
 

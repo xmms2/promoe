@@ -16,6 +16,8 @@
 #include "stereomono.h"
 #include "Skin.h"
 
+#include <QPainter>
+
 StereoMono::StereoMono (QWidget *parent) : PixWidget (parent)
 {
 	setMinimumSize (56, 12);

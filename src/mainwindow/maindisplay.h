@@ -43,6 +43,7 @@ class Slider;
 class PlayStatus;
 class MainWindow;
 class ClutterBar;
+class XConfig;
 
 class MainDisplay : public SkinDisplay
 {
@@ -76,6 +77,10 @@ class MainDisplay : public SkinDisplay
 		void updateVolume (uint volume);
 		void setVolume (int volume);
 
+	protected slots:
+		void serverConfigChanged (QString key, QString value);
+		void setRepeatAllEnabled (bool enabled);
+
 	protected:
 		void SetupPushButtons (void);
 		void SetupToggleButtons (void);
@@ -95,6 +100,11 @@ class MainDisplay : public SkinDisplay
 		MainWindow *m_mw;
 
 		ClutterBar *m_clutterbar;
+
+	private:
+		void setupServerConfig ();
+
+		XConfig *m_xconfig;
 
 };
 

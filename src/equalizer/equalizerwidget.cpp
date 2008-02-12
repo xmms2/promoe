@@ -23,6 +23,7 @@
 #include "Skin.h"
 #include "VolumeSlider.h"
 
+#include <QPainter>
 
 EqualizerSlider::EqualizerSlider (QWidget *parent, uint pix_min, uint pix_max,
                                   uint pix_on, uint pix_off, int min, int max, 
@@ -108,7 +109,9 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 		value = m_xconfig->value_get (key);
 		serverConfigChanged (key, value);
 		// set preamp
-
+		key = QString ("equalizer.preamp");
+		value = m_xconfig->value_get (key);
+		serverConfigChanged (key, value);
 		// Set band-sliders
 		for (int i=0; i < 10; i++) {
 			key = QString ("equalizer.legacy%1").arg(i);

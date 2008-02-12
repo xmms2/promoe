@@ -20,10 +20,10 @@
 #include "Skin.h"
 
 #include "TitleBar.h"
-
 #include "FileDialog.h"
 
 #include <QMouseEvent>
+#include <QPainter>
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 {

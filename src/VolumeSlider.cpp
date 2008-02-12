@@ -17,10 +17,12 @@
 #include <math.h>
 
 #include "VolumeSlider.h"
-#include <QMouseEvent>
 
 #include "Skin.h"
 #include "Button.h"
+
+#include <QMouseEvent>
+#include <QPainter>
 
 #define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 

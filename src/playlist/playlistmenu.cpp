@@ -19,6 +19,7 @@
 #include <QMouseEvent>
 #include <QWidget>
 #include <QPoint>
+#include <QPainter>
 
 PlaylistMenuButton::PlaylistMenuButton (PlaylistMenu *menu, 
 										uint pix1, uint pix2) : QWidget (menu)
@@ -54,6 +55,10 @@ PlaylistMenuButton::setPixmaps (Skin *skin)
 	m_pixmap = m_pixmap1;
 }
 
+
+/*
+ * PlaylistMenu
+ */
 PlaylistMenu::PlaylistMenu (QWidget *parent, uint pix,
 							uint decoration) : PixWidget (parent)
 {
