@@ -19,12 +19,15 @@
 
 //include "Playlist.h"
 #include <xmmsclient/xmmsclient++.h>
+#include <entryinfo.h>
 class Skin;
 
 #include <QObject>
 #include <QAbstractItemDelegate>
 #include <QListView>
+#include <QPointer>
 class QWidget;
+class QModelIndex;
 
 class PlaylistDelegate : public QAbstractItemDelegate {
 	Q_OBJECT
@@ -57,11 +60,15 @@ class PlaylistView : public QListView {
 		void invertSelection (void);
 		void cropSelected (void);
 		void removeSelected (void);
+		void showEntryInfo (void);
 		void settingsSaved (void);
 		void setPixmaps (Skin *skin);
 
 	protected:
 		void mouseDoubleClickEvent (QMouseEvent *event);
+
+	private slots:
+		void on_item_clicked (QModelIndex index);
 
 	private:
 		Xmms::Playback::Status m_status;
@@ -71,6 +78,7 @@ class PlaylistView : public QListView {
 		QColor m_color_selected;
 		QColor m_color_normal;
 		QColor m_color_normal_bg;
+		QPointer<EntryInfo> m_entry_info;
 };
 
 

@@ -256,7 +256,6 @@ MainDisplay::SetupToggleButtons (void)
 	m_repeat->move(210, 89);
 	connect (m_repeat, SIGNAL (clicked (bool)),
 	         this, SLOT (setRepeatAllEnabled (bool)));
-	//m_repeat->setEnabled(false); // FIXME: Disabled button for now, not yet implemented
 }
 
 

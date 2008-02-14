@@ -23,6 +23,7 @@
 #include "playlistmodel.h"
 #include "playlistwidget.h"
 #include "Skin.h"
+#include "entryinfo.h"
 
 #include <QColor>
 #include <QMenu>
@@ -142,6 +143,9 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 
 	connect (&xmmsh, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(handleStatus(Xmms::Playback::Status)));
+
+	connect (this, SIGNAL (clicked (QModelIndex)),
+	         this, SLOT (on_item_clicked (QModelIndex)));
 }
 
 void
@@ -182,7 +186,7 @@ PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 
 	a = new QAction (tr ("Show file info"), this);
 	a->setShortcut (tr ("Ctrl+Enter"));
-	a->setEnabled(false); // FIXME: Disabled for now
+	connect (a, SIGNAL (triggered ()), this, SLOT (showEntryInfo ()));
 	qm.addAction (a);
 	qm.addSeparator ();
 
@@ -276,5 +280,35 @@ PlaylistView::mouseDoubleClickEvent (QMouseEvent *event)
 	if (m_status == XMMS_PLAYBACK_STATUS_STOP ||
 	    m_status == XMMS_PLAYBACK_STATUS_PAUSE) {
 			xmmsh.xplayback ()->play ();
+	}
+}
+
+void
+PlaylistView::showEntryInfo (void)
+{
+	XMMSHandler &client = XMMSHandler::getInstance ();
+	QModelIndex current = selectionModel ()->currentIndex ();
+	if (current.isValid ()) {
+		uint32_t id = model ()->data (current, PlaylistModel::MedialibIdRole)
+		                        .toUInt ();
+		// If no infodialog exists, create one, else set the selected Item as
+		// displayed item
+		if (!m_entry_info) {
+			m_entry_info = new EntryInfo (this, client.cache (), id);
+		} else {
+			m_entry_info->raise ();
+			m_entry_info->setId (id);
+		}
+		m_entry_info->show ();
+	}
+}
+
+void
+PlaylistView::on_item_clicked (QModelIndex index)
+{
+	if (m_entry_info) {
+		uint32_t id = model ()->data (index, PlaylistModel::MedialibIdRole)
+		                        .toUInt ();
+		m_entry_info->setId (id);
 	}
 }

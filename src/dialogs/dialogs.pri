@@ -1,10 +1,13 @@
-HEADERS += playlistchooser.h \
+HEADERS += entryinfo.h \
+           playlistchooser.h \
            urlopen.h
 
-SOURCES += playlistchooser.cpp \
+SOURCES += entryinfo.cpp \
+           playlistchooser.cpp \
            urlopen.cpp
 
-FORMS += playlistchooser.ui \
+FORMS += entryinfo.ui \
+         playlistchooser.ui \
          urlopen.ui
 
 INCLUDEPATH += $$PWD

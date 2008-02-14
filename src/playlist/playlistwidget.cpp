@@ -273,6 +273,8 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_MSC_SRT_1);
 	b = new PlaylistMenuButton (m_msc, Skin::PLS_MSC_INF_0,
 								Skin::PLS_MSC_INF_1);
+	connect (b, SIGNAL (activated ()),
+	         m_view, SLOT (showEntryInfo ()));
 	b = new PlaylistMenuButton (m_msc, Skin::PLS_MSC_OPT_0,
 								Skin::PLS_MSC_OPT_1);
 	/* playlist menu */
