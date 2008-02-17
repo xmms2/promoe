@@ -372,10 +372,9 @@ PlaylistWidget::menuAddPls ()
 
 	if (files.count () > 0) {
 		XMMSHandler::getInstance ().xcollection ()->playlistClear ();
+		QString file = files[0];
+		XMMSHandler::getInstance ().xcollection ()->addPlsFile (QUrl (file));
 	}
-
-	QString file = files[0];
-	XMMSHandler::getInstance ().xcollection ()->addPlsFile (QUrl (file));
 }
 
 void
