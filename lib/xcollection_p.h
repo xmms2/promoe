@@ -32,14 +32,16 @@ class XCollection::Private : public QObject {
     Q_OBJECT
 
 	public:
-		Private (XCollection *collection);
+		Private (XCollection* collection, XClient* client);
 
 		bool on_collection_modified (const Xmms::Dict &value);
 		bool handle_playlists_list (const Xmms::List< std::string > &list);
 		bool handle_active_pls_changed (const std::string &name);
+		bool handle_idlist_created (const Xmms::Coll::Coll &idlist );
 
 		QStringList m_playlists;
 		QString m_activePlaylist;
+		XClient* m_client;
 
 	signals:
     	void collectionModified (QString collection, QString ns, int type,

@@ -85,6 +85,7 @@ class PlaylistWidget : public QWidget {
 		void menuAddUrl ();
 		void menuAddDir ();
 		void menuAddFile ();
+		void menuAddPls ();
 
 	protected slots:
 		void openPlaylistChooser ();

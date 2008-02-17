@@ -29,8 +29,10 @@
  * Private implemention to hide <xmmsclient/xmmsclient++> from collection.h
  */
 
-XCollection::Private::Private (XCollection *collection) : QObject (collection)
+XCollection::Private::Private (XCollection *collection, XClient* client) 
+            : QObject (collection)
 {
+	m_client = client;
 }
 
 bool
@@ -84,6 +86,17 @@ XCollection::Private::on_collection_modified (const Xmms::Dict &value)
 	return true;
 }
 
+bool
+XCollection::Private::handle_idlist_created (const Xmms::Coll::Coll &idlist)
+{
+	// we add a idlist, we don't want to sort it in any way
+	// I hope this does the trick.
+	std::list < std::string > tmp;
+
+	m_client->playlist ()->addCollection (idlist, tmp);
+
+	return true;
+}
 
 
 /*
@@ -92,7 +105,7 @@ XCollection::Private::on_collection_modified (const Xmms::Dict &value)
 XCollection::XCollection (XClient * client) : QObject ( client)
 {
 	m_client = client;
-	d = new XCollection::Private (this);
+	d = new XCollection::Private (this, client);
 
 	connect (client, SIGNAL (gotConnection (XClient *)),
 	         this, SLOT (on_connect (XClient *)));
@@ -222,6 +235,21 @@ XCollection::playlistClear (QString name)
 		name = d->m_activePlaylist;
 	}
 	m_client->playlist ()->clear (XClient::qToStd (name));
+
+	return true;
+}
+
+bool
+XCollection::addPlsFile (QUrl url)
+{
+	if (url.scheme ().isEmpty ()) {
+		//the protocol identifier is missing
+		//we guess we might be local, so just add file://
+		url.setScheme ("file");
+	}
+	m_client->collection ()->idlistFromPlaylistFile
+	          (std::string (url.toEncoded ()))
+	          (Xmms::bind (&XCollection::Private::handle_idlist_created, d));
 
 	return true;
 }

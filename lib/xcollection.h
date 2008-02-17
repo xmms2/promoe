@@ -42,6 +42,7 @@ class XCollection : public QObject
 		bool addIdlist (QString name);
 		bool playlistAddUrl (QUrl url, QString plsname = "");
 		bool playlistClear (QString name = "");
+		bool addPlsFile (QUrl url);
 
 	signals:
 		void collectionModified (QString collection, QString ns, int type,

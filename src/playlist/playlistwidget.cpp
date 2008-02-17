@@ -39,6 +39,7 @@
 #include <QSettings>
 #include <QFileDialog>
 #include <QPainter>
+#include <QUrl>
 
 /*
  *
@@ -291,6 +292,7 @@ PlaylistWidget::addButtons (void)
 								Skin::PLS_LST_SAV_1);
 	b = new PlaylistMenuButton (m_lst, Skin::PLS_LST_OPN_0,
 								Skin::PLS_LST_OPN_1);
+	connect (b, SIGNAL (activated ()), this, SLOT (menuAddPls ()));
 }
 
 void
@@ -358,6 +360,22 @@ PlaylistWidget::menuAddFile ()
 		}
 	}
 
+}
+
+void
+PlaylistWidget::menuAddPls ()
+{
+	QStringList files; 
+
+	FileDialog fd (this, "add_Playlist");
+	files = fd.getFiles ();
+
+	if (files.count () > 0) {
+		XMMSHandler::getInstance ().xcollection ()->playlistClear ();
+	}
+
+	QString file = files[0];
+	XMMSHandler::getInstance ().xcollection ()->addPlsFile (QUrl (file));
 }
 
 void
