@@ -34,10 +34,14 @@ class XCollection : public QObject
 		bool remove (QString name, QString ns);
 
 		// idlist specific
-		bool setActivePlaylist (QString name);
 		QString activePlaylist ();
+
+	public slots:
+		// idlist spesific
+		bool setActivePlaylist (QString name);
 		bool addIdlist (QString name);
 		bool playlistAddUrl (QUrl url, QString plsname = "");
+		bool playlistClear (QString name = "");
 
 	signals:
 		void collectionModified (QString collection, QString ns, int type,

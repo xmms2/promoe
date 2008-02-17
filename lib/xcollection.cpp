@@ -214,3 +214,14 @@ XCollection::playlistAddUrl (QUrl url, QString plsname)
 
 	return true;
 }
+
+bool
+XCollection::playlistClear (QString name)
+{
+	if (name == "") {
+		name = d->m_activePlaylist;
+	}
+	m_client->playlist ()->clear (XClient::qToStd (name));
+
+	return true;
+}

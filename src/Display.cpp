@@ -14,6 +14,7 @@
  */
 
 #include "XMMSHandler.h"
+#include "xcollection.h"
 
 #include "mainwindow.h"
 #include "Display.h"
@@ -88,7 +89,7 @@ SkinDisplay::fileOpen (void)
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance();
 	if (files.count() > 0) {
-		xmmsh.playlistClear ();
+		xmmsh.xcollection ()->playlistClear ();
 	}
 
 	for (int i = 0; i < files.count(); i++) {

@@ -21,7 +21,9 @@
 #include "playlistwindow.h"
 #include "playlistwidget.h"
 #include "playlistview.h"
+
 #include "playlistmodel.h"
+#include "xcollection.h"
 
 #include "playlistshade.h"
 #include "playlistmenu.h"
@@ -240,7 +242,8 @@ PlaylistWidget::addButtons (void)
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_ALL_0,
 								Skin::PLS_DEL_ALL_1);
 	connect (b, SIGNAL (activated ()),
-	         &XMMSHandler::getInstance(), SLOT (playlistClear ()));
+	         XMMSHandler::getInstance().xcollection (),
+	         SLOT (playlistClear ()));
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_CRP_0,
 								Skin::PLS_DEL_CRP_1);
 	connect (b, SIGNAL (activated ()),

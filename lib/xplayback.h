@@ -30,17 +30,17 @@ class XPlayback : public QObject {
 	Q_OBJECT
 
 	public:
-	XPlayback (XClient *);
+		XPlayback (XClient *);
 
 	public slots:
-	void play ();
-	void pause ();
-	void stop ();
-	void prev ();
-	void next ();
+		void play ();
+		void pause ();
+		void stop ();
+		void prev ();
+		void next ();
 
-	void seekMs (uint milliseconds);
-	void seekMsRel (int milliseconds);
+		void seekMs (uint milliseconds);
+		void seekMsRel (int milliseconds);
 
 	private:
 		XClient *m_client;

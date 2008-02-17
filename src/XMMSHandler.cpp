@@ -273,8 +273,3 @@ XMMSHandler::volume_get (const Xmms::Dict &levels)
 
 }
 
-
-void XMMSHandler::playlistClear ()
-{
-	m_client->playlist.clear () ();
-}

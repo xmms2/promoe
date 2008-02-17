@@ -67,7 +67,6 @@ class XMMSHandler : public XClient {
 		PlaylistModel *getPlaylistModel () {return m_playlist_model; }
 
 	public slots:
-		void playlistClear ();
 		void volumeSet (uint volume);
 
 	signals:

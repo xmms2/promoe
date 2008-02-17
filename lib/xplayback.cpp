@@ -69,7 +69,9 @@ XPlayback::next ()
 	m_client->playback ()->tickle ();
 }
 
-
+/*
+ * Seeking
+ */
 void
 XPlayback::seekMs (uint milliseconds)
 {
@@ -85,4 +87,3 @@ XPlayback::seekMsRel (int milliseconds)
 
 	m_client->playback ()->seekMsRel (milliseconds);
 }
-
