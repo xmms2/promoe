@@ -45,11 +45,11 @@ StereoMono::drawPixmaps ()
 
 	paint.drawPixmap (QRect (0, 0, 27, 12),
 					  m_pixmap_mono,
-					  m_pixmap.rect ());
+					  m_pixmap_mono.rect ());
 
 	paint.drawPixmap (QRect (27, 0, 29, 12),
 					  m_pixmap_stereo,
-					  m_pixmap.rect ());
+					  m_pixmap_stereo.rect ());
 	paint.end ();
 
 	update();
