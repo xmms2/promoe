@@ -103,7 +103,7 @@ try_again:
 	try {
 		delete m_client;
 		m_client = new Xmms::Client (m_name);
-		if (!ipcpath || ipcpath == "")
+		if (!ipcpath || ipcpath == QLatin1String (""))
 			m_client->connect (NULL);
 		else
 			m_client->connect (ipcpath);
