@@ -19,7 +19,7 @@
 
 //include "Playlist.h"
 #include <xmmsclient/xmmsclient++.h>
-#include <entryinfo.h>
+#include "entryinfo.h"
 class Skin;
 
 #include <QObject>

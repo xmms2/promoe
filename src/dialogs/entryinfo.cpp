@@ -22,7 +22,7 @@
 #include <QString>
 #include <QVariant>
 
-EntryInfo::EntryInfo (QWidget *paren, XClientCache *cache, uint32_t id)
+EntryInfo::EntryInfo (QWidget *parent, XClientCache *cache, uint32_t id)
 {
 	setupUi (this);
 	setAttribute (Qt::WA_DeleteOnClose);
