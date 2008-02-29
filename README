@@ -7,12 +7,18 @@ Optional dependencys:
 	* Avahi     http://www.avahi.org/
 
 Compiling:
-	1) Run qmake (on debian systems it's called qmake-qt4)
+	1) Run qmake in the topdir (not in ./src)
+	   (on debian systems it's called qmake-qt4)
 	2) Run make
 	3) Have a coffe
 	4) ./promoe
 	5) ????
 	6) profit
+
+Compilation Errors:
+	- Errormessage "WARNING: Found potential symbol conflict of <somefile>"
+	  -> make sure you use uic from Qt4 (uic -version)
+	     (on debian systems it's sufficant if uic-qt4 exists)
 
 Known bugs:
 	Tons of them.
