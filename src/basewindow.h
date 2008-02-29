@@ -18,10 +18,15 @@
 #define __BASEWINDOW_H__
 
 #include <QMainWindow>
+#include <QPoint>
+#include <QMap>
 class QMouseEvent;
 class QPoint;
 
 class MainWindow;
+
+class BaseWindow;
+typedef QMap<BaseWindow *, QPoint> AttachedWindowMap;
 
 class BaseWindow : public QMainWindow {
 	Q_OBJECT
@@ -37,7 +42,7 @@ class BaseWindow : public QMainWindow {
 		void mouseReleaseEvent (QMouseEvent *event);
 		void mouseMoveEvent (QMouseEvent *event);
 
-		QPoint snapWindow (QPoint pos, QWidgetList ignore = QWidgetList());
+		QPoint snapWindow (QPoint pos, AttachedWindowMap attached = AttachedWindowMap());
 		QPoint m_diff;
 };
 

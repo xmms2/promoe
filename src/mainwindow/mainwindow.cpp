@@ -132,12 +132,12 @@ void
 MainWindow::mouseMoveEvent (QMouseEvent *event)
 {
 	if ((event->buttons () & Qt::LeftButton) && !m_diff.isNull ()) {
-		QWidgetList ignore;
-		QWidget *w;
-		foreach (w, m_attachedWidgets.keys ()) {
-			ignore.append (w);
-		}
-		move (snapWindow (event->globalPos() - m_diff, ignore));
+	//	QWidgetList attached;
+	//	QWidget *w;
+	//	foreach (w, m_attachedWidgets.keys ()) {
+	//		attached.append (w);
+	//	}
+		move (snapWindow (event->globalPos() - m_diff, m_attachedWidgets));
 	}
 }
 
@@ -169,7 +169,7 @@ MainWindow::attachWidgets ()
 		if (w == this) {
 			continue;
 		}
-		if (w->inherits ("BaseWindow")) {
+		if ((w->inherits ("BaseWindow")) && (w->isVisible ())) {
 			widgets.append (qobject_cast<BaseWindow *> (w));
 		}
 	}
