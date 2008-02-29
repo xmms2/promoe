@@ -229,29 +229,3 @@ BaseWindow::snapWindow(QPoint pos, AttachedWindowMap attached)
 
 	return pos;
 }
-
-/*
-	if (!widgets.isEmpty ()) {
-		QPoint ret = testSnapWindow (this, pos, widgets);
-		// test is attached Windows can snap to a unattached window
-		if (((ret.x () == -1) || (ret.y () == -1)) && (!attached.isEmpty ())) {
-			QPoint tmp;
-			foreach (w, attached.keys ()) {
-				tmp = testSnapWindow (w, pos + attached[w], widgets);
-				if ((ret.x () == -1) && (tmp.x () > -1)) {
-					ret.setX (tmp.x () - attached[w].x ());
-				}
-				if ((ret.y () == -1) && (tmp.y () > -1)) {
-					ret.setY (tmp.y () - attached[w]. y());
-				}
-				ret = mergePoint (ret, tmp);
-				if ((ret.x () > -1) && (ret.y () > -1)) {
-					break;
-				}
-			}
-		}
-		// Subwindows didn't provide snap target for x and y axis:
-		ret = mergePoint (ret, pos);
-		return ret;
-	}
-*/
