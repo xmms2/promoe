@@ -119,21 +119,6 @@ MainDisplay::setVolume (int volume)
 	xmmsh.volumeSet((uint)volume);
 }
 
-void 
-MainDisplay::mouseMoveEvent (QMouseEvent *event)
-{
-	MainWindow *mw = dynamic_cast<MainWindow *>(window ());
-	PlaylistWindow *pl = mw->getPL ();
-
-	m_mw->move (event->globalPos().x() - m_diffX,
-				event->globalPos().y() - m_diffY);
-
-	if (!pl || !pl->isVisible ())
-		return;
-
-	pl->move (event->globalPos().x() - m_diffX,
-			  event->globalPos().y() - m_diffY + size().height());
-}
 
 void
 MainDisplay::setPixmaps (Skin *skin)

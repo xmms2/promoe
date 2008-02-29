@@ -16,10 +16,9 @@
 #ifndef __EQUALIZERWINDOW_H__
 #define __EQUALIZERWINDOW_H__
 
-#include <QMainWindow>
+#include "basewindow.h"
 
 class QWidget;
-class QMouseEvent;
 class QMoveEvent;
 class QHideEvent;
 class QShowEvent;
@@ -27,7 +26,7 @@ class QShowEvent;
 class MainWindow;
 class EqualizerWidget;
 
-class EqualizerWindow : public QMainWindow
+class EqualizerWindow : public BaseWindow
 {
 	Q_OBJECT
 	public:
@@ -43,16 +42,12 @@ class EqualizerWindow : public QMainWindow
 	protected:
 		void hideEvent (QHideEvent *event);
 		void showEvent (QShowEvent *event);
-		void mouseMoveEvent(QMouseEvent *);
-		void mousePressEvent(QMouseEvent *);
 		void moveEvent(QMoveEvent *event);
 
 
 	private:
 		MainWindow *m_mw;
 		EqualizerWidget *m_equalizer;
-		int m_diffx;
-		int m_diffy;
 };
 
 #endif // __EQUALIZERWINDOW_H__

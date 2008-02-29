@@ -16,9 +16,9 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-#include <QMainWindow>
-#include <QSettings>
+#include "basewindow.h"
 
+#include <QSettings>
 class QWidget;
 
 class MainDisplay;
@@ -26,7 +26,7 @@ class ShadedDisplay;
 class PlaylistWindow;
 class EqualizerWindow;
 
-class MainWindow : public QMainWindow
+class MainWindow : public BaseWindow
 {
 	Q_OBJECT
 	public:
@@ -55,6 +55,8 @@ class MainWindow : public QMainWindow
 		ShadedDisplay *m_shaded;
 		EqualizerWindow *m_equalizer;
 		PlaylistWindow *m_playlistwin;
+
+		QMap<QWidget *,QPoint> m_connectedWidgets;
 };
 
 

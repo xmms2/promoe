@@ -18,6 +18,7 @@ HEADERS += PixWidget.h \
            PlayStatus.h \
            SkinChooser.h \
            settingsdialog.h \
+           basewindow.h \
            VolumeSlider.h \
            FileDialog.h \
            BrowseModel.h \
@@ -38,6 +39,7 @@ SOURCES += main.cpp \
            PlayStatus.cpp \
            SkinChooser.cpp \
            settingsdialog.cpp \
+           basewindow.cpp \
            VolumeSlider.cpp \
            FileDialog.cpp \
            BrowseModel.cpp \

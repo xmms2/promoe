@@ -18,9 +18,9 @@
 
 #include "playlistwindow.h"
 
-#include <QMouseEvent>
 #include <QMoveEvent>
 #include <QResizeEvent>
+#include <QPoint>
 
 #include "Button.h"
 #include "playlistwidget.h"
@@ -28,7 +28,7 @@
 
 #include "mainwindow.h"
 
-PlaylistWindow::PlaylistWindow (QWidget *parent) : QMainWindow (parent)
+PlaylistWindow::PlaylistWindow (QWidget *parent) : BaseWindow (parent)
 {
 	QSettings s;
 	m_mw = dynamic_cast<MainWindow *>(parent);
@@ -130,21 +130,6 @@ PlaylistWindow::resizeEvent (QResizeEvent *event)
 	if (s.value("playlist/shaded").toBool ()) {
 		s.setValue ("playlist/size", size ());
 	}
-}
-
-void
-PlaylistWindow::mousePressEvent (QMouseEvent *event)
-{
-	m_diffx = event->pos ().x ();
-	m_diffy = event->pos ().y ();
-}
-
-void
-PlaylistWindow::mouseMoveEvent (QMouseEvent *event)
-{
-	move (event->globalPos().x() - m_diffx,
-		  event->globalPos().y() - m_diffy);
-
 }
 
 void

@@ -23,7 +23,6 @@
 #include "TitleBar.h"
 #include "FileDialog.h"
 
-#include <QMouseEvent>
 #include <QPainter>
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
@@ -39,21 +38,6 @@ SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 void
 SkinDisplay::setPixmaps (Skin *skin)
 {
-}
-
-void 
-SkinDisplay::mousePressEvent (QMouseEvent *event)
-{
-	dynamic_cast<MainWindow *>(getMW())->raisePL ();
-	m_diffX = event->x();
-	m_diffY = event->y();
-}
-
-void 
-SkinDisplay::mouseMoveEvent (QMouseEvent *event)
-{
-	m_mw->move (event->globalPos().x() - m_diffX,
-				event->globalPos().y() - m_diffY);
 }
 
 void

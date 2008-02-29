@@ -33,7 +33,7 @@
 #include <QPluginLoader>
 #include <qplugin.h>
 
-MainWindow::MainWindow (QWidget *parent) : QMainWindow (parent)
+MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 {
 	QSettings s;
 
@@ -130,5 +130,15 @@ MainWindow::moveEvent (QMoveEvent *event)
 {
 	QSettings s;
 	s.setValue ("mainwindow/pos", pos ());
-}
 
+	// move all connected windows to their new position
+	// at the moment connected windows can be m_playlistwin and m_equalizer
+	if (!m_connectedWidgets.isEmpty ()) {
+		QMap<QWidget *,QPoint>::const_iterator i
+		                        = m_connectedWidgets.constBegin ();
+		while (i != m_connectedWidgets.constEnd ()) {
+			i.key()->move (pos () + i.value ());
+			++i;
+		}
+	}
+}

@@ -19,13 +19,12 @@
 
 #include "QWidget"
 #include <QSettings>
-#include <QMouseEvent>
 #include <QMoveEvent>
 
 #include "mainwindow.h"
 #include "equalizerwidget.h"
 
-EqualizerWindow::EqualizerWindow (QWidget *parent) : QMainWindow (parent)
+EqualizerWindow::EqualizerWindow (QWidget *parent) : BaseWindow (parent)
 {
 	m_mw = dynamic_cast<MainWindow *>(parent);
 
@@ -62,21 +61,6 @@ void
 EqualizerWindow::setEnabled (void)
 {
 	qDebug ("test");
-}
-
-
-void
-EqualizerWindow::mousePressEvent (QMouseEvent *event)
-{
-	m_diffx = event->pos().x();
-	m_diffy = event->pos().y();
-}
-
-void
-EqualizerWindow::mouseMoveEvent (QMouseEvent *event)
-{
-	move(event->globalPos().x() - m_diffx,
-		 event->globalPos().y() - m_diffy);
 }
 
 void

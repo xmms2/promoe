@@ -23,7 +23,8 @@
 #include <QMap>
 class QDir;
 
-class Skin : public QWidget
+//class Skin : public QWidget
+class Skin : public QObject
 {
 	Q_OBJECT
 	public:

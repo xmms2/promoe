@@ -18,14 +18,14 @@
 #define __PLAYLISTWINDOW_H__
 
 // Qt classes
-#include <QMainWindow>
+#include "basewindow.h"
 
 class QEvent;
-class QMouseEvent;
 class QMoveEvent;
 class QResizeEvent;
 class QHideEvent;
 class QShowEvent;
+class QPoint;
 
 // our own classes
 class Button;
@@ -33,7 +33,7 @@ class MainWindow;
 class PlaylistWidget;
 class PlaylistShade;
 
-class PlaylistWindow : public QMainWindow {
+class PlaylistWindow : public BaseWindow {
 	Q_OBJECT
 
 	public:
@@ -51,20 +51,14 @@ class PlaylistWindow : public QMainWindow {
 	protected:
 		void hideEvent (QHideEvent *event);
 		void showEvent (QShowEvent *event);
-		void mousePressEvent (QMouseEvent *event);
-		void mouseMoveEvent (QMouseEvent *event);
 		void enterEvent (QEvent *event);
 		void leaveEvent (QEvent *event);
 		void moveEvent (QMoveEvent *event);
 		void resizeEvent (QResizeEvent *event);
 
-
 	private:
 		PlaylistWidget *m_playlist;
 		PlaylistShade *m_shaded;
-
-		int m_diffx;
-		int m_diffy;
 
 		Button *m_shadebtn;
 		Button *m_closebtn;

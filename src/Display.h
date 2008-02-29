@@ -18,7 +18,6 @@
 
 #include <QWidget>
 class QEvent;
-class QMouseEvent;
 class QPaintEvent;
 
 class Skin;
@@ -35,8 +34,6 @@ class SkinDisplay : public QWidget
 		void fileOpen (void);
 
 	protected:
-		void mousePressEvent (QMouseEvent *);
-		void mouseMoveEvent (QMouseEvent *);
 		void paintEvent (QPaintEvent *event);
 		void enterEvent (QEvent *event);
 		void leaveEvent (QEvent *event);
@@ -44,8 +41,6 @@ class SkinDisplay : public QWidget
 		QWidget *m_mw;
 		QWidget *m_tbar;
 		
-		int m_diffX;
-		int m_diffY;
 };
 
 #endif

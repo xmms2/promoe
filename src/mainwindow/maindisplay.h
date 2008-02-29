@@ -66,8 +66,6 @@ class MainDisplay : public SkinDisplay
 		PlayStatus *m_playstatus;
 		MainWindow *getMW(void) { return m_mw; }
 
-		void mouseMoveEvent (QMouseEvent *);
-
 	public slots:
 		void setPixmaps(Skin *skin);
 		void setStatus (Xmms::Playback::Status status);
