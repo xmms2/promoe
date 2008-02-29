@@ -92,6 +92,8 @@ MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 		s.setValue ("mainwindow/pos", QPoint (100, 100));
 
 	move (s.value("mainwindow/pos").toPoint ());
+
+	attachWidgets ();
 }
 
 MainWindow::~MainWindow ()
