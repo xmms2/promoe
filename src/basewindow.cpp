@@ -15,6 +15,7 @@
  */
 
 #include "basewindow.h"
+#include "mainwindow.h"
 
 #include <QApplication>
 #include <QWidgetList>
@@ -25,10 +26,48 @@ BaseWindow::BaseWindow (QWidget *parent) : QMainWindow (parent)
 {
 }
 
+bool
+BaseWindow::touches (QWidget *widget)
+{
+	if (this == widget) {
+		return true;
+	}
+
+	qint32 left = x ();
+	qint32 right = left + width ();
+	qint32 top = y ();
+	qint32 bottom = top + height ();
+
+	qint32 w_left = widget->x ();
+	qint32 w_right = w_left + widget->width ();
+	qint32 w_top = widget->y ();
+	qint32 w_bottom = w_top + widget->height ();
+
+	if (( (top <= w_bottom) && (bottom >= w_top) &&
+	      ((left == w_right || right == w_left))   ) ||
+		( (left <= w_right) && (right >= w_left) &&
+		  ((top == w_bottom) || (bottom == w_top) )  )) {
+		return true;
+	}
+
+	return false;
+}
+
+MainWindow *
+BaseWindow::mw ()
+{
+	//MainWindow is the only BaseWindow without a *parent
+	if (parent ()) {
+		return qobject_cast<MainWindow *>(parent ());
+	} else {
+		return qobject_cast<MainWindow *>(this);
+	}
+}
+
 void
 BaseWindow::mousePressEvent (QMouseEvent *event)
 {
-	if (event->buttons () & Qt::LeftButton) {
+	if (event->button () == Qt::LeftButton) {
 		m_diff = event->pos ();
 	}
 }
@@ -36,8 +75,9 @@ BaseWindow::mousePressEvent (QMouseEvent *event)
 void
 BaseWindow::mouseReleaseEvent (QMouseEvent *event)
 {
-	if (event->buttons () & Qt::LeftButton) {
+	if (event->button () == Qt::LeftButton) {
 		m_diff = QPoint (0, 0);
+		mw ()->attachWidgets ();
 	}
 }
 
@@ -52,7 +92,7 @@ BaseWindow::mouseMoveEvent (QMouseEvent *event)
 }
 
 QPoint
-BaseWindow::snapWindow(QPoint pos)
+BaseWindow::snapWindow(QPoint pos, QWidgetList ignore)
 {
 	//TODO: make snapdistance configurable
 	qint32 snapdistance = 10;
@@ -62,9 +102,18 @@ BaseWindow::snapWindow(QPoint pos)
 	qint32 top = pos.y ();
 	qint32 bottom = top + height ();
 
-	qDebug ("top: %i, bottom: %i, left: %i, right: %i", top, bottom, left, right);
 	QWidgetList widgets = qApp->topLevelWidgets ();
 	QWidget *w;
+	// ignore widgets, MainWindow needs this for attached Widgets
+	if (!ignore.isEmpty ()) {
+		foreach (w, ignore) {
+			int i = widgets.indexOf (w);
+			if (i >= 0) {
+				widgets.removeAt (i);
+			}
+		}
+	}
+
 	// snap to left or right edge
 	bool snappedV = false;
 	bool snappedH = false;

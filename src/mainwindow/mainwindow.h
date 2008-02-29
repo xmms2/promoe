@@ -20,6 +20,7 @@
 
 #include <QSettings>
 class QWidget;
+class QMouseEvent;
 
 class MainDisplay;
 class ShadedDisplay;
@@ -45,8 +46,11 @@ class MainWindow : public BaseWindow
 		bool isTimemodeReverse(void) { QSettings s; return s.value("MainWindow/timemodereverse").toBool(); }
 		void setTimemodeReverse(bool b) { QSettings s; return s.setValue("MainWindow/timemodereverse",b); }
 
+		void attachWidgets ();
+
 	public slots:
 		void switchDisplay ();
+		void mouseMoveEvent (QMouseEvent *event);
 
 	private:
 		bool isShaded (void) { QSettings s; return s.value("MainWindow/shaded").toBool(); }
@@ -56,7 +60,7 @@ class MainWindow : public BaseWindow
 		EqualizerWindow *m_equalizer;
 		PlaylistWindow *m_playlistwin;
 
-		QMap<QWidget *,QPoint> m_connectedWidgets;
+		QMap<BaseWindow *,QPoint> m_attachedWidgets;
 };
 
 

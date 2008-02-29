@@ -21,20 +21,23 @@
 class QMouseEvent;
 class QPoint;
 
+class MainWindow;
+
 class BaseWindow : public QMainWindow {
 	Q_OBJECT
 
 	public:
 		BaseWindow (QWidget *parent);
+	
+		bool touches (QWidget *);
+		MainWindow * mw ();
 
 	protected:
 		void mousePressEvent (QMouseEvent *event);
 		void mouseReleaseEvent (QMouseEvent *event);
 		void mouseMoveEvent (QMouseEvent *event);
 
-		QPoint snapWindow (QPoint pos);
-
-	private:
+		QPoint snapWindow (QPoint pos, QWidgetList ignore = QWidgetList());
 		QPoint m_diff;
 };
 

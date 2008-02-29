@@ -31,6 +31,7 @@
 #include <QSettings>
 #include <QIcon>
 #include <QPluginLoader>
+#include <QMouseEvent>
 #include <qplugin.h>
 
 MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
@@ -126,6 +127,19 @@ MainWindow::raisePL (void)
 }
 
 void
+MainWindow::mouseMoveEvent (QMouseEvent *event)
+{
+	if ((event->buttons () & Qt::LeftButton) && !m_diff.isNull ()) {
+		QWidgetList ignore;
+		QWidget *w;
+		foreach (w, m_attachedWidgets.keys ()) {
+			ignore.append (w);
+		}
+		move (snapWindow (event->globalPos() - m_diff, ignore));
+	}
+}
+
+void
 MainWindow::moveEvent (QMoveEvent *event)
 {
 	QSettings s;
@@ -133,12 +147,60 @@ MainWindow::moveEvent (QMoveEvent *event)
 
 	// move all connected windows to their new position
 	// at the moment connected windows can be m_playlistwin and m_equalizer
-	if (!m_connectedWidgets.isEmpty ()) {
-		QMap<QWidget *,QPoint>::const_iterator i
-		                        = m_connectedWidgets.constBegin ();
-		while (i != m_connectedWidgets.constEnd ()) {
+	if (!m_attachedWidgets.isEmpty ()) {
+		QMap<BaseWindow *,QPoint>::const_iterator i
+		                         = m_attachedWidgets.constBegin ();
+		while (i != m_attachedWidgets.constEnd ()) {
 			i.key()->move (pos () + i.value ());
 			++i;
 		}
 	}
+}
+
+void
+MainWindow::attachWidgets ()
+{
+	m_attachedWidgets.clear ();
+	QList<BaseWindow *> widgets;
+	QWidget *w;
+	foreach (w, qApp->topLevelWidgets ()) {
+		if (w == this) {
+			continue;
+		}
+		if (w->inherits ("BaseWindow")) {
+			widgets.append (qobject_cast<BaseWindow *> (w));
+		}
+	}
+	// attach widgets that directly touch MainWindow
+	BaseWindow *b;
+	foreach (b, widgets) {
+		if (b->touches (this)) {
+			m_attachedWidgets[b] = b->pos ()- pos ();
+		}
+	}
+	// now attach the windows, that indirectly touch mainwindow through an
+	// attached window
+	// widgets isn't modified, even if it might be more efficent, because
+	// that might produce some ugly, hard to trace bugs (modifying the
+	// base of an iterater while it is in use)
+	if (!m_attachedWidgets.isEmpty ()) {
+		bool found = false;
+		BaseWindow *att;
+		do {
+			found = false;
+			foreach (att, m_attachedWidgets.keys ()) {
+				foreach (b, widgets) {
+					if (m_attachedWidgets.contains (b)) {
+						continue;
+					}
+					if (att->touches (b)) {
+						m_attachedWidgets[b] = b->pos ()- pos ();
+						found = true;
+					}
+				}
+			}
+
+		} while (found);
+	}
+
 }
