@@ -155,9 +155,11 @@ BaseWindow::snapWindow(QPoint pos, AttachedWindowMap attached)
 
 			// test if this widget can snap left or right to another widget
 			// and if it can, test if the tops or bottoms can also snap
-			if (!vSnapped && (qAbs (w_left - right) < snapdistance)) {
-				pos.setX (w_left - ref->width () - attached[ref].x ());
-				vSnapped = true;
+			if ((qAbs (w_left - right) < snapdistance)) {
+				if (!vSnapped) {
+					pos.setX (w_left - ref->width () - attached[ref].x ());
+					vSnapped = true;
+				}
 				if (hSnapped) {
 					break;
 				}
@@ -170,9 +172,11 @@ BaseWindow::snapWindow(QPoint pos, AttachedWindowMap attached)
 					hSnapped = true;
 					break;
 				}
-			} else if (!vSnapped && (qAbs (left - w_right) < snapdistance)) {
-				pos.setX (w_right - attached[ref].x ());
-				vSnapped = true;
+			} else if ((qAbs (left - w_right) < snapdistance)) {
+				if (!vSnapped) {
+					pos.setX (w_right - attached[ref].x ());
+					vSnapped = true;
+				}
 				if (hSnapped) {
 					break;
 				}
@@ -188,9 +192,11 @@ BaseWindow::snapWindow(QPoint pos, AttachedWindowMap attached)
 			}
 			// test if this widget can snap to top or bottom of another widget
 			// and if it can, test if the left or right edges also can
-			if ((!hSnapped) && (qAbs (top - w_bottom) < snapdistance)) {
-				pos.setY (w_bottom - attached[ref].y ());
-				hSnapped = true;
+			if ((qAbs (top - w_bottom) < snapdistance)) {
+				if (!hSnapped) {
+					pos.setY (w_bottom - attached[ref].y ());
+					hSnapped = true;
+				}
 				if (vSnapped) {
 					break;
 				}
@@ -203,9 +209,11 @@ BaseWindow::snapWindow(QPoint pos, AttachedWindowMap attached)
 					vSnapped = true;
 					break;
 				}
-			} else if ((!hSnapped) && (qAbs (w_top - bottom) < snapdistance)) {
-				pos.setY (w_top - ref->height () - attached[ref].y ());
-				hSnapped = true;
+			} else if ((qAbs (w_top - bottom) < snapdistance)) {
+				if (!hSnapped) {
+					pos.setY (w_top - ref->height () - attached[ref].y ());
+					hSnapped = true;
+				}
 				if (vSnapped) {
 					break;
 				}
