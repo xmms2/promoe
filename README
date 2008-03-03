@@ -20,6 +20,16 @@ Compilation Errors:
 	  -> make sure you use uic from Qt4 (uic -version)
 	     (on debian systems it's sufficant if uic-qt4 exists)
 
-Known bugs:
-	Tons of them.
+Reporting Bugs:
+	preferred way to report bugs is through xmms2's bugtracker at
+	'http://bugs.xmms2.xmms.se/' at project 'Client - Promoe'
 
+Patches:
+	Best practice to submit a path is through the bugtracker at
+	'http://bugs.xmms2.xmms.se/' at project 'Client - Promoe'.
+
+	Either append the patch to the bug it fixes or supply a link to your own
+	git repository
+
+	To discuss a patch of wanted feature , you can also try to reach the
+	developer at xmms2's irc channel #xmms2 on freenode (irc.freenode.net)
