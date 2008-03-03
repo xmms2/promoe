@@ -53,6 +53,7 @@ EqualizerWindow::showEvent (QShowEvent *event)
 {
 	QSettings s;
 	s.setValue ("equalizer/visible", true);
+	m_mw->attachWidgets ();
 
 	emit visibilityChanged (true);
 }

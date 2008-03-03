@@ -84,6 +84,7 @@ PlaylistWindow::showEvent (QShowEvent *event)
 {
 	QSettings s;
 	s.setValue ("playlist/visible", true);
+	m_mw->attachWidgets ();
 
 	emit visibilityChanged (true);
 }
