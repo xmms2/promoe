@@ -131,6 +131,7 @@ PlaylistWindow::resizeEvent (QResizeEvent *event)
 	if (s.value("playlist/shaded").toBool ()) {
 		s.setValue ("playlist/size", size ());
 	}
+	m_mw->attachWidgets ();
 }
 
 void

@@ -23,6 +23,7 @@
 #include <QVariant>
 
 EntryInfo::EntryInfo (QWidget *parent, XClientCache *cache, uint32_t id)
+                      : QDialog (parent)
 {
 	setupUi (this);
 	setAttribute (Qt::WA_DeleteOnClose);
