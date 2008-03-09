@@ -1,8 +1,7 @@
 /**
- *  This file is a part of Prome, an XMMS2 Client.
+ *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2007 XMMS2 Team
- *  Copyright (C) 2007,2008 Thomas Frauendorfer
+ *  Copyright (C) 2005-2008 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

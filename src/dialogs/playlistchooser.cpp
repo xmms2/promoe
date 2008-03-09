@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 client
  *
- *  Copyright (C) 2008 Thomas Frauendorfer
+ *  Copyright (C) 2005-2008 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  *  GNU General Public License for more details.
  */
 
-// FIXME: because somewhere something with the includes is wrons, this line
+// FIXME: because somewhere something with the includes is wrong, this line
 // is needed
 #include "XMMSHandler.h"
 
