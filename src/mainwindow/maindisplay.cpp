@@ -99,7 +99,7 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	connect (client.cache () , SIGNAL (playtime (uint32_t)),
 	         this,  SLOT (setPlaytime (uint32_t)));
 	connect (&client, SIGNAL(getVolume(uint)), this, SLOT(updateVolume(uint)));
-	connect (m_vslider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
+	connect (m_vslider, SIGNAL(sliderMoved(int)), this, SLOT(setVolume(int)));
 	client.volumeGet();
 
 	setupServerConfig ();
@@ -139,6 +139,7 @@ MainDisplay::setStatus (Xmms::Playback::Status status)
 		m_time->setTime(0);
 		m_posbar->setPos (0);
 		m_posbar->hideBar (true);
+		m_stereo->setStereoMono (false, false);
 	}
 }
 

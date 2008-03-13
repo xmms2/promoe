@@ -73,7 +73,7 @@ PlaylistScrollBar::mouseMoveEvent (QMouseEvent *event)
 	setValue(tmp);
 
 	//TODO only repaint necessary range
-	repaint ();
+	update ();
 }
 
 void
@@ -98,7 +98,7 @@ PlaylistScrollBar::mousePressEvent (QMouseEvent *event)
 	}
 
 	//TODO only repaint necessary range
-	repaint ();
+	update ();
 }
 
 void
@@ -115,7 +115,7 @@ PlaylistScrollBar::mouseReleaseEvent (QMouseEvent *event)
 	}
 
 	//TODO only repaint necessary range
-	repaint ();
+	update ();
 }
 
 void

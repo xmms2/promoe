@@ -150,9 +150,11 @@ PosBar::hideBar (bool b)
 	
 	if (b) { 
 		m_button->hide (); 
+		hide ();
 	} else { 
 		m_button->show (); 
-	} 
+		show ();
+	}
 	update(); 
 
 }

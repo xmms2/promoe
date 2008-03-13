@@ -32,14 +32,16 @@ EqualizerSlider::EqualizerSlider (QWidget *parent, uint pix_min, uint pix_max,
                                           pix_off, min, max)
 {
 	m_id = id;
-	connect ( this, SIGNAL (valueChanged (int)),
-              this, SLOT (on_self_value_changed (int)) );
+	connect ( this, SIGNAL (sliderMoved (int)),
+              this, SLOT (on_self_slider_moved (int)) );
+	setInvertedAppearance (true);
+	setOrientation (Qt::Vertical);
 }
 
 void
-EqualizerSlider::on_self_value_changed (int value)
+EqualizerSlider::on_self_slider_moved (int value)
 {
-	emit numberedValueChanged (value, m_id);
+	emit numberedSliderMoved (value, m_id);
 }
 
 
@@ -82,7 +84,9 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	                      Skin::EQ_WIN_BAR_BTN_0, Skin::EQ_WIN_BAR_BTN_1,
 	                      -20, 20);
 	m_preamp->move(21, 38);
-	connect (m_preamp, SIGNAL (valueChanged (int)),
+	m_preamp->setOrientation (Qt::Vertical);
+	m_preamp->setInvertedAppearance (true);
+	connect (m_preamp, SIGNAL (sliderMoved (int)),
 	         this, SLOT (updateServerPreamp (int)));
 
 	for (int i=0; i < 10; i++) {
@@ -91,7 +95,7 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
                                          Skin::EQ_WIN_BAR_BTN_0,
                                          Skin::EQ_WIN_BAR_BTN_1, -20, 20, i);
 		m_bands[i]->move(78+i*18, 38);
-		connect (m_bands[i], SIGNAL (numberedValueChanged (int, int)),
+		connect (m_bands[i], SIGNAL (numberedSliderMoved (int, int)),
 		         this, SLOT (updateServerBands (int, int)));
 	}
 
@@ -175,14 +179,12 @@ EqualizerWidget::serverConfigChanged (QString key, QString value)
 	}
 	if (key == "equalizer.preamp") {
 		// FIXME: value can be of type floas
-		// '-20' should not be necessary. seems to be a bug in slider
-		m_preamp->setValue (value.toInt () -20);
+		m_preamp->setValue (value.toInt ());
 	}
 	if (key.startsWith ("equalizer.legacy")) {
 		int i = key.right (1).toInt ();
 		// FIXME: value can be float
-		// '-20' should not be necessary. seems to be a bug in slider
-		m_bands[i]->setValue (value.toInt () -20 );
+		m_bands[i]->setValue (value.toInt ());
 	}
 }
 

@@ -38,10 +38,10 @@ class EqualizerSlider : public Slider
 	EqualizerSlider (QWidget*, uint, uint, uint, uint, int, int, int);
 
 	signals:
-	void numberedValueChanged (int value, int id);
+	void numberedSliderMoved (int value, int id);
 
 	protected slots:
-	void on_self_value_changed (int value);
+	void on_self_slider_moved (int value);
 
 	private:
 	int m_id;
