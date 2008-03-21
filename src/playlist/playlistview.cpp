@@ -200,10 +200,15 @@ PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 
 	qm.addSeparator ();
 
+	a= new QAction (tr ("Change Playlist"), this);
+	connect (a, SIGNAL (triggered ()), qobject_cast<PlaylistWidget *>(parent ()), SLOT (openPlaylistChooser ()));
+	qm.addAction (a);
+
 	a = new QAction (tr ("Medialib browser"), this);
 	// connect (a, SIGNAL (triggered ()), this, SLOT (showMlib ()));
 	a->setEnabled(false); //FIXME: Disabled for now
 	qm.addAction (a);
+
 
 	e->accept ();
 	qm.exec (e->globalPos ());
