@@ -125,10 +125,6 @@ PlaylistScrollBar::paintEvent (QPaintEvent *event)
 		return;
 	}
 
-// TODO remove, in here for debuging
-//	qDebug("%i %i %i %i %i %i %i", event->rect ().x(), event->rect ().y(), event->rect ().width(), event->rect ().height(), 
-//	       minimum(), maximum (), sliderPosition ());
-
 	QPainter (paint);
 	paint.begin (this);
 	/* draw background */
@@ -148,6 +144,7 @@ PlaylistScrollBar::setPixmaps (Skin *skin)
 	m_pixmap = skin->getPls (Skin::PLS_RFILL2_0);
 	m_slider = skin->getPls (Skin::PLS_SCROLL_0);
 	m_slider_down = skin->getPls (Skin::PLS_SCROLL_1);
+	update ();
 }
 
 

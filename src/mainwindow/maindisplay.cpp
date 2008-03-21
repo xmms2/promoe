@@ -128,8 +128,7 @@ MainDisplay::setPixmaps (Skin *skin)
 	palette.setBrush(QPalette::Background, brush);
 	setPalette(palette);
 
-	setMaximumSize(QSize(275, 116));
-	setMinimumSize(QSize(275, 116));
+	setFixedSize(QSize(275, 116));
 }
 
 void
@@ -137,8 +136,8 @@ MainDisplay::setStatus (Xmms::Playback::Status status)
 {
 	if (status == Xmms::Playback::STOPPED) {
 		m_time->setTime(0);
-		m_posbar->setPos (0);
-		m_posbar->hideBar (true);
+		m_posbar->setValue (0);
+		m_posbar->hide ();
 		m_stereo->setStereoMono (false, false);
 	}
 }
@@ -148,7 +147,7 @@ MainDisplay::setPlaytime (uint32_t time)
 {
 	uint32_t showtime;
 	if (m_mw->isTimemodeReverse()) {
-		uint maxtime = m_posbar->getMax();
+		uint maxtime = m_posbar->maximum ();
 		showtime = -(maxtime - time); 
 	} else {
 		showtime = time;
@@ -156,7 +155,7 @@ MainDisplay::setPlaytime (uint32_t time)
 	m_time->setTime (showtime);
 
 	// update slider
-	m_posbar->setPos (time);
+	m_posbar->setValue (time);
 }
 
 void
@@ -199,10 +198,10 @@ MainDisplay::setMediainfo (const Xmms::PropDict &info)
 	}
 
 	if (info.contains ("duration")) {
-		m_posbar->setMax (info.get<int32_t> ("duration"));
-		m_posbar->hideBar (false);
+		m_posbar->setMaximum (info.get<int32_t> ("duration"));
+		m_posbar->show ();
 	} else {
-		m_posbar->hideBar (true);
+		m_posbar->hide ();
 	}
 }
 

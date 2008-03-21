@@ -16,58 +16,26 @@
 #ifndef __SLIDER_H__
 #define __SLIDER_H__
 
-#include "PixWidget.h"
-#include "Button.h"
+#include "pixmapslider.h"
 
-class PosBar;
+class Skin;
 
-class PosButton : public Button
-{
-	public:
-		PosButton (QWidget *, uint, uint);
-
-		void mouseMoveEvent (QMouseEvent *);
-		void mousePressEvent (QMouseEvent *);
-		void mouseReleaseEvent (QMouseEvent *);
-
-		void setPos (uint pos);
-		uint getPos (void);
-
-	private:
-		PosBar *m_slider;
-		uint m_pos;
-		uint m_diffx;
-		uint m_diffy;
-};
-
-class PosBar : public PixWidget
+class PosBar : public PixmapSlider
 {
 	Q_OBJECT
 
 	public:
-		PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed, bool vertical=true);
+		PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed);
 		~PosBar () { }
-
-		void setSize (uint, uint);
-		uint getPos (void);
-		void setPos (uint);
-		void requestPos (float value);
 		
-		void setMax (uint max) { m_max = max; }
-		uint getMax () { return m_max; }
-		void hideBar (bool b); 		
-		bool getVertical () { return m_vertical; }
-
 	public slots:
 		void setPixmaps (Skin *skin);
+		void seekMs (int);
 
 	private:
-		bool m_vertical;
-		int m_bg;
-		uint m_max;
-		uint m_pix;
-		PosButton *m_button;
-
+		uint m_slider_normal;
+		uint m_slider_pressed;
+		uint m_bg;
 };
 
 #endif

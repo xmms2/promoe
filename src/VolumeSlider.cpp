@@ -25,6 +25,8 @@ Slider::Slider (QWidget *parent, uint name_min, uint name_max,
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
+	setSliderOffset (1);
+
 	m_name_min = name_min;
 	m_name_max = name_max;
 	m_name_on = name_on;

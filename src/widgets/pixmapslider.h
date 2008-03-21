@@ -58,12 +58,17 @@ class PixmapSlider : public QAbstractSlider
 		int sliderValueFromPosition (int pos);
 		int backgroundIndex ();
 
+		// horizontal offset in vertical sliders or
+		// vertical offset in horizontal sliders
+		void setSliderOffset (int offset) { m_slider_offset = offset; };
+
 	private:
 		QPixmapList m_backgrounds;
 		QPixmap m_normal;
 		QPixmap m_pressed;
 
 		int m_background_index;
+		int m_slider_offset;
 };
 
 #endif
