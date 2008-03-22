@@ -16,7 +16,7 @@
 #include "XMMSHandler.h"
 #include "xplayback.h"
 
-#include "PosBar.h"
+#include "posbar.h"
 #include "Skin.h"
 
 #include <QWidget>

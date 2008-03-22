@@ -18,7 +18,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 
-#include "PlayStatus.h"
+#include "playstatus.h"
 #include "Skin.h"
 
 PlayStatus::PlayStatus (QWidget *parent) : QWidget (parent)
