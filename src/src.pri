@@ -14,8 +14,6 @@ HEADERS += PixWidget.h \
            TimeDisplay.h \
            XMMSHandler.h \
            SmallNumberDisplay.h \
-           PosBar.h \
-           PlayStatus.h \
            SkinChooser.h \
            settingsdialog.h \
            basewindow.h \
@@ -35,8 +33,6 @@ SOURCES += main.cpp \
            TimeDisplay.cpp \
            XMMSHandler.cpp \
            SmallNumberDisplay.cpp \
-           PosBar.cpp \
-           PlayStatus.cpp \
            SkinChooser.cpp \
            settingsdialog.cpp \
            basewindow.cpp \

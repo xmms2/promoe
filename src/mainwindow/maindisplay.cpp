@@ -134,6 +134,8 @@ MainDisplay::setPixmaps (Skin *skin)
 void
 MainDisplay::setStatus (Xmms::Playback::Status status)
 {
+	m_playstatus->setStatus (status);
+	
 	if (status == Xmms::Playback::STOPPED) {
 		m_time->setTime(0);
 		m_posbar->setValue (0);

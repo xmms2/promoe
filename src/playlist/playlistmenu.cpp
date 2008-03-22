@@ -28,8 +28,7 @@ PlaylistMenuButton::PlaylistMenuButton (PlaylistMenu *menu,
 	m_pixid2 = pix2;
 	menu->addButton (this);
 	m_menu = menu;
-	setMinimumSize (22, 18);
-	setMaximumSize (22, 18);
+	setFixedSize (22, 18);
 }
 
 PlaylistMenuButton::~PlaylistMenuButton ()
@@ -62,8 +61,7 @@ PlaylistMenuButton::setPixmaps (Skin *skin)
 PlaylistMenu::PlaylistMenu (QWidget *parent, uint pix,
 							uint decoration) : PixWidget (parent)
 {
-	setMinimumSize (25, 18);
-	setMaximumSize (25, 18);
+	setFixedSize (25, 18);
 
 	m_expanded = new QWidget (parent);
 	m_expanded->hide ();

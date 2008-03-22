@@ -14,19 +14,22 @@
  */
 
 #include <xmmsclient/xmmsclient++.h>
+
+#include <QPainter>
+#include <QPaintEvent>
+
 #include "PlayStatus.h"
 #include "Skin.h"
 
-PlayStatus::PlayStatus (QWidget *parent) : PixWidget (parent)
+PlayStatus::PlayStatus (QWidget *parent) : QWidget (parent)
 {
-	setMinimumSize(11, 9);
-	setMaximumSize(11, 9);
+	Skin* skin = Skin::getInstance ();
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps (Skin *)));
+
+	setFixedSize(11, 9);
 
 	m_status = Xmms::Playback::STOPPED;
-
-	connect (&XMMSHandler::getInstance (),
-	         SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
-	         this, SLOT(setStatus(Xmms::Playback::Status)));
 }
 
 void
@@ -36,21 +39,39 @@ PlayStatus::setPixmaps (Skin *skin)
 	m_pixmap_pause = skin->getItem (Skin::PIC_PAUSE);
 	m_pixmap_stop = skin->getItem (Skin::PIC_STOP);
 
-	setStatus (m_status);
+	update ();
 }
 
 void
 PlayStatus::setStatus (Xmms::Playback::Status status)
 {
+	m_status = status;
+	update ();
+}
+
+void
+PlayStatus::paintEvent (QPaintEvent *event)
+{
+	QPixmap pixmap;
 	using Xmms::Playback;
-	if (status == Playback::STOPPED) {
-		m_pixmap = m_pixmap_stop;
-	} else if (status == Playback::PLAYING) {
-		m_pixmap = m_pixmap_play;
-	} else if (status == Playback::PAUSED) {
-		m_pixmap = m_pixmap_pause;
+	switch (m_status) {
+		case Playback::STOPPED:
+			pixmap = m_pixmap_stop;
+			break;
+		case Playback::PLAYING:
+			pixmap = m_pixmap_play;
+			break;
+		case Playback::PAUSED:
+			pixmap = m_pixmap_pause;
+			break;
+		default:
+			qWarning ("Unhandled playback status in PlayStatus");
+			break;
 	}
 
-	update ();
+	QPainter p;
+	p.begin (this);
+	p.drawPixmap (rect (), pixmap, pixmap.rect ());
+	p.end ();
 }
 

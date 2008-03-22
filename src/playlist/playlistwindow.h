@@ -61,8 +61,6 @@ class PlaylistWindow : public BaseWindow {
 
 		Button *m_shadebtn;
 		Button *m_closebtn;
-		MainWindow *m_mw;
-
 };
 
 #endif // __PLAYLISTWINDOW_H__

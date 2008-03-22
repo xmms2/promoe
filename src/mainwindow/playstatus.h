@@ -17,10 +17,11 @@
 #define __PLAYSTATUS_H__
 
 #include <xmmsclient/xmmsclient++.h>
-#include "XMMSHandler.h"
-#include "PixWidget.h"
+#include <QWidget>
 
-class PlayStatus : public PixWidget
+class Skin;
+
+class PlayStatus : public QWidget
 {
 	Q_OBJECT
 	public:
@@ -31,6 +32,9 @@ class PlayStatus : public PixWidget
 	public slots:
 		void setPixmaps (Skin *skin);
 		void setStatus (Xmms::Playback::Status status);
+
+	protected slots:
+		void paintEvent (QPaintEvent *event);
 
 	private:
 		Xmms::Playback::Status m_status;

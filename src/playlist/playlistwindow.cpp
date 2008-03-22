@@ -30,7 +30,6 @@
 PlaylistWindow::PlaylistWindow (QWidget *parent) : BaseWindow (parent)
 {
 	QSettings s;
-	m_mw = dynamic_cast<MainWindow *>(parent);
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
@@ -83,7 +82,7 @@ PlaylistWindow::showEvent (QShowEvent *event)
 {
 	QSettings s;
 	s.setValue ("playlist/visible", true);
-	m_mw->attachWidgets ();
+	mw ()->attachWidgets ();
 
 	emit visibilityChanged (true);
 }
@@ -130,7 +129,7 @@ PlaylistWindow::resizeEvent (QResizeEvent *event)
 	if (s.value("playlist/shaded").toBool ()) {
 		s.setValue ("playlist/size", size ());
 	}
-	m_mw->attachWidgets ();
+	mw ()->attachWidgets ();
 }
 
 void
