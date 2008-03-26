@@ -25,8 +25,7 @@ class QPaintEvent;
 #include "VolumeSlider.h"
 class XConfig;
 class Skin;
-class Button;
-class ToggleButton;
+class PixmapButton;
 
 //#include <iostream>
 
@@ -69,9 +68,9 @@ class EqualizerWidget : public QWidget
 		XConfig *m_xconfig;
 		QPixmap m_pixmap;
 		QPixmap m_graph;
-		ToggleButton *m_enable;
-		ToggleButton *m_auto;
-		Button *m_preset;
+		PixmapButton *m_enable;
+		PixmapButton *m_auto;
+		PixmapButton *m_preset;
 		Slider *m_preamp;
 		EqualizerSlider *m_bands[10];
 };

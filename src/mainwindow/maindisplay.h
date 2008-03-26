@@ -32,8 +32,7 @@ class MainDisplay;
 
 #include "Display.h"
 
-class Button;
-class ToggleButton;
+class PixmapButton;
 class TextScroller;
 class TimeDisplay;
 class SmallNumberDisplay;
@@ -83,17 +82,17 @@ class MainDisplay : public SkinDisplay
 		void SetupPushButtons (void);
 		void SetupToggleButtons (void);
 
-		Button *m_prev;
-		Button *m_play;
-		Button *m_pause;
-		Button *m_stop;
-		Button *m_next;
-		Button *m_eject;
+		PixmapButton *m_prev;
+		PixmapButton *m_play;
+		PixmapButton *m_pause;
+		PixmapButton *m_stop;
+		PixmapButton *m_next;
+		PixmapButton *m_eject;
 
-		ToggleButton *m_pls;
-		ToggleButton *m_eq;
-		ToggleButton *m_shuffle;
-		ToggleButton *m_repeat;
+		PixmapButton *m_pls;
+		PixmapButton *m_eq;
+		PixmapButton *m_shuffle;
+		PixmapButton *m_repeat;
 
 		MainWindow *m_mw;
 

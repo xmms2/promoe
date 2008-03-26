@@ -22,7 +22,7 @@ class ShadedDisplay;
 #include "Display.h"
 
 class MainWindow;
-class Button;
+class PixmapButton;
 class SmallNumberDisplay;
 class TextScroller;
 
@@ -38,12 +38,12 @@ class ShadedDisplay : public SkinDisplay
 		TextScroller *m_title;
 
 	private:
-		Button *m_prev;
-		Button *m_play;
-		Button *m_pause;
-		Button *m_stop;
-		Button *m_next;
-		Button *m_eject;
+		PixmapButton *m_prev;
+		PixmapButton *m_play;
+		PixmapButton *m_pause;
+		PixmapButton *m_stop;
+		PixmapButton *m_next;
+		PixmapButton *m_eject;
 
 	public slots:
 		void setStatus (Xmms::Playback::Status status);

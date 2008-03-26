@@ -13,6 +13,8 @@
  *  GNU General Public License for more details.
  */
 
+#include <iostream>
+
 #include "Skin.h"
 
 #include <QDir>
@@ -29,26 +31,89 @@ Skin *Skin::getInstance (void)
 	return singleton;
 }
 
+Skin::Skin ()
+{
+	setSizes ();
+	setPositions ();
+}
+
+void
+Skin::setSizes ()
+{
+	m_sizes.clear ();
+	m_sizes << QSize ( 9,  9) // BUTTON_MW_MENU
+	        << QSize ( 9,  9) // BUTTON_MW_MINIMIZE
+	        << QSize ( 9,  9) // BUTTON_MW_CLOSE
+	        << QSize ( 9,  9) // BUTTON_MW_SHADE
+	        << QSize (23, 18) // BUTTON_MW_PREV
+	        << QSize (23, 18) // BUTTON_MW_PLAY
+	        << QSize (23, 18) // BUTTON_MW_PAUSE
+	        << QSize (23, 18) // BUTTON_MW_STOP
+	        << QSize (22, 18) // BUTTON_MW_NEXT
+	        << QSize (22, 16) // BUTTON_MW_EJECT
+	        << QSize (23, 12) // BUTTON_MW_EQ
+	        << QSize (23, 12) // BUTTON_MW_PLS
+	        << QSize (46, 15) // BUTTON_MW_SHUFFLE
+	        << QSize (28, 15) // BUTTON_MW_REPEAT
+	        << QSize ( 9,  9) // BUTTON_MW_SHADED_SHADE
+	        << QSize (25, 12) // BUTTON_EQ_ACTIVE
+	        << QSize (33, 12) // BUTTON_EQ_AUTO
+	        << QSize (44, 12) // BUTTON_EQ_PRESET
+	        ;
+}
+
+void
+Skin::setPositions ()
+{
+	m_positions.clear ();
+	m_positions << QPoint (  6,  3) // BUTTON_MW_MENU
+	            << QPoint (244,  3) // BUTTON_MW_MINIMIZE
+	            << QPoint (264,  3) // BUTTON_MW_CLOSE
+	            << QPoint (254,  3) // BUTTON_MW_SHADE
+	            << QPoint ( 16, 88) // BUTTON_MW_PREV
+	            << QPoint ( 39, 88) // BUTTON_MW_PLAY 
+	            << QPoint ( 62, 88) // BUTTON_MW_PAUSE
+	            << QPoint ( 85, 88) // BUTTON_MW_STOP
+	            << QPoint (108, 88) // BUTTON_MW_NEXT
+	            << QPoint (136, 89) // BUTTON_MW_EJECT
+	            << QPoint (219, 58) // BUTTON_MW_EQ
+	            << QPoint (242, 58) // BUTTON_MW_PLS
+	            << QPoint (164, 89) // BUTTON_MW_SHUFFLE
+	            << QPoint (210, 89) // BUTTON_MW_REPEAT
+	            << QPoint (254,  3) // BUTTON_MW_SHADED_SHADE
+	            << QPoint ( 14, 18) // BUTTON_EQ_ACTIVE
+	            << QPoint ( 39, 18) // BUTTON_EQ_AUTO
+	            << QPoint (217, 18) // BUTTON_EQ_PRESET
+	            ;
+}
+
 void
 Skin::BuildEqualizer (void)
 {
 	QPixmap *img = getPixmap ("eqmain");
 	if (img) {
 		m_items[EQ_WIN_BG] = img->copy (0, 0, 275, 116);
-		m_items[EQ_WIN_OFF_0] = img->copy (10, 119, 25, 12);
-		m_items[EQ_WIN_OFF_1] = img->copy (128, 119, 25, 12);
-		m_items[EQ_WIN_ON_1] = img->copy (187, 119, 25, 12);
-		m_items[EQ_WIN_ON_0] = img->copy (69, 119, 25, 12);
-
-		m_items[EQ_WIN_AUTO_OFF_0] = img->copy (35, 119, 33, 12);
-		m_items[EQ_WIN_AUTO_OFF_1] = img->copy (153, 119, 33, 12);
-		m_items[EQ_WIN_AUTO_ON_1] = img->copy (212, 119, 33, 12);
-		m_items[EQ_WIN_AUTO_ON_0] = img->copy (94, 119, 33, 12);
-
-		m_items[EQ_WIN_PRESET_0] = img->copy (224, 164, 44, 12);
-		m_items[EQ_WIN_PRESET_1] = img->copy (224, 176, 44, 12);
 
 		m_items[EQ_WIN_GRAPH_BG] = img->copy (0, 294, 113, 19);
+
+		QIcon icon;
+		icon.addPixmap (img->copy ( 10, 119, 25, 12), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (128, 119, 25, 12), QIcon::Active, QIcon::Off);
+		icon.addPixmap (img->copy ( 69, 119, 25, 12), QIcon::Normal, QIcon::On);
+		icon.addPixmap (img->copy (187, 119, 25, 12), QIcon::Active, QIcon::On);
+		m_icons[BUTTON_EQ_ACTIVE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy ( 35, 119, 33, 12), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (153, 119, 33, 12), QIcon::Active, QIcon::Off);
+		icon.addPixmap (img->copy ( 94, 119, 33, 12), QIcon::Normal, QIcon::On);
+		icon.addPixmap (img->copy (212, 119, 33, 12), QIcon::Active, QIcon::On);
+		m_icons[BUTTON_EQ_AUTO] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (224, 164, 44, 12), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (224, 176, 44, 12), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_EQ_PRESET] = icon;
 
 		for (int i = 0; i < 14; i++) {
 			m_items[EQ_WIN_BAR_POS_0+i] = img->copy (13+15*i, 164, 14, 63);
@@ -333,24 +398,36 @@ Skin::BuildButtons (void)
 	QPixmap *img = getPixmap("cbuttons");
 	if(img)
 	{
-		m_items[BTN_PREV_0] = img->copy(0,  0, 23, 18);
-		m_items[BTN_PREV_1] = img->copy(0, 18, 23, 18);
-	
-		m_items[BTN_PLAY_0] = img->copy(23,  0, 23, 18);
-		m_items[BTN_PLAY_1] = img->copy(23, 18, 23, 18);
-	
-		m_items[BTN_PAUSE_0] = img->copy(46,  0, 23, 18);
-		m_items[BTN_PAUSE_1] = img->copy(46, 18, 23, 18);
-	
-		m_items[BTN_STOP_0] = img->copy(69,  0, 23, 18);
-		m_items[BTN_STOP_1] = img->copy(69, 18, 23, 18);
-	
-		m_items[BTN_NEXT_0] = img->copy(92,  0, 22, 18);
-		m_items[BTN_NEXT_1] = img->copy(92, 18, 22, 18);
-	
-		m_items[BTN_EJECT_0] = img->copy(114, 0, 22, 16);
-		m_items[BTN_EJECT_1] = img->copy(114, 16, 22, 16);
-	
+		QIcon icon;
+		icon.addPixmap (img->copy (0,  0, 23, 18), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (0, 18, 23, 18), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_PREV] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (23,  0, 23, 18), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (23, 18, 23, 18), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_PLAY] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (46,  0, 23, 18), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (46, 18, 23, 18), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_PAUSE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (69,  0, 23, 18), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (69, 18, 23, 18), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_STOP] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (92,  0, 22, 18), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (92, 18, 22, 18), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_NEXT] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (114,  0, 22, 16), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (114, 16, 22, 16), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_EJECT] = icon;
+
 		delete img;
 	}
 	else
@@ -365,30 +442,34 @@ Skin::BuildToggleButtons (void)
 
 	if(img)
 	{
-		m_items[REPEAT_ON_0] = img->copy(0, 30, 28, 15);
-		m_items[REPEAT_ON_1] = img->copy(0, 45, 28, 15);
-	
-		m_items[REPEAT_OFF_0] = img->copy(0,  0, 28, 15);
-		m_items[REPEAT_OFF_1] = img->copy(0, 15, 28, 15);
-	
-		m_items[SHUFFLE_ON_0] = img->copy(28, 30, 46, 15);
-		m_items[SHUFFLE_ON_1] = img->copy(28, 45, 46, 15);
-	
-		m_items[SHUFFLE_OFF_0] = img->copy(28,  0, 46, 15);
-		m_items[SHUFFLE_OFF_1] = img->copy(28, 15, 46, 15);
-	
-		m_items[EQ_ON_0] = img->copy( 0, 73, 23, 12);
-		m_items[EQ_ON_1] = img->copy(46, 73, 23, 12);
-	
-		m_items[EQ_OFF_0] = img->copy( 0, 61, 23, 12);
-		m_items[EQ_OFF_1] = img->copy(46, 61, 23, 12);
-	
-		m_items[PLS_ON_0] = img->copy(23, 73, 23, 12);
-		m_items[PLS_ON_1] = img->copy(69, 73, 23, 12);
-	
-		m_items[PLS_OFF_0] = img->copy(23, 61, 23, 12);
-		m_items[PLS_OFF_1] = img->copy(69, 61, 23, 12);
-	
+		QIcon icon;
+		icon.addPixmap (img->copy ( 0, 61, 23, 12), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (46, 61, 23, 12), QIcon::Active, QIcon::Off);
+		icon.addPixmap (img->copy ( 0, 73, 23, 12), QIcon::Normal, QIcon::On);
+		icon.addPixmap (img->copy (46, 73, 23, 12), QIcon::Active, QIcon::On);
+		m_icons[BUTTON_MW_EQ] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (23, 61, 23, 12), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (69, 61, 23, 12), QIcon::Active, QIcon::Off);
+		icon.addPixmap (img->copy (23, 73, 23, 12), QIcon::Normal, QIcon::On);
+		icon.addPixmap (img->copy (69, 73, 23, 12), QIcon::Active, QIcon::On);
+		m_icons[BUTTON_MW_PLS] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (28,  0, 46, 15), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (28, 15, 46, 15), QIcon::Active, QIcon::Off);
+		icon.addPixmap (img->copy (28, 30, 46, 15), QIcon::Normal, QIcon::On);
+		icon.addPixmap (img->copy (28, 45, 46, 15), QIcon::Active, QIcon::On);
+		m_icons[BUTTON_MW_SHUFFLE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (0,  0, 28, 15), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (0, 15, 28, 15), QIcon::Active, QIcon::Off);
+		icon.addPixmap (img->copy (0, 30, 28, 15), QIcon::Normal, QIcon::On);
+		icon.addPixmap (img->copy (0, 45, 28, 15), QIcon::Active, QIcon::On);
+		m_icons[BUTTON_MW_REPEAT] = icon;
+
 		delete img;
 	}
 	else
@@ -403,21 +484,31 @@ Skin::BuildTitleBar (void)
 
 	if(img)
 	{
-		m_items[MENUBUTTON_0] = img->copy(0, 0, 9, 9);
-		m_items[MENUBUTTON_1] = img->copy(0, 9, 9, 9);
-	
-		m_items[MINIMIZE_0] = img->copy(9, 0, 9, 9);
-		m_items[MINIMIZE_1] = img->copy(9, 9, 9, 9);
-	
-		m_items[CLOSE_0] = img->copy(18, 0, 9, 9);
-		m_items[CLOSE_1] = img->copy(18, 9, 9 ,9);
-	
-		m_items[SHADE_1_0] = img->copy(0, 18, 9, 9);
-		m_items[SHADE_1_1] = img->copy(9, 18, 9, 9);
-	
-		m_items[SHADE_2_0] = img->copy(0, 27, 9, 9);
-		m_items[SHADE_2_1] = img->copy(9, 27, 9, 9);
-	
+		QIcon icon;
+		icon.addPixmap (img->copy (0, 0, 9, 9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (0, 9, 9, 9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_MENU] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (9, 0, 9, 9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (9, 9, 9, 9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_MINIMIZE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (18, 0, 9, 9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (18, 9, 9, 9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_CLOSE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (0, 18, 9, 9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (9, 18, 9, 9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_SHADE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (0, 27, 9, 9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (9, 27, 9, 9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_MW_SHADED_SHADE] = icon;
+
 		m_items[TITLEBAR_0] = img->copy(27, 0, 275, 14);
 		m_items[TITLEBAR_1] = img->copy(27, 15, 275, 14);
 	

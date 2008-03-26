@@ -25,7 +25,6 @@
 #include "maindisplay.h"
 #include "shadeddisplay.h"
 #include "equalizerwindow.h"
-#include "Button.h"
 #include "Skin.h"
 
 #include <QSettings>

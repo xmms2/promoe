@@ -16,14 +16,19 @@
 #ifndef __SKIN_H__
 #define __SKIN_H__
 
-#include <iostream>
-
-#include <QPixmap>
-#include <QWidget>
+#include <QObject>
+#include <QList>
 #include <QMap>
+
+#include <QSize>
+#include <QPoint>
+#include <QIcon>
+#include <QPixmap>
+
 class QDir;
 
-//class Skin : public QWidget
+typedef QList<QPixmap> QPixmapList;
+
 class Skin : public QObject
 {
 	Q_OBJECT
@@ -33,12 +38,41 @@ class Skin : public QObject
 		void setSkin (const QString& name);
 		static QPixmap getPixmap (const QString&, QDir);
 		
+		const QSize getSize (uint item) const { return m_sizes[item]; };
+		const QPoint getPos (uint item) const { return m_positions[item]; };
+		const QIcon getIcon (uint item) const { return m_icons.value(item); };
+
 		const QPixmap getItem (uint part) const { return m_items[part]; }
 		const QPixmap getPls (uint part) const { return m_playlist[part]; }
 		const QPixmap getLetter (uint c) const { return m_letterMap[c]; }
 		const QPixmap getNumber (uint c) const { return m_numbers[c]; }
 		uint getNumberSize () { return m_numbers.size(); }
 		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt[c]; }
+
+		enum Buttons {
+			/* Mainwindow buttons */
+			BUTTON_MW_MENU,
+			BUTTON_MW_MINIMIZE,
+			BUTTON_MW_CLOSE,
+			BUTTON_MW_SHADE,
+			BUTTON_MW_PREV,
+			BUTTON_MW_PLAY,
+			BUTTON_MW_PAUSE,
+			BUTTON_MW_STOP,
+			BUTTON_MW_NEXT,
+			BUTTON_MW_EJECT,
+			BUTTON_MW_EQ,
+			BUTTON_MW_PLS,
+			BUTTON_MW_SHUFFLE,
+			BUTTON_MW_REPEAT,
+			/* Mainwindow buttons shaded*/
+			BUTTON_MW_SHADED_SHADE,
+			/* Equalizer buttons */
+			BUTTON_EQ_ACTIVE,
+			BUTTON_EQ_AUTO,
+			BUTTON_EQ_PRESET
+			/* Playlist buttons */
+		};
 
 		enum Part {
 			NONE,
@@ -49,16 +83,6 @@ class Skin : public QObject
 			MONO_1,
 			STEREO_0,
 			STEREO_1,
-			MENUBUTTON_0,
-			MENUBUTTON_1,
-			MINIMIZE_0,
-			MINIMIZE_1,
-			CLOSE_0,
-			CLOSE_1,
-			SHADE_1_0,
-			SHADE_1_1,
-			SHADE_2_0,
-			SHADE_2_1,
 			TITLEBAR_0,
 			TITLEBAR_1,
 			STATUSBAR_0,
@@ -66,34 +90,6 @@ class Skin : public QObject
 			SEEKBAR,
 			SEEKBAR_POS_0,
 			SEEKBAR_POS_1,
-			REPEAT_ON_0,
-			REPEAT_ON_1,
-			REPEAT_OFF_0,
-			REPEAT_OFF_1,
-			SHUFFLE_ON_0,
-			SHUFFLE_ON_1,
-			SHUFFLE_OFF_0,
-			SHUFFLE_OFF_1,
-			EQ_ON_0,
-			EQ_ON_1,
-			EQ_OFF_0,
-			EQ_OFF_1,
-			PLS_ON_0,
-			PLS_ON_1,
-			PLS_OFF_0,
-			PLS_OFF_1,
-			BTN_PREV_0,
-			BTN_PREV_1,
-			BTN_PLAY_0,
-			BTN_PLAY_1,
-			BTN_PAUSE_0,
-			BTN_PAUSE_1,
-			BTN_STOP_0,
-			BTN_STOP_1,
-			BTN_NEXT_0,
-			BTN_NEXT_1,
-			BTN_EJECT_0,
-			BTN_EJECT_1,
 			TEXTBG,
 			PIC_PLAY,
 			PIC_PAUSE,
@@ -139,16 +135,6 @@ class Skin : public QObject
 			CLUTTER_D,
 			CLUTTER_V,
 			EQ_WIN_BG,
-			EQ_WIN_ON_0,
-			EQ_WIN_ON_1,
-			EQ_WIN_OFF_0,
-			EQ_WIN_OFF_1,
-			EQ_WIN_AUTO_ON_0,
-			EQ_WIN_AUTO_ON_1,
-			EQ_WIN_AUTO_OFF_0,
-			EQ_WIN_AUTO_OFF_1,
-			EQ_WIN_PRESET_0,
-			EQ_WIN_PRESET_1,
 			EQ_WIN_GRAPH_BG,
 			EQ_WIN_BAR_POS_0,
 			EQ_WIN_BAR_POS_1,
@@ -305,8 +291,11 @@ class Skin : public QObject
 			PLS_LST_OPN_1
 		};
 	private:
-		Skin() {};
+		Skin();
 		static Skin *singleton;
+
+		void setSizes ();
+		void setPositions ();
 
 		QPixmap *getPixmap (const QString& file);
 		void BuildLetterMap (void);
@@ -323,6 +312,12 @@ class Skin : public QObject
 
 		QString m_skinname;
 		QString m_path;
+
+		QList<QPoint> m_positions;
+		QList<QSize> m_sizes;
+
+		QMap<uint, QIcon> m_icons;
+
 
 		QMap<uint, QPixmap> m_items;
 		QMap<uint, QPixmap> m_letterMap;

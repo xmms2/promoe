@@ -21,7 +21,7 @@
 #include "SkinChooser.h"
 // #include "MedialibWindow.h"
 #include "settingsdialog.h"
-#include "Button.h"
+#include "pixmapbutton.h"
 #include "BrowseDialog.h"
 #include "Skin.h"
 
@@ -31,25 +31,35 @@ TitleBar::TitleBar (QWidget *parent, bool shaded) : PixWidget (parent)
 {
 	MainWindow *mw = dynamic_cast<MainWindow*>(window ());
 	m_shaded = shaded;
-	
-	setMinimumSize (275, 14);
-	setMaximumSize (275, 14);
+	Skin *skin = Skin::getInstance ();
 
-	m_menubtn = new Button (this, Skin::MENUBUTTON_0, Skin::MENUBUTTON_1);
+	setFixedSize (275, 14);
+
+	m_menubtn = new PixmapButton (this);
+	m_menubtn->resize (skin->getSize (Skin::BUTTON_MW_MENU));
+	m_menubtn->move (skin->getPos (Skin::BUTTON_MW_MENU));
 	connect (m_menubtn, SIGNAL (clicked ()), this, SLOT (showMenu ()));
-	m_menubtn->move(6, 3);
 
-	m_minimize = new Button (this, Skin::MINIMIZE_0, Skin::MINIMIZE_1);
+	m_minimize = new PixmapButton (this);
+	m_minimize->resize (skin->getSize (Skin::BUTTON_MW_MINIMIZE));
+	m_minimize->move (skin->getPos (Skin::BUTTON_MW_MINIMIZE));
 	connect (m_minimize, SIGNAL (clicked ()), mw, SLOT (showMinimized ()));
-	m_minimize->move(244, 3);
 
-	m_shadebtn = new Button (this, Skin::SHADE_1_0, Skin::SHADE_1_1);
+	if (shaded) {
+		m_shadebtn = new PixmapButton (this);
+		m_shadebtn->resize (skin->getSize (Skin::BUTTON_MW_SHADED_SHADE));
+		m_shadebtn->move (skin->getPos (Skin::BUTTON_MW_SHADED_SHADE));
+	} else {
+		m_shadebtn = new PixmapButton (this);
+		m_shadebtn->resize (skin->getSize (Skin::BUTTON_MW_SHADE));
+		m_shadebtn->move (skin->getPos (Skin::BUTTON_MW_SHADE));
+	}
 	connect (m_shadebtn, SIGNAL (clicked()), mw, SLOT (switchDisplay ()));
-	m_shadebtn->move(254, 3);
 
-	m_closebtn = new Button (this, Skin::CLOSE_0, Skin::CLOSE_1);
+	m_closebtn = new PixmapButton (this);
+	m_closebtn->resize (skin->getSize (Skin::BUTTON_MW_CLOSE));
+	m_closebtn->move (skin->getPos (Skin::BUTTON_MW_CLOSE));
 	connect (m_closebtn, SIGNAL (clicked()), qApp, SLOT (quit ()));
-	m_closebtn->move(264, 3);
 
 }
 
@@ -138,6 +148,15 @@ TitleBar::setPixmaps (Skin *skin)
 	} else {
 		m_pixmap = m_pixmap_inactive;
 	}
+
+	m_menubtn->setIcon (skin->getIcon (Skin::BUTTON_MW_MENU));
+	m_minimize->setIcon (skin->getIcon (Skin::BUTTON_MW_MINIMIZE));
+	if (m_shaded) {
+		m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_SHADED_SHADE));
+	} else {
+		m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_SHADE));
+	}
+	m_closebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_CLOSE));
 
 	update ();
 }

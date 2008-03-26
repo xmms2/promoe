@@ -24,8 +24,6 @@
 class PlaylistWidget;
 class PlaylistScroller;
 
-#include "Button.h"
-
 class Skin;
 class PlaylistView;
 class PlaylistMenu;

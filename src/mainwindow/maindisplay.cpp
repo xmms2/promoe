@@ -22,8 +22,8 @@
 #include "maindisplay.h"
 #include "mainwindow.h"
 
+#include "pixmapbutton.h"
 #include "TitleBar.h"
-#include "Button.h"
 #include "TextBar.h"
 #include "NumberDisplay.h"
 #include "TimeDisplay.h"
@@ -38,6 +38,7 @@
 
 #include <QFileDialog>
 #include <QSettings>
+#include <QDebug>
 
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
@@ -129,6 +130,18 @@ MainDisplay::setPixmaps (Skin *skin)
 	setPalette(palette);
 
 	setFixedSize(QSize(275, 116));
+
+	/* update buttons*/
+	m_prev->setIcon (skin->getIcon (Skin::BUTTON_MW_PREV));
+	m_play->setIcon (skin->getIcon (Skin::BUTTON_MW_PLAY));
+	m_pause->setIcon (skin->getIcon (Skin::BUTTON_MW_PAUSE));
+	m_stop->setIcon (skin->getIcon (Skin::BUTTON_MW_STOP));
+	m_next->setIcon (skin->getIcon (Skin::BUTTON_MW_NEXT));
+	m_eject->setIcon (skin->getIcon (Skin::BUTTON_MW_EJECT));
+	m_eq->setIcon (skin->getIcon (Skin::BUTTON_MW_EQ));
+	m_pls->setIcon (skin->getIcon (Skin::BUTTON_MW_PLS));
+	m_shuffle->setIcon (skin->getIcon (Skin::BUTTON_MW_SHUFFLE));
+	m_repeat->setIcon (skin->getIcon (Skin::BUTTON_MW_REPEAT));
 }
 
 void
@@ -211,36 +224,40 @@ void
 MainDisplay::SetupToggleButtons (void)
 {
 	QSettings s;
+	Skin *skin = Skin::getInstance ();
 
-
-	m_eq = new ToggleButton (this, Skin::EQ_ON_0, Skin::EQ_ON_1,
-							 Skin::EQ_OFF_0, Skin::EQ_OFF_1);
-	m_eq->move(219, 58);
+	m_eq = new PixmapButton (this);
+	m_eq->setCheckable (true);
+	m_eq->resize (skin->getSize (Skin::BUTTON_MW_EQ));
+	m_eq->move (skin->getPos (Skin::BUTTON_MW_EQ));
 	m_eq->setChecked (m_mw->getEQ ()->isVisible ());
 	connect (m_eq, SIGNAL (toggled (bool)),
 	         m_mw->getEQ (), SLOT (setVisible (bool)));
 	connect (m_mw->getEQ (), SIGNAL (visibilityChanged (bool)),
 	         m_eq, SLOT (setChecked (bool)));
 
-
-	m_pls = new ToggleButton (this, Skin::PLS_ON_0, Skin::PLS_ON_1,
-							  Skin::PLS_OFF_0, Skin::PLS_OFF_1);
-	m_pls->move(242, 58);
+	m_pls = new PixmapButton (this);
+	m_pls->setCheckable (true);
+	m_pls->resize (skin->getSize (Skin::BUTTON_MW_PLS));
+	m_pls->move (skin->getPos (Skin::BUTTON_MW_PLS));
 	m_pls->setChecked (m_mw->getPL ()->isVisible ());
 	connect (m_pls, SIGNAL (toggled (bool)),
 	         m_mw->getPL (), SLOT (setVisible (bool)));
 	connect (m_mw->getPL (), SIGNAL (visibilityChanged (bool)),
 	         m_pls, SLOT (setChecked (bool)));
 
+	// FIXME: Shuffle not yet implemented
+	// Shuffled play should be done serverside through a service client
+	m_shuffle = new PixmapButton (this);
+	m_shuffle->setCheckable (true);
+	m_shuffle->resize (skin->getSize (Skin::BUTTON_MW_SHUFFLE));
+	m_shuffle->move (skin->getPos (Skin::BUTTON_MW_SHUFFLE));
+	m_shuffle->setEnabled(false); 	
 
-	m_shuffle = new ToggleButton (this, Skin::SHUFFLE_ON_0, Skin::SHUFFLE_ON_1,
-								  Skin::SHUFFLE_OFF_0, Skin::SHUFFLE_OFF_1);
-	m_shuffle->move(164, 89);
-	m_shuffle->setEnabled(false); // FIXME: Disabled button for now, not yet implemented
-
-	m_repeat = new ToggleButton (this, Skin::REPEAT_ON_0, Skin::REPEAT_ON_1,
-								 Skin::REPEAT_OFF_0, Skin::REPEAT_OFF_1);
-	m_repeat->move(210, 89);
+	m_repeat = new PixmapButton (this);
+	m_repeat->setCheckable (true);
+	m_repeat->resize (skin->getSize (Skin::BUTTON_MW_REPEAT));
+	m_repeat->move (skin->getPos (Skin::BUTTON_MW_REPEAT));
 	connect (m_repeat, SIGNAL (clicked (bool)),
 	         this, SLOT (setRepeatAllEnabled (bool)));
 }
@@ -256,34 +273,40 @@ void
 MainDisplay::SetupPushButtons (void)
 {
 	XMMSHandler &client = XMMSHandler::getInstance ();
+	Skin *skin = Skin::getInstance ();
 
 	/* Normal buttons */
-	m_prev = new Button (this, Skin::BTN_PREV_0, Skin::BTN_PREV_1);
-	m_prev->move(16, 88);
+	m_prev = new PixmapButton (this);
+	m_prev->resize (skin->getSize (Skin::BUTTON_MW_PREV));
+	m_prev->move (skin->getPos (Skin::BUTTON_MW_PREV));
 	connect (m_prev, SIGNAL(clicked()), client.xplayback (), SLOT(prev ()));
 	
-	m_play = new Button (this, Skin::BTN_PLAY_0, Skin::BTN_PLAY_1);
-	m_play->move(39, 88);
+	m_play = new PixmapButton (this);
+	m_play->resize (skin->getSize (Skin::BUTTON_MW_PLAY));
+	m_play->move (skin->getPos (Skin::BUTTON_MW_PLAY));
 	connect (m_play, SIGNAL(clicked()), client.xplayback (), SLOT(play ()));
 
-	m_pause = new Button (this, Skin::BTN_PAUSE_0, Skin::BTN_PAUSE_1);
-	m_pause->move(62, 88);
+	m_pause = new PixmapButton (this);
+	m_pause->resize (skin->getSize (Skin::BUTTON_MW_PAUSE));
+	m_pause->move (skin->getPos (Skin::BUTTON_MW_PAUSE));
 	connect (m_pause, SIGNAL(clicked()), client.xplayback (), SLOT(pause ()));
 
-	m_stop = new Button (this, Skin::BTN_STOP_0, Skin::BTN_STOP_1);
-	m_stop->move(85, 88);
+	m_stop = new PixmapButton (this);
+	m_stop->resize (skin->getSize (Skin::BUTTON_MW_STOP));
+	m_stop->move (skin->getPos (Skin::BUTTON_MW_STOP));
 	connect (m_stop, SIGNAL(clicked()), client.xplayback (), SLOT(stop ()));
 
-	m_next = new Button (this, Skin::BTN_NEXT_0, Skin::BTN_NEXT_1);
-	m_next->move(108, 88);
+	m_next = new PixmapButton (this);
+	m_next->resize (skin->getSize (Skin::BUTTON_MW_NEXT));
+	m_next->move (skin->getPos (Skin::BUTTON_MW_NEXT));
 	connect (m_next, SIGNAL(clicked()), client.xplayback (), SLOT(next ()));
 
-	m_eject = new Button (this, Skin::BTN_EJECT_0, Skin::BTN_EJECT_1);
-	m_eject->move(136, 89);
+	m_eject = new PixmapButton (this);
+	m_eject->resize (skin->getSize (Skin::BUTTON_MW_EJECT));
+	m_eject->move (skin->getPos (Skin::BUTTON_MW_EJECT));
 	connect (m_eject, SIGNAL(clicked()), this, SLOT(fileOpen()));
 
 }
-
 
 /*
  * Methods for interaction with the server configuration

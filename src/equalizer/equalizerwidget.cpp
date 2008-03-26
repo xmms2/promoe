@@ -19,7 +19,7 @@
 #include "equalizerwidget.h"
 
 #include "mainwindow.h"
-#include "Button.h"
+#include "pixmapbutton.h"
 #include "Skin.h"
 #include "VolumeSlider.h"
 
@@ -58,24 +58,27 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	connect (skin, SIGNAL(skinChanged(Skin *)),
 	         this, SLOT(setPixmaps(Skin *)));
 
-	m_enable = new ToggleButton(this, Skin::EQ_WIN_ON_0, Skin::EQ_WIN_ON_1,
-	                            Skin::EQ_WIN_OFF_0, Skin::EQ_WIN_OFF_1);
-	m_enable->move(14, 18);
+	m_enable = new PixmapButton (this);
+	m_enable->setCheckable (true);
+	m_enable->resize (skin->getSize (Skin::BUTTON_EQ_ACTIVE));
+	m_enable->move (skin->getPos (Skin::BUTTON_EQ_ACTIVE));
 	// must use signal clicked here, as this button also becomes unchecked if
 	// use_legacy is deactivated
 	connect(m_enable, SIGNAL (clicked (bool)),
             this, SLOT (setEqualizerEnabled (bool)));
 
 
-	m_auto = new ToggleButton(this, Skin::EQ_WIN_AUTO_ON_0, Skin::EQ_WIN_AUTO_ON_1,
-	                          Skin::EQ_WIN_AUTO_OFF_0, Skin::EQ_WIN_AUTO_OFF_1);
-	m_auto->move(39, 18);
+	m_auto = new PixmapButton (this);
+	m_auto->setCheckable (true);
+	m_auto->resize (skin->getSize (Skin::BUTTON_EQ_AUTO));
+	m_auto->move (skin->getPos (Skin::BUTTON_EQ_AUTO));
 	m_auto->setEnabled(false); // FIXME: needs to be implemented
 
 	connect(m_auto, SIGNAL(clicked()), parent, SLOT(setEnabled()));
 
-	m_preset = new Button(this, Skin::EQ_WIN_PRESET_0, Skin::EQ_WIN_PRESET_1);
-	m_preset->move(217, 18);
+	m_preset = new PixmapButton (this);
+	m_preset->resize (skin->getSize (Skin::BUTTON_EQ_PRESET));
+	m_preset->move (skin->getPos (Skin::BUTTON_EQ_PRESET));
 	m_preset->setEnabled(false); // FIXME: needs to be implemented
 
 	connect(m_preset, SIGNAL(clicked()), parent, SLOT(setEnabled()));
@@ -138,6 +141,10 @@ EqualizerWidget::setPixmaps (Skin *skin)
 	setMinimumSize (m_pixmap.size ());
 	setMaximumSize (m_pixmap.size ());
 
+	m_enable->setIcon (skin->getIcon (Skin::BUTTON_EQ_ACTIVE));
+	m_auto->setIcon (skin->getIcon (Skin::BUTTON_EQ_AUTO));
+	m_preset->setIcon (skin->getIcon (Skin::BUTTON_EQ_PRESET));
+
 	update();
 }
 
@@ -178,7 +185,7 @@ EqualizerWidget::serverConfigChanged (QString key, QString value)
 		}
 	}
 	if (key == "equalizer.preamp") {
-		// FIXME: value can be of type floas
+		// FIXME: value can be of type float
 		m_preamp->setValue (value.toInt ());
 	}
 	if (key.startsWith ("equalizer.legacy")) {
