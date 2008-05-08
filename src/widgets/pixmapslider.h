@@ -19,6 +19,7 @@
 
 #include <QAbstractSlider>
 #include <QList>
+#include <QPoint>
 
 class QWidget;
 class QPixmap;
@@ -44,6 +45,8 @@ class PixmapSlider : public QAbstractSlider
 		QPixmap normalSlider () const { return m_normal; }
 		QPixmap pressedSlider () const { return m_pressed; }
 
+		void setSliderOffset (QPoint offset) { m_slider_offset = offset; }
+
 	protected slots:
 		void paintEvent (QPaintEvent *event);
 
@@ -58,17 +61,13 @@ class PixmapSlider : public QAbstractSlider
 		int sliderValueFromPosition (int pos);
 		int backgroundIndex ();
 
-		// horizontal offset in vertical sliders or
-		// vertical offset in horizontal sliders
-		void setSliderOffset (int offset) { m_slider_offset = offset; };
-
 	private:
 		QPixmapList m_backgrounds;
 		QPixmap m_normal;
 		QPixmap m_pressed;
 
+		QPoint m_slider_offset;
 		int m_background_index;
-		int m_slider_offset;
 };
 
 #endif

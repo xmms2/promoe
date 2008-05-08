@@ -17,7 +17,6 @@ HEADERS += PixWidget.h \
            SkinChooser.h \
            settingsdialog.h \
            basewindow.h \
-           VolumeSlider.h \
            FileDialog.h \
            BrowseModel.h \
            BrowseDialog.h
@@ -36,7 +35,6 @@ SOURCES += main.cpp \
            SkinChooser.cpp \
            settingsdialog.cpp \
            basewindow.cpp \
-           VolumeSlider.cpp \
            FileDialog.cpp \
            BrowseModel.cpp \
            BrowseDialog.cpp

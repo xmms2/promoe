@@ -23,6 +23,7 @@
 #include "mainwindow.h"
 
 #include "pixmapbutton.h"
+#include "pixmapslider.h"
 #include "TitleBar.h"
 #include "TextBar.h"
 #include "NumberDisplay.h"
@@ -31,7 +32,6 @@
 #include "stereomono.h"
 #include "posbar.h"
 #include "playstatus.h"
-#include "VolumeSlider.h"
 #include "playlistwindow.h"
 #include "equalizerwindow.h"
 #include "clutterbar.h"
@@ -44,6 +44,7 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
 	XMMSHandler &client = XMMSHandler::getInstance ();
 	m_xconfig = client.xconfig ();
+	Skin* skin = Skin::getInstance ();
 
 	m_tbar = new TitleBar(this, false);
 	m_tbar->move(0, 0);
@@ -78,25 +79,29 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_posbar = new PosBar (this, Skin::POSBAR, 
 						   Skin::POSBAR_BTN_0, 
 						   Skin::POSBAR_BTN_1);
-	m_posbar->move (16, 72);
+	m_posbar->move (skin->getPos (Skin::SLIDER_POSBAR_BGS));
 
 	m_playstatus = new PlayStatus (this);
 	m_playstatus->move (24, 28);
 
-	m_vslider = new Slider(this, Skin::VOLUMEBAR_POS_0, Skin::VOLUMEBAR_POS_27,
-	                       Skin::VOLBAR_BTN_0, Skin::VOLBAR_BTN_1, 0, 100);
-	m_vslider->move (107, 57);
+	m_vslider = new PixmapSlider(this);
+	m_vslider->setMinimum (0);
+	m_vslider->setMaximum (100);
+	m_vslider->setSliderOffset (QPoint (0, 1));
+	m_vslider->resize (skin->getSize (Skin::SLIDER_VOLUMEBAR_BGS));
+	m_vslider->move (skin->getPos (Skin::SLIDER_VOLUMEBAR_BGS));
 
-	m_bslider = new Slider(this, Skin::BALANCE_POS_0, Skin::BALANCE_POS_27,
-	                       Skin::BALANCE_BTN_0, Skin::BALANCE_BTN_1, -20, 20);
-	m_bslider->move (177, 57);
+	m_bslider = new PixmapSlider (this);
+	m_bslider->setMinimum (-20);
+	m_bslider->setMaximum (20);
+	m_bslider->setSliderOffset (QPoint (0, 1));
+	m_bslider->resize (skin->getSize (Skin::SLIDER_BALANCEBAR_BGS));
+	m_bslider->move (skin->getPos (Skin::SLIDER_BALANCEBAR_BGS));
 
 	connect (&client, SIGNAL(currentSong (const Xmms::PropDict &)), 
 			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
 	connect (&client, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
-//	connect (&xmmsh, SIGNAL(playtimeChanged(uint)),
-//	         this, SLOT(setPlaytime(uint)));
 	connect (client.cache () , SIGNAL (playtime (uint32_t)),
 	         this,  SLOT (setPlaytime (uint32_t)));
 	connect (&client, SIGNAL(getVolume(uint)), this, SLOT(updateVolume(uint)));
@@ -142,6 +147,14 @@ MainDisplay::setPixmaps (Skin *skin)
 	m_pls->setIcon (skin->getIcon (Skin::BUTTON_MW_PLS));
 	m_shuffle->setIcon (skin->getIcon (Skin::BUTTON_MW_SHUFFLE));
 	m_repeat->setIcon (skin->getIcon (Skin::BUTTON_MW_REPEAT));
+
+	/* update Sliders */
+	m_vslider->setBackground (skin->getBackgrounds (Skin::SLIDER_VOLUMEBAR_BGS));
+	m_vslider->setSliders (skin->getItem (Skin::VOLBAR_BTN_0),
+	                       skin->getItem (Skin::VOLBAR_BTN_1));
+	m_bslider->setBackground (skin->getBackgrounds (Skin::SLIDER_BALANCEBAR_BGS));
+	m_bslider->setSliders (skin->getItem (Skin::BALANCE_BTN_0),
+	                       skin->getItem (Skin::BALANCE_BTN_1));
 }
 
 void

@@ -20,20 +20,20 @@
 
 #include "mainwindow.h"
 #include "pixmapbutton.h"
+#include "pixmapslider.h"
 #include "Skin.h"
-#include "VolumeSlider.h"
 
 #include <QPainter>
 
-EqualizerSlider::EqualizerSlider (QWidget *parent, uint pix_min, uint pix_max,
-                                  uint pix_on, uint pix_off, int min, int max, 
-                                  int id) :
-                                  Slider (parent, pix_min, pix_max, pix_on,
-                                          pix_off, min, max)
+EqualizerSlider::EqualizerSlider (QWidget *parent, int id) :
+                                  PixmapSlider (parent)
 {
 	m_id = id;
 	connect ( this, SIGNAL (sliderMoved (int)),
               this, SLOT (on_self_slider_moved (int)) );
+	setMinimum (-20);
+	setMaximum (20);
+	setSliderOffset (QPoint (1, 0));
 	setInvertedAppearance (true);
 	setOrientation (Qt::Vertical);
 }
@@ -83,20 +83,15 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 
 	connect(m_preset, SIGNAL(clicked()), parent, SLOT(setEnabled()));
 
-	m_preamp = new Slider(this, Skin::EQ_WIN_BAR_POS_0, Skin::EQ_WIN_BAR_POS_27,
-	                      Skin::EQ_WIN_BAR_BTN_0, Skin::EQ_WIN_BAR_BTN_1,
-	                      -20, 20);
+	m_preamp = new EqualizerSlider(this, -1);
+	m_preamp->resize (skin->getSize (Skin::SLIDER_EQUALIZER_BGS));
 	m_preamp->move(21, 38);
-	m_preamp->setOrientation (Qt::Vertical);
-	m_preamp->setInvertedAppearance (true);
 	connect (m_preamp, SIGNAL (sliderMoved (int)),
 	         this, SLOT (updateServerPreamp (int)));
 
 	for (int i=0; i < 10; i++) {
-		m_bands[i] = new EqualizerSlider(this, Skin::EQ_WIN_BAR_POS_0,
-                                         Skin::EQ_WIN_BAR_POS_27,
-                                         Skin::EQ_WIN_BAR_BTN_0,
-                                         Skin::EQ_WIN_BAR_BTN_1, -20, 20, i);
+		m_bands[i] = new EqualizerSlider(this, i);
+		m_bands[i]->resize (skin->getSize (Skin::SLIDER_EQUALIZER_BGS));
 		m_bands[i]->move(78+i*18, 38);
 		connect (m_bands[i], SIGNAL (numberedSliderMoved (int, int)),
 		         this, SLOT (updateServerBands (int, int)));
@@ -141,9 +136,23 @@ EqualizerWidget::setPixmaps (Skin *skin)
 	setMinimumSize (m_pixmap.size ());
 	setMaximumSize (m_pixmap.size ());
 
+	/* Updade Buttons */
 	m_enable->setIcon (skin->getIcon (Skin::BUTTON_EQ_ACTIVE));
 	m_auto->setIcon (skin->getIcon (Skin::BUTTON_EQ_AUTO));
 	m_preset->setIcon (skin->getIcon (Skin::BUTTON_EQ_PRESET));
+
+	/* Update Sliders */
+	QPixmap normal = skin->getItem (Skin::EQ_WIN_BAR_BTN_0);
+	QPixmap pressed = skin->getItem (Skin::EQ_WIN_BAR_BTN_1);
+	QPixmapList bgslist = skin->getBackgrounds (Skin::SLIDER_EQUALIZER_BGS);
+
+	m_preamp->setSliders (normal, pressed);
+	m_preamp->setBackground (bgslist);
+
+	for (int i = 0; i < 10; i++) {
+		m_bands[i]->setSliders (normal, pressed);
+		m_bands[i]->setBackground (bgslist);
+	}
 
 	update();
 }

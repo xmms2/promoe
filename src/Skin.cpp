@@ -56,9 +56,21 @@ Skin::setSizes ()
 	        << QSize (46, 15) // BUTTON_MW_SHUFFLE
 	        << QSize (28, 15) // BUTTON_MW_REPEAT
 	        << QSize ( 9,  9) // BUTTON_MW_SHADED_SHADE
+	        << QSize () // BUTTON_EQ_CLOSE
+	        << QSize () // BUTTON_EQ_SHADE
 	        << QSize (25, 12) // BUTTON_EQ_ACTIVE
 	        << QSize (33, 12) // BUTTON_EQ_AUTO
 	        << QSize (44, 12) // BUTTON_EQ_PRESET
+	        << QSize ( 9,  9) // BUTTON_PLS_CLOSE
+	        << QSize ( 9,  9) // BUTTON_PLS_SHADE
+	        << QSize () // SLIDER_POSBAR
+	        << QSize (248, 10) // SLIDER_POSBAR_BGS
+	        << QSize (14, 11) // SLIDER_VOLUMEBAR
+	        << QSize (68, 13) // SLIDER_VOLUMEBAR_BGS
+	        << QSize () // SLIDER_BALANCEBAR
+	        << QSize (38, 13) // SLIDER_BALANCEBAR_BGS
+	        << QSize () // SLIDER_EQUALIZER
+	        << QSize (14, 63) // SLIDER_EQUALIZER_BGS
 	        ;
 }
 
@@ -71,7 +83,7 @@ Skin::setPositions ()
 	            << QPoint (264,  3) // BUTTON_MW_CLOSE
 	            << QPoint (254,  3) // BUTTON_MW_SHADE
 	            << QPoint ( 16, 88) // BUTTON_MW_PREV
-	            << QPoint ( 39, 88) // BUTTON_MW_PLAY 
+	            << QPoint ( 39, 88) // BUTTON_MW_PLAY
 	            << QPoint ( 62, 88) // BUTTON_MW_PAUSE
 	            << QPoint ( 85, 88) // BUTTON_MW_STOP
 	            << QPoint (108, 88) // BUTTON_MW_NEXT
@@ -81,9 +93,21 @@ Skin::setPositions ()
 	            << QPoint (164, 89) // BUTTON_MW_SHUFFLE
 	            << QPoint (210, 89) // BUTTON_MW_REPEAT
 	            << QPoint (254,  3) // BUTTON_MW_SHADED_SHADE
+	            << QPoint () // BUTTON_EQ_CLOSE
+	            << QPoint () // BUTTON_EQ_SHADE
 	            << QPoint ( 14, 18) // BUTTON_EQ_ACTIVE
 	            << QPoint ( 39, 18) // BUTTON_EQ_AUTO
 	            << QPoint (217, 18) // BUTTON_EQ_PRESET
+	            << QPoint () // BUTTON_PLS_CLOSE
+	            << QPoint () // BUTTON_PLS_SHADE
+	            << QPoint () // SLIDER_POSBAR
+	            << QPoint ( 16, 72) // SLIDER_POSBAR_BGS
+	            << QPoint () // SLIDER_VOLUMEBAR
+	            << QPoint (107, 57) // SLIDER_VOLUMEBAR_BGS
+	            << QPoint () // SLIDER_BALANCEBAR
+	            << QPoint (177, 57) // SLIDER_BALANCEBAR_BGS
+	            << QPoint () // SLIDER_EQUALIZER
+	            << QPoint () // SLIDER_EQUALITER_BGS
 	            ;
 }
 
@@ -115,12 +139,14 @@ Skin::BuildEqualizer (void)
 		icon.addPixmap (img->copy (224, 176, 44, 12), QIcon::Active, QIcon::Off);
 		m_icons[BUTTON_EQ_PRESET] = icon;
 
+		QPixmapList list;
 		for (int i = 0; i < 14; i++) {
-			m_items[EQ_WIN_BAR_POS_0+i] = img->copy (13+15*i, 164, 14, 63);
+			list << img->copy (13+15*i, 164, 14, 63);
 		}
 		for (int i = 0; i < 14; i++) {
-			m_items[EQ_WIN_BAR_POS_14+i] = img->copy (13+15*i, 229, 14, 63);
+			list << img->copy (13+15*i, 229, 14, 63);
 		}
+		m_backgrounds[SLIDER_EQUALIZER_BGS] = list;
 
 		m_items[EQ_WIN_BAR_BTN_0] = img->copy (0, 164, 11, 11);
 		m_items[EQ_WIN_BAR_BTN_1] = img->copy (0, 176, 11, 11);
@@ -163,7 +189,7 @@ Skin::BuildPlaylist (void)
 		m_playlist[PLS_RFILL3_0] = img->copy(44, 42, 7, 29);
 
 		tmp = m_playlist[PLS_CORNER_UR_0];
-	
+
 		m_playlist[PLS_CLOSE_BTN_0] = tmp.copy(14, 3, 9, 9);
 		m_playlist[PLS_CLOSE_BTN_1] = img->copy(52, 42, 9, 9);
 	
@@ -601,6 +627,7 @@ Skin::BuildSliders (void)
 
 	img = getPixmap("posbar");
 	if (img) {
+		m_sizes[SLIDER_POSBAR_BGS] = QSize (248, qMin (10, img->height ()));
 		m_items[POSBAR] = img->copy (0, 0, 248, qMin (10, img->height ()));
 		m_items[POSBAR_BTN_0] = img->copy (248, 0, 29, qMin (10, img->height ()));
 		m_items[POSBAR_BTN_1] = img->copy (278, 0, 29, qMin (10, img->height ()));
@@ -612,9 +639,11 @@ Skin::BuildSliders (void)
 
 	img = getPixmap("volume");
 	if (img) {
+		QPixmapList list;
 		for (int i = 0; i <= 27; i++) {
-			m_items[VOLUMEBAR_POS_0+i] = img->copy(0, i*15, 68, 13);
+			list << img->copy(0, i*15, 68, 13);
 		}
+		m_backgrounds[SLIDER_VOLUMEBAR_BGS] = list;
 
 		if (img->height() > 421) {
 			m_items[VOLBAR_BTN_1] = img->copy (0, 422, 14, qMin (11, img->height () - 422));
@@ -632,13 +661,21 @@ Skin::BuildSliders (void)
 	}
 
 	if (img) {
-		for (int i = 0; i < 28; i++) {
-			m_items[BALANCE_POS_0+i] = img->copy(9, i*15, 38, 13);
+		QPixmapList list;
+		QPixmap p;
+		list << img->copy (9, 15, 38, 13);
+		for (int i = 1; i < 28; i++) {
+			// use p to make use of Qt implicit sharing (I think it will not
+			// work if appended and prepended Images are copied seperately)
+			p = img->copy(9, i*15, 38, 13);
+			list.append (p);
+			list.prepend (p);
 		}
+		m_backgrounds[SLIDER_BALANCEBAR_BGS] = list;
 
 		if (img->height() > 421) {
-			m_items[BALANCE_BTN_0] = img->copy(0, 422, 14, qMin (11, img->height () - 422));//11);
-			m_items[BALANCE_BTN_1] = img->copy(15, 422, 14, qMin (11, img->height () - 422)); //11);
+			m_items[BALANCE_BTN_1] = img->copy(0, 422, 14, qMin (11, img->height () - 422));
+			m_items[BALANCE_BTN_0] = img->copy(15, 422, 14, qMin (11, img->height () - 422));
 		}
 
 		delete img;

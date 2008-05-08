@@ -37,10 +37,12 @@ class Skin : public QObject
 
 		void setSkin (const QString& name);
 		static QPixmap getPixmap (const QString&, QDir);
-		
+
 		const QSize getSize (uint item) const { return m_sizes[item]; };
 		const QPoint getPos (uint item) const { return m_positions[item]; };
 		const QIcon getIcon (uint item) const { return m_icons.value(item); };
+		const QPixmapList getBackgrounds (uint item) const
+		                                 { return m_backgrounds.value(item); };
 
 		const QPixmap getItem (uint part) const { return m_items[part]; }
 		const QPixmap getPls (uint part) const { return m_playlist[part]; }
@@ -49,7 +51,7 @@ class Skin : public QObject
 		uint getNumberSize () { return m_numbers.size(); }
 		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt[c]; }
 
-		enum Buttons {
+		enum Part {
 			/* Mainwindow buttons */
 			BUTTON_MW_MENU,
 			BUTTON_MW_MINIMIZE,
@@ -65,16 +67,29 @@ class Skin : public QObject
 			BUTTON_MW_PLS,
 			BUTTON_MW_SHUFFLE,
 			BUTTON_MW_REPEAT,
-			/* Mainwindow buttons shaded*/
+			/* Mainwindow buttons shaded */
 			BUTTON_MW_SHADED_SHADE,
 			/* Equalizer buttons */
+			BUTTON_EQ_CLOSE,
+			BUTTON_EQ_SHADE,
 			BUTTON_EQ_ACTIVE,
 			BUTTON_EQ_AUTO,
-			BUTTON_EQ_PRESET
+			BUTTON_EQ_PRESET,
 			/* Playlist buttons */
-		};
-
-		enum Part {
+			BUTTON_PLS_CLOSE,
+			BUTTON_PLS_SHADE,
+			/* Sliders */
+			SLIDER_POSBAR,
+			SLIDER_POSBAR_BGS,
+			SLIDER_VOLUMEBAR,
+			SLIDER_VOLUMEBAR_BGS,
+			SLIDER_BALANCEBAR,
+			SLIDER_BALANCEBAR_BGS,
+			SLIDER_EQUALIZER,
+			SLIDER_EQUALIZER_BGS,
+//		};
+//
+//		enum Part { // Old and not yet sorted enum
 			NONE,
 			MAIN_WINDOW,
 			ABOUT_0,
@@ -94,39 +109,6 @@ class Skin : public QObject
 			PIC_PLAY,
 			PIC_PAUSE,
 			PIC_STOP,
-			POSBAR,
-			POSBAR_BTN_0,
-			POSBAR_BTN_1,
-			VOLUMEBAR_POS_0,
-			VOLUMEBAR_POS_1,
-			VOLUMEBAR_POS_2,
-			VOLUMEBAR_POS_3,
-			VOLUMEBAR_POS_4,
-			VOLUMEBAR_POS_5,
-			VOLUMEBAR_POS_6,
-			VOLUMEBAR_POS_7,
-			VOLUMEBAR_POS_8,
-			VOLUMEBAR_POS_9,
-			VOLUMEBAR_POS_10,
-			VOLUMEBAR_POS_11,
-			VOLUMEBAR_POS_12,
-			VOLUMEBAR_POS_13,
-			VOLUMEBAR_POS_14,
-			VOLUMEBAR_POS_15,
-			VOLUMEBAR_POS_16,
-			VOLUMEBAR_POS_17,
-			VOLUMEBAR_POS_18,
-			VOLUMEBAR_POS_19,
-			VOLUMEBAR_POS_20,
-			VOLUMEBAR_POS_21,
-			VOLUMEBAR_POS_22,
-			VOLUMEBAR_POS_23,
-			VOLUMEBAR_POS_24,
-			VOLUMEBAR_POS_25,
-			VOLUMEBAR_POS_26,
-			VOLUMEBAR_POS_27,
-			VOLBAR_BTN_0,
-			VOLBAR_BTN_1,
 			CLUTTER_ON,
 			CLUTTER_OFF,
 			CLUTTER_O,
@@ -136,64 +118,13 @@ class Skin : public QObject
 			CLUTTER_V,
 			EQ_WIN_BG,
 			EQ_WIN_GRAPH_BG,
-			EQ_WIN_BAR_POS_0,
-			EQ_WIN_BAR_POS_1,
-			EQ_WIN_BAR_POS_2,
-			EQ_WIN_BAR_POS_3,
-			EQ_WIN_BAR_POS_4,
-			EQ_WIN_BAR_POS_5,
-			EQ_WIN_BAR_POS_6,
-			EQ_WIN_BAR_POS_7,
-			EQ_WIN_BAR_POS_8,
-			EQ_WIN_BAR_POS_9,
-			EQ_WIN_BAR_POS_10,
-			EQ_WIN_BAR_POS_11,
-			EQ_WIN_BAR_POS_12,
-			EQ_WIN_BAR_POS_13,
-			EQ_WIN_BAR_POS_14,
-			EQ_WIN_BAR_POS_15,
-			EQ_WIN_BAR_POS_16,
-			EQ_WIN_BAR_POS_17,
-			EQ_WIN_BAR_POS_18,
-			EQ_WIN_BAR_POS_19,
-			EQ_WIN_BAR_POS_20,
-			EQ_WIN_BAR_POS_21,
-			EQ_WIN_BAR_POS_22,
-			EQ_WIN_BAR_POS_23,
-			EQ_WIN_BAR_POS_24,
-			EQ_WIN_BAR_POS_25,
-			EQ_WIN_BAR_POS_26,
-			EQ_WIN_BAR_POS_27,
 			EQ_WIN_BAR_BTN_0,
 			EQ_WIN_BAR_BTN_1,
-			BALANCE_POS_0,
-			BALANCE_POS_1,
-			BALANCE_POS_2,
-			BALANCE_POS_3,
-			BALANCE_POS_4,
-			BALANCE_POS_5,
-			BALANCE_POS_6,
-			BALANCE_POS_7,
-			BALANCE_POS_8,
-			BALANCE_POS_9,
-			BALANCE_POS_10,
-			BALANCE_POS_11,
-			BALANCE_POS_12,
-			BALANCE_POS_13,
-			BALANCE_POS_14,
-			BALANCE_POS_15,
-			BALANCE_POS_16,
-			BALANCE_POS_17,
-			BALANCE_POS_18,
-			BALANCE_POS_19,
-			BALANCE_POS_20,
-			BALANCE_POS_21,
-			BALANCE_POS_22,
-			BALANCE_POS_23,
-			BALANCE_POS_24,
-			BALANCE_POS_25,
-			BALANCE_POS_26,
-			BALANCE_POS_27,
+			POSBAR,
+			POSBAR_BTN_0,
+			POSBAR_BTN_1,
+			VOLBAR_BTN_0,
+			VOLBAR_BTN_1,
 			BALANCE_BTN_0,
 			BALANCE_BTN_1,
 		};
@@ -317,21 +248,14 @@ class Skin : public QObject
 		QList<QSize> m_sizes;
 
 		QMap<uint, QIcon> m_icons;
-
+		QMap<uint, QPixmapList> m_backgrounds;
 
 		QMap<uint, QPixmap> m_items;
 		QMap<uint, QPixmap> m_letterMap;
-		QMap<uint, QPixmap> m_volume_bar;
-		QMap<uint, QPixmap> m_balance;
 		QMap<uint, QPixmap> m_numbers;
 		QMap<uint, QPixmap> m_playlist;
-		QMap<uint, QPixmap> m_equalizer;
 
 		QMap<QByteArray, QByteArray> m_pledit_txt;
-		QList<QPixmap *> m_buttons;
-
-		bool m_volbtn;
-		bool m_balbtn;
 
 	signals:
 		void skinChanged (Skin *skin);

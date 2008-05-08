@@ -22,19 +22,19 @@ class QVariant;
 class QPixmap;
 class QPaintEvent;
 
-#include "VolumeSlider.h"
+#include "pixmapslider.h"
 class XConfig;
 class Skin;
 class PixmapButton;
 
 //#include <iostream>
 
-class EqualizerSlider : public Slider
+class EqualizerSlider : public PixmapSlider
 {
 	Q_OBJECT
 
 	public:
-	EqualizerSlider (QWidget*, uint, uint, uint, uint, int, int, int);
+	EqualizerSlider (QWidget*, int);
 
 	signals:
 	void numberedSliderMoved (int value, int id);
@@ -71,7 +71,7 @@ class EqualizerWidget : public QWidget
 		PixmapButton *m_enable;
 		PixmapButton *m_auto;
 		PixmapButton *m_preset;
-		Slider *m_preamp;
+		PixmapSlider *m_preamp;
 		EqualizerSlider *m_bands[10];
 };
 

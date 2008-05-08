@@ -25,7 +25,7 @@
 PixmapSlider::PixmapSlider (QWidget *parent) : QAbstractSlider (parent)
 {
 	setSliderDown (false);
-	m_slider_offset = 0;
+	m_slider_offset = QPoint ();
 }
 
 void
@@ -144,11 +144,11 @@ PixmapSlider::paintEvent (QPaintEvent *event)
 	QPixmap *slider = isSliderDown () ? &m_pressed : &m_normal;
 	QRect rect (slider->rect ());
 	if (orientation () == Qt::Vertical) {
-		rect.moveTop (sliderPositionFromValue ());
-		rect.moveLeft (m_slider_offset);
+		rect.moveTop (sliderPositionFromValue () + m_slider_offset.y ());
+		rect.moveLeft (m_slider_offset.x ());
 	} else {
-		rect.moveLeft (sliderPositionFromValue ());
-		rect.moveTop (m_slider_offset);
+		rect.moveLeft (sliderPositionFromValue () + m_slider_offset.x ());
+		rect.moveTop (m_slider_offset.y ());
 	}
 	p.drawPixmap (rect , *slider, slider->rect ());
 	p.end ();

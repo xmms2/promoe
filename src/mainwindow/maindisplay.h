@@ -33,6 +33,7 @@ class MainDisplay;
 #include "Display.h"
 
 class PixmapButton;
+class PixmapSlider;
 class TextScroller;
 class TimeDisplay;
 class SmallNumberDisplay;
@@ -59,8 +60,8 @@ class MainDisplay : public SkinDisplay
 
 		StereoMono *m_stereo;
 		PosBar *m_posbar;
-		Slider *m_vslider;
-		Slider *m_bslider;
+		PixmapSlider *m_vslider;
+		PixmapSlider *m_bslider;
 
 		PlayStatus *m_playstatus;
 		MainWindow *getMW(void) { return m_mw; }
