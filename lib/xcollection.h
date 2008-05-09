@@ -19,9 +19,9 @@
 class XClient;
 
 #include <QObject>
+#include <QUrl>
 class QStringList;
 class QString;
-class QUrl;
 
 class XCollection : public QObject
 {
