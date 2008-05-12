@@ -230,12 +230,12 @@ TextScroller::paintEvent (QPaintEvent *event)
 	QPainter (paint);
 	paint.begin (this);
 	paint.drawPixmap (QRect (m_x2_off, 0, m_w - pad, m_h),
-					  m_pixmap, 
-					  QRect (m_x_off, 0, m_w, m_h));
+	                  m_pixmap,
+	                  QRect (m_x_off, 0, m_w - pad, m_h));
 	if (pad) {
 		paint.drawPixmap (QRect (m_w - pad, 0, pad, m_h),
-						  m_pixmap,
-						  QRect (0, 0, pad, m_h));
+		                  m_pixmap,
+		                  QRect (0, 0, pad, m_h));
 	}
 	paint.end ();
 }
