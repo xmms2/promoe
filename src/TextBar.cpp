@@ -15,8 +15,15 @@
 
 #include "Display.h"
 #include "TextBar.h"
+#include "Skin.h"
 
+#include <QBrush>
+#include <QFont>
+#include <QPainter>
+#include <QPalette>
+#include <QPixmap>
 #include <QSettings>
+#include <QTimer>
 
 TextScroller::TextScroller (QWidget *parent, uint w, 
 							uint h, const QString &name) : 

@@ -28,6 +28,7 @@
 #include "TextBar.h"
 #include "NumberDisplay.h"
 #include "TimeDisplay.h"
+#include "Skin.h"
 #include "SmallNumberDisplay.h"
 #include "stereomono.h"
 #include "posbar.h"

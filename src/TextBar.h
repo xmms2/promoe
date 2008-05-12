@@ -16,18 +16,11 @@
 #ifndef __TEXTBOX_H__
 #define __TEXTBOX_H__
 
-#include <iostream>
-
-#include <QPixmap>
-#include <QPainter>
 #include <QWidget>
-#include <QFont>
-#include <QTimer>
-#include <QBrush>
-#include <QPalette>
-#include <QBitmap>
+class QPixmap;
+class QTimer;
 
-#include "Skin.h"
+class Skin;
 
 class TextScroller : public QWidget
 {
