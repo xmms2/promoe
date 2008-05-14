@@ -16,6 +16,8 @@
 #include "SmallNumberDisplay.h"
 #include "Skin.h"
 
+#include <QPainter>
+
 SmallNumberDisplay::SmallNumberDisplay (QWidget *parent, int w) : PixWidget (parent)
 {
 	m_w = w;

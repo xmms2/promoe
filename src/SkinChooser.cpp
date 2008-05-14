@@ -18,9 +18,11 @@
 #include "SkinChooser.h"
 
 #include <QDir>
-#include <QIcon>
 #include <QFile>
+#include <QIcon>
+#include <QLabel>
 #include <QSettings>
+#include <QVBoxLayout>
 
 SkinChooser::SkinChooser (QWidget *parent) : QMainWindow (parent)
 {

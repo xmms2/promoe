@@ -15,9 +15,9 @@
 
 
 #include <QListWidget>
-#include <QLabel>
-#include <QVBoxLayout>
 #include <QMainWindow>
+class QLabel;
+class QVBoxLayout;
 
 class MainWindow;
 

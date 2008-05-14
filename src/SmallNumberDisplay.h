@@ -17,7 +17,6 @@
 #define __SMALLNUMBERDISPLAY_H__
 
 #include "PixWidget.h"
-#include <QPainter>
 
 
 class SmallNumberDisplay : public PixWidget

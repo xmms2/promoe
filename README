@@ -15,10 +15,17 @@ Compiling:
 	5) ????
 	6) profit
 
-Compilation Errors:
+Compilation problems:
 	- Errormessage "WARNING: Found potential symbol conflict of <somefile>"
 	  -> make sure you use uic from Qt4 (uic -version)
 	     (on debian systems it's sufficant if uic-qt4 exists)
+
+	- Errormessage "error: xmmsclient/xmmsclient++.h: No such file or directory"
+	  followed by a bunch of other errors
+	  -> You don't have the xmms2-c++ header files installed
+	     (package libxmmsclient++-dev on debian)
+	     After installing the headerfiles run 'make distclean' and start again 
+		 from 'Compiling 1)'
 
 Reporting Bugs:
 	preferred way to report bugs is through xmms2's bugtracker at
