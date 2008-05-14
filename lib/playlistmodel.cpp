@@ -29,6 +29,9 @@
 #include "xclient.h"
 #include "xclientcache.h"
 
+// Used to check for Protocolversion at compiletime
+#include <xmmsc/xmmsc_idnumbers.h>
+
 PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &name) : QAbstractItemModel (parent)
 {
 //	m_columns.append ("#");
@@ -93,7 +96,11 @@ PlaylistModel::got_connection (XClient *client)
 	client->playlist ()->currentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
 
 	client->playlist ()->broadcastChanged () (Xmms::bind (&PlaylistModel::handle_change, this));
+#if (XMMS_IPC_PROTOCOL_VERSION > 10)
+	client->playlist ()->broadcastCurrentPos () (Xmms::bind (&PlaylistModel::handle_update_positions, this));
+#else
 	client->playlist ()->broadcastCurrentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
+#endif
 
 	client->playlist ()->broadcastLoaded () (Xmms::bind (&PlaylistModel::handle_pls_loaded, this));
 
@@ -110,6 +117,18 @@ PlaylistModel::handle_pls_loaded (const std::string &name)
 	}
 
 	return true;
+}
+
+bool
+PlaylistModel::handle_update_positions (const Xmms::Dict &pos)
+{
+
+	QString changed_pl = XClient::stdToQ (pos.get<std::string> ("name"));
+	if (changed_pl == m_name) {
+		uint32_t newpos = pos.get<uint32_t> ("position");
+		return handle_update_pos (newpos);
+	}
+	return false;
 }
 
 bool

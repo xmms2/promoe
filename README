@@ -27,6 +27,10 @@ Compilation problems:
 	     After installing the headerfiles run 'make distclean' and start again 
 		 from 'Compiling 1)'
 
+	- If promoe doesn't compile because of some wrong reference in
+	  lib/playlist.cpp you need to apply the fix for the c++ bindings from
+	  xmms2-eclipser.git (Bug 1965)
+
 Reporting Bugs:
 	preferred way to report bugs is through xmms2's bugtracker at
 	'http://bugs.xmms2.xmms.se/' at project 'Client - Promoe'
