@@ -55,14 +55,17 @@ Skin::setSizes ()
 	        << QSize (23, 12) // BUTTON_MW_PLS
 	        << QSize (46, 15) // BUTTON_MW_SHUFFLE
 	        << QSize (28, 15) // BUTTON_MW_REPEAT
-	        << QSize ( 9,  9) // BUTTON_MW_SHADED_SHADE
-	        << QSize () // BUTTON_EQ_CLOSE
-	        << QSize () // BUTTON_EQ_SHADE
+	        << QSize ( 9,  9) // BUTTON_MW_SHADED_UNSHADE
+	        << QSize ( 9,  9) // BUTTON_EQ_CLOSE
+	        << QSize ( 9,  9) // BUTTON_EQ_SHADE
 	        << QSize (25, 12) // BUTTON_EQ_ACTIVE
 	        << QSize (33, 12) // BUTTON_EQ_AUTO
 	        << QSize (44, 12) // BUTTON_EQ_PRESET
+	        << QSize () // BUTTON_EQ_SHADED_CLOSE
+	        << QSize () // BUTTON_EQ_SHADED_UNSHADE
 	        << QSize ( 9,  9) // BUTTON_PLS_CLOSE
 	        << QSize ( 9,  9) // BUTTON_PLS_SHADE
+	        << QSize () // BUTTON_PLS_SHADED_UNSHADE
 	        << QSize () // SLIDER_POSBAR
 	        << QSize (248, 10) // SLIDER_POSBAR_BGS
 	        << QSize (14, 11) // SLIDER_VOLUMEBAR
@@ -92,14 +95,17 @@ Skin::setPositions ()
 	            << QPoint (242, 58) // BUTTON_MW_PLS
 	            << QPoint (164, 89) // BUTTON_MW_SHUFFLE
 	            << QPoint (210, 89) // BUTTON_MW_REPEAT
-	            << QPoint (254,  3) // BUTTON_MW_SHADED_SHADE
-	            << QPoint () // BUTTON_EQ_CLOSE
-	            << QPoint () // BUTTON_EQ_SHADE
+	            << QPoint (254,  3) // BUTTON_MW_SHADED_UNSHADE
+	            << QPoint (264,  3) // BUTTON_EQ_CLOSE
+	            << QPoint (254  ,3) // BUTTON_EQ_SHADE
 	            << QPoint ( 14, 18) // BUTTON_EQ_ACTIVE
 	            << QPoint ( 39, 18) // BUTTON_EQ_AUTO
 	            << QPoint (217, 18) // BUTTON_EQ_PRESET
+	            << QPoint () // BUTTON_EQ_SHADED_CLOSE
+	            << QPoint () // BUTTON_EQ_SHADED_UNSHADE
 	            << QPoint () // BUTTON_PLS_CLOSE
 	            << QPoint () // BUTTON_PLS_SHADE
+	            << QPoint () // BUTTON_PLS_SHADED_UNSHADE
 	            << QPoint () // SLIDER_POSBAR
 	            << QPoint ( 16, 72) // SLIDER_POSBAR_BGS
 	            << QPoint () // SLIDER_VOLUMEBAR
@@ -115,12 +121,27 @@ void
 Skin::BuildEqualizer (void)
 {
 	QPixmap *img = getPixmap ("eqmain");
-	if (img) {
+	QPixmap *imgex = getPixmap ("eq_ex");
+	if (img && imgex) {
 		m_items[EQ_WIN_BG] = img->copy (0, 0, 275, 116);
 
-		m_items[EQ_WIN_GRAPH_BG] = img->copy (0, 294, 113, 19);
+		if (img->height () > 294) {
+			m_items[EQ_WIN_GRAPH_BG] = img->copy (0, 294, 113, qMin (19, img->height () - 294));
+		} else {
+			m_items[EQ_WIN_GRAPH_BG] = QPixmap ();
+		}
 
 		QIcon icon;
+		icon.addPixmap (img->copy (  0, 116,  9,  9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (  0, 125,  9,  9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_EQ_CLOSE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (254,  3,  9,  9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (imgex->copy ( 1, 38,  9,  9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_EQ_SHADE] = icon;
+
+		icon = QIcon ();
 		icon.addPixmap (img->copy ( 10, 119, 25, 12), QIcon::Normal, QIcon::Off);
 		icon.addPixmap (img->copy (128, 119, 25, 12), QIcon::Active, QIcon::Off);
 		icon.addPixmap (img->copy ( 69, 119, 25, 12), QIcon::Normal, QIcon::On);
@@ -193,7 +214,7 @@ Skin::BuildPlaylist (void)
 		m_playlist[PLS_CLOSE_BTN_0] = tmp.copy(14, 3, 9, 9);
 		m_playlist[PLS_CLOSE_BTN_1] = img->copy(52, 42, 9, 9);
 	
-		m_playlist[PLS_SHADE_BTN_0] = tmp.copy(14, 3, 9, 9);
+		m_playlist[PLS_SHADE_BTN_0] = tmp.copy(5, 3, 9, 9);
 		m_playlist[PLS_SHADE_BTN_1] = img->copy(62, 42, 9, 9);
 	
 		m_playlist[PLS_MAX_BTN_0] = img->copy(150, 42, 9, 9);
@@ -533,7 +554,7 @@ Skin::BuildTitleBar (void)
 		icon = QIcon ();
 		icon.addPixmap (img->copy (0, 27, 9, 9), QIcon::Normal, QIcon::Off);
 		icon.addPixmap (img->copy (9, 27, 9, 9), QIcon::Active, QIcon::Off);
-		m_icons[BUTTON_MW_SHADED_SHADE] = icon;
+		m_icons[BUTTON_MW_SHADED_UNSHADE] = icon;
 
 		m_items[TITLEBAR_0] = img->copy(27, 0, 275, 14);
 		m_items[TITLEBAR_1] = img->copy(27, 15, 275, 14);

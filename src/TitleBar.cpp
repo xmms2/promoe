@@ -47,8 +47,8 @@ TitleBar::TitleBar (QWidget *parent, bool shaded) : PixWidget (parent)
 
 	if (shaded) {
 		m_shadebtn = new PixmapButton (this);
-		m_shadebtn->resize (skin->getSize (Skin::BUTTON_MW_SHADED_SHADE));
-		m_shadebtn->move (skin->getPos (Skin::BUTTON_MW_SHADED_SHADE));
+		m_shadebtn->resize (skin->getSize (Skin::BUTTON_MW_SHADED_UNSHADE));
+		m_shadebtn->move (skin->getPos (Skin::BUTTON_MW_SHADED_UNSHADE));
 	} else {
 		m_shadebtn = new PixmapButton (this);
 		m_shadebtn->resize (skin->getSize (Skin::BUTTON_MW_SHADE));
@@ -152,7 +152,7 @@ TitleBar::setPixmaps (Skin *skin)
 	m_menubtn->setIcon (skin->getIcon (Skin::BUTTON_MW_MENU));
 	m_minimize->setIcon (skin->getIcon (Skin::BUTTON_MW_MINIMIZE));
 	if (m_shaded) {
-		m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_SHADED_SHADE));
+		m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_SHADED_UNSHADE));
 	} else {
 		m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_SHADE));
 	}

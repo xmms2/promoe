@@ -68,6 +68,8 @@ class EqualizerWidget : public QWidget
 		XConfig *m_xconfig;
 		QPixmap m_pixmap;
 		QPixmap m_graph;
+		PixmapButton *m_closebtn;
+		PixmapButton *m_shadebtn;
 		PixmapButton *m_enable;
 		PixmapButton *m_auto;
 		PixmapButton *m_preset;
