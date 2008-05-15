@@ -122,13 +122,12 @@ PlaylistModel::handle_pls_loaded (const std::string &name)
 bool
 PlaylistModel::handle_update_positions (const Xmms::Dict &pos)
 {
-
 	QString changed_pl = XClient::stdToQ (pos.get<std::string> ("name"));
 	if (changed_pl == m_name) {
 		uint32_t newpos = pos.get<uint32_t> ("position");
 		return handle_update_pos (newpos);
 	}
-	return false;
+	return true;
 }
 
 bool
