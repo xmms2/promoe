@@ -361,7 +361,7 @@ Skin::BuildLetterMap (void)
 		for (int i = 0; i < 3; i++) {
 			QList<QPixmap>(l);
 			for (int j = 0; j < 31; j++) {
-				l.append(img->copy(j*5, i*6, 4, 6));
+				l.append(img->copy(j*5, i*6, 5, 6));
 			}
 			letters.append(l);
 		}

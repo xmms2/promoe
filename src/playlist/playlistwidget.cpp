@@ -197,6 +197,7 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	m_scrollBar = new PlaylistScrollBar (this);
 	m_view->setVerticalScrollBar (m_scrollBar);
 	m_scrollBar->setParent(this);
+	m_scrollBar->setVisible (true);
 	m_scrollBar->show();
 	/* Workarounds for another QT bug (at least in my opinion) */
 	connect (m_scrollBar, SIGNAL(actionTriggered (int)),
@@ -378,11 +379,16 @@ PlaylistWidget::resizeEvent (QResizeEvent *event)
 {
 	m_view->resize (size().width()-30, size().height()-20-38);
 
-	/* since the sizes has changed we need to move the buttons */
-	m_scrollBar->move (size().width()-m_rfill3.width()-m_rfill2.width(),
-					  m_corner2.height());
-	m_scrollBar->resize (m_rfill2.width(),
-						size().height()-m_corner2.height()-m_corner4.height());
+	/* since the sizes has changed we need to move the scrollbar */
+//	m_scrollBar->move (size().width()-m_rfill3.width()-m_rfill2.width(),
+//					  m_corner2.height());
+//	m_scrollBar->resize (m_rfill2.width(),
+//						size().height()-m_corner2.height()-m_corner4.height());
+	// Hardcoded values to avoid missing scrollBar if Playlist was visible
+	// on startup
+	m_scrollBar->move (size ().width ()-8-7, 20);
+	m_scrollBar->resize (8, size ().height ()-20-38);
+
 
 	/* place the sizegrip in the lower right corner */
 	m_sizegrip->move( size().width() - m_sizegrip->width(),

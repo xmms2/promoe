@@ -1,7 +1,10 @@
 Required dependencys:
 	* QT4.2.x           http://www.trolltech.no/
 	* XMMS2             http://xmms2.xmms.org/
-	* XMMS2 C++ bindings (make sure to have boost_signals when compiling xmms2) 
+	* XMMS2 C++ bindings (make sure to have boost_signals when compiling xmms2)
+	  - promoe should compile with DrK
+	  - if you compile against xmms2-devel
+	    make sure it isn't not older than 2008-05-15
 
 Optional dependencys:
 	* Avahi     http://www.avahi.org/
@@ -26,10 +29,6 @@ Compilation problems:
 	     (package libxmmsclient++-dev on debian)
 	     After installing the headerfiles run 'make distclean' and start again 
 		 from 'Compiling 1)'
-
-	- If promoe doesn't compile because of some wrong reference in
-	  lib/playlist.cpp you need to apply the fix for the c++ bindings from
-	  xmms2-eclipser.git (Bug 1965)
 
 Reporting Bugs:
 	preferred way to report bugs is through xmms2's bugtracker at

@@ -55,7 +55,7 @@ SmallNumberDisplay::drawNumber ()
 					  m_pixmap.rect ());
 
 	for (int i = 0; i < m_num; i++) {
-		paint.drawPixmap (QRect (i*5, 0, 4, 6),
+		paint.drawPixmap (QRect (i*5, 0, 5, 6),
 						  skin->getLetter (m_nums[i]),
 						  skin->getLetter (m_nums[i]).rect ());
 	}
