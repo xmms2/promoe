@@ -24,6 +24,7 @@
 #include "playlistmodel.h"
 #include "xcollection.h"
 
+#include "pixmapbutton.h"
 #include "playlistshade.h"
 #include "playlistmenu.h"
 #include "FileDialog.h"
@@ -32,6 +33,7 @@
 
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QPoint>
 #include <QRect>
 #include <QIcon>
 #include <QApplication>
@@ -171,7 +173,7 @@ PlaylistScrollBar::sliderValueFromPosition (int position)
 /*
  * PlaylistWidget
  */
-PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
+PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
 
@@ -179,6 +181,14 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 	         this, SLOT (setPixmaps(Skin *)));
 
 	setActive (underMouse ());
+
+	m_closebtn = new PixmapButton (this);
+	m_closebtn->resize (skin->getSize (Skin::BUTTON_PLS_CLOSE));
+	connect (m_closebtn, SIGNAL (clicked ()), parent, SLOT (hide ()));
+
+	m_shadebtn = new PixmapButton (this);
+	m_shadebtn->resize (skin->getSize (Skin::BUTTON_PLS_SHADE));
+	connect (m_shadebtn, SIGNAL (clicked ()), parent, SLOT (switchDisplay ()));
 
 	m_view = new PlaylistView (this);
 	m_view->move (10, 20);
@@ -215,7 +225,7 @@ PlaylistWidget::PlaylistWidget (QWidget *parent) : QWidget (parent)
 }
 
 void
-PlaylistWidget::addButtons (void)
+PlaylistWidget::addButtons ()
 {
 	PlaylistMenuButton *b;
 
@@ -377,6 +387,14 @@ PlaylistWidget::menuAddPls ()
 void
 PlaylistWidget::resizeEvent (QResizeEvent *event)
 {
+	Skin *skin = Skin::getInstance ();
+
+	QPoint p = skin->getPos (Skin::BUTTON_PLS_CLOSE);
+	m_closebtn->move (p.x () + width (), p.y());
+
+	p = skin->getPos (Skin::BUTTON_PLS_SHADE);
+	m_shadebtn->move (p.x () + width (), p.y());
+
 	m_view->resize (size().width()-30, size().height()-20-38);
 
 	/* since the sizes has changed we need to move the scrollbar */
@@ -405,6 +423,9 @@ PlaylistWidget::resizeEvent (QResizeEvent *event)
 void
 PlaylistWidget::setPixmaps (Skin *skin)
 {
+	m_closebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_CLOSE));
+	m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_SHADE));
+
 	setActive (m_active);
 
 	update ();

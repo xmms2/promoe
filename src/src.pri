@@ -8,7 +8,6 @@ HEADERS += PixWidget.h \
            Skin.h \
            Display.h \
            TitleBar.h \
-           Button.h \
            TextBar.h \
            NumberDisplay.h \
            TimeDisplay.h \
@@ -26,7 +25,6 @@ SOURCES += main.cpp \
            Skin.cpp \
            Display.cpp \
            TitleBar.cpp \
-           Button.cpp \
            TextBar.cpp \
            NumberDisplay.cpp \
            TimeDisplay.cpp \

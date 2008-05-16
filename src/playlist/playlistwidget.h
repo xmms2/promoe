@@ -20,13 +20,16 @@
 
 #include <QScrollBar>
 #include <QSizeGrip>
+#include <QWidget>
 
 class PlaylistWidget;
+class PlaylistWindow;
 class PlaylistScroller;
 
 class Skin;
 class PlaylistView;
 class PlaylistMenu;
+class PixmapButton;
 
 
 class PlaylistSizeGrip : public QSizeGrip {
@@ -70,7 +73,7 @@ class PlaylistWidget : public QWidget {
 	Q_OBJECT
 
 	public:
-		PlaylistWidget (QWidget *parent);
+		PlaylistWidget (PlaylistWindow *parent);
 		~PlaylistWidget () {}
 
 		void setActive (bool);
@@ -93,6 +96,9 @@ class PlaylistWidget : public QWidget {
 		void mouseDoubleClickEvent (QMouseEvent *event);
 		void addButtons (void);
 		void diveDir (const QString &);
+
+		PixmapButton *m_closebtn;
+		PixmapButton *m_shadebtn;
 
 		QPixmap m_corner1;
 		QPixmap m_corner2;

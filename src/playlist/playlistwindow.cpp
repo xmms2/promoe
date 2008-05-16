@@ -21,7 +21,6 @@
 #include <QResizeEvent>
 #include <QPoint>
 
-#include "Button.h"
 #include "playlistwidget.h"
 #include "playlistshade.h"
 
@@ -46,14 +45,6 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : BaseWindow (parent)
 	m_playlist = new PlaylistWidget (this);
 	setCentralWidget (m_playlist);
 	m_shaded = new PlaylistShade (this);
-
-	m_shadebtn = new Button (this, Skin::PLS_SHADE_BTN_0, Skin::PLS_SHADE_BTN_1, true);
-	connect (m_shadebtn, SIGNAL (clicked()), this, SLOT (switchDisplay ()));
-	m_shadebtn->move(size().width() - 21, 3);
-
-	m_closebtn = new Button (this, Skin::PLS_CLOSE_BTN_0, Skin::PLS_CLOSE_BTN_1, true);
-	connect (m_closebtn, SIGNAL (clicked()), this, SLOT (hide ()));
-	m_closebtn->move(size().width() - 11, 3);
 
 	if (!s.contains ("shaded"))
 		s.setValue ("shaded", false);
@@ -122,9 +113,6 @@ void
 PlaylistWindow::resizeEvent (QResizeEvent *event)
 {
 	QSettings s;
-
-	m_shadebtn->move(size().width() - 21, 3);
-	m_closebtn->move(size().width() - 11, 3);
 
 	if (s.value("playlist/shaded").toBool ()) {
 		s.setValue ("playlist/size", size ());

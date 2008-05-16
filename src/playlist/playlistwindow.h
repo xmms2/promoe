@@ -27,7 +27,6 @@ class QShowEvent;
 class QPoint;
 
 // our own classes
-class Button;
 class MainWindow;
 class PlaylistWidget;
 class PlaylistShade;
@@ -58,9 +57,6 @@ class PlaylistWindow : public BaseWindow {
 	private:
 		PlaylistWidget *m_playlist;
 		PlaylistShade *m_shaded;
-
-		Button *m_shadebtn;
-		Button *m_closebtn;
 };
 
 #endif // __PLAYLISTWINDOW_H__

@@ -65,7 +65,7 @@ Skin::setSizes ()
 	        << QSize () // BUTTON_EQ_SHADED_UNSHADE
 	        << QSize ( 9,  9) // BUTTON_PLS_CLOSE
 	        << QSize ( 9,  9) // BUTTON_PLS_SHADE
-	        << QSize () // BUTTON_PLS_SHADED_UNSHADE
+	        << QSize ( 9,  9) // BUTTON_PLS_SHADED_UNSHADE
 	        << QSize () // SLIDER_POSBAR
 	        << QSize (248, 10) // SLIDER_POSBAR_BGS
 	        << QSize (14, 11) // SLIDER_VOLUMEBAR
@@ -103,9 +103,10 @@ Skin::setPositions ()
 	            << QPoint (217, 18) // BUTTON_EQ_PRESET
 	            << QPoint () // BUTTON_EQ_SHADED_CLOSE
 	            << QPoint () // BUTTON_EQ_SHADED_UNSHADE
-	            << QPoint () // BUTTON_PLS_CLOSE
-	            << QPoint () // BUTTON_PLS_SHADE
-	            << QPoint () // BUTTON_PLS_SHADED_UNSHADE
+	            // The next 3 widgets are placed from the right
+	            << QPoint (-11,  3) // BUTTON_PLS_CLOSE
+	            << QPoint (-20,  3) // BUTTON_PLS_SHADE
+	            << QPoint (-20,  3) // BUTTON_PLS_SHADED_UNSHADE
 	            << QPoint () // SLIDER_POSBAR
 	            << QPoint ( 16, 72) // SLIDER_POSBAR_BGS
 	            << QPoint () // SLIDER_VOLUMEBAR
@@ -187,22 +188,37 @@ Skin::BuildPlaylist (void)
 
 	if(img)
 	{
+		QIcon icon;
+		icon.addPixmap (img->copy (167,  3,  9,  9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy ( 52, 42,  9,  9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_PLS_CLOSE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (158,  3,  9,  9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy ( 62, 42,  9,  9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_PLS_SHADE] = icon;
+
+		icon = QIcon ();
+		icon.addPixmap (img->copy (129, 45,  9,  9), QIcon::Normal, QIcon::Off);
+		icon.addPixmap (img->copy (150, 42,  9,  9), QIcon::Active, QIcon::Off);
+		m_icons[BUTTON_PLS_SHADED_UNSHADE] = icon;
+
 		m_playlist[PLS_CORNER_UL_0] = img->copy(0, 0, 25, 20);
 		m_playlist[PLS_CORNER_UL_1] = img->copy(0, 21, 25, 20);
-		
+
 		m_playlist[PLS_TBAR_0] = img->copy (26, 0, 100, 20);
 		m_playlist[PLS_TBAR_1] = img->copy (26, 21, 100, 20);
-		
+
 		m_playlist[PLS_CORNER_UR_0] = img->copy(153, 0, 25, 20);
 		m_playlist[PLS_CORNER_UR_1] = img->copy(153, 21, 25, 20);
-	
+
 		m_playlist[PLS_TFILL_0] = img->copy(127, 0, 25, 20);
 		m_playlist[PLS_TFILL_1] = img->copy(127, 21, 25, 20);
-	
+
 		m_playlist[PLS_BFILL_0] = img->copy(179, 0, 25, 38);
-	
+
 		m_playlist[PLS_VISMINI_0] = img->copy(205, 0, 75, 38);
-	
+
 		m_playlist[PLS_LFILL_0] = img->copy(0, 42, 12, 29);
 
 		m_playlist[PLS_RFILL_0] = img->copy(31, 42, 5, 29);
@@ -211,89 +227,89 @@ Skin::BuildPlaylist (void)
 
 		tmp = m_playlist[PLS_CORNER_UR_0];
 
-		m_playlist[PLS_CLOSE_BTN_0] = tmp.copy(14, 3, 9, 9);
-		m_playlist[PLS_CLOSE_BTN_1] = img->copy(52, 42, 9, 9);
-	
-		m_playlist[PLS_SHADE_BTN_0] = tmp.copy(5, 3, 9, 9);
-		m_playlist[PLS_SHADE_BTN_1] = img->copy(62, 42, 9, 9);
-	
+//		m_playlist[PLS_CLOSE_BTN_0] = tmp.copy(14, 3, 9, 9);
+//		m_playlist[PLS_CLOSE_BTN_1] = img->copy(52, 42, 9, 9);
+
+//		m_playlist[PLS_SHADE_BTN_0] = tmp.copy(5, 3, 9, 9);
+//		m_playlist[PLS_SHADE_BTN_1] = img->copy(62, 42, 9, 9);
+
 		m_playlist[PLS_MAX_BTN_0] = img->copy(150, 42, 9, 9);
-	
+
 		m_playlist[PLS_SCROLL_0] = img->copy(52, 53, 8, 18);
 		m_playlist[PLS_SCROLL_1] = img->copy(61, 53, 8, 18);
-	
+
 		m_playlist[PLS_WS_LE_0] = img->copy(72, 42, 25, 14);
 		m_playlist[PLS_WS_RE_0] = img->copy(99, 42, 50, 14);
 		m_playlist[PLS_WS_RE_1] = img->copy(99, 57, 50, 14);
 		m_playlist[PLS_WS_MID_0] = img->copy(72, 57, 25, 14);
-	
+
 		m_playlist[PLS_LCBAR] = img->copy(0, 72, 125, 38);
 		m_playlist[PLS_RCBAR] = img->copy(126, 72, 150, 38);
-	
+
 		/* extract the buttons */
 		m_playlist[PLS_ADD] = img->copy(11, 80, 25, 18);
 		m_playlist[PLS_ADD_DEC] = img->copy(48, 111, 3, 54);
 		m_playlist[PLS_ADD_URL_0] = img->copy(0, 111, 22, 18);
 		m_playlist[PLS_ADD_URL_1] = img->copy(23, 111, 22, 18);
-		
+
 		m_playlist[PLS_ADD_DIR_0] = img->copy(0, 130, 22, 18);
 		m_playlist[PLS_ADD_DIR_1] = img->copy(23, 130, 22, 18);
-	
+
 		m_playlist[PLS_ADD_FIL_0] = img->copy(0, 149, 22, 18);
 		m_playlist[PLS_ADD_FIL_1] = img->copy(23, 149, 22, 18);
-	
+
 		/* Delete buttons */
 		m_playlist[PLS_DEL] = img->copy(40, 80, 25, 18);
 		m_playlist[PLS_DEL_DEC] = img->copy(100, 111, 3, 72);
 		m_playlist[PLS_DEL_ALL_0] = img->copy(54, 111, 22, 18);
 		m_playlist[PLS_DEL_ALL_1] = img->copy(77, 111, 22, 18);
-		
+
 		m_playlist[PLS_DEL_CRP_0] = img->copy(54, 130, 22, 18);
 		m_playlist[PLS_DEL_CRP_1] = img->copy(77, 130, 22, 18);
-		
+
 		m_playlist[PLS_DEL_FIL_0] = img->copy(54, 149, 22, 18);
 		m_playlist[PLS_DEL_FIL_1] = img->copy(77, 149, 22, 18);
-		
+
 		/* Select buttons */
 		m_playlist[PLS_SEL] = img->copy(69, 80, 25, 18);
 		m_playlist[PLS_SEL_DEC] = img->copy(150, 111, 3, 54);
 		m_playlist[PLS_SEL_INV_0] = img->copy(104, 111, 22, 18);
 		m_playlist[PLS_SEL_INV_1] = img->copy(127, 111, 22, 18);
-	
+
 		m_playlist[PLS_SEL_NIL_0] = img->copy(104, 130, 22, 18);
 		m_playlist[PLS_SEL_NIL_1] = img->copy(127, 130, 22, 18);
-		
+
 		m_playlist[PLS_SEL_ALL_0] = img->copy(104, 149, 22, 18);
 		m_playlist[PLS_SEL_ALL_1] = img->copy(127, 149, 22, 18);
-	
+
 		/* misc buttons */
 		m_playlist[PLS_MSC] = img->copy(98, 80, 25, 18);
 		m_playlist[PLS_MSC_DEC] = img->copy(200, 111, 3, 54);
 		m_playlist[PLS_MSC_SRT_0] = img->copy(154, 111, 22, 18);
 		m_playlist[PLS_MSC_SRT_1] = img->copy(177, 111, 22, 18);
-	
+
 		m_playlist[PLS_MSC_INF_0] = img->copy(154, 130, 22, 18);
 		m_playlist[PLS_MSC_INF_1] = img->copy(177, 130, 22, 18);
-		
+
 		m_playlist[PLS_MSC_OPT_0] = img->copy(154, 149, 22, 18);
 		m_playlist[PLS_MSC_OPT_1] = img->copy(177, 149, 22, 18);
-		
+
 		/* list buttons */
 		m_playlist[PLS_LST] = img->copy(229, 80, 25, 18);
 		m_playlist[PLS_LST_DEC] = img->copy(250, 111, 3, 54);
 		m_playlist[PLS_LST_NEW_0] = img->copy(204, 111, 22, 18);
 		m_playlist[PLS_LST_NEW_1] = img->copy(227, 111, 22, 18);
-	
+
 		m_playlist[PLS_LST_SAV_0] = img->copy(204, 130, 22, 18);
 		m_playlist[PLS_LST_SAV_1] = img->copy(227, 130, 22, 18);
-	
+
 		m_playlist[PLS_LST_OPN_0] = img->copy(204, 149, 22, 18);
 		m_playlist[PLS_LST_OPN_1] = img->copy(227, 149, 22, 18);
-	
+
 		/* misc button */
 		m_playlist[PLS_MSC_BTN_0] = img->copy(54, 168, 22, 18);
 		m_playlist[PLS_MSC_BTN_1] = img->copy(77, 168, 22, 18);
-	
+
 		delete img;
 	}
 	else

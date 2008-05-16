@@ -22,11 +22,15 @@
 #include <QWidget>
 #include <QHash>
 
+class QResizeEvent;
+class PixmapButton;
+class PlaylistWindow;
+
 class PlaylistShade : public QWidget {
 	Q_OBJECT
 
 	public:
-		PlaylistShade (QWidget *parent);
+		PlaylistShade (PlaylistWindow *parent);
 		~PlaylistShade () {}
 
 		void paintEvent (QPaintEvent *event);
@@ -37,8 +41,12 @@ class PlaylistShade : public QWidget {
 		void setPixmaps (Skin *skin);
 		void setMediainfo (const Xmms::PropDict &info);
 		void settingsSaved ();
+		void resizeEvent (QResizeEvent *);
 
 	private:
+		PixmapButton *m_closebtn;
+		PixmapButton *m_unshadebtn;
+
 		QPixmap m_pixmap_le;
 		QPixmap m_pixmap_re;
 		QPixmap m_pixmap_mid;

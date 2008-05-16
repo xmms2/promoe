@@ -18,11 +18,13 @@
 
 #include "playlistshade.h"
 #include "playlistwindow.h"
+#include "pixmapbutton.h"
 
 #include <QSettings>
 #include <QPainter>
+#include <QPoint>
 
-PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
+PlaylistShade::PlaylistShade (PlaylistWindow *parent) : QWidget (parent)
 {
 	QSettings s;
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
@@ -31,9 +33,17 @@ PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 		s.setValue ("playlist/shadedsize", 8);
 
 	Skin *skin = Skin::getInstance ();
-	setMinimumSize (275, 14);
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
+
+	m_closebtn = new PixmapButton (this);
+	m_closebtn->resize (skin->getSize (Skin::BUTTON_PLS_CLOSE));
+	connect (m_closebtn, SIGNAL (clicked ()), parent, SLOT (hide ()));
+
+	m_unshadebtn = new PixmapButton (this);
+	m_unshadebtn->resize (skin->getSize (Skin::BUTTON_PLS_SHADED_UNSHADE));
+	connect (m_unshadebtn, SIGNAL (clicked ()),
+	         parent, SLOT (switchDisplay ()));
 
 	connect (&xmmsh, SIGNAL(currentSong (const Xmms::PropDict &)), 
 			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
@@ -42,6 +52,7 @@ PlaylistShade::PlaylistShade (QWidget *parent) : QWidget (parent)
 			 this, SLOT(settingsSaved ()));
 
 	m_text = "Promoe " PROMOE_VERSION  " - A very neat XMMS2 client";
+	setMinimumSize (275, 14);
 }
 
 void
@@ -73,9 +84,24 @@ PlaylistShade::setMediainfo (const Xmms::PropDict &info)
 }
 
 void
+PlaylistShade::resizeEvent (QResizeEvent *event)
+{
+	Skin *skin = Skin::getInstance ();
+
+	QPoint p = skin->getPos (Skin::BUTTON_PLS_CLOSE);
+	m_closebtn->move (p.x () + width (), p.y());
+
+	p = skin->getPos (Skin::BUTTON_PLS_SHADED_UNSHADE);
+	m_unshadebtn->move (p.x () + width (), p.y());
+}
+
+void
 PlaylistShade::setPixmaps (Skin *skin)
 {
 	QSettings s;
+
+	m_closebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_CLOSE));
+	m_unshadebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_SHADED_UNSHADE));
 
 	m_pixmap_le = skin->getPls (Skin::PLS_WS_LE_0);
 	m_pixmap_re_0 = skin->getPls (Skin::PLS_WS_RE_0);
