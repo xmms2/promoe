@@ -725,7 +725,7 @@ Skin::BuildSliders (void)
 void
 Skin::BuildNumbers (void)
 {
-	uint num = 12;
+	int num = 12;
 
 	QPixmap *img = getPixmap("nums_ex");
 	if (!img) {
@@ -735,8 +735,17 @@ Skin::BuildNumbers (void)
 
 	if(img)
 	{
-		for (uint i = 0; i < num; i++) {
+		for (int i = 0; i < num; i++) {
 			m_numbers[i] = img->copy (i*9, 0, 9, qMin (13, img->height ()));
+		}
+		if (num < 12) {
+			// We do not yet have a '-' Symbol, so we create one
+			// from the '2' character and the blank as background
+			QPixmap pix = m_numbers[10].copy ();
+			QRect r (3, 6, 3, 1);
+			QPainter painter (&pix);
+			painter.drawPixmap (r, m_numbers[2], r);
+			m_numbers[11] = pix;
 		}
 		delete img;
 	}

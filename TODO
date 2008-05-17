@@ -1,8 +1,9 @@
 Todo:
 
+General:
+	+ Feature Requests and Bugs on tracker
+
 + Mainwindow
-	+ Balancebackgrounds are wrong
-	+ enable repeat button
 	+ enable random play (will have to wait for a randomplay service client)
 * Playlist
 	+ Make displayed Information configurable

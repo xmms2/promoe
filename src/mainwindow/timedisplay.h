@@ -16,32 +16,36 @@
 #ifndef __TIMEDISPLAY_H__
 #define __TIMEDISPLAY_H__
 
-class TimeDisplay;
+#include <QWidget>
+#include <QMap>
 
-#include "PixWidget.h"
-#include "NumberDisplay.h"
+class QMouseEvent;
+class QPaintEvent;
+class QPixmap;
 
-class TimeDisplay : public PixWidget
+typedef QMap<int, QPixmap> PixmapMap;
+
+class TimeDisplay : public QWidget
 {
 	Q_OBJECT
 	public:
-		TimeDisplay (QWidget *parent, int time);
-		~TimeDisplay ();
+		TimeDisplay (QWidget *parent);
+		~TimeDisplay () {};
 		void setTime (int);
-		void drawMinus();
+
 	public slots:
-		void setPixmaps (Skin *skin);
+		void setPixmaps (const PixmapMap &p) {m_pixmaps = p;}
+
 	signals:
 		void clicked(void);
 
 	protected:
-		void mousePressEvent (QMouseEvent *event);
+		void mousePressEvent (QMouseEvent *event) {};
 		void mouseReleaseEvent (QMouseEvent *event);
-		int m_time;
-		NumberDisplay *m_number_min;
-		NumberDisplay *m_number_sec;
+		void paintEvent (QPaintEvent *event);
 
-		uint m_w;
+		int m_time;
+		PixmapMap m_pixmaps;
 };
 
 #endif

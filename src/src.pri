@@ -9,8 +9,6 @@ HEADERS += PixWidget.h \
            Display.h \
            TitleBar.h \
            TextBar.h \
-           NumberDisplay.h \
-           TimeDisplay.h \
            XMMSHandler.h \
            SmallNumberDisplay.h \
            SkinChooser.h \
@@ -26,8 +24,6 @@ SOURCES += main.cpp \
            Display.cpp \
            TitleBar.cpp \
            TextBar.cpp \
-           NumberDisplay.cpp \
-           TimeDisplay.cpp \
            XMMSHandler.cpp \
            SmallNumberDisplay.cpp \
            SkinChooser.cpp \

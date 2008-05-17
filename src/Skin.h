@@ -27,7 +27,8 @@
 
 class QDir;
 
-typedef QList<QPixmap> QPixmapList;
+typedef QList <QPixmap> QPixmapList;
+typedef QMap <int, QPixmap> PixmapMap;
 
 class Skin : public QObject
 {
@@ -43,6 +44,7 @@ class Skin : public QObject
 		const QIcon getIcon (uint item) const { return m_icons.value(item); };
 		const QPixmapList getBackgrounds (uint item) const
 		                                 { return m_backgrounds.value(item); };
+		const PixmapMap getNumbers () const { return m_numbers; }
 
 		const QPixmap getItem (uint part) const { return m_items[part]; }
 		const QPixmap getPls (uint part) const { return m_playlist[part]; }
@@ -255,9 +257,9 @@ class Skin : public QObject
 		QMap<uint, QIcon> m_icons;
 		QMap<uint, QPixmapList> m_backgrounds;
 
+		QMap<int, QPixmap> m_numbers;
 		QMap<uint, QPixmap> m_items;
 		QMap<uint, QPixmap> m_letterMap;
-		QMap<uint, QPixmap> m_numbers;
 		QMap<uint, QPixmap> m_playlist;
 
 		QMap<QByteArray, QByteArray> m_pledit_txt;

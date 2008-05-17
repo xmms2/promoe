@@ -26,8 +26,7 @@
 #include "pixmapslider.h"
 #include "TitleBar.h"
 #include "TextBar.h"
-#include "NumberDisplay.h"
-#include "TimeDisplay.h"
+#include "timedisplay.h"
 #include "Skin.h"
 #include "SmallNumberDisplay.h"
 #include "stereomono.h"
@@ -59,8 +58,8 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_text = new TextScroller (this, 154, 10, "main");
 	m_text->move (112, 25);
 
-	m_time = new TimeDisplay(this, 0);
-//	m_time->move (36, 26);
+	m_time = new TimeDisplay(this);
+	m_time->move (36, 26);
 	connect (m_time, SIGNAL(clicked()), this, SLOT(toggleTime()));
 
 	m_kbps = new SmallNumberDisplay (this, 15);
@@ -157,6 +156,9 @@ MainDisplay::setPixmaps (Skin *skin)
 	m_bslider->setBackground (skin->getBackgrounds (Skin::SLIDER_BALANCEBAR_BGS));
 	m_bslider->setSliders (skin->getItem (Skin::BALANCE_BTN_0),
 	                       skin->getItem (Skin::BALANCE_BTN_1));
+
+	/* update some other widgets */
+	m_time->setPixmaps (skin->getNumbers ());
 }
 
 void
@@ -178,9 +180,9 @@ MainDisplay::setPlaytime (uint32_t time)
 	uint32_t showtime;
 	if (m_mw->isTimemodeReverse()) {
 		uint maxtime = m_posbar->maximum ();
-		showtime = -(maxtime - time);
+		showtime = (time/1000 - maxtime/1000);
 	} else {
-		showtime = time;
+		showtime = time/1000;
 	}
 	m_time->setTime (showtime);
 
