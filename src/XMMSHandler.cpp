@@ -69,12 +69,6 @@ XMMSHandler::connect_handler (const char *ipcpath, const bool &sync, QWidget *pa
 	m_client->playback.broadcastCurrentID () (
 	                    bind (&XMMSHandler::playback_current_id, this));
 
-
-	m_client->playback.getStatus () (
-	                    bind (&XMMSHandler::playback_status, this));
-	m_client->playback.broadcastStatus () (
-	                    bind (&XMMSHandler::playback_status, this));
-
 	m_client->playback.broadcastVolumeChanged () (
 	                    bind (&XMMSHandler::volume_changed, this));
 
@@ -115,13 +109,6 @@ XMMSHandler::requestTrackChange (int pos)
 {
 	m_client->playlist.setNext (pos) ();
 	m_client->playback.tickle () ();
-}
-
-bool
-XMMSHandler::playback_status (const Xmms::Playback::Status &status)
-{
-	emit playbackStatusChanged (status);
-	return true;
 }
 
 bool 

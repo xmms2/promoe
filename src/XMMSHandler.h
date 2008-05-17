@@ -39,7 +39,6 @@ class XMMSHandler : public XClient {
 		bool playback_current_id (const unsigned int &id);
 		bool medialib_info (const Xmms::PropDict &propdict);
 		bool medialib_entry_changed (const unsigned int &id);
-		bool playback_status (const Xmms::Playback::Status &status);
 		bool volume_changed (const Xmms::Dict &levels);
 
 		void requestMediainfo (uint id);
@@ -71,7 +70,6 @@ class XMMSHandler : public XClient {
 
 	signals:
 		void settingsSaved ();
-		void playbackStatusChanged (Xmms::Playback::Status status);
 		void mediainfoChanged (uint, const Xmms::PropDict &);
 		void currentSong (const Xmms::PropDict &);
 		void playlistChanged (const Xmms::Dict &);

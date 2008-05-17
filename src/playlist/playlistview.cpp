@@ -140,7 +140,7 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 	connect (&xmmsh, SIGNAL(settingsSaved()),
 	         this, SLOT(settingsSaved()));
 
-	connect (&xmmsh, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	connect (xmmsh.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(handleStatus(Xmms::Playback::Status)));
 
 	connect (this, SIGNAL (clicked (QModelIndex)),

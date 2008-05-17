@@ -19,7 +19,9 @@
 
 class XClient;
 
+#include <xmmsclient/xmmsclient++.h>
 #include <QObject>
+
 
 /**
  * @class XPlayback
@@ -35,6 +37,7 @@ class XPlayback : public QObject {
 	public slots:
 		void play ();
 		void pause ();
+		void toggle_pause ();
 		void stop ();
 		void prev ();
 		void next ();
@@ -42,8 +45,16 @@ class XPlayback : public QObject {
 		void seekMs (uint milliseconds);
 		void seekMsRel (int milliseconds);
 
+		bool playback_status (const Xmms::Playback::Status &status);
+
+		void on_connect (XClient *);
+
+	signals:
+		void playbackStatusChanged (Xmms::Playback::Status status);
+
 	private:
 		XClient *m_client;
+		Xmms::Playback::Status m_status;
 };
 
 #endif

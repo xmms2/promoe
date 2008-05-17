@@ -60,6 +60,7 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_text->move (112, 25);
 
 	m_time = new TimeDisplay(this, 0);
+//	m_time->move (36, 26);
 	connect (m_time, SIGNAL(clicked()), this, SLOT(toggleTime()));
 
 	m_kbps = new SmallNumberDisplay (this, 15);
@@ -101,7 +102,7 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 
 	connect (&client, SIGNAL(currentSong (const Xmms::PropDict &)), 
 			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
-	connect (&client, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	connect (client.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
 	connect (client.cache () , SIGNAL (playtime (uint32_t)),
 	         this,  SLOT (setPlaytime (uint32_t)));
@@ -177,7 +178,7 @@ MainDisplay::setPlaytime (uint32_t time)
 	uint32_t showtime;
 	if (m_mw->isTimemodeReverse()) {
 		uint maxtime = m_posbar->maximum ();
-		showtime = -(maxtime - time); 
+		showtime = -(maxtime - time);
 	} else {
 		showtime = time;
 	}
@@ -303,7 +304,8 @@ MainDisplay::SetupPushButtons (void)
 	m_pause = new PixmapButton (this);
 	m_pause->resize (skin->getSize (Skin::BUTTON_MW_PAUSE));
 	m_pause->move (skin->getPos (Skin::BUTTON_MW_PAUSE));
-	connect (m_pause, SIGNAL(clicked()), client.xplayback (), SLOT(pause ()));
+	connect (m_pause, SIGNAL(clicked()),
+	         client.xplayback (), SLOT(toggle_pause ()));
 
 	m_stop = new PixmapButton (this);
 	m_stop->resize (skin->getSize (Skin::BUTTON_MW_STOP));

@@ -59,7 +59,8 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	m_pause = new PixmapButton (this);
 	m_pause->move(187, 4);
 	m_pause->resize (10, 7);
-	connect (m_pause, SIGNAL(clicked()), client.xplayback (), SLOT(pause ()));
+	connect (m_pause, SIGNAL(clicked()),
+	         client.xplayback (), SLOT(toggle_pause ()));
 
 	m_stop = new PixmapButton (this);
 	m_stop->move(197, 4);
@@ -76,7 +77,7 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	m_eject->resize (9, 7);
 	connect (m_eject, SIGNAL(clicked()), this, SLOT(fileOpen()));
 
-	connect (&client, SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	connect (client.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
 	connect (client.cache (), SIGNAL (playtime (uint32_t)),
 	         this, SLOT ( setPlaytime(uint32_t)));

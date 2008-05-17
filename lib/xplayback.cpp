@@ -25,6 +25,22 @@
 XPlayback::XPlayback (XClient *client)
 {
 	m_client = client;
+
+	connect (client, SIGNAL (gotConnection (XClient *)),
+	         this, SLOT (on_connect (XClient *)));
+
+	if (client->isConnected ()) {
+		on_connect (client);
+	}
+}
+
+void
+XPlayback::on_connect (XClient *client)
+{
+	client->playback ()->getStatus ()
+	        (Xmms::bind (&XPlayback::playback_status, this));
+	client->playback ()->broadcastStatus ()
+	        (Xmms::bind (&XPlayback::playback_status, this));
 }
 
 void
@@ -41,6 +57,17 @@ XPlayback::pause ()
 	if (!m_client->isConnected ()) return;
 
 	m_client->playback ()->pause ();
+}
+
+void
+XPlayback::toggle_pause ()
+{
+	if (m_status == XMMS_PLAYBACK_STATUS_PLAY) {
+		pause ();
+	} else if (m_status == XMMS_PLAYBACK_STATUS_PAUSE) {
+		play ();
+	}
+
 }
 
 void
@@ -87,3 +114,16 @@ XPlayback::seekMsRel (int milliseconds)
 
 	m_client->playback ()->seekMsRel (milliseconds);
 }
+
+/*
+ * Status signals
+ */
+bool
+XPlayback::playback_status (const Xmms::Playback::Status &status)
+{
+	m_status = status;
+
+	emit playbackStatusChanged (status);
+	return true;
+}
+
