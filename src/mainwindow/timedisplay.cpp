@@ -20,14 +20,22 @@
 #include <QMap>
 
 
-//TimeDisplay::TimeDisplay (QWidget *parent) : PixWidget (parent)
 TimeDisplay::TimeDisplay (QWidget *parent) : QWidget (parent)
 {
 	setFixedSize (63, 13);
 }
 
+/*
+ * This method takes the playtime in seconds
+ */
 void TimeDisplay::setTime (int time)
 {
+	// Hack to make display hours and seconds instead of seconds and minutes
+	// if time (or reversetime) is 100 Minutes or longer
+	if ((time >= 6000) || (time <= -6000)) {
+		time /= 60;
+	}
+
 	if (m_time == time) return;
 
 	m_time = time;
@@ -52,15 +60,23 @@ TimeDisplay::paintEvent (QPaintEvent *event)
 		paint.drawPixmap (0, 0, m_pixmaps[10]);
 	}
 	uint showtime = abs(m_time);
-	// draw minutes
-	uint min = showtime / 60;
-	paint.drawPixmap (12, 0, m_pixmaps[min/10]);
-	paint.drawPixmap (24, 0, m_pixmaps[min%10]);
-	// draw seconds
-	uint sec = showtime % 60;
-	paint.drawPixmap (42, 0, m_pixmaps[sec/10]);
-	paint.drawPixmap (54, 0, m_pixmaps[sec%10]);
+	if (showtime < 6000) {
+		// draw minutes
+		uint min = showtime / 60;
+		paint.drawPixmap (12, 0, m_pixmaps[min/10]);
+		paint.drawPixmap (24, 0, m_pixmaps[min%10]);
+		// draw seconds
+		uint sec = showtime % 60;
+		paint.drawPixmap (42, 0, m_pixmaps[sec/10]);
+		paint.drawPixmap (54, 0, m_pixmaps[sec%10]);
+	} else {
+		// Just give up and draw '-' if min would become 100 or bigger
+		paint.drawPixmap (12, 0, m_pixmaps[11]);
+		paint.drawPixmap (24, 0, m_pixmaps[11]);
+		paint.drawPixmap (42, 0, m_pixmaps[11]);
+		paint.drawPixmap (54, 0, m_pixmaps[11]);
 
+	}
 	paint.end ();
 }
 

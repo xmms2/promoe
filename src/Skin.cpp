@@ -122,8 +122,10 @@ void
 Skin::BuildEqualizer (void)
 {
 	QPixmap *img = getPixmap ("eqmain");
+	// eq_ex is optional, so this Pointer can be null. check before using it
 	QPixmap *imgex = getPixmap ("eq_ex");
-	if (img && imgex) {
+
+	if (img) {
 		m_items[EQ_WIN_BG] = img->copy (0, 0, 275, 116);
 
 		if (img->height () > 294) {
@@ -139,7 +141,9 @@ Skin::BuildEqualizer (void)
 
 		icon = QIcon ();
 		icon.addPixmap (img->copy (254,  3,  9,  9), QIcon::Normal, QIcon::Off);
-		icon.addPixmap (imgex->copy ( 1, 38,  9,  9), QIcon::Active, QIcon::Off);
+		if (imgex) {
+			icon.addPixmap (imgex->copy ( 1, 38,  9,  9), QIcon::Active, QIcon::Off);
+		}
 		m_icons[BUTTON_EQ_SHADE] = icon;
 
 		icon = QIcon ();

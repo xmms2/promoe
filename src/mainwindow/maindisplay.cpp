@@ -167,10 +167,20 @@ MainDisplay::setStatus (Xmms::Playback::Status status)
 	m_playstatus->setStatus (status);
 	
 	if (status == Xmms::Playback::STOPPED) {
-		m_time->setTime(0);
+		//m_time->setTime(0);
+		m_time->hide ();
+		m_kbps->hide ();
+		m_khz->hide ();
 		m_posbar->setValue (0);
 		m_posbar->hide ();
 		m_stereo->setStereoMono (false, false);
+	} else if (status == Xmms::Playback::PLAYING) {
+		m_time->show ();
+		m_kbps->show ();
+		m_khz->show ();
+		// m_posbar will be shown when fetching metadata
+		// m_stereo is set there too
+
 	}
 }
 

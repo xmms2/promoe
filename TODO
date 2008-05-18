@@ -4,7 +4,8 @@ General:
 	+ Feature Requests and Bugs on tracker
 
 + Mainwindow
-	+ enable random play (will have to wait for a randomplay service client)
+	+ enable random play (will have to wait for a randomplay service client),
+	  has to wait for bug 1598 before even considering
 * Playlist
 	+ Make displayed Information configurable
 	+ Add scrollbuttons to slider
@@ -13,7 +14,6 @@ General:
 	* jump to entry when it's played.
 	* accept drops from other applications
 * Skin
-	+ Numbers in playtime display can have variable height
 	* Compressed file reader
 	* Manage with faulty skins
 	* make cool effects when switching skin?
