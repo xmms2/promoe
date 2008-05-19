@@ -5,6 +5,7 @@ Required dependencys:
 	  - promoe should compile with DrK
 	  - if you compile against xmms2-devel
 	    make sure it isn't not older than 2008-05-15
+	    (and get the patch for bug 1973 if necessary)
 
 Optional dependencys:
 	* Avahi     http://www.avahi.org/

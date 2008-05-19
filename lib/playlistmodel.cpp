@@ -96,11 +96,7 @@ PlaylistModel::got_connection (XClient *client)
 	client->playlist ()->currentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
 
 	client->playlist ()->broadcastChanged () (Xmms::bind (&PlaylistModel::handle_change, this));
-#if (XMMS_IPC_PROTOCOL_VERSION > 10)
-	client->playlist ()->broadcastCurrentPos () (Xmms::bind (&PlaylistModel::handle_update_positions, this));
-#else
 	client->playlist ()->broadcastCurrentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
-#endif
 
 	client->playlist ()->broadcastLoaded () (Xmms::bind (&PlaylistModel::handle_pls_loaded, this));
 
@@ -119,17 +115,19 @@ PlaylistModel::handle_pls_loaded (const std::string &name)
 	return true;
 }
 
+#if (XMMS_IPC_PROTOCOL_VERSION > 10)
 bool
-PlaylistModel::handle_update_positions (const Xmms::Dict &pos)
+PlaylistModel::handle_update_pos (const Xmms::Dict &posdict)
 {
-	QString changed_pl = XClient::stdToQ (pos.get<std::string> ("name"));
+	QString changed_pl = XClient::stdToQ (posdict.get<std::string> ("name"));
 	if (changed_pl == m_name) {
-		uint32_t newpos = pos.get<uint32_t> ("position");
-		return handle_update_pos (newpos);
+		uint32_t pos = posdict.get<uint32_t> ("position");
+		m_current_pos = pos;
+		emit dataChanged(index (pos, 0), index (pos, m_columns.size ()));
 	}
 	return true;
 }
-
+#else
 bool
 PlaylistModel::handle_update_pos (const uint32_t &pos)
 {
@@ -137,6 +135,7 @@ PlaylistModel::handle_update_pos (const uint32_t &pos)
 	emit dataChanged(index (pos, 0), index (pos, m_columns.size ()));
 	return true;
 }
+#endif
 
 QList<QString>
 PlaylistModel::columns () const
