@@ -334,6 +334,7 @@ Skin::setSkin (const QString& name)
 	BuildEqualizer ();
 
 	m_letterMap.clear();
+	m_smallNumbers.clear ();
 	BuildLetterMap();
 
 	BuildSliders();
@@ -418,6 +419,7 @@ Skin::BuildLetterMap (void)
 		/* digits */
 		for (uint i = 0; i <= 9; i++) {
 			m_letterMap[i+48] = letters[1][i];
+			m_smallNumbers [i] = letters[1][i];
 		}
 	
 		/* special characters */
@@ -453,6 +455,9 @@ Skin::BuildLetterMap (void)
 	
 		/* text background */
 		m_items[TEXTBG] = letters[2][6];
+
+		m_smallNumbers[10] = letters[2][6];
+		m_smallNumbers[11] = letters[1][15];
 	}
 	else
 		setSkin(":CleanAMP/");

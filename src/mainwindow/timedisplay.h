@@ -25,16 +25,17 @@ class QPixmap;
 
 typedef QMap<int, QPixmap> PixmapMap;
 
-class TimeDisplay : public QWidget
+// This class is not really abstract, but named so anyway
+class AbstractTimeDisplay : public QWidget
 {
 	Q_OBJECT
 	public:
-		TimeDisplay (QWidget *parent);
-		~TimeDisplay () {};
+		AbstractTimeDisplay (QWidget *parent) : QWidget (parent) {};
+		~AbstractTimeDisplay () {};
 		void setTime (int);
 
 	public slots:
-		void setPixmaps (const PixmapMap &p) {m_pixmaps = p;}
+		void setPixmaps (const PixmapMap &p);
 
 	signals:
 		void clicked(void);
@@ -44,8 +45,28 @@ class TimeDisplay : public QWidget
 		void mouseReleaseEvent (QMouseEvent *event);
 		void paintEvent (QPaintEvent *event);
 
+		// positions for the digits, numbered from left to right
+		int m_d1_x_pos;
+		int m_d2_x_pos;
+		int m_d3_x_pos;
+		int m_d4_x_pos;
+
 		int m_time;
 		PixmapMap m_pixmaps;
+};
+
+class TimeDisplay : public AbstractTimeDisplay
+{
+	Q_OBJECT
+	public:
+		TimeDisplay (QWidget *parent);
+};
+
+class SmallTimeDisplay : public AbstractTimeDisplay
+{
+	Q_OBJECT
+	public:
+		SmallTimeDisplay (QWidget *parent);
 };
 
 #endif

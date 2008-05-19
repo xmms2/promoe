@@ -45,6 +45,7 @@ class Skin : public QObject
 		const QPixmapList getBackgrounds (uint item) const
 		                                 { return m_backgrounds.value(item); };
 		const PixmapMap getNumbers () const { return m_numbers; }
+		const PixmapMap getSmallNumbers () const { return m_smallNumbers; }
 
 		const QPixmap getItem (uint part) const { return m_items[part]; }
 		const QPixmap getPls (uint part) const { return m_playlist[part]; }
@@ -258,6 +259,7 @@ class Skin : public QObject
 		QMap<uint, QPixmapList> m_backgrounds;
 
 		QMap<int, QPixmap> m_numbers;
+		QMap<int, QPixmap> m_smallNumbers;
 		QMap<uint, QPixmap> m_items;
 		QMap<uint, QPixmap> m_letterMap;
 		QMap<uint, QPixmap> m_playlist;

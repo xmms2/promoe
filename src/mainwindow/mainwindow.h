@@ -51,6 +51,7 @@ class MainWindow : public BaseWindow
 	public slots:
 		void switchDisplay ();
 		void mouseMoveEvent (QMouseEvent *event);
+		void toggleTime () { setTimemodeReverse (!isTimemodeReverse ()); }
 
 	private:
 		bool isShaded (void) { QSettings s; return s.value("MainWindow/shaded").toBool(); }

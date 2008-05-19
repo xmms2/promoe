@@ -60,7 +60,7 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 
 	m_time = new TimeDisplay(this);
 	m_time->move (36, 26);
-	connect (m_time, SIGNAL(clicked()), this, SLOT(toggleTime()));
+	connect (m_time, SIGNAL(clicked()), m_mw, SLOT(toggleTime()));
 
 	m_kbps = new SmallNumberDisplay (this, 15);
 	m_kbps->move (111, 43);
@@ -187,7 +187,7 @@ MainDisplay::setStatus (Xmms::Playback::Status status)
 void
 MainDisplay::setPlaytime (uint32_t time)
 {
-	uint32_t showtime;
+	int32_t showtime;
 	if (m_mw->isTimemodeReverse()) {
 		uint maxtime = m_posbar->maximum ();
 		showtime = (time/1000 - maxtime/1000);
@@ -243,6 +243,7 @@ MainDisplay::setMediainfo (const Xmms::PropDict &info)
 		m_posbar->setMaximum (info.get<int32_t> ("duration"));
 		m_posbar->show ();
 	} else {
+		m_posbar->setMaximum (0);
 		m_posbar->hide ();
 	}
 }
@@ -287,13 +288,6 @@ MainDisplay::SetupToggleButtons (void)
 	m_repeat->move (skin->getPos (Skin::BUTTON_MW_REPEAT));
 	connect (m_repeat, SIGNAL (clicked (bool)),
 	         this, SLOT (setRepeatAllEnabled (bool)));
-}
-
-
-void
-MainDisplay::toggleTime (void)
-{
-	m_mw->setTimemodeReverse (!m_mw->isTimemodeReverse());
 }
 
 void

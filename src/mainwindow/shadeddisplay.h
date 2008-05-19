@@ -22,7 +22,9 @@ class ShadedDisplay;
 #include "Display.h"
 
 class MainWindow;
+class Skin;
 class PixmapButton;
+class SmallTimeDisplay;
 class SmallNumberDisplay;
 class TextScroller;
 
@@ -38,6 +40,9 @@ class ShadedDisplay : public SkinDisplay
 		TextScroller *m_title;
 
 	private:
+		int32_t m_duration;
+		SmallTimeDisplay *m_time;
+
 		PixmapButton *m_prev;
 		PixmapButton *m_play;
 		PixmapButton *m_pause;
@@ -49,6 +54,7 @@ class ShadedDisplay : public SkinDisplay
 		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint32_t time);
 		void setMediainfo (const Xmms::PropDict &info);
+		void setPixmaps (Skin *skin);
 };
 
 #endif

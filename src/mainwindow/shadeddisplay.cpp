@@ -22,26 +22,25 @@
 #include "TitleBar.h"
 #include "pixmapbutton.h"
 
+#include "timedisplay.h"
 #include "SmallNumberDisplay.h"
 #include "TextBar.h"
+#include "Skin.h"
+#include "mainwindow.h"
 
 ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 {
 	XMMSHandler &client = XMMSHandler::getInstance ();
 
-	setMinimumSize (275, 14);
-	setMaximumSize (275, 14);
+	setFixedSize (275, 14);
 
 	m_tbar = new TitleBar(this, true);
 	m_tbar->move (0, 0);
 
-	m_number = new SmallNumberDisplay (this, 10);
-	m_number->move (135, 4);
-	m_number->setNumber (0, 2);
-
-	m_number2 = new SmallNumberDisplay (this, 10);
-	m_number2->move (147, 4);
-	m_number2->setNumber (0, 2);
+	m_time = new SmallTimeDisplay (this);
+	m_time->move (130, 4);
+	MainWindow *mw = dynamic_cast<MainWindow *>(parent);
+	connect (m_time, SIGNAL(clicked()), mw, SLOT(toggleTime()));
 
 	m_title = new TextScroller (this, 39, 7, "shaded");
 	m_title->move (79, 4);
@@ -50,7 +49,7 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	m_prev->move(169, 4);
 	m_prev->resize (8, 7);
 	connect (m_prev, SIGNAL(clicked()), client.xplayback (), SLOT(prev ()));
-	
+
 	m_play = new PixmapButton (this);
 	m_play->move(177, 4);
 	m_play->resize (10, 7);
@@ -86,6 +85,12 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 }
 
 void
+ShadedDisplay::setPixmaps (Skin *skin)
+{
+	m_time->setPixmaps (skin->getSmallNumbers ());
+}
+
+void
 ShadedDisplay::setMediainfo (const Xmms::PropDict &info)
 {
 	QString n;
@@ -99,6 +104,12 @@ ShadedDisplay::setMediainfo (const Xmms::PropDict &info)
 	} else {
 		n = QString::fromUtf8 (info.get<std::string> ("url").c_str ());
 	}
+
+	if (info.contains ("duration")) {
+		m_duration = (info.get<int32_t> ("duration"));
+	} else {
+		m_duration = 0;
+	}
 	m_title->setText (n);
 }
 
@@ -106,21 +117,21 @@ void
 ShadedDisplay::setStatus (Xmms::Playback::Status status)
 {
 	if (status == Xmms::Playback::STOPPED) {
-		m_number->setNumber (0, 2);
-		m_number2->setNumber (0, 2);
+		//m_number->setNumber (0, 2);
+		//nm_number2->setNumber (0, 2);
 	}
 }
 
 void
 ShadedDisplay::setPlaytime (uint32_t time)
 {
-	uint sec, min;
-
-	sec = (time / 1000) % 60;
-	min = (time / 1000) / 60;
-
-		m_number2->setNumber (sec, 2);
-		m_number->setNumber (min, 2);
+	int32_t showtime;
+	if (dynamic_cast<MainWindow *>(m_mw)->isTimemodeReverse()) {
+		showtime = (time/1000 - m_duration/1000);
+	} else {
+		showtime = time/1000;
+	}
+	m_time->setTime (showtime);
 }
 
 

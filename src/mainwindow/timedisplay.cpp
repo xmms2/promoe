@@ -20,15 +20,32 @@
 #include <QMap>
 
 
-TimeDisplay::TimeDisplay (QWidget *parent) : QWidget (parent)
+TimeDisplay::TimeDisplay (QWidget *parent) : AbstractTimeDisplay (parent)
 {
 	setFixedSize (63, 13);
+
+	m_d1_x_pos = 12;
+	m_d2_x_pos = 24;
+	m_d3_x_pos = 42;
+	m_d4_x_pos = 54;
+}
+
+SmallTimeDisplay::SmallTimeDisplay (QWidget *parent)
+                 : AbstractTimeDisplay (parent)
+{
+	setFixedSize (28, 6);
+
+	m_d1_x_pos = 5;
+	m_d2_x_pos = 10;
+	m_d3_x_pos = 18;
+	m_d4_x_pos = 23;
 }
 
 /*
  * This method takes the playtime in seconds
  */
-void TimeDisplay::setTime (int time)
+void
+AbstractTimeDisplay::setTime (int time)
 {
 	// Hack to make display hours and seconds instead of seconds and minutes
 	// if time (or reversetime) is 100 Minutes or longer
@@ -43,12 +60,24 @@ void TimeDisplay::setTime (int time)
 }
 
 void
-TimeDisplay::paintEvent (QPaintEvent *event)
-{
-	if (m_pixmaps.size () < 11) {
-		qDebug ("too small");
+AbstractTimeDisplay::setPixmaps (const PixmapMap &p) {
+	if (p.size () < 11) {
+		// This shouldn't happen, if it does then there is a bug in Skin.cpp
+		qDebug ("TimeDisplay: PixmapMap has not enough elements");
 		return;
 	}
+	m_pixmaps = p;
+}
+
+void
+AbstractTimeDisplay::mouseReleaseEvent (QMouseEvent *event)
+{
+	emit clicked();
+}
+
+void
+AbstractTimeDisplay::paintEvent (QPaintEvent *event)
+{
 	QPainter paint;
 	paint.begin (this);
 
@@ -63,26 +92,19 @@ TimeDisplay::paintEvent (QPaintEvent *event)
 	if (showtime < 6000) {
 		// draw minutes
 		uint min = showtime / 60;
-		paint.drawPixmap (12, 0, m_pixmaps[min/10]);
-		paint.drawPixmap (24, 0, m_pixmaps[min%10]);
+		paint.drawPixmap (m_d1_x_pos, 0, m_pixmaps[min/10]);
+		paint.drawPixmap (m_d2_x_pos, 0, m_pixmaps[min%10]);
 		// draw seconds
 		uint sec = showtime % 60;
-		paint.drawPixmap (42, 0, m_pixmaps[sec/10]);
-		paint.drawPixmap (54, 0, m_pixmaps[sec%10]);
+		paint.drawPixmap (m_d3_x_pos, 0, m_pixmaps[sec/10]);
+		paint.drawPixmap (m_d4_x_pos, 0, m_pixmaps[sec%10]);
 	} else {
 		// Just give up and draw '-' if min would become 100 or bigger
-		paint.drawPixmap (12, 0, m_pixmaps[11]);
-		paint.drawPixmap (24, 0, m_pixmaps[11]);
-		paint.drawPixmap (42, 0, m_pixmaps[11]);
-		paint.drawPixmap (54, 0, m_pixmaps[11]);
+		paint.drawPixmap (m_d1_x_pos, 0, m_pixmaps[11]);
+		paint.drawPixmap (m_d2_x_pos, 0, m_pixmaps[11]);
+		paint.drawPixmap (m_d3_x_pos, 0, m_pixmaps[11]);
+		paint.drawPixmap (m_d4_x_pos, 0, m_pixmaps[11]);
 
 	}
 	paint.end ();
 }
-
-void
-TimeDisplay::mouseReleaseEvent (QMouseEvent *event)
-{
-	emit clicked();
-}
-
