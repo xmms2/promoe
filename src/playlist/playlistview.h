@@ -66,9 +66,6 @@ class PlaylistView : public QListView {
 	protected:
 		void mouseDoubleClickEvent (QMouseEvent *event);
 
-	private slots:
-		void on_item_clicked (QModelIndex index);
-
 	private:
 		Xmms::Playback::Status m_status;
 		QFont *m_font;

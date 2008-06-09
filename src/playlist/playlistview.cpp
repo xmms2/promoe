@@ -142,9 +142,6 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 
 	connect (xmmsh.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(handleStatus(Xmms::Playback::Status)));
-
-	connect (this, SIGNAL (clicked (QModelIndex)),
-	         this, SLOT (on_item_clicked (QModelIndex)));
 }
 
 void
@@ -200,7 +197,7 @@ PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 
 	qm.addSeparator ();
 
-	a= new QAction (tr ("Change Playlist"), this);
+	a= new QAction (tr ("Choose Playlist"), this);
 	connect (a, SIGNAL (triggered ()), qobject_cast<PlaylistWidget *>(parent ()), SLOT (openPlaylistChooser ()));
 	qm.addAction (a);
 
@@ -304,15 +301,5 @@ PlaylistView::showEntryInfo (void)
 			m_entry_info->setId (id);
 		}
 		m_entry_info->show ();
-	}
-}
-
-void
-PlaylistView::on_item_clicked (QModelIndex index)
-{
-	if (m_entry_info) {
-		uint32_t id = model ()->data (index, PlaylistModel::MedialibIdRole)
-		                        .toUInt ();
-		m_entry_info->setId (id);
 	}
 }

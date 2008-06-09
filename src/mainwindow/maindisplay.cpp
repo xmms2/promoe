@@ -259,7 +259,7 @@ MainDisplay::SetupToggleButtons (void)
 	m_eq->resize (skin->getSize (Skin::BUTTON_MW_EQ));
 	m_eq->move (skin->getPos (Skin::BUTTON_MW_EQ));
 	m_eq->setChecked (m_mw->getEQ ()->isVisible ());
-	connect (m_eq, SIGNAL (toggled (bool)),
+	connect (m_eq, SIGNAL (clicked (bool)),
 	         m_mw->getEQ (), SLOT (setVisible (bool)));
 	connect (m_mw->getEQ (), SIGNAL (visibilityChanged (bool)),
 	         m_eq, SLOT (setChecked (bool)));
@@ -269,7 +269,7 @@ MainDisplay::SetupToggleButtons (void)
 	m_pls->resize (skin->getSize (Skin::BUTTON_MW_PLS));
 	m_pls->move (skin->getPos (Skin::BUTTON_MW_PLS));
 	m_pls->setChecked (m_mw->getPL ()->isVisible ());
-	connect (m_pls, SIGNAL (toggled (bool)),
+	connect (m_pls, SIGNAL (clicked (bool)),
 	         m_mw->getPL (), SLOT (setVisible (bool)));
 	connect (m_mw->getPL (), SIGNAL (visibilityChanged (bool)),
 	         m_pls, SLOT (setChecked (bool)));
