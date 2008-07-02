@@ -41,6 +41,7 @@ class XPlayback : public QObject {
 		void stop ();
 		void prev ();
 		void next ();
+		void setPos (int pos);
 
 		void seekMs (uint milliseconds);
 		void seekMsRel (int milliseconds);

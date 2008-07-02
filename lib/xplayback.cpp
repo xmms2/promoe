@@ -96,6 +96,15 @@ XPlayback::next ()
 	m_client->playback ()->tickle ();
 }
 
+void
+XPlayback::setPos (int pos)
+{
+	if (!m_client->isConnected ()) return;
+
+	m_client->playlist ()->setNext (pos) ();
+	m_client->playback ()->tickle () ();
+}
+
 /*
  * Seeking
  */

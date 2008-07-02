@@ -2,10 +2,7 @@ Required dependencys:
 	* QT4.2.x           http://www.trolltech.no/
 	* XMMS2             http://xmms2.xmms.org/
 	* XMMS2 C++ bindings (make sure to have boost_signals when compiling xmms2)
-	  - promoe should compile with DrK
-	  - if you compile against xmms2-devel
-	    make sure it isn't not older than 2008-05-15
-	    (and get the patch for bug 1973 if necessary)
+	  - promoe works with 0.4DrK and 0.5DrL
 
 Optional dependencys:
 	* Avahi     http://www.avahi.org/

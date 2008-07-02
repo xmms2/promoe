@@ -99,7 +99,7 @@ AbstractTimeDisplay::paintEvent (QPaintEvent *event)
 		paint.drawPixmap (m_d3_x_pos, 0, m_pixmaps[sec/10]);
 		paint.drawPixmap (m_d4_x_pos, 0, m_pixmaps[sec%10]);
 	} else {
-		// Just give up and draw '-' if min would become 100 or bigger
+		// Just give up and draw '-' if min-variable would become 100 or bigger
 		paint.drawPixmap (m_d1_x_pos, 0, m_pixmaps[11]);
 		paint.drawPixmap (m_d2_x_pos, 0, m_pixmaps[11]);
 		paint.drawPixmap (m_d3_x_pos, 0, m_pixmaps[11]);

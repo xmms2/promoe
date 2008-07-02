@@ -104,13 +104,6 @@ XMMSHandler::requestMediainfo (uint id)
 	                    Xmms::bind (&XMMSHandler::medialib_info, this));
 }
 
-void
-XMMSHandler::requestTrackChange (int pos)
-{
-	m_client->playlist.setNext (pos) ();
-	m_client->playback.tickle () ();
-}
-
 bool 
 XMMSHandler::playback_current_id (const unsigned int &id)
 {

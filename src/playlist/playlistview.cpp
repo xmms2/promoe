@@ -277,7 +277,7 @@ PlaylistView::mouseDoubleClickEvent (QMouseEvent *event)
 	}
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
-	xmmsh.requestTrackChange (index.row());
+	xmmsh.xplayback ()->setPos (index.row());
 	if (m_status == XMMS_PLAYBACK_STATUS_STOP ||
 	    m_status == XMMS_PLAYBACK_STATUS_PAUSE) {
 			xmmsh.xplayback ()->play ();

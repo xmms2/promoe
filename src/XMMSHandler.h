@@ -42,7 +42,6 @@ class XMMSHandler : public XClient {
 		bool volume_changed (const Xmms::Dict &levels);
 
 		void requestMediainfo (uint id);
-		void requestTrackChange (int pos);
 		void playlistAddURL (const QString& url);
 
 		/*

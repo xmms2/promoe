@@ -185,7 +185,7 @@ bool
 XCollection::setActivePlaylist (QString name) {
 	if (!m_client->isConnected ()) return false;
 
-	m_client->playlist ()->load (name.toStdString ());
+	m_client->playlist ()->load (XClient::qToStd (name));
 
 	return true;
 }
