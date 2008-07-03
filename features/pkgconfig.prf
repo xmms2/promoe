@@ -1,0 +1,24 @@
+defineTest(pkgconfig_exists) {
+	packages = $$1
+	count(packages, 0): return(false)
+
+	system(pkg-config --exists $$packages) {
+		return(true)
+	} else {
+		return (false)
+	}
+}
+
+defineReplace(pkgconfig_cflags) {
+	packages = $$1
+	count(packages, 0): return(false)
+
+	return ($$system(pkg-config --cflags $$packages))
+}
+
+defineReplace(pkgconfig_libs) {
+	packages = $$1
+	count(packages, 0): return(false)
+
+	return ($$system(pkg-config --libs $$packages))
+}

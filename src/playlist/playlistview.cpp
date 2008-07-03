@@ -188,7 +188,8 @@ PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 
 	a = new QAction (tr ("Add file"), this);
 	a->setShortcut (tr ("Ctrl+F"));
-	a->setEnabled(false); // FIXME: Disabled for now
+	connect (a, SIGNAL (triggered ()),
+	         qobject_cast<PlaylistWidget *> (parent ()), SLOT (menuAddFile ()));
 	qm.addAction (a);
 
 	a = new QAction (tr ("Remove selected"), this);

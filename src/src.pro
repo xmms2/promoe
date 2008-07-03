@@ -1,6 +1,7 @@
 TEMPLATE = app
 
 include (../config.pri)
+load (../features/pkgconfig.prf)
 
 COMPONENTS+=../lib/liblib.a
 LIBS += $$COMPONENTS
@@ -28,7 +29,13 @@ QMAKE_CXXFLAGS += -g
 ;CONFIG += debug warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
-CONFIG += link_pkgconfig
-PKGCONFIG += xmms2-client-cpp xmms2-client
+XMMSCLIENTPKG += xmms2-client-cpp
+pkgconfig_exists ($$XMMSCLIENTPKG) {
+	QMAKE_CXXFLAGS  += $$pkgconfig_cflags($$XMMSCLIENTPKG)
+	LIBS += $$pkgconfig_libs($$XMMSCLIENTPKG)
+} else {
+	error (Please install the xmms2 c++ client library)
+}
+
 ;CONFIG += avahi
 
