@@ -77,7 +77,7 @@ class MainDisplay : public SkinDisplay
 	protected slots:
 		void serverConfigChanged (QString key, QString value);
 		void setRepeatAllEnabled (bool enabled);
-
+		void handleDisconnected ();
 	protected:
 		void SetupPushButtons (void);
 		void SetupToggleButtons (void);

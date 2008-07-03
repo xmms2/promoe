@@ -39,6 +39,7 @@
 #include <QFileDialog>
 #include <QSettings>
 #include <QDebug>
+#include <QMessageBox>
 
 MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 {
@@ -110,8 +111,21 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	client.volumeGet();
 
 	setupServerConfig ();
+
+	//TODO: move to better place
+	connect (&client, SIGNAL(disconnected(XClient *)), this, SLOT(handleDisconnected ()));
 }
 
+void
+MainDisplay::handleDisconnected ()
+{
+	QMessageBox::critical( this, "xmms2 daemon disconnecte",
+	                      "The xmms2 deamon has disconnected\n"
+	                      "This could be because the server crashed\n"
+	                      "or because another client has shut down the sever.",
+	                      "Quit Promoe");
+	qApp->quit ();
+}
 
 void
 MainDisplay::updateVolume (uint volume)

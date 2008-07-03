@@ -137,7 +137,10 @@ try_again:
 	    }
     }
 
-    m_isconnected = true;
+	// useing normal disconnect callback, if that causes problems,
+	// an own method schould be created
+    setDisconnectCallback (boost::bind (&XClient::disconnect, this));
+	m_isconnected = true;
 	emit gotConnection (this);
 
 	return true;
