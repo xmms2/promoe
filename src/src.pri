@@ -10,7 +10,6 @@ HEADERS += PixWidget.h \
            TitleBar.h \
            TextBar.h \
            XMMSHandler.h \
-           SmallNumberDisplay.h \
            SkinChooser.h \
            settingsdialog.h \
            basewindow.h \
@@ -25,7 +24,6 @@ SOURCES += main.cpp \
            TitleBar.cpp \
            TextBar.cpp \
            XMMSHandler.cpp \
-           SmallNumberDisplay.cpp \
            SkinChooser.cpp \
            settingsdialog.cpp \
            basewindow.cpp \

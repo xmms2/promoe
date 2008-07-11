@@ -28,7 +28,7 @@
 #include "TextBar.h"
 #include "timedisplay.h"
 #include "Skin.h"
-#include "SmallNumberDisplay.h"
+#include "pixmapnumberdisplay.h"
 #include "stereomono.h"
 #include "posbar.h"
 #include "playstatus.h"
@@ -63,13 +63,17 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_time->move (36, 26);
 	connect (m_time, SIGNAL(clicked()), m_mw, SLOT(toggleTime()));
 
-	m_kbps = new SmallNumberDisplay (this, 15);
+	m_kbps = new PixmapNumberDisplay (this);
+	m_kbps->resize (15, 6);
 	m_kbps->move (111, 43);
-	m_kbps->setNumber (128, 3);
+	m_kbps->setDigits (3);
+	m_kbps->setValue (0);
 
-	m_khz = new SmallNumberDisplay (this, 10);
+	m_khz = new PixmapNumberDisplay (this);
+	m_khz->resize (10, 6);
 	m_khz->move (156, 43);
-	m_khz->setNumber (44, 2);
+	m_khz->setDigits (2);
+	m_khz->setValue (0);
 
 	m_stereo = new StereoMono (this);
 	m_stereo->move (212, 41);
@@ -119,7 +123,7 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 void
 MainDisplay::handleDisconnected ()
 {
-	QMessageBox::critical( this, "xmms2 daemon disconnecte",
+	QMessageBox::critical( this, "xmms2 daemon disconnected",
 	                      "The xmms2 deamon has disconnected\n"
 	                      "This could be because the server crashed\n"
 	                      "or because another client has shut down the sever.",
@@ -173,6 +177,8 @@ MainDisplay::setPixmaps (Skin *skin)
 
 	/* update some other widgets */
 	m_time->setPixmaps (skin->getNumbers ());
+	m_kbps->setPixmaps (skin->getSmallNumbers ());
+	m_khz->setPixmaps (skin->getSmallNumbers ());
 }
 
 void
@@ -236,15 +242,15 @@ MainDisplay::setMediainfo (const Xmms::PropDict &info)
 	m_text->setText (n);
 	
 	if (info.contains ("bitrate")) {
-		m_kbps->setNumber (info.get<int32_t> ("bitrate")/1000, 3);
+		m_kbps->setValue (info.get<int32_t> ("bitrate")/1000);
 	} else {
-		m_kbps->setNumber (0, 1);
+		m_kbps->setValue (0);
 	}
 
 	if (info.contains ("samplerate")) {
-		m_khz->setNumber (info.get<int32_t> ("samplerate")/1000, 2);
+		m_khz->setValue (info.get<int32_t> ("samplerate")/1000);
 	} else {
-		m_khz->setNumber(0, 1);
+		m_khz->setValue(0);
 	}
 	if (info.contains ("channels") &&
 	    info.get<int32_t> ("channels") > 1) {

@@ -33,10 +33,10 @@ class MainDisplay;
 #include "Display.h"
 
 class PixmapButton;
+class PixmapNumberDisplay;
 class PixmapSlider;
 class TextScroller;
 class TimeDisplay;
-class SmallNumberDisplay;
 class StereoMono;
 class PosBar;
 class Slider;
@@ -54,9 +54,6 @@ class MainDisplay : public SkinDisplay
 
 		TextScroller *m_text;
 		TimeDisplay *m_time;
-
-		SmallNumberDisplay *m_kbps;
-		SmallNumberDisplay *m_khz;
 
 		StereoMono *m_stereo;
 		PosBar *m_posbar;
@@ -93,6 +90,9 @@ class MainDisplay : public SkinDisplay
 		PixmapButton *m_eq;
 		PixmapButton *m_shuffle;
 		PixmapButton *m_repeat;
+
+		PixmapNumberDisplay *m_kbps;
+		PixmapNumberDisplay *m_khz;
 
 		MainWindow *m_mw;
 

@@ -457,6 +457,7 @@ Skin::BuildLetterMap (void)
 		m_items[TEXTBG] = letters[2][6];
 
 		m_smallNumbers[10] = letters[2][6];
+		m_smallNumbers[-1] = m_smallNumbers[10]; // also add Blank to index -1
 		m_smallNumbers[11] = letters[1][15];
 	}
 	else
@@ -747,6 +748,7 @@ Skin::BuildNumbers (void)
 		for (int i = 0; i < num; i++) {
 			m_numbers[i] = img->copy (i*9, 0, 9, qMin (13, img->height ()));
 		}
+		m_numbers[-1] = m_numbers[10]; // add Blank space to index -1
 		if (num < 12) {
 			// We do not yet have a '-' Symbol, so we create one
 			// from the '2' character and the blank as background
