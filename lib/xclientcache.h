@@ -38,6 +38,8 @@ class QIcon;
 class QPixmap;
 //#include <QPixmapCache>
 
+typedef QHash<QString, QVariant> QVariantHash;
+
 class XClientCache : public QObject
 {
 	Q_OBJECT
@@ -45,6 +47,7 @@ class XClientCache : public QObject
 		XClientCache (XClient *);
 
 		QHash<QString, QVariant> get_info (uint32_t id);
+		QVariantHash get_current_info () {return get_info (m_current_id);}
 		QIcon get_icon (uint32_t id);
 		QPixmap get_pixmap (uint32_t id);
 		QVariant extra_info_get (uint32_t, const QString &);
@@ -65,14 +68,17 @@ class XClientCache : public QObject
         void entryRemoved (uint32_t);
 		void playtime (uint32_t);
 
+		void activeEntryChanged (QVariantHash);
+
 	public slots:
 		void got_connection (XClient *);
 
 	private:
 		bool handle_medialib_info (const Xmms::PropDict &info);
         bool handle_medialib_info_error (const std::string &, uint32_t);
-        
+
 		bool handle_mlib_entry_changed (const uint32_t &id);
+		bool handle_current_id_changed (const uint32_t &id);
 		bool handle_bindata (const Xmms::bin &, const QString &);
 
 		bool handle_playtime (const unsigned int &tme);
@@ -81,6 +87,8 @@ class XClientCache : public QObject
 
 		QHash < QString, QList <uint32_t> > m_icon_map;
 		QHash < int, QHash < QString, QVariant > > m_extra_info;
+
+		uint32_t m_current_id;
 
 		XClient *m_client;
 };

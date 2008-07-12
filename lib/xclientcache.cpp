@@ -46,6 +46,11 @@ XClientCache::got_connection (XClient *client)
 
 	client->medialib ()->broadcastEntryChanged () (
 	         Xmms::bind (&XClientCache::handle_mlib_entry_changed, this));
+
+	client->playback ()->broadcastCurrentID () (
+	         Xmms::bind (&XClientCache::handle_current_id_changed, this));
+	client->playback ()->currentID () (
+	         Xmms::bind (&XClientCache::handle_current_id_changed, this));
 }
 
 bool
@@ -60,11 +65,15 @@ XClientCache::handle_medialib_info_error (const std::string &error, uint32_t id)
 bool
 XClientCache::handle_medialib_info (const Xmms::PropDict &info)
 {
-	int32_t id = info.get<int32_t> ("id");
+	uint32_t id = info.get<int32_t> ("id");
 	QHash<QString, QVariant> hash = XClient::convert_propdict (info);
 
 	m_info.insert (id, hash);
 	emit entryChanged (id);
+
+	if (id == m_current_id) {
+		emit activeEntryChanged (hash);
+	}
 
 	return true;
 }
@@ -165,6 +174,20 @@ XClientCache::handle_mlib_entry_changed (const uint32_t &id)
 	return true;
 }
 
+bool
+XClientCache::handle_current_id_changed (const uint32_t &id)
+{
+	m_current_id = id;
+	if (!m_info.contains (id)) {
+		// get_info fetches the metadata from the server, and calls handle_medialib_info.
+		// handle_medialib_info sends the activeEntryChanged Signal
+		get_info (id);
+		return true;
+	}
+
+	emit activeEntryChanged (m_info[id]);
+	return true;
+}
 
 bool
 XClientCache::handle_playtime (const unsigned int &tme)

@@ -29,8 +29,12 @@ class MainDisplay;
 #include <QHash>
 #include <QBrush>
 #include <QPalette>
+#include <QHash>
+#include <QVariant>
 
 #include "Display.h"
+
+typedef QHash<QString, QVariant> QVariantHash;
 
 class PixmapButton;
 class PixmapNumberDisplay;
@@ -67,7 +71,8 @@ class MainDisplay : public SkinDisplay
 		void setPixmaps(Skin *skin);
 		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint32_t time);
-		void setMediainfo (const Xmms::PropDict &);
+//		void setMediainfo (const Xmms::PropDict &);
+		void setMediainfo (const QVariantHash);
 		void updateVolume (uint volume);
 		void setVolume (int volume);
 

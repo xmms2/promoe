@@ -36,12 +36,8 @@ class XMMSHandler : public XClient {
 
 		bool connect_handler (const char *ipcpath = NULL, const bool &sync = false, QWidget *parent = NULL);
 
-		bool playback_current_id (const unsigned int &id);
-		bool medialib_info (const Xmms::PropDict &propdict);
-		bool medialib_entry_changed (const unsigned int &id);
 		bool volume_changed (const Xmms::Dict &levels);
 
-		void requestMediainfo (uint id);
 		void playlistAddURL (const QString& url);
 
 		/*
@@ -60,7 +56,7 @@ class XMMSHandler : public XClient {
 
 		void updateSettings () { emit settingsSaved (); }
 
-		Xmms::Client *getClient ();
+		Xmms::Client *getClient () { return m_client; }
 
 		PlaylistModel *getPlaylistModel () {return m_playlist_model; }
 
@@ -69,9 +65,6 @@ class XMMSHandler : public XClient {
 
 	signals:
 		void settingsSaved ();
-		void mediainfoChanged (uint, const Xmms::PropDict &);
-		void currentSong (const Xmms::PropDict &);
-		void playlistChanged (const Xmms::Dict &);
 		/*
 		void medialibResponse (uint, const QList<QHash<QString, QString> > &);
 		*/
@@ -91,7 +84,6 @@ class XMMSHandler : public XClient {
 
 		XmmsQT4 *m_qt4;
 		PlaylistModel *m_playlist_model;
-		unsigned int m_currentid;
 		bool m_masterchan;
 };
 

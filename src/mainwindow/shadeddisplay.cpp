@@ -79,8 +79,8 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
 	connect (client.cache (), SIGNAL (playtime (uint32_t)),
 	         this, SLOT ( setPlaytime(uint32_t)));
-	connect (&client, SIGNAL(currentSong (const Xmms::PropDict &)), 
-			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
+	connect (client.cache (), SIGNAL (activeEntryChanged (QVariantHash)),
+	         this, SLOT (setMediainfo (QVariantHash)));
 }
 
 void
@@ -90,22 +90,20 @@ ShadedDisplay::setPixmaps (Skin *skin)
 }
 
 void
-ShadedDisplay::setMediainfo (const Xmms::PropDict &info)
+ShadedDisplay::setMediainfo (QVariantHash info)
 {
 	QString n;
 	if (info.contains ("artist") && info.contains ("album") &&
 	    info.contains ("title")) {
-		n = QString::fromUtf8 (info.get<std::string> ("artist").c_str ())
-		    + " - " +
-		    QString::fromUtf8 (info.get<std::string> ("album").c_str ())
-		    + " - " +
-		    QString::fromUtf8 (info.get<std::string> ("title").c_str ());
+		n = info["artist"].toString () + " - "
+		  + info["album"].toString () + " - "
+		  + info["title"].toString ();
 	} else {
-		n = QString::fromUtf8 (info.get<std::string> ("url").c_str ());
+		n = info["url"].toString ();
 	}
 
 	if (info.contains ("duration")) {
-		m_duration = (info.get<int32_t> ("duration"));
+		m_duration = info["duration"].toInt ();
 	} else {
 		m_duration = 0;
 	}

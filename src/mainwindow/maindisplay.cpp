@@ -104,8 +104,8 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_bslider->resize (skin->getSize (Skin::SLIDER_BALANCEBAR_BGS));
 	m_bslider->move (skin->getPos (Skin::SLIDER_BALANCEBAR_BGS));
 
-	connect (&client, SIGNAL(currentSong (const Xmms::PropDict &)), 
-			 this, SLOT(setMediainfo (const Xmms::PropDict &)));
+	connect (client.cache (), SIGNAL (activeEntryChanged (QVariantHash)),
+	         this, SLOT (setMediainfo (const QVariantHash)));
 	connect (client.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
 	connect (client.cache () , SIGNAL (playtime (uint32_t)),
@@ -221,46 +221,37 @@ MainDisplay::setPlaytime (uint32_t time)
 }
 
 void
-MainDisplay::setMediainfo (const Xmms::PropDict &info)
+MainDisplay::setMediainfo (const QVariantHash info)
 {
 	QString n;
 	if (info.contains ("title")) {
 		if (info.contains ("artist")) {
-			n = QString::fromUtf8 (info.get<std::string> ("artist").c_str ()) + " - ";
+			n = info["artist"].toString () + " - ";
 		}
 		if (info.contains ("album")) {
-			n += QString::fromUtf8 (info.get<std::string> ("album").c_str ()) + " - ";
+			n += info["album"].toString () + " - ";
 		}
-		n += QString::fromUtf8 (info.get<std::string> ("title").c_str ());
+		n += info["title"].toString ();
 	} else if (info.contains ("channel")) {
-		n = QString::fromUtf8 (info.get<std::string> ("channel").c_str ()) + " - " +
-		    QString::fromUtf8 (info.get<std::string> ("title").c_str ());
+		n = info["channel"].toString () + " - " + info["title"].toString ();
 	} else {
-		n = QString::fromUtf8 (info.get<std::string> ("url").c_str ());
+		n = info["url"].toString ();
 		n = n.section ("/", -1);
 	}
 	m_text->setText (n);
-	
-	if (info.contains ("bitrate")) {
-		m_kbps->setValue (info.get<int32_t> ("bitrate")/1000);
-	} else {
-		m_kbps->setValue (0);
-	}
 
-	if (info.contains ("samplerate")) {
-		m_khz->setValue (info.get<int32_t> ("samplerate")/1000);
-	} else {
-		m_khz->setValue(0);
-	}
+	m_kbps->setValue (info.value ("bitrate", 0).toInt ()/1000);
+	m_khz->setValue (info.value ("samplerate", 0).toInt ()/1000);
+
 	if (info.contains ("channels") &&
-	    info.get<int32_t> ("channels") > 1) {
+	    info["channels"].toInt () > 1) {
 		m_stereo->setStereoMono (1, 0);
 	} else {
 		m_stereo->setStereoMono (0, 1);
 	}
 
 	if (info.contains ("duration")) {
-		m_posbar->setMaximum (info.get<int32_t> ("duration"));
+		m_posbar->setMaximum (info["duration"].toInt ());
 		m_posbar->show ();
 	} else {
 		m_posbar->setMaximum (0);

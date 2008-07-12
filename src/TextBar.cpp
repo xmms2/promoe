@@ -126,6 +126,8 @@ TextScroller::setText (QString text)
 	} else {
 		drawBitmapFont (text);
 	}
+	m_x_off = 0;
+	m_x2_off = 0;
 	update ();
 }
 
@@ -148,6 +150,7 @@ TextScroller::drawBitmapFont (QString text)
 		}
 	} else {
 		m_pixmap = QPixmap (m_w, m_h);
+		m_timer->stop ();
 	}
 	QByteArray temp2 = temp.toLatin1();
 	const char *t = temp2.data();
@@ -201,6 +204,7 @@ TextScroller::drawQtFont (QString text)
 
 	} else {
 		m_pixmap = QPixmap (m_w, m_h);
+		m_timer->stop ();
 	}
 
 	QPainter paint;

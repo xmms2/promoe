@@ -61,33 +61,9 @@ XMMSHandler::connect_handler (const char *ipcpath, const bool &sync, QWidget *pa
 	connect(ipcpath, sync, parent);
 
 	using Xmms::bind;
-	m_client->medialib.broadcastEntryChanged () (
-	                    bind (&XMMSHandler::medialib_entry_changed, this));
-
-	m_client->playback.currentID () (
-	                    bind (&XMMSHandler::playback_current_id, this));
-	m_client->playback.broadcastCurrentID () (
-	                    bind (&XMMSHandler::playback_current_id, this));
-
 	m_client->playback.broadcastVolumeChanged () (
 	                    bind (&XMMSHandler::volume_changed, this));
 
-	return true;
-}
-
-
-Xmms::Client *
-XMMSHandler::getClient ()
-{
-	return m_client;
-}
-
-bool
-XMMSHandler::medialib_entry_changed (const unsigned int &id)
-{
-	if (id > 0) {
-		requestMediainfo (id);
-	}
 	return true;
 }
 
@@ -96,26 +72,6 @@ XMMSHandler::playlistAddURL (const QString &s)
 {
 	m_client->playlist.addUrl (s.toAscii ().constData ()) ();
 }
-
-void
-XMMSHandler::requestMediainfo (uint id)
-{
-	m_client->medialib.getInfo (id) (
-	                    Xmms::bind (&XMMSHandler::medialib_info, this));
-}
-
-bool 
-XMMSHandler::playback_current_id (const unsigned int &id)
-{
-       m_currentid = id;
-
-       if (id > 0) {
-               requestMediainfo (id);
-       }
-
-       return true;
-}
-
 
 void
 XMMSHandler::DictToQHash (const std::string &key,
@@ -175,18 +131,6 @@ XMMSHandler::medialib_select (XMMSResultDictList *res)
 	emit medialibResponse (res->getCID (), l);
 }
 */
-
-bool 
-XMMSHandler::medialib_info (const Xmms::PropDict &propdict)
-{
-	unsigned int id = propdict.get<int32_t>("id");
-	emit mediainfoChanged (id, propdict);
-
-	if (id == m_currentid) {
-		emit currentSong (propdict);
-	}
-	return false;
-}
 
 bool
 XMMSHandler::volume_error (const std::string &error)

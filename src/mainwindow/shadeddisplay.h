@@ -20,6 +20,10 @@ class ShadedDisplay;
 
 #include <xmmsclient/xmmsclient++.h>
 #include "Display.h"
+#include <QHash>
+#include <QVariant>
+
+typedef QHash<QString, QVariant> QVariantHash;
 
 class MainWindow;
 class Skin;
@@ -53,7 +57,7 @@ class ShadedDisplay : public SkinDisplay
 	public slots:
 		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint32_t time);
-		void setMediainfo (const Xmms::PropDict &info);
+		void setMediainfo (QVariantHash info);
 		void setPixmaps (Skin *skin);
 };
 

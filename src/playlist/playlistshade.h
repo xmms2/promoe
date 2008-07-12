@@ -21,6 +21,9 @@
 
 #include <QWidget>
 #include <QHash>
+#include <QVariant>
+
+typedef QHash<QString, QVariant> QVariantHash;
 
 class QResizeEvent;
 class PixmapButton;
@@ -39,7 +42,7 @@ class PlaylistShade : public QWidget {
 
 	public slots:
 		void setPixmaps (Skin *skin);
-		void setMediainfo (const Xmms::PropDict &info);
+		void setMediainfo (QVariantHash);
 		void settingsSaved ();
 		void resizeEvent (QResizeEvent *);
 
