@@ -41,6 +41,11 @@ SmallTimeDisplay::SmallTimeDisplay (QWidget *parent)
 	m_d4_x_pos = 23;
 }
 
+AbstractTimeDisplay::AbstractTimeDisplay (QWidget *parent) : QWidget (parent)
+{
+	m_time = 0;
+}
+
 /*
  * This method takes the playtime in seconds
  */

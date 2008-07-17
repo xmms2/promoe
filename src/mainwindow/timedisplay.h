@@ -30,7 +30,7 @@ class AbstractTimeDisplay : public QWidget
 {
 	Q_OBJECT
 	public:
-		AbstractTimeDisplay (QWidget *parent) : QWidget (parent) {};
+		AbstractTimeDisplay (QWidget *parent);
 		~AbstractTimeDisplay () {};
 		void setTime (int);
 

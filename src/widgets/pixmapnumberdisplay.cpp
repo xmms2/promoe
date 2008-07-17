@@ -21,6 +21,8 @@
 
 PixmapNumberDisplay::PixmapNumberDisplay (QWidget *parent) : QWidget (parent)
 {
+	m_value = 0;
+	m_digits = 2;
 }
 
 void

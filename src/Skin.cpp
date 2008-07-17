@@ -181,6 +181,9 @@ Skin::BuildEqualizer (void)
 	} else {
 		setSkin(":CleanAMP/");
 	}
+	if (imgex) {
+		delete imgex;
+	}
 }
 
 void
