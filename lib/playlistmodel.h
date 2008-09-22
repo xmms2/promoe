@@ -140,7 +140,6 @@ class PlaylistModel : public QAbstractItemModel
 
 		void getInfo (unsigned int id) const;
 
-
 		uint32_t m_current_pos;
         bool m_isactive;
 

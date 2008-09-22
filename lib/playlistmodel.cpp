@@ -32,7 +32,7 @@
 // Used to check for Protocolversion at compiletime
 #include <xmmsc/xmmsc_idnumbers.h>
 
-PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &name) : QAbstractItemModel (parent)
+PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &name) : QAbstractItemModel (parent), m_current_pos (0)
 {
 //	m_columns.append ("#");
 	m_columns.append ("Artist");
@@ -50,16 +50,14 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &n
 
 	connect (client, SIGNAL(gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
 	connect (client->cache (), SIGNAL(entryChanged (uint32_t)), this, SLOT (entry_changed (uint32_t)));
-	
-	if (name == QLatin1String ("_active")) {
-        m_isactive = true;
+
+	m_isactive = (name == QLatin1String ("_active"));
+
+	m_name = name;
+
+	if (client->isConnected ()) {
+		got_connection (client);
 	}
-	
-    m_name = name;
-    
-    if (client->isConnected ()) {
-        got_connection (client);
-    }
 }
 
 void

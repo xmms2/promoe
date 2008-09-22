@@ -15,11 +15,7 @@
 
 
 #include <QListWidget>
-#include <QMainWindow>
-class QLabel;
-class QVBoxLayout;
-
-class MainWindow;
+#include <QDialog>
 
 class SkinList : public QListWidget
 {
@@ -46,19 +42,14 @@ class SkinChooserItem : public QListWidgetItem
 
 };
 
-class SkinChooser : public QMainWindow
+class SkinChooser : public QDialog
 {
 	public:
 		SkinChooser (QWidget *parent);
 		~SkinChooser (void) {}
-		MainWindow *getMW (void) { return m_mw; }
 
 	private:
-		QVBoxLayout *m_vbox;
 		SkinList *m_skin;
-		QLabel *m_label;
-		QWidget *m_c;
-		MainWindow *m_mw;
 
 };
 

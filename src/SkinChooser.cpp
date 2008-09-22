@@ -13,7 +13,6 @@
  *  GNU General Public License for more details.
  */
 
-#include "mainwindow.h"
 #include "Skin.h"
 #include "SkinChooser.h"
 
@@ -24,27 +23,22 @@
 #include <QSettings>
 #include <QVBoxLayout>
 
-SkinChooser::SkinChooser (QWidget *parent) : QMainWindow (parent)
+SkinChooser::SkinChooser (QWidget *parent) : QDialog (parent)
 {
 
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
-	setWindowFlags (Qt::Dialog);
 	setWindowModality (Qt::ApplicationModal);
 	setAttribute (Qt::WA_DeleteOnClose);
 
-	m_mw = dynamic_cast<MainWindow *>(parent);
-	m_c = new QWidget (this);
-	setCentralWidget (m_c);
+	QVBoxLayout *vbox = new QVBoxLayout (this);
+	QLabel *label = new QLabel ("Available skins...", this);
+	label->setFont (QFont ("Helvetica", 16));
+	vbox->addWidget (label);
 
-	m_vbox = new QVBoxLayout (m_c);
-	m_label = new QLabel ("Available skins...", m_c);
-	m_label->setFont (QFont ("Helvetica", 16));
-	m_vbox->addWidget (m_label);
-
-	m_skin = new SkinList (m_c);
-	m_vbox->addWidget (m_skin);
+	m_skin = new SkinList (this);
+	vbox->addWidget (m_skin);
 
 	resize (500, 300);
 
@@ -52,30 +46,42 @@ SkinChooser::SkinChooser (QWidget *parent) : QMainWindow (parent)
 
 SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 {
-
 	setIconSize (QSize (137, 58));
 
-	QString path;
-	path.append (QDir::homePath());
-	path.append ("/.config/xmms2/clients/promoe/skins/");
+	new SkinChooserItem (QIcon (":CleanAMP/main.png"), "CleanAMP (default)",
+	                     ":CleanAMP/", this);
+
+	QSettings settings;
+	QStringList searchpath;
+	if (settings.contains ("skin/searchpath") ) {
+		searchpath = settings.value ("skin/searchpath").toStringList ();
+	} else {
+		QString path;
+		path.append (QDir::homePath());
+		path.append ("/.config/xmms2/clients/promoe/skins/");
+		searchpath.append (path);
+		settings.setValue ("skin/searchpath", searchpath);
+	}
+
+	QFileInfoList list;
 	QDir d;
-			
-	new SkinChooserItem (QIcon (":CleanAMP/main.png"), "CleanAMP (default)", ":CleanAMP/", this);
-
-	d.setPath (path);
 	d.setFilter (QDir::Dirs);
+	foreach (QString path, searchpath) {
+		d.setPath (path);
+		list += d.entryInfoList();
+	}
 
-	QFileInfoList list = d.entryInfoList();
-	for (int i = 0; i < list.size(); ++i) {
-		QFileInfo fileInfo = list.at(i);
+	foreach (QFileInfo fileInfo, list) {
 		QDir dir (fileInfo.filePath());
 		QPixmap p = Skin::getPixmap ("main", dir);
 		if (!p.isNull()) {
-			new SkinChooserItem (QIcon (p), dir.dirName(), dir.absolutePath(), this);
+			new SkinChooserItem (QIcon (p), dir.dirName(), dir.absolutePath(),
+			                     this);
 		}
 	}
 
-	connect (this, SIGNAL (itemClicked (QListWidgetItem *)), this, SLOT (changeSkin (QListWidgetItem *)));
+	connect (this, SIGNAL (itemClicked (QListWidgetItem *)),
+	         this, SLOT (changeSkin (QListWidgetItem *)));
 }
 
 void
