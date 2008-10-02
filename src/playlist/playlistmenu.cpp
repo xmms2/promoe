@@ -21,6 +21,28 @@
 #include <QPoint>
 #include <QPainter>
 
+
+PlaylistMenuBar::PlaylistMenuBar (QWidget *parent, uint id) : QWidget (parent)
+{
+	m_id = id;
+
+	Skin *skin = Skin::getInstance ();
+	m_pixmap = QPixmap (0,0);
+
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps (Skin *)));
+}
+
+void
+PlaylistMenuBar::paintEvent (QPaintEvent *event)
+{
+	QPainter p;
+	p.begin (this);
+	p.drawPixmap (rect (), m_pixmap, m_pixmap.rect ());
+	p.end ();
+}
+
+
 PlaylistMenuButton::PlaylistMenuButton (PlaylistMenu *menu, 
 										uint pix1, uint pix2) : QWidget (menu)
 {
@@ -59,7 +81,7 @@ PlaylistMenuButton::setPixmaps (Skin *skin)
  * PlaylistMenu
  */
 PlaylistMenu::PlaylistMenu (QWidget *parent, uint pix,
-							uint decoration) : PixWidget (parent)
+							uint decoration) : QWidget (parent)
 {
 	setFixedSize (25, 18);
 
@@ -70,6 +92,21 @@ PlaylistMenu::PlaylistMenu (QWidget *parent, uint pix,
 	m_decbar->move (0, 0);
 
 	m_pixid = pix;
+
+	Skin *skin = Skin::getInstance ();
+	m_pixmap = QPixmap (0,0);
+
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps (Skin *)));
+}
+
+void
+PlaylistMenu::paintEvent (QPaintEvent *event)
+{
+	QPainter p;
+	p.begin (this);
+	p.drawPixmap (rect (), m_pixmap, m_pixmap.rect ());
+	p.end ();
 }
 
 void

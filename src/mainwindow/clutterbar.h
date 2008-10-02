@@ -16,10 +16,13 @@
 #ifndef __CLUTTERBAR_H__
 #define __CLUTTERBAR_H__
 
-#include <QMouseEvent>
-#include "PixWidget.h"
+#include "QWidget"
+class QMouseEvent;
+class QPaintEvent;
 
-class ClutterBar : public PixWidget
+class Skin;
+
+class ClutterBar : public QWidget
 {
 	Q_OBJECT
 	public:
@@ -30,6 +33,8 @@ class ClutterBar : public PixWidget
 		void setPixmaps(Skin *skin);
 
 	protected:
+		void paintEvent (QPaintEvent *event);
+
 		void mousePressEvent (QMouseEvent *event);
 		void mouseReleaseEvent (QMouseEvent *event);
 
@@ -44,7 +49,7 @@ class ClutterBar : public PixWidget
 
 		bool enabled;
 
-		int m_ypos;
+		QPixmap m_pixmap;
 };
 
 

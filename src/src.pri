@@ -4,8 +4,7 @@ include($$PWD/playlist/playlist.pri)
 include($$PWD/equalizer/equalizer.pri)
 include($$PWD/dialogs/dialogs.pri)
 
-HEADERS += PixWidget.h \
-           Skin.h \
+HEADERS += Skin.h \
            XMMSHandler.h \
            SkinChooser.h \
            settingsdialog.h \
@@ -15,7 +14,6 @@ HEADERS += PixWidget.h \
            BrowseDialog.h
 
 SOURCES += main.cpp \
-		   PixWidget.cpp \
            Skin.cpp \
            XMMSHandler.cpp \
            SkinChooser.cpp \

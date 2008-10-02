@@ -26,8 +26,9 @@
 #include "Skin.h"
 
 #include <QMenu>
+#include <QPainter>
 
-TitleBar::TitleBar (QWidget *parent, bool shaded) : PixWidget (parent)
+TitleBar::TitleBar (QWidget *parent, bool shaded) : QWidget (parent)
 {
 	MainWindow *mw = dynamic_cast<MainWindow*>(window ());
 	m_shaded = shaded;
@@ -61,6 +62,9 @@ TitleBar::TitleBar (QWidget *parent, bool shaded) : PixWidget (parent)
 	m_closebtn->move (skin->getPos (Skin::BUTTON_MW_CLOSE));
 	connect (m_closebtn, SIGNAL (clicked()), qApp, SLOT (quit ()));
 
+	m_pixmap = QPixmap(0,0);
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
 }
 
 void
@@ -71,30 +75,30 @@ TitleBar::showMenu (void)
 	QAction *a;
 
 	a = new QAction (tr ("Medialib browser"), this);
-	a->setShortcut (tr ("Alt+M"));
+//	a->setShortcut (tr ("Alt+M"));
 	connect (a, SIGNAL (triggered ()), this, SLOT (showMlib ()));
 	a->setEnabled(false); // FIXME: disabled for now, as Mlib-browser doesn't work
 	qm.addAction (a);
 	a = new QAction (tr ("Server-side browser"), this);
-	a->setShortcut (tr ("Alt+S"));
+//	a->setShortcut (tr ("Alt+S"));
 	connect (a, SIGNAL (triggered ()), this, SLOT (showServerB ()));
 	qm.addAction (a);
 	qm.addSeparator ();
 	a = new QAction (tr ("Theme settings"), this);
-	a->setShortcut (tr ("Alt+T"));
+//	a->setShortcut (tr ("Alt+T"));
 	connect (a, SIGNAL (triggered ()), this, SLOT (showTheme ()));
 	qm.addAction (a);
 	a = new QAction (tr ("Application settings"), this);
-	a->setShortcut (tr ("Alt+A"));
+//	a->setShortcut (tr ("Alt+A"));
 	connect (a, SIGNAL (triggered ()), this, SLOT (showSettings ()));
 	qm.addAction (a);
 	a = new QAction (tr ("Server settings"), this);
-	a->setShortcut (tr ("Alt+S"));
+//	a->setShortcut (tr ("Alt+S"));
 	a->setEnabled(false); // FIXME: disabled for now, not yet implemented
 	qm.addAction (a);
 	qm.addSeparator ();
 	a = new QAction (tr ("Quit"), this);
-	a->setShortcut (tr ("Ctrl+Q"));
+//	a->setShortcut (tr ("Ctrl+Q"));
 	connect (a, SIGNAL (triggered ()), qApp, SLOT (quit ()));
 	qm.addAction (a);
 
@@ -175,6 +179,15 @@ TitleBar::setActive (bool active)
 		m_pixmap = m_pixmap_inactive;
 		update ();
 	}
+}
+
+void
+TitleBar::paintEvent (QPaintEvent *event)
+{
+	QPainter p;
+	p.begin (this);
+	p.drawPixmap (rect (), m_pixmap);
+	p.end ();
 }
 
 void 

@@ -16,10 +16,14 @@
 #ifndef __STEREOMONO_H__
 #define __STEREOMONO_H__
 
-#include "PixWidget.h"
+#include <QWidget>
 
-class StereoMono : public PixWidget
+class QPaintEvent;
+class Skin;
+
+class StereoMono : public QWidget
 {
+	Q_OBJECT
 	public:
 		StereoMono (QWidget *parent);
 		~StereoMono () { }
@@ -29,8 +33,10 @@ class StereoMono : public PixWidget
 	public slots:
 		void setPixmaps (Skin *skin);
 
+	protected slots:
+		void paintEvent (QPaintEvent *event);
+
 	private:
-		void drawPixmaps ();
 		bool m_stereo;
 		bool m_mono;
 
@@ -38,9 +44,6 @@ class StereoMono : public PixWidget
 		QPixmap m_pixmap_stereo_off;
 		QPixmap m_pixmap_mono_on;
 		QPixmap m_pixmap_mono_off;
-
-		QPixmap m_pixmap_mono;
-		QPixmap m_pixmap_stereo;
 };
 
 #endif

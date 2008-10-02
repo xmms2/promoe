@@ -18,12 +18,13 @@
 
 #include <QPainter>
 
-StereoMono::StereoMono (QWidget *parent) : PixWidget (parent)
+StereoMono::StereoMono (QWidget *parent) : QWidget (parent)
 {
-	setMinimumSize (56, 12);
-	setMaximumSize (56, 12);
+	setFixedSize (56, 12);
 
-	m_pixmap = QPixmap (56, 12);
+	Skin *skin = Skin::getInstance();
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps (Skin *)));
 }
 
 void
@@ -34,47 +35,27 @@ StereoMono::setPixmaps (Skin *skin)
 	m_pixmap_mono_on = skin->getItem (Skin::MONO_1);
 	m_pixmap_mono_off = skin->getItem (Skin::MONO_0);
 
-	setStereoMono (m_stereo, m_mono);
+	update ();
 }
 
 void
-StereoMono::drawPixmaps ()
+StereoMono::paintEvent (QPaintEvent *event)
 {
-	QPainter paint;
-	paint.begin (&m_pixmap);
+	QPainter p (this);
 
-	paint.drawPixmap (QRect (0, 0, 27, 12),
-					  m_pixmap_mono,
-					  m_pixmap_mono.rect ());
-
-	paint.drawPixmap (QRect (27, 0, 29, 12),
-					  m_pixmap_stereo,
-					  m_pixmap_stereo.rect ());
-	paint.end ();
-
-	update();
+	p.drawPixmap (0, 0, m_mono ? m_pixmap_mono_on : m_pixmap_mono_off);
+	p.drawPixmap (27, 0, m_stereo ? m_pixmap_stereo_on : m_pixmap_stereo_off);
 }
 
 void
 StereoMono::setStereoMono (bool stereo, bool mono)
 {
-
-	if (stereo) {
-		m_pixmap_stereo = m_pixmap_stereo_on;
-	} else {
-		m_pixmap_stereo = m_pixmap_stereo_off;
-	}
-
-	if (mono) {
-		m_pixmap_mono = m_pixmap_mono_on;
-	} else {
-		m_pixmap_mono = m_pixmap_mono_off;
-	}
+	// if nothing changes, just return
+	if ((m_stereo == stereo) && (m_mono == mono))
+		return;
 
 	m_stereo = stereo;
 	m_mono = mono;
 
-	drawPixmaps ();
-
+	update ();
 }
-

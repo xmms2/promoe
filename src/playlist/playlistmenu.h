@@ -16,26 +16,25 @@
 #ifndef __PLAYLISTMENU_H__
 #define __PLAYLISTMENU_H__
 
-class PlaylistMenu;
-
-//#include "XMMSHandler.h"
-#include "PixWidget.h"
+#include <QWidget>
 #include "Skin.h"
 
-#include <QWidget>
+class PlaylistMenu;
 
-class PlaylistMenuBar : public PixWidget {
+class PlaylistMenuBar : public QWidget {
 	Q_OBJECT
 	public:
-		PlaylistMenuBar (QWidget *parent, uint id) : PixWidget (parent)
-		{
-			m_id = id;
-		}
+		PlaylistMenuBar (QWidget *parent, uint id);
+
 	public slots:
 		void setPixmaps (Skin *skin) { m_pixmap = skin->getPls (m_id); }
 
+	protected slots:
+		void paintEvent (QPaintEvent *event);
+
 	private:
 		uint m_id;
+		QPixmap m_pixmap;
 };
 
 class PlaylistMenuButton : public QWidget {
@@ -65,7 +64,7 @@ class PlaylistMenuButton : public QWidget {
 		QPixmap m_pixmap;
 };
 
-class PlaylistMenu : public PixWidget {
+class PlaylistMenu : public QWidget {
 	Q_OBJECT
 	public:
 		PlaylistMenu (QWidget *, uint, uint);
@@ -81,6 +80,9 @@ class PlaylistMenu : public PixWidget {
 	public slots:
 		void setPixmaps (Skin *skin);
 
+	protected slots:
+		void paintEvent (QPaintEvent *event);
+
 	private:
 		uint m_pixid;
 		uint m_dec;
@@ -90,6 +92,7 @@ class PlaylistMenu : public PixWidget {
 
 		PlaylistMenuBar *m_decbar;
 
+		QPixmap m_pixmap;
 };
 
 #endif

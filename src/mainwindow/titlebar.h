@@ -16,14 +16,13 @@
 #ifndef __TITLEBAR_H__
 #define __TITLEBAR_H__
 
-class TitleBar;
+#include "QWidget"
 
-#include "PixWidget.h"
-
+class QPaintEvent;
 class PixmapButton;
 class Skin;
 
-class TitleBar : public PixWidget
+class TitleBar : public QWidget
 {
 	Q_OBJECT
 	public:
@@ -39,6 +38,9 @@ class TitleBar : public PixWidget
 		void showMlib (void);
 		void showSettings (void);
 
+	protected slots:
+		void paintEvent (QPaintEvent *event);
+
 	protected:
 		void mouseDoubleClickEvent (QMouseEvent *event);
 
@@ -52,6 +54,7 @@ class TitleBar : public PixWidget
 		PixmapButton *m_minimize;
 
 		bool m_shaded;
+		QPixmap m_pixmap;
 };
 
 #endif

@@ -16,8 +16,15 @@
 #include "clutterbar.h"
 #include "Skin.h"
 
-ClutterBar::ClutterBar (QWidget *parent) : PixWidget (parent)
+#include <QMouseEvent>
+#include <QPainter>
+
+ClutterBar::ClutterBar (QWidget *parent) : QWidget (parent)
 {
+	Skin *skin = Skin::getInstance();
+
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
 }
 
 ClutterBar::~ClutterBar ()
@@ -39,8 +46,7 @@ ClutterBar::setPixmaps(Skin *skin)
 
 	m_pixmap = m_clutter_on;
 
-	setMinimumSize (m_clutter_on.size ());
-	setMaximumSize (m_clutter_on.size ());
+	setFixedSize (m_clutter_on.size ());
 
 	update();
 }
@@ -74,4 +80,13 @@ ClutterBar::mouseReleaseEvent (QMouseEvent *event)
 }
 
 
+void
+ClutterBar::paintEvent (QPaintEvent *event)
+{
+	if (m_pixmap.isNull ()) {
+		return;
+	}
 
+	QPainter p (this);
+	p.drawPixmap (rect (), m_pixmap, m_pixmap.rect ());
+}
