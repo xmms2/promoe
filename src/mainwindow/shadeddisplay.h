@@ -19,7 +19,7 @@
 class ShadedDisplay;
 
 #include <xmmsclient/xmmsclient++.h>
-#include "Display.h"
+#include "skindisplay.h"
 #include <QHash>
 #include <QVariant>
 

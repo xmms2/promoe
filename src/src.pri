@@ -6,9 +6,6 @@ include($$PWD/dialogs/dialogs.pri)
 
 HEADERS += PixWidget.h \
            Skin.h \
-           Display.h \
-           TitleBar.h \
-           TextBar.h \
            XMMSHandler.h \
            SkinChooser.h \
            settingsdialog.h \
@@ -20,9 +17,6 @@ HEADERS += PixWidget.h \
 SOURCES += main.cpp \
 		   PixWidget.cpp \
            Skin.cpp \
-           Display.cpp \
-           TitleBar.cpp \
-           TextBar.cpp \
            XMMSHandler.cpp \
            SkinChooser.cpp \
            settingsdialog.cpp \

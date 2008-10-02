@@ -17,10 +17,10 @@
 #include "xcollection.h"
 
 #include "mainwindow.h"
-#include "Display.h"
+#include "skindisplay.h"
 #include "Skin.h"
 
-#include "TitleBar.h"
+#include "titlebar.h"
 #include "FileDialog.h"
 
 #include <QPainter>

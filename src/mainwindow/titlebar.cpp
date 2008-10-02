@@ -16,8 +16,8 @@
 #include "XMMSHandler.h"
 
 #include "mainwindow.h"
-#include "TitleBar.h"
-#include "Display.h"
+#include "titlebar.h"
+#include "skindisplay.h"
 #include "SkinChooser.h"
 // #include "MedialibWindow.h"
 #include "settingsdialog.h"

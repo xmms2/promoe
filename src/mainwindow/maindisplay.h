@@ -32,7 +32,7 @@ class MainDisplay;
 #include <QHash>
 #include <QVariant>
 
-#include "Display.h"
+#include "skindisplay.h"
 
 typedef QHash<QString, QVariant> QVariantHash;
 

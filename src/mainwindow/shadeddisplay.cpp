@@ -19,11 +19,11 @@
 #include "xplayback.h"
 
 #include "shadeddisplay.h"
-#include "TitleBar.h"
+#include "titlebar.h"
 #include "pixmapbutton.h"
 
 #include "timedisplay.h"
-#include "TextBar.h"
+#include "textbar.h"
 #include "Skin.h"
 #include "mainwindow.h"
 

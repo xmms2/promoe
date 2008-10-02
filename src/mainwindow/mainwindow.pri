@@ -4,8 +4,11 @@ HEADERS += clutterbar.h \
 		   playstatus.h \
 		   posbar.h \
 		   shadeddisplay.h \
+		   skindisplay.h \
 		   stereomono.h \
-		   timedisplay.h
+		   textbar.h \
+		   timedisplay.h \
+		   titlebar.h
 
 SOURCES += clutterbar.cpp \
 		   mainwindow.cpp \
@@ -13,8 +16,11 @@ SOURCES += clutterbar.cpp \
 		   playstatus.cpp \
 		   posbar.cpp \
 		   shadeddisplay.cpp \
+		   skindisplay.cpp \
 		   stereomono.cpp \
-		   timedisplay.cpp
+		   textbar.cpp \
+		   timedisplay.cpp \
+		   titlebar.cpp
 
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD

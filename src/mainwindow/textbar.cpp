@@ -13,8 +13,8 @@
  *  GNU General Public License for more details.
  */
 
-#include "Display.h"
-#include "TextBar.h"
+#include "skindisplay.h"
+#include "textbar.h"
 #include "Skin.h"
 
 #include <QBrush>
