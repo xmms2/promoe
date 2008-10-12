@@ -73,8 +73,6 @@ class MainDisplay : public SkinDisplay
 		void setPlaytime (uint32_t time);
 //		void setMediainfo (const Xmms::PropDict &);
 		void setMediainfo (const QVariantHash);
-		void updateVolume (uint volume);
-		void setVolume (int volume);
 
 	protected slots:
 		void serverConfigChanged (QString key, QString value);

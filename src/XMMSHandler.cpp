@@ -61,8 +61,8 @@ XMMSHandler::connect_handler (const char *ipcpath, const bool &sync, QWidget *pa
 	connect(ipcpath, sync, parent);
 
 	using Xmms::bind;
-	m_client->playback.broadcastVolumeChanged () (
-	                    bind (&XMMSHandler::volume_changed, this));
+//	m_client->playback.broadcastVolumeChanged () (
+//	                    bind (&XMMSHandler::volume_changed, this));
 
 	return true;
 }
@@ -131,69 +131,4 @@ XMMSHandler::medialib_select (XMMSResultDictList *res)
 	emit medialibResponse (res->getCID (), l);
 }
 */
-
-bool
-XMMSHandler::volume_error (const std::string &error)
-{
-	qWarning ("couldn't get volume levels!");
-	return false;
-}
-
-void
-XMMSHandler::volumeGet ()
-{
-	m_client->playback.volumeGet () (Xmms::bind (&XMMSHandler::volume_get, this),
-	                             Xmms::bind (&XMMSHandler::volume_error, this));
-}
-
-void
-XMMSHandler::volumeSet (uint volume)
-{
-	if(m_masterchan)
-	{
-		m_client->playback.volumeSet ("master", volume) ();
-	}
-	else
-	{
-		m_client->playback.volumeSet ("left", volume) ();
-		m_client->playback.volumeSet ("right", volume) ();
-	}
-}
-
-bool
-XMMSHandler::volume_changed (const Xmms::Dict &levels)
-{
-	volume_get (levels);
-	return true;
-}
-
-bool
-XMMSHandler::volume_get (const Xmms::Dict &levels)
-{
-	QHash<QString, QString> hash;
-	levels.each (boost::bind (&XMMSHandler::DictToQHash, this,
-	                          _1, _2, boost::ref (hash)));
-	QList<QString> Values = hash.values();
-	QListIterator<QString> vol (Values);
-
-	uint right = atol (vol.next().toAscii());
-	if(vol.hasNext())
-	{
-		uint left = atol (vol.next().toAscii());
-	
-		if(left > right)
-			emit getVolume (left);
-		else
-			emit getVolume (right);
-
-		m_masterchan = false;
-	}
-	else
-	{
-		emit getVolume (right);
-		m_masterchan = true;
-	}
-	return false;
-
-}
 

@@ -36,21 +36,15 @@ class XMMSHandler : public XClient {
 
 		bool connect_handler (const char *ipcpath = NULL, const bool &sync = false, QWidget *parent = NULL);
 
-		bool volume_changed (const Xmms::Dict &levels);
-
 		void playlistAddURL (const QString& url);
 
 		/*
 		void medialib_select (XMMSResultDictList *res);
-
-
 		*/
 		/*
 		uint medialibQuery (QString);
 		void medialibQueryAdd (QString q) { delete m_xmmsc->medialib_add_to_playlist (q.toUtf8 ()); }
 		*/
-
-		void volumeGet ();
 
 		//const XMMSClient *getXMMS () { return m_xmmsc; }
 
@@ -60,15 +54,11 @@ class XMMSHandler : public XClient {
 
 		PlaylistModel *getPlaylistModel () {return m_playlist_model; }
 
-	public slots:
-		void volumeSet (uint volume);
-
 	signals:
 		void settingsSaved ();
 		/*
 		void medialibResponse (uint, const QList<QHash<QString, QString> > &);
 		*/
-		void getVolume (uint);
 
 	private:
 		void DictToQHash (const std::string &key,
@@ -79,12 +69,8 @@ class XMMSHandler : public XClient {
 //		                      const std::string &source,
 //		                      QHash<QString, QString> &hash);
 
-		bool volume_get (const Xmms::Dict &levels);
-		bool volume_error (const std::string &error);
-
 		XmmsQT4 *m_qt4;
 		PlaylistModel *m_playlist_model;
-		bool m_masterchan;
 };
 
 #endif
