@@ -1,7 +1,7 @@
 Required dependencys:
 	* QT4.2.x           http://www.trolltech.no/
 	* XMMS2             http://xmms2.xmms.org/
-	* XMMS2 C++ bindings (make sure to have boost_signals when compiling xmms2)
+	* XMMS2 C++ bindings (make sure you have boost_signals when compiling xmms2)
 	  - promoe works with 0.4DrK and 0.5DrL
 
 Optional dependencys:
@@ -37,7 +37,8 @@ Patches:
 	'http://bugs.xmms2.xmms.se/' at project 'Client - Promoe'.
 
 	Either append the patch to the bug it fixes or supply a link to your own
-	git repository
+	git repository (github.com is a good place for your own public git
+	repository)
 
-	To discuss a patch of wanted feature , you can also try to reach the
+	To discuss a patch or feature request, you can also try to reach the
 	developer at xmms2's irc channel #xmms2 on freenode (irc.freenode.net)

@@ -20,9 +20,11 @@
 #include "playlistwindow.h"
 #include "playlistwidget.h"
 #include "playlistview.h"
+#include "playlistcontrols.h"
 
 #include "playlistmodel.h"
 #include "xcollection.h"
+#include "xplayback.h"
 
 #include "pixmapbutton.h"
 #include "playlistshade.h"
@@ -201,13 +203,10 @@ PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 	 * It is necessery because of limitations and at least one Bug in the
 	 *  QT library (as of Version 4.3)
 	 * TODO: This might break in a future Qt version. Try to find a better solution
-	 * FIXME: scrollbar is only visible if playlist was closed on startup or
-	 * after resizing the playlist
 	 */
 	m_scrollBar = new PlaylistScrollBar (this);
 	m_view->setVerticalScrollBar (m_scrollBar);
 	m_scrollBar->setParent(this);
-	m_scrollBar->setVisible (true);
 	m_scrollBar->show();
 	/* Workarounds for another QT bug (at least in my opinion) */
 	connect (m_scrollBar, SIGNAL(actionTriggered (int)),
@@ -219,6 +218,26 @@ PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 	m_sizegrip->resize (20, 20);
 
 	addButtons ();
+
+	XMMSHandler &client = XMMSHandler::getInstance ();
+
+	m_controls = new PlaylistControls (this);
+	// connect buttons
+	connect (m_controls, SIGNAL (prev ()),
+	         client.xplayback (), SLOT (prev ()));
+	connect (m_controls, SIGNAL (play ()),
+	         client.xplayback (), SLOT (play ()));
+	connect (m_controls, SIGNAL (pause ()),
+	         client.xplayback (), SLOT (pause ()));
+	connect (m_controls, SIGNAL (stop ()),
+	         client.xplayback (), SLOT (stop ()));
+	connect (m_controls, SIGNAL (next ()),
+	         client.xplayback (), SLOT (next ()));
+	// TODO: eject
+	connect (m_controls, SIGNAL (toggleTime ()),
+	         parent, SIGNAL (toggleTime()));
+	connect (parent, SIGNAL (setDisplayTime (int)),
+	         m_controls, SIGNAL (setDisplayTime (int)));
 
 	setMinimumSize (275, 116);
 //	resize (275, 300);
@@ -418,6 +437,9 @@ PlaylistWidget::resizeEvent (QResizeEvent *event)
 	m_sel->move (69, height() - m_sel->height() - 12);
 	m_msc->move (98, height() - m_msc->height() - 12);
 	m_lst->move (width()-22-25, height() - m_lst->height() - 12);
+
+
+	m_controls->move (width ()-150, height()-38);
 }
 
 void
@@ -425,6 +447,8 @@ PlaylistWidget::setPixmaps (Skin *skin)
 {
 	m_closebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_CLOSE));
 	m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_SHADE));
+
+	m_controls->setNumbers (skin->getSmallNumbers ());
 
 	setActive (m_active);
 

@@ -67,6 +67,10 @@ class MainDisplay : public SkinDisplay
 		PlayStatus *m_playstatus;
 		MainWindow *getMW(void) { return m_mw; }
 
+	signals:
+		//used to set time in timedisplays
+		void displayTime (int time);
+
 	public slots:
 		void setPixmaps(Skin *skin);
 		void setStatus (Xmms::Playback::Status status);

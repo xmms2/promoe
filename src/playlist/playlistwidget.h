@@ -25,6 +25,7 @@
 class PlaylistWidget;
 class PlaylistWindow;
 class PlaylistScroller;
+class PlaylistControls;
 
 class Skin;
 class PlaylistView;
@@ -118,6 +119,7 @@ class PlaylistWidget : public QWidget {
 		PlaylistView *m_view;
 		QScrollBar *m_scrollBar;
 		PlaylistSizeGrip *m_sizegrip;
+		PlaylistControls *m_controls;
 
 		PlaylistMenu *m_add;
 		PlaylistMenu *m_del;

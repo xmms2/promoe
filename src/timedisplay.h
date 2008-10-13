@@ -32,10 +32,10 @@ class AbstractTimeDisplay : public QWidget
 	public:
 		AbstractTimeDisplay (QWidget *parent);
 		~AbstractTimeDisplay () {};
-		void setTime (int);
 
 	public slots:
 		void setPixmaps (const PixmapMap &p);
+		void setTime (int);
 
 	signals:
 		void clicked(void);

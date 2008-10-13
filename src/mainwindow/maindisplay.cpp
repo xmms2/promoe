@@ -62,6 +62,7 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	m_time = new TimeDisplay(this);
 	m_time->move (36, 26);
 	connect (m_time, SIGNAL(clicked()), m_mw, SLOT(toggleTime()));
+	connect (this, SIGNAL (displayTime (int)), m_time, SLOT (setTime (int)));
 
 	m_kbps = new PixmapNumberDisplay (this);
 	m_kbps->resize (15, 6);
@@ -205,7 +206,8 @@ MainDisplay::setPlaytime (uint32_t time)
 	} else {
 		showtime = time/1000;
 	}
-	m_time->setTime (showtime);
+	emit displayTime (showtime);
+//	m_time->setTime (showtime);
 
 	// update slider
 	m_posbar->setValue (time);

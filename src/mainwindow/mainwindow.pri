@@ -7,7 +7,6 @@ HEADERS += clutterbar.h \
 		   skindisplay.h \
 		   stereomono.h \
 		   textbar.h \
-		   timedisplay.h \
 		   titlebar.h
 
 SOURCES += clutterbar.cpp \
@@ -19,7 +18,6 @@ SOURCES += clutterbar.cpp \
 		   skindisplay.cpp \
 		   stereomono.cpp \
 		   textbar.cpp \
-		   timedisplay.cpp \
 		   titlebar.cpp
 
 INCLUDEPATH += $$PWD

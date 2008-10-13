@@ -5,7 +5,8 @@ include($$PWD/equalizer/equalizer.pri)
 include($$PWD/dialogs/dialogs.pri)
 
 HEADERS += Skin.h \
-           XMMSHandler.h \
+           timedisplay.h \
+		   XMMSHandler.h \
            SkinChooser.h \
            settingsdialog.h \
            basewindow.h \
@@ -14,6 +15,7 @@ HEADERS += Skin.h \
            BrowseDialog.h
 
 SOURCES += main.cpp \
+           timedisplay.cpp \
            Skin.cpp \
            XMMSHandler.cpp \
            SkinChooser.cpp \
