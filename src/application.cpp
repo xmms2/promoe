@@ -15,6 +15,8 @@
 
 #include "XMMSHandler.h"
 
+#include "application.h"
+
 #include "mainwindow.h"
 #include "Skin.h"
 
@@ -23,18 +25,59 @@
 #endif
 
 #include <QSettings>
+#include <QMessageBox>
+
+Application::Application (int &argc, char **argv) : QApplication (argc, argv)
+{
+	m_want_quit = false;
+
+	//TODO: Change to XClient sometime later
+	XMMSHandler &client = XMMSHandler::getInstance ();
+
+	connect (&client, SIGNAL(disconnected(XClient *)),
+	         this, SLOT(handleDisconnected ()));
+}
+
+void
+Application::quit ()
+{
+	// quit for real in case something went wrong earlier
+	if (m_want_quit)
+		QApplication::quit ();
+
+	QSettings s;
+	if (s.value ("promoe/quitonclose", false).toBool ()) {
+		m_want_quit = true;
+		if (!XMMSHandler::getInstance ().quit ()) {
+			QApplication::quit ();
+		}
+	} else {
+		QApplication::quit ();
+	}
+}
+
+void
+Application::handleDisconnected ()
+{
+	if (!m_want_quit) {
+	// TODO: enable reconnect
+		QMessageBox::critical( NULL, "xmms2 daemon disconnected",
+		                      "The xmms2 deamon has disconnected\n"
+		                      "This could be because the server crashed\n"
+		                      "or because another client has shut down the sever.",
+		                      "Quit Promoe");
+	}
+	QApplication::quit ();
+}
 
 int 
 main (int argc, char **argv)
 {
-	QApplication app(argc, argv);
+	Application app(argc, argv);
 
 	QCoreApplication::setOrganizationName("xmms2");
 	QCoreApplication::setOrganizationDomain("xmms.org");
 	QCoreApplication::setApplicationName("Promoe");
-
-	//TODO: Change to XClient sometime later
-	XMMSHandler &client = XMMSHandler::getInstance ();
 
 	QSettings settings;
 

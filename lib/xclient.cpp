@@ -31,19 +31,6 @@
 #include "xmmsqt4.h"
 #include "debug.h"
 
-/*
-XSettings::XSettings (QObject *parent) : QObject (parent)
-{
-//	* dummy *
-}
-
-void
-XSettings::change_settings ()
-{
-	emit settingsChanged ();
-}
-*/
-
 QString
 XClient::stdToQ (const std::string &str)
 {
@@ -95,6 +82,15 @@ void XClient::disconnect ()
 }
 
 bool
+XClient::quit ()
+{
+	if (!m_client)
+		return false;
+	m_client->quit ();
+	return true;
+}
+
+bool
 XClient::connect (const char *ipcpath, const bool &sync, QWidget *parent)
 {
 	bool tried_once = false;
@@ -137,10 +133,10 @@ try_again:
 	    }
     }
 
+	m_isconnected = true;
 	// useing normal disconnect callback, if that causes problems,
 	// an own method schould be created
     setDisconnectCallback (boost::bind (&XClient::disconnect, this));
-	m_isconnected = true;
 	emit gotConnection (this);
 
 	return true;

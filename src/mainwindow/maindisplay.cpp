@@ -121,20 +121,6 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 	         this,  SLOT (setPlaytime (uint32_t)));
 
 	setupServerConfig ();
-
-	//TODO: move to better place
-	connect (&client, SIGNAL(disconnected(XClient *)), this, SLOT(handleDisconnected ()));
-}
-
-void
-MainDisplay::handleDisconnected ()
-{
-	QMessageBox::critical( this, "xmms2 daemon disconnected",
-	                      "The xmms2 deamon has disconnected\n"
-	                      "This could be because the server crashed\n"
-	                      "or because another client has shut down the sever.",
-	                      "Quit Promoe");
-	qApp->quit ();
 }
 
 void

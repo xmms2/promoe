@@ -328,10 +328,10 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 	vbox->addWidget (c, 1);
 
 	m_quitonclose = new QCheckBox (tr ("Quit XMMS2D when closing Promoe"), c);
-	if (s.contains ("promoe/quitonclose"))
+	if (!s.contains ("promoe/quitonclose"))
 		s.setValue ("promoe/quitonclose", false);
 	m_quitonclose->setCheckState (s.value ("promoe/quitonclose").toBool () ? Qt::Checked : Qt::Unchecked);
-	m_quitonclose->setEnabled (false); // FIXME: disabled for now, not working
+	//m_quitonclose->setEnabled (false); // FIXME: disabled for now, not working
 	h->addWidget (m_quitonclose);
 
 	c = new QWidget (dummy);
