@@ -1,24 +1,10 @@
-defineTest(pkgconfig_exists) {
-	packages = $$1
-	count(packages, 0): return(false)
-
-	system(pkg-config --exists $$packages) {
-		return(true)
-	} else {
-		return (false)
+# This file is intended replacement for Qt's link_pkgconfig
+for(PACKAGE, $$list($$unique(PKGCONFIG))) {
+	system(pkg-config --exists $$PACKAGE) {
+		CONFIG += $$PACKAGE
 	}
 }
 
-defineReplace(pkgconfig_cflags) {
-	packages = $$1
-	count(packages, 0): return(false)
-
-	return ($$system(pkg-config --cflags $$packages))
-}
-
-defineReplace(pkgconfig_libs) {
-	packages = $$1
-	count(packages, 0): return(false)
-
-	return ($$system(pkg-config --libs $$packages))
-}
+QMAKE_CXXFLAGS += $$system(pkg-config --cflags $$PKGCONFIG)
+QMAKE_CFLAGS += $$system(pkg-config --cflags $$PKGCONFIG)
+LIBS += $$system(pkg-config --libs $$PKGCONFIG)
