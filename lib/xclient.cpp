@@ -81,13 +81,21 @@ void XClient::disconnect ()
 	emit disconnected (this);
 }
 
-bool
-XClient::quit ()
+void
+XClient::shutdownServer ()
 {
 	if (!m_client)
-		return false;
+		return;
 	m_client->quit ();
-	return true;
+	/* OnWrite is called here to make sure all pending messeages get sent
+	 * to the server, even if an application is closing down.
+	 * If this call is removed it can no longer be guaranted that the
+	 * quit messeage is sent to the server
+	 */
+	XmmsQT4 *notifier = dynamic_cast<XmmsQT4 *>(&m_client->getMainLoop());
+	notifier->OnWrite ();
+
+	return;
 }
 
 bool

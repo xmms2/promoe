@@ -29,10 +29,6 @@ class Application : public QApplication
 	Application (int &argc, char **argv);
 
 	public slots:
-	void quit ();
+	void cleanupHandler ();
 	void handleDisconnected ();
-
-
-	private:
-	bool m_want_quit;
 };

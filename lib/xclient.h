@@ -93,7 +93,7 @@ class XClient : public QObject {
 
 	public slots:
 		void disconnect ();
-		bool quit ();
+		void shutdownServer ();
 
 	protected:
 		Xmms::Client *m_client;

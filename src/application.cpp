@@ -29,44 +29,38 @@
 
 Application::Application (int &argc, char **argv) : QApplication (argc, argv)
 {
-	m_want_quit = false;
-
 	//TODO: Change to XClient sometime later
 	XMMSHandler &client = XMMSHandler::getInstance ();
 
+	connect (this, SIGNAL (aboutToQuit ()),
+	         this, SLOT (cleanupHandler ()));
 	connect (&client, SIGNAL(disconnected(XClient *)),
 	         this, SLOT(handleDisconnected ()));
+
 }
 
 void
-Application::quit ()
+Application::cleanupHandler ()
 {
-	// quit for real in case something went wrong earlier
-	if (m_want_quit)
-		QApplication::quit ();
-
 	QSettings s;
-	if (s.value ("promoe/quitonclose", false).toBool ()) {
-		m_want_quit = true;
-		if (!XMMSHandler::getInstance ().quit ()) {
-			QApplication::quit ();
-		}
-	} else {
-		QApplication::quit ();
-	}
+	if (s.value ("promoe/quitonclose", false).toBool ())
+		XMMSHandler::getInstance ().shutdownServer ();
 }
 
 void
 Application::handleDisconnected ()
 {
-	if (!m_want_quit) {
+	// if the Application is about to quit, we no longer need to handle
+	// disconnects
+	if (closingDown ())
+		return;
+
 	// TODO: enable reconnect
-		QMessageBox::critical( NULL, "xmms2 daemon disconnected",
-		                      "The xmms2 deamon has disconnected\n"
-		                      "This could be because the server crashed\n"
-		                      "or because another client has shut down the sever.",
-		                      "Quit Promoe");
-	}
+	QMessageBox::critical( NULL, "xmms2 daemon disconnected",
+	                      "The xmms2 deamon has disconnected\n"
+	                      "This could be because the server crashed\n"
+	                      "or because another client has shut down the sever.",
+	                      "Quit Promoe");
 	QApplication::quit ();
 }
 
