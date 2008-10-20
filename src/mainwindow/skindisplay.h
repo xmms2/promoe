@@ -18,7 +18,6 @@
 
 #include <QWidget>
 class QEvent;
-class QPaintEvent;
 
 class Skin;
 
@@ -27,18 +26,14 @@ class SkinDisplay : public QWidget
 	Q_OBJECT
 	public:
 		SkinDisplay (QWidget *parent);
-		QWidget *getMW () const { return m_mw; }
 
 	public slots:
-		virtual void setPixmaps(Skin *skin);
 		void fileOpen (void);
 
 	protected:
-		void paintEvent (QPaintEvent *event);
 		void enterEvent (QEvent *event);
 		void leaveEvent (QEvent *event);
 
-		QWidget *m_mw;
 		QWidget *m_tbar;
 		
 };

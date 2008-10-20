@@ -57,8 +57,7 @@ PlaylistControls::PlaylistControls (QWidget *parent) : QWidget (parent)
 	connect (button, SIGNAL (clicked ()), this, SIGNAL (eject ()));
 
 	m_timedisplay = new SmallTimeDisplay (this);
-	m_timedisplay->move (69, 23);
-//	m_timedisplay->hide ();
+	m_timedisplay->move (68, 23);
 	connect (m_timedisplay, SIGNAL (clicked ()),
 	         this, SIGNAL (toggleTime ()));
 	connect (this, SIGNAL (setDisplayTime (int)),

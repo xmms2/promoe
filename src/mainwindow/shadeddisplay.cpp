@@ -29,17 +29,23 @@
 
 ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 {
+	Skin *skin = Skin::getInstance ();
+
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
+
 	XMMSHandler &client = XMMSHandler::getInstance ();
 
 	setFixedSize (275, 14);
+
+	m_mw = qobject_cast<MainWindow *>(parent);
 
 	m_tbar = new TitleBar(this, true);
 	m_tbar->move (0, 0);
 
 	m_time = new SmallTimeDisplay (this);
 	m_time->move (130, 4);
-	MainWindow *mw = dynamic_cast<MainWindow *>(parent);
-	connect (m_time, SIGNAL(clicked()), mw, SLOT(toggleTime()));
+	connect (m_time, SIGNAL(clicked()), m_mw, SLOT(toggleTime()));
 
 	m_title = new TextScroller (this, 39, 7, "shaded");
 	m_title->move (79, 4);
@@ -123,7 +129,7 @@ void
 ShadedDisplay::setPlaytime (uint32_t time)
 {
 	int32_t showtime;
-	if (dynamic_cast<MainWindow *>(m_mw)->isTimemodeReverse()) {
+	if (m_mw->isTimemodeReverse()) {
 		showtime = (time/1000 - m_duration/1000);
 	} else {
 		showtime = time/1000;

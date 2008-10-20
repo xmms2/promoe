@@ -25,11 +25,10 @@
 #include <QSettings>
 #include <QTimer>
 
-TextScroller::TextScroller (QWidget *parent, uint w, 
-							uint h, const QString &name) : 
+TextScroller::TextScroller (QWidget *parent, uint w,
+                            uint h, const QString &name) :
 	QWidget (parent)
 {
-	//XMMSHandler *xmmsh = XMMSHandler::getInstance ();
 	Skin *skin = Skin::getInstance ();
 
 	connect (skin, SIGNAL (skinChanged (Skin *)),
@@ -112,7 +111,7 @@ TextScroller::addOffset ()
 		m_x2_off = 0;
 	}
 
-	repaint ();
+	update ();
 	m_timer->start (40);
 }
 

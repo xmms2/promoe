@@ -54,6 +54,8 @@ class ShadedDisplay : public SkinDisplay
 		PixmapButton *m_next;
 		PixmapButton *m_eject;
 
+		MainWindow *m_mw;
+
 	public slots:
 		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint32_t time);

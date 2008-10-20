@@ -23,20 +23,8 @@
 #include "titlebar.h"
 #include "FileDialog.h"
 
-#include <QPainter>
 
 SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
-{
-	Skin *skin = Skin::getInstance ();
-
-	m_mw = parent;
-
-	connect (skin, SIGNAL (skinChanged (Skin *)),
-	         this, SLOT (setPixmaps (Skin *)));
-}
-
-void
-SkinDisplay::setPixmaps (Skin *skin)
 {
 }
 
@@ -51,17 +39,6 @@ SkinDisplay::leaveEvent (QEvent *event)
 {
 	dynamic_cast<TitleBar *>(m_tbar)->setActive(false);
 }
-
-void 
-SkinDisplay::paintEvent (QPaintEvent *event)
-{
-	QPainter(paint);
-
-	paint.begin(this);
-	paint.eraseRect(rect());
-	paint.end();
-}
-
 
 void
 SkinDisplay::fileOpen (void)

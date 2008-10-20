@@ -41,17 +41,20 @@
 #include <QDebug>
 #include <QMessageBox>
 
-MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
+MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 {
 	XMMSHandler &client = XMMSHandler::getInstance ();
 	m_xconfig = client.xconfig ();
 	Skin* skin = Skin::getInstance ();
 
+	connect (skin, SIGNAL (skinChanged (Skin *)),
+	         this, SLOT (setPixmaps(Skin *)));
+
 	m_tbar = new TitleBar(this, false);
 	m_tbar->move(0, 0);
 	m_tbar->resize(275, 14);
 
-	m_mw = dynamic_cast<MainWindow *>(parent);
+	m_mw = parent;
 
 	SetupPushButtons ();
 	SetupToggleButtons ();
@@ -122,6 +125,14 @@ MainDisplay::MainDisplay (QWidget *parent) : SkinDisplay(parent)
 
 	setupServerConfig ();
 }
+
+void
+MainDisplay::paintEvent (QPaintEvent *event)
+{
+	QPainter p(this);
+	p.eraseRect (rect ());
+}
+
 
 void
 MainDisplay::setPixmaps (Skin *skin)

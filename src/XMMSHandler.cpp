@@ -60,10 +60,6 @@ XMMSHandler::connect_handler (const char *ipcpath, const bool &sync, QWidget *pa
 
 	connect(ipcpath, sync, parent);
 
-	using Xmms::bind;
-//	m_client->playback.broadcastVolumeChanged () (
-//	                    bind (&XMMSHandler::volume_changed, this));
-
 	return true;
 }
 

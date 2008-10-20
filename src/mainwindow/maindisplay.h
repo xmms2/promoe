@@ -36,6 +36,7 @@ class MainDisplay;
 
 typedef QHash<QString, QVariant> QVariantHash;
 
+class QPaintEvent;
 class PixmapButton;
 class PixmapNumberDisplay;
 class PixmapSlider;
@@ -53,7 +54,7 @@ class MainDisplay : public SkinDisplay
 {
 	Q_OBJECT
 	public:
-		MainDisplay (QWidget *parent);
+		MainDisplay (MainWindow *parent);
 		~MainDisplay () {}
 
 		TextScroller *m_text;
@@ -72,6 +73,7 @@ class MainDisplay : public SkinDisplay
 		void displayTime (int time);
 
 	public slots:
+		void paintEvent (QPaintEvent *event);
 		void setPixmaps(Skin *skin);
 		void setStatus (Xmms::Playback::Status status);
 		void setPlaytime (uint32_t time);
