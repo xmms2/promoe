@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QHash>
 #include <QVariant>
+#include <QRegExp>
 class QWidget;
 
 class XClientCache;
@@ -30,6 +31,7 @@ class XConfig;
 class XPlayback;
 class XCollection;
 
+#define SOURCEPREF_HACK
 
 class XClient : public QObject {
 	Q_OBJECT
@@ -41,7 +43,11 @@ class XClient : public QObject {
 		static void propDictToQHash (const std::string &key,
 									 const Xmms::Dict::Variant &value,
 									 const std::string &source,
-									 QHash<QString, QVariant> &hash);
+#ifdef SOURCEPREF_HACK
+		                             const QList<QRegExp> &priolist,
+		                             QHash<QString, int> &curr_prio,
+#endif
+		                             QHash<QString, QVariant> &hash);
 									 
  		static void dictToQHash (const std::string &key,
                                  const Xmms::Dict::Variant &value,

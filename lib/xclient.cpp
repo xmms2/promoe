@@ -31,6 +31,8 @@
 #include "xmmsqt4.h"
 #include "debug.h"
 
+#include "sourcepref.h"
+
 QString
 XClient::stdToQ (const std::string &str)
 {
@@ -186,8 +188,29 @@ void
 XClient::propDictToQHash (const std::string &key,
 						  const Xmms::Dict::Variant &value,
 						  const std::string &source,
+#ifdef SOURCEPREF_HACK
+                          const QList<QRegExp> &prio_list,
+                          QHash<QString, int> &curr_prio,
+#endif
 						  QHash<QString, QVariant> &hash)
 {
+#ifdef SOURCEPREF_HACK
+	// braces because of tmp_prio definition
+	{
+		int tmp_prio = getPriority (QString::fromStdString (source), prio_list);
+		QString tmp_key = QString::fromStdString (key);
+		// Don't add a new value if the priority of it isn't better than the
+		// priority already present in hash. If there is no "*" source
+		// preference, this also get's rid of values we don't want at all
+		if (tmp_prio >= curr_prio.value (tmp_key, prio_list.size ()))
+			return;
+
+		// Set the priority of the current source-key combination for the key, so
+		// that we do not overwrite our value with a worse source for this key.
+		// (higher priority values are worse)
+		curr_prio[tmp_key] = tmp_prio;
+	}
+#endif
 	if (value.type () == typeid (int32_t)) {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
 		             QVariant (boost::get< int32_t > (value)));
@@ -220,8 +243,18 @@ QHash<QString, QVariant>
 XClient::convert_propdict (const Xmms::PropDict &dict)
 {
 	QHash<QString, QVariant> hash;
+#ifdef SOURCEPREF_HACK
+	MyPropDict d (dict);
+	QList<QRegExp> priolist = d.getSourcePreference ();
+	QHash<QString, int> curr_prio;
+#endif
 	dict.each (boost::bind (&XClient::propDictToQHash,
-							_1, _2, _3, boost::ref (hash)));
+							_1, _2, _3,
+#ifdef SOURCEPREF_HACK
+	                        boost::ref (priolist),
+	                        boost::ref (curr_prio),
+#endif
+							boost::ref (hash)));
 
 	return hash;
 }
