@@ -19,15 +19,17 @@
 
 #include <QBrush>
 #include <QFont>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QPalette>
 #include <QPixmap>
 #include <QSettings>
 #include <QTimer>
 
+#include <QtDebug>
+
 TextScroller::TextScroller (QWidget *parent, uint w,
-                            uint h, const QString &name) :
-	QWidget (parent)
+                            uint h, const QString &name) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
 
@@ -48,21 +50,20 @@ TextScroller::TextScroller (QWidget *parent, uint w,
 		s.setValue("ttf", true);
 
 	m_name = name;
-	m_h = h;
-	m_w = w;
 	m_x_off = 0;
-	m_x2_off = 0;
+	m_drag_off = 0;
 	m_fontsize = s.value ("fontsize").toInt ();
 	m_ttf = s.value ("ttf").toBool ();
 	m_text = "Promoe " PROMOE_VERSION;
 	m_scroll = s.value ("scroll").toBool ();
+	m_dragtext = false;
 
 	s.endGroup ();
-	
-	setMinimumSize(m_w + 2, m_h);
-	setMaximumSize(m_w + 2, m_h);
+
+	setFixedSize(w, h);
 
 	m_timer = new QTimer (this);
+	m_timer->setInterval (40);
 	connect (m_timer, SIGNAL (timeout()), this, SLOT (addOffset ()));
 	//connect (xmmsh, SIGNAL (settingsSaved ()), this, SLOT (settingsSaved ()));
 }
@@ -77,13 +78,12 @@ TextScroller::settingsSaved (void)
 
 	if (m_scroll != s.value ("scroll").toBool ()) {
 		m_x_off = 0;
-		m_x2_off = 0;
 	}
 
 	m_scroll = s.value ("scroll").toBool ();
 	s.endGroup ();
 
-	setText (m_text);
+	drawText ();
 	update ();
 }
 
@@ -95,24 +95,8 @@ TextScroller::setPixmaps (Skin *skin)
 	pal.setBrush (QPalette::Window, b);
 	setPalette (pal);
 
-	setText (m_text);
+	drawText ();
 	update();
-}
-
-void 
-TextScroller::addOffset ()
-{
-	if (m_x2_off > 0) {
-		m_x2_off --;
-	} else if (m_x_off < m_pixmap.size().width()) {
-		m_x_off ++;
-	} else {
-		m_x_off = 0;
-		m_x2_off = 0;
-	}
-
-	update ();
-	m_timer->start (40);
 }
 
 void
@@ -120,13 +104,35 @@ TextScroller::setText (QString text)
 {
 	m_text = text;
 
-	if (m_ttf) {
-		drawQtFont (text);
+	drawText ();
+}
+
+void
+TextScroller::addOffset ()
+{
+	if (m_x_off < m_pixmap.width()) {
+		m_x_off ++;
 	} else {
-		drawBitmapFont (text);
+		m_x_off = 0;
 	}
+
+	update ();
+}
+
+void
+TextScroller::drawText ()
+{
+	if (m_ttf) {
+		drawQtFont (m_text);
+	} else {
+		drawBitmapFont (m_text);
+	}
+	// take care that the text doesn't jump after resetting it's offset
+	// if we were still dragging it on a song change
+	if (m_dragtext)
+		m_drag_off -= m_x_off;
+
 	m_x_off = 0;
-	m_x2_off = 0;
 	update ();
 }
 
@@ -135,32 +141,23 @@ TextScroller::drawBitmapFont (QString text)
 {
 	Skin *skin = Skin::getInstance ();
 
-	int width = text.length() * 6;
+	int w = text.length() * 5;
 	QString temp = text.toLower ();
 
-	if (width > m_w) {
-		temp += QString::fromAscii ("  --  ");
-		m_pixmap = QPixmap (width + 6*6, m_h);
-
-		if (m_scroll) {
-			m_timer->start (40);
-		} else {
-			m_timer->stop ();
-		}
+	if (w > width ()) {
+		temp += QString ("  ***  ");
+		m_pixmap = QPixmap (w + 7*5, 6);
 	} else {
-		m_pixmap = QPixmap (m_w, m_h);
-		m_timer->stop ();
+		m_pixmap = QPixmap (width (), 6);
 	}
+	updateScrolling ();
 	QByteArray temp2 = temp.toLatin1();
 	const char *t = temp2.data();
 
 	QPainter (paint);
-
 	paint.begin (&m_pixmap);
 
-	paint.drawPixmap (m_pixmap.rect (),
-	                  skin->getItem (Skin::TEXTBG),
-	                  skin->getItem (Skin::TEXTBG).rect ());
+	paint.drawPixmap (m_pixmap.rect (), skin->getItem (Skin::TEXTBG));
 
 	for (uint i = 0; i < strlen (t); i++) {
 		QPixmap p = skin->getLetter (t[i]);
@@ -168,12 +165,11 @@ TextScroller::drawBitmapFont (QString text)
 			p = skin->getLetter(' ');
 		}
 
-		paint.drawPixmap (QRect ((i * 6), 0, 4, 6),
+		paint.drawPixmap (QRect ((i * 5), 0, 5, 6),
 						  p, p.rect());
 	}
 
 	paint.end();
-
 }
 
 void
@@ -189,22 +185,15 @@ TextScroller::drawQtFont (QString text)
 
 	QString (temp) = text;
 
-	if (rect.width() > m_w) {
-		temp += QString::fromAscii ("  --  ");
+	if (rect.width() > width ()) {
+		temp += QString ("  ***  ");
 		QRect rect = fM.boundingRect (temp);
 
-		m_pixmap = QPixmap (rect.width(), m_h);
-
-		if (m_scroll) {
-			m_timer->start (40);
-		} else {
-			m_timer->stop ();
-		}
-
+		m_pixmap = QPixmap (rect.width(), height ());
 	} else {
-		m_pixmap = QPixmap (m_w, m_h);
-		m_timer->stop ();
+		m_pixmap = QPixmap (size ());
 	}
+	updateScrolling ();
 
 	QPainter paint;
 	paint.begin (&m_pixmap);
@@ -220,37 +209,92 @@ TextScroller::drawQtFont (QString text)
 					Qt::AlignLeft | Qt::AlignVCenter,
 					temp);
 	paint.end ();
-
 }
 
 void 
 TextScroller::paintEvent (QPaintEvent *event)
 {
-	int pad = 0;
-
 	if (m_pixmap.isNull ()) {
 		return;
 	}
 
-	int w2 = m_pixmap.size().width() - m_x_off;
-	if (w2 < m_w) {
-		pad = m_w - w2;
-	}
+	// A pixmap font is only 6 pixels high and should be centered vertically
+	// for a QFont h_offset is 0
+	int h_offset = (height () - m_pixmap.height ()) /2;
+
+	int left_width = qMin (m_pixmap.width() - m_x_off, width ());
 
 	QPainter (paint);
 	paint.begin (this);
-	paint.drawPixmap (QRect (m_x2_off, 0, m_w - pad, m_h),
+	paint.drawPixmap (QPoint (0, h_offset),
 	                  m_pixmap,
-	                  QRect (m_x_off, 0, m_w - pad, m_h));
-	if (pad) {
-		paint.drawPixmap (QRect (m_w - pad, 0, pad, m_h),
-		                  m_pixmap,
-		                  QRect (0, 0, pad, m_h));
+	                  QRect (m_x_off, 0, left_width, m_pixmap.height ()));
+	if (left_width < width ()) {
+		paint.drawPixmap (left_width, h_offset, m_pixmap);
 	}
 	paint.end ();
 }
 
-TextScroller::~TextScroller ()
+inline void
+TextScroller::updateScrolling ()
 {
+	if (m_scroll && !m_dragtext && (m_pixmap.width () > width ())) {
+		m_timer->start ();
+	} else {
+		m_timer->stop ();
+	}
 }
 
+void
+TextScroller::mousePressEvent (QMouseEvent *event)
+{
+	if (event->button () != Qt::LeftButton) {
+		event->ignore ();
+		return;
+	}
+
+	if (m_pixmap.width () <= width ()) {
+		// don't use event->ignore here!
+		return;
+	}
+
+	// calculate the offset relative to m_pixmap
+	// if the offset would be saved relative to the widget another
+	// helpervariable would become necessary to save m_x_off
+	// m_drag_off can be bigger than the width of m_pixmap but that is no
+	// problem as we use the remainder operator in the calculation results
+	m_drag_off = m_x_off + event->x();
+
+	m_dragtext = true;
+	updateScrolling ();
+}
+
+void
+TextScroller::mouseReleaseEvent (QMouseEvent *event)
+{
+	if (event->button () != Qt::LeftButton) {
+		event->ignore ();
+		return;
+	}
+
+	m_drag_off = 0;
+
+	m_dragtext = false;
+	updateScrolling ();
+}
+
+void
+TextScroller::mouseMoveEvent (QMouseEvent *event)
+{
+	if (!m_dragtext) {
+		event->ignore ();
+		return;
+	}
+
+	m_x_off = ( m_drag_off - event->x()) % m_pixmap.width ();
+	// make sure we have a positive value
+	if (m_x_off < 0)
+		m_x_off += m_pixmap.width ();
+
+	update ();
+}

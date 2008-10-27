@@ -17,6 +17,7 @@
 #define __TEXTBOX_H__
 
 #include <QWidget>
+class QMouseEvent;
 class QPixmap;
 class QTimer;
 
@@ -28,7 +29,7 @@ class TextScroller : public QWidget
 
 	public:
 		TextScroller (QWidget *parent, uint, uint, const QString &);
-		~TextScroller ();
+		~TextScroller () {}
 
 		void setText(QString text);
 		void setFontSize (int i) { m_fontsize = i; }
@@ -40,24 +41,28 @@ class TextScroller : public QWidget
 		void settingsSaved (void);
 
 	protected:
-		QPixmap m_pixmap;
 		void paintEvent (QPaintEvent *event);
+		void mousePressEvent (QMouseEvent * event);
+		void mouseReleaseEvent (QMouseEvent * event);
+		void mouseMoveEvent (QMouseEvent * event);
 
 	private:
-		int m_w;
-		int m_h;
 		int m_x_off;
-		int m_x2_off;
 		int m_fontsize;
+		int m_drag_off;
 		bool m_ttf;
 		bool m_scroll;
+		bool m_dragtext;
 
 		QTimer *m_timer;
 		QString m_text;
 		QString m_name;
+		QPixmap m_pixmap;
 
+		void drawText ();
 		void drawBitmapFont (QString text);
 		void drawQtFont (QString text);
+		void updateScrolling ();
 };
 
 #endif

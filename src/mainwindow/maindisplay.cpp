@@ -59,8 +59,8 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 	SetupPushButtons ();
 	SetupToggleButtons ();
 
-	m_text = new TextScroller (this, 154, 10, "main");
-	m_text->move (112, 25);
+	m_text = new TextScroller (this, 154, 12, "main");
+	m_text->move (111, 24);
 
 	m_time = new TimeDisplay(this);
 	m_time->move (36, 26);
