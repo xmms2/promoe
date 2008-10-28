@@ -127,6 +127,11 @@ TextScroller::drawText ()
 	} else {
 		drawBitmapFont (m_text);
 	}
+	updateScrolling ();
+
+	if (m_pixmap.width () <= width ())
+		m_dragtext = false;
+
 	// take care that the text doesn't jump after resetting it's offset
 	// if we were still dragging it on a song change
 	if (m_dragtext)
@@ -150,7 +155,6 @@ TextScroller::drawBitmapFont (QString text)
 	} else {
 		m_pixmap = QPixmap (width (), 6);
 	}
-	updateScrolling ();
 	QByteArray temp2 = temp.toLatin1();
 	const char *t = temp2.data();
 
@@ -193,7 +197,6 @@ TextScroller::drawQtFont (QString text)
 	} else {
 		m_pixmap = QPixmap (size ());
 	}
-	updateScrolling ();
 
 	QPainter paint;
 	paint.begin (&m_pixmap);
