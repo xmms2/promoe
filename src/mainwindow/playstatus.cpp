@@ -39,12 +39,16 @@ PlayStatus::setPixmaps (Skin *skin)
 	m_pixmap_pause = skin->getItem (Skin::PIC_PAUSE);
 	m_pixmap_stop = skin->getItem (Skin::PIC_STOP);
 
+	setFixedSize(11, m_pixmap_play.height ());
 	update ();
 }
 
 void
 PlayStatus::setStatus (Xmms::Playback::Status status)
 {
+	if (m_status == status)
+		return;
+
 	m_status = status;
 	update ();
 }
@@ -71,7 +75,7 @@ PlayStatus::paintEvent (QPaintEvent *event)
 
 	QPainter p;
 	p.begin (this);
-	p.drawPixmap (rect (), pixmap, pixmap.rect ());
+	p.drawPixmap (rect (), pixmap);
 	p.end ();
 }
 

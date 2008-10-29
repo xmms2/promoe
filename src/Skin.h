@@ -50,8 +50,7 @@ class Skin : public QObject
 		const QPixmap getItem (uint part) const { return m_items[part]; }
 		const QPixmap getPls (uint part) const { return m_playlist[part]; }
 		const QPixmap getLetter (uint c) const { return m_letterMap[c]; }
-		const QPixmap getNumber (uint c) const { return m_numbers[c]; }
-		uint getNumberSize () { return m_numbers.size(); }
+//		const QPixmap getNumber (uint c) const { return m_numbers[c]; }
 		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt[c]; }
 
 		enum Part {

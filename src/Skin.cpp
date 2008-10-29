@@ -13,8 +13,6 @@
  *  GNU General Public License for more details.
  */
 
-#include <iostream>
-
 #include "Skin.h"
 
 #include <QDir>
@@ -628,26 +626,27 @@ Skin::BuildOther (void)
 	img = getPixmap("playpaus");
 	if(img)
 	{
-		part = new QPixmap(11, 9);
+		int h = qMin (img->height (), 9);
+		part = new QPixmap(11, h);
 		painter.begin(part);
-		painter.drawPixmap (0, 0, 3, 9, *img, 36, 0, 3, 9);
-		painter.drawPixmap (3, 0, 8, 9, *img,  1, 0, 8, 9);
+		painter.drawPixmap (0, 0, 3, h, *img, 36, 0, 3, h);
+		painter.drawPixmap (3, 0, 8, h, *img,  1, 0, 8, h);
 		painter.end();
 		m_items[PIC_PLAY] = part->copy();
 		delete part;
 
-		part = new QPixmap(11, 9);
+		part = new QPixmap(11, h);
 		painter.begin(part);
-		painter.drawPixmap (0, 0, 2, 9, *img, 27, 0, 2, 9);
-		painter.drawPixmap (2, 0, 9, 9, *img,  9, 0, 9, 9);
+		painter.drawPixmap (0, 0, 2, h, *img, 27, 0, 2, h);
+		painter.drawPixmap (2, 0, 9, h, *img,  9, 0, 9, h);
 		painter.end();
 		m_items[PIC_PAUSE] = part->copy();
 		delete part;
 	
-		part = new QPixmap(11, 9);
+		part = new QPixmap(11, h);
 		painter.begin(part);
-		painter.drawPixmap (0, 0, 2, 9, *img, 27, 0, 2, 9);
-		painter.drawPixmap (2, 0, 9, 9, *img, 18, 0, 9, 9);
+		painter.drawPixmap (0, 0, 2, h, *img, 27, 0, 2, h);
+		painter.drawPixmap (2, 0, 9, h, *img, 18, 0, 9, h);
 		painter.end();
 		m_items[PIC_STOP] = part->copy();
 		delete part;
