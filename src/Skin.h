@@ -36,8 +36,8 @@ class Skin : public QObject
 	public:
 		static Skin *getInstance (void);
 
-		void setSkin (const QString& name);
-		static QPixmap getPixmap (const QString&, QDir);
+		bool setSkin (const QString& name);
+		static const QPixmap getPixmap (const QString&, QDir);
 
 		const QSize getSize (uint item) const { return m_sizes[item]; };
 		const QPoint getPos (uint item) const { return m_positions[item]; };
@@ -53,6 +53,46 @@ class Skin : public QObject
 //		const QPixmap getNumber (uint c) const { return m_numbers[c]; }
 		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt[c]; }
 
+	signals:
+		void skinChanged (Skin *skin);
+
+	private:
+		Skin();
+		static Skin *singleton;
+
+		void setSizes ();
+		void setPositions ();
+
+		const QPixmap getPixmap (const QString& file);
+		bool BuildLetterMap (void);
+		bool BuildButtons (void);
+		bool BuildToggleButtons (void);
+		bool BuildTitleBar (void);
+		bool BuildSliders (void);
+		bool BuildOther (void);
+		bool BuildNumbers (void);
+		bool BuildPlaylist (void);
+		bool ParsePLEdit (void);
+		bool BuildEqualizer (void);
+
+		QString m_skinname;
+		QString m_path;
+
+		QList<QPoint> m_positions;
+		QList<QSize> m_sizes;
+
+		QMap<uint, QIcon> m_icons;
+		QMap<uint, QPixmapList> m_backgrounds;
+
+		QMap<int, QPixmap> m_numbers;
+		QMap<int, QPixmap> m_smallNumbers;
+		QMap<uint, QPixmap> m_items;
+		QMap<uint, QPixmap> m_letterMap;
+		QMap<uint, QPixmap> m_playlist;
+
+		QMap<QByteArray, QByteArray> m_pledit_txt;
+
+	public:
 		enum Part {
 			/* Mainwindow buttons */
 			BUTTON_MW_MENU,
@@ -228,45 +268,6 @@ class Skin : public QObject
 			PLS_LST_OPN_0,
 			PLS_LST_OPN_1
 		};
-	private:
-		Skin();
-		static Skin *singleton;
-
-		void setSizes ();
-		void setPositions ();
-
-		QPixmap *getPixmap (const QString& file);
-		void BuildLetterMap (void);
-		void BuildButtons (void);
-		void BuildToggleButtons (void);
-		void BuildTitleBar (void);
-		void BuildSliders (void);
-		void BuildOther (void);
-		void BuildNumbers (void);
-		void BuildPlaylist (void);
-		void ParsePLEdit (void);
-		void BuildEqualizer (void);
-
-
-		QString m_skinname;
-		QString m_path;
-
-		QList<QPoint> m_positions;
-		QList<QSize> m_sizes;
-
-		QMap<uint, QIcon> m_icons;
-		QMap<uint, QPixmapList> m_backgrounds;
-
-		QMap<int, QPixmap> m_numbers;
-		QMap<int, QPixmap> m_smallNumbers;
-		QMap<uint, QPixmap> m_items;
-		QMap<uint, QPixmap> m_letterMap;
-		QMap<uint, QPixmap> m_playlist;
-
-		QMap<QByteArray, QByteArray> m_pledit_txt;
-
-	signals:
-		void skinChanged (Skin *skin);
 };
 
 #endif
