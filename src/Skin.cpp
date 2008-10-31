@@ -17,6 +17,7 @@
 
 #include <QDir>
 #include <QPainter>
+#include <QSettings>
 
 Skin *Skin::singleton = NULL;
 
@@ -33,6 +34,9 @@ Skin::Skin ()
 {
 	setSizes ();
 	setPositions ();
+
+	QSettings settings;
+	setSkin (settings.value("skin/path", ":CleanAMP/").toString ());
 }
 
 

@@ -18,6 +18,8 @@
 #include "application.h"
 
 #include "mainwindow.h"
+#include "equalizerwindow.h"
+#include "playlistwindow.h"
 #include "Skin.h"
 
 #ifdef HAVE_SERVERBROWSER
@@ -29,6 +31,10 @@
 
 Application::Application (int &argc, char **argv) : QApplication (argc, argv)
 {
+	setOrganizationName("xmms2");
+	setOrganizationDomain("xmms.org");
+	setApplicationName("Promoe");
+
 	//TODO: Change to XClient sometime later
 	XMMSHandler &client = XMMSHandler::getInstance ();
 
@@ -36,6 +42,27 @@ Application::Application (int &argc, char **argv) : QApplication (argc, argv)
 	         this, SLOT (cleanupHandler ()));
 	connect (&client, SIGNAL(disconnected(XClient *)),
 	         this, SLOT(handleDisconnected ()));
+
+	QSettings settings;
+
+	MainWindow *mw = new MainWindow (NULL);
+
+	/*
+	 * Now that everything is initialized
+	 * open the skin and send the
+	 * SkinChanged signal that will cause
+	 * all widgets to get their pixmaps
+	 * TODO: Now the Skin class loads the skin itself. This call is necessarry until
+	 * all widgets that receive the skinChanged signal fetch their pixmaps themself
+	 * on startup
+	 */
+	Skin::getInstance()->setSkin (settings.value("skin/path").toString ());
+
+	mw->show ();
+	// The Playlist- and EqualizerWindow has to become visible after the mainwindow
+	// because metacity (gnome-windowmanager) can't handle them correctly otherwise
+	mw->getEQ ()->setVisible (settings.value ("equalizer/visible", false).toBool ());
+	mw->getPL ()->setVisible (settings.value ("playlist/visible", false).toBool ());
 
 }
 
@@ -69,9 +96,6 @@ main (int argc, char **argv)
 {
 	Application app(argc, argv);
 
-	QCoreApplication::setOrganizationName("xmms2");
-	QCoreApplication::setOrganizationDomain("xmms.org");
-	QCoreApplication::setApplicationName("Promoe");
 
 	QSettings settings;
 
@@ -82,21 +106,6 @@ main (int argc, char **argv)
 	  */
 #endif
 
-	MainWindow *mw = new MainWindow (NULL);
-
-	/*
-	 * Now that everything is initialized
-	 * open the skin and send the
-	 * SkinChanged signal that will cause
-	 * all widgets to get their pixmaps
-	 */
-	if (!settings.contains ("skin/path")) {
-		settings.setValue ("skin/path", ":CleanAMP/");
-	}
-
-	Skin::getInstance()->setSkin (settings.value("skin/path").toString ());
-
-	mw->show ();
 
 #ifdef HAVE_SERVERBROWSER
 	ServerBrowserWindow *browser = new ServerBrowserWindow (mw);

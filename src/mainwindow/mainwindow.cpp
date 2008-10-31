@@ -38,7 +38,7 @@ MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 	QSettings s;
 
 	setWindowFlags(Qt::FramelessWindowHint);
-	setGeometry(100, 100, 275, 116);
+	setMaximumSize (275, 116);
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
@@ -47,6 +47,10 @@ MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 		setShaded (true);
 	else
 		setShaded (!isShaded ());
+
+	if (!s.contains ("mainwindow/pos"))
+		s.setValue ("mainwindow/pos", QPoint (100, 100));
+	move (s.value("mainwindow/pos").toPoint ());
 
 	/*
 	 * initialize EqualizerWindow
@@ -57,7 +61,6 @@ MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 		                                     pos ().y ()+size ().height ()));
 	}
 	m_equalizer->move (s.value ("equalizer/pos").toPoint ());
-	m_equalizer->setVisible (s.value ("equalizer/visible", false).toBool ());
 
 	/*
 	 * initialtize PlaylistWindow
@@ -70,7 +73,6 @@ MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 	m_playlistwin->move (s.value ("playlist/pos").toPoint ());
 	// FIXME: this should be done in PlaylistWindow.
 	// But promoe segfaults if done so
-	m_playlistwin->setVisible (s.value("playlist/visible", false).toBool ());
 
 	/*
 	 * The MainDisplay is the mainwindow non-shaded mode
@@ -93,10 +95,6 @@ MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 
 	switchDisplay ();
 
-	if (!s.contains ("mainwindow/pos"))
-		s.setValue ("mainwindow/pos", QPoint (100, 100));
-
-	move (s.value("mainwindow/pos").toPoint ());
 
 	attachWidgets ();
 }

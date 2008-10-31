@@ -44,7 +44,7 @@ class MainWindow : public BaseWindow
 		void moveEvent (QMoveEvent *event);
 
 		bool isTimemodeReverse(void) { QSettings s; return s.value("MainWindow/timemodereverse").toBool(); }
-		void setTimemodeReverse(bool b) { QSettings s; return s.setValue("MainWindow/timemodereverse",b); }
+		void setTimemodeReverse(bool b) { QSettings s; s.setValue("MainWindow/timemodereverse",b); }
 
 		void attachWidgets ();
 
