@@ -25,10 +25,13 @@ class Application : public QApplication
 {
 	Q_OBJECT
 
+	signals:
+		void settingsChanged (void);
+
 	public:
-	Application (int &argc, char **argv);
+		Application (int &argc, char **argv);
 
 	public slots:
-	void cleanupHandler ();
-	void handleDisconnected ();
+		void cleanupHandler ();
+		void handleDisconnected ();
 };

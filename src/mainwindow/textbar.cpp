@@ -26,7 +26,7 @@
 #include <QSettings>
 #include <QTimer>
 
-#include <QtDebug>
+#include <application.h>
 
 TextScroller::TextScroller (QWidget *parent, uint w,
                             uint h, const QString &name) : QWidget (parent)
@@ -65,11 +65,12 @@ TextScroller::TextScroller (QWidget *parent, uint w,
 	m_timer = new QTimer (this);
 	m_timer->setInterval (40);
 	connect (m_timer, SIGNAL (timeout()), this, SLOT (addOffset ()));
-	//connect (xmmsh, SIGNAL (settingsSaved ()), this, SLOT (settingsSaved ()));
+	connect (qApp, SIGNAL (settingsChanged ()),
+	         this, SLOT (settingsChanged ()));
 }
 
 void
-TextScroller::settingsSaved (void)
+TextScroller::settingsChanged (void)
 {
 	QSettings s;
 	s.beginGroup ("display_" + m_name);

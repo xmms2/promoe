@@ -17,6 +17,7 @@
 #include <xmmsclient/xmmsclient++.h>
 #include "xclientcache.h"
 
+#include "application.h"
 #include "playlistshade.h"
 #include "playlistwindow.h"
 #include "pixmapbutton.h"
@@ -49,15 +50,15 @@ PlaylistShade::PlaylistShade (PlaylistWindow *parent) : QWidget (parent)
 	connect (xmmsh.cache (), SIGNAL (activeEntryChanged (QVariantHash)),
 	         this, SLOT (setMediainfo (QVariantHash)));
 
-	connect (&xmmsh, SIGNAL(settingsSaved ()), 
-			 this, SLOT(settingsSaved ()));
+	connect (qApp, SIGNAL(settingsChanged ()), 
+			 this, SLOT(settingsChanged ()));
 
 	m_text = "Promoe " PROMOE_VERSION  " - A very neat XMMS2 client";
 	setMinimumSize (275, 14);
 }
 
 void
-PlaylistShade::settingsSaved ()
+PlaylistShade::settingsChanged ()
 {
 	QSettings s;
 

@@ -19,6 +19,8 @@
 #include <QWidget>
 #include <QDialog>
 
+#include <application.h>
+
 class QCheckBox;
 class QSpinBox;
 class QComboBox;
@@ -29,7 +31,7 @@ class SettingsTabMedialib : public QWidget {
 	public:
 		SettingsTabMedialib (QWidget *parent);
 		~SettingsTabMedialib () {}
-		void saveSettings (void);
+		bool saveSettings (void);
 
 	private:
 		QComboBox *m_selected;
@@ -43,7 +45,7 @@ class SettingsTabPlaylist : public QWidget {
 	public:
 		SettingsTabPlaylist (QWidget *parent);
 		~SettingsTabPlaylist () {}
-		void saveSettings (void);
+		bool saveSettings (void);
 
 	private:
 		QSpinBox *m_fontsize;
@@ -56,7 +58,7 @@ class SettingsTabMain : public QWidget {
 	public:
 		SettingsTabMain (QWidget *parent);
 		~SettingsTabMain () {}
-		void saveSettings (void);
+		bool saveSettings (void);
 
 
 	private:
@@ -72,6 +74,10 @@ class SettingsTabMain : public QWidget {
 
 class SettingsDialog : public QDialog {
 	Q_OBJECT
+
+	signals:
+		void settingsChanged (void);
+
 	public:
 		SettingsDialog (QWidget *parent);
 		~SettingsDialog () {}

@@ -46,30 +46,14 @@ class XMMSHandler : public XClient {
 		void medialibQueryAdd (QString q) { delete m_xmmsc->medialib_add_to_playlist (q.toUtf8 ()); }
 		*/
 
-		//const XMMSClient *getXMMS () { return m_xmmsc; }
-
-		void updateSettings () { emit settingsSaved (); }
-
 		Xmms::Client *getClient () { return m_client; }
 
 		PlaylistModel *getPlaylistModel () {return m_playlist_model; }
-
-	signals:
-		void settingsSaved ();
-		/*
-		void medialibResponse (uint, const QList<QHash<QString, QString> > &);
-		*/
 
 	private:
 		void DictToQHash (const std::string &key,
 		                  const Xmms::Dict::Variant &value,
 		                  QHash<QString, QString> &hash);
-//	void PropDictToQHash (const std::string &key,
-//		                      const Xmms::Dict::Variant &value,
-//		                      const std::string &source,
-//		                      QHash<QString, QString> &hash);
-
-		XmmsQT4 *m_qt4;
 		PlaylistModel *m_playlist_model;
 };
 

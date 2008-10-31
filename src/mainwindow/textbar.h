@@ -38,7 +38,7 @@ class TextScroller : public QWidget
 	public slots:
 		void addOffset ();
 		void setPixmaps(Skin *skin);
-		void settingsSaved (void);
+		void settingsChanged (void);
 
 	protected:
 		void paintEvent (QPaintEvent *event);

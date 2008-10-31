@@ -18,6 +18,7 @@
 #include "XMMSHandler.h"
 #include "xplayback.h"
 
+#include "application.h"
 #include "playlistview.h"
 #include "playlistmodel.h"
 #include "playlistwidget.h"
@@ -137,8 +138,8 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 
-	connect (&xmmsh, SIGNAL(settingsSaved()),
-	         this, SLOT(settingsSaved()));
+	connect (qApp, SIGNAL (settingsChanged ()),
+	         this, SLOT (settingsChanged ()));
 
 	connect (xmmsh.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(handleStatus(Xmms::Playback::Status)));
@@ -219,7 +220,7 @@ PlaylistView::handleStatus (const Xmms::Playback::Status st)
 }
 
 void
-PlaylistView::settingsSaved ()
+PlaylistView::settingsChanged ()
 {
 	QSettings s;
 	m_font->setPixelSize (s.value ("playlist/fontsize").toInt ());

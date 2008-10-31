@@ -43,7 +43,7 @@ class PlaylistShade : public QWidget {
 	public slots:
 		void setPixmaps (Skin *skin);
 		void setMediainfo (QVariantHash);
-		void settingsSaved ();
+		void settingsChanged ();
 		void resizeEvent (QResizeEvent *);
 
 	private:

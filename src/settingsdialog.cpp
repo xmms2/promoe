@@ -38,6 +38,9 @@ SettingsDialog::SettingsDialog (QWidget *parent) : QDialog (parent)
 
 	resize (400, 500);
 
+	connect (this, SIGNAL (settingsChanged (void)),
+	         qApp, SIGNAL (settingsChanged (void)));
+
 	QVBoxLayout *vbox = new QVBoxLayout (this);
 	setLayout(vbox);
 
@@ -66,8 +69,13 @@ SettingsDialog::SettingsDialog (QWidget *parent) : QDialog (parent)
 void
 SettingsDialog::okButton (void)
 {
-	m_mainwindow->saveSettings ();
-	m_playlistwin->saveSettings ();
+	bool changed = false;
+
+	changed |= m_mainwindow->saveSettings ();
+	changed |= m_playlistwin->saveSettings ();
+
+	if (changed)
+		emit settingsChanged ();
 
 	close ();
 }
@@ -306,13 +314,15 @@ SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)
 	s.endGroup ();
 }
 
-void
+bool
 SettingsTabPlaylist::saveSettings (void)
 {
 	QSettings s;
 	s.setValue ("playlist/fontsize", m_fontsize->value ());
 	s.setValue ("playlist/shadedsize", m_shadesize->value ());
 	s.setValue ("playlist/useremote", m_remote_fs->checkState () == Qt::Checked);
+	//TODO: Check if we really changed something
+	return true;
 }
 
 SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
@@ -472,7 +482,7 @@ SettingsTabMain::SettingsTabMain (QWidget *parent) : QWidget (parent)
 
 }
 
-void
+bool
 SettingsTabMain::saveSettings (void)
 {
 	QSettings s;
@@ -490,4 +500,7 @@ SettingsTabMain::saveSettings (void)
 	s.setValue ("fontsize", m_shadesize->value ());
 	s.setValue ("ttf", m_shadettf->checkState () == Qt::Checked);
 	s.endGroup ();
+
+	//TODO: Check if we really changed something
+	return true;
 }

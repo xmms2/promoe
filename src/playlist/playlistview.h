@@ -60,7 +60,7 @@ class PlaylistView : public QListView {
 		void cropSelected (void);
 		void removeSelected (void);
 		void showEntryInfo (void);
-		void settingsSaved (void);
+		void settingsChanged (void);
 		void setPixmaps (Skin *skin);
 
 	protected:
