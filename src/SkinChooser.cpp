@@ -63,20 +63,19 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 		settings.setValue ("skin/searchpath", searchpath);
 	}
 
-	QFileInfoList list;
 	QDir d;
-	d.setFilter (QDir::Dirs);
+	d.setFilter (QDir::Dirs|QDir::NoDotAndDotDot);
+	QFileInfoList list;
 	foreach (QString path, searchpath) {
 		d.setPath (path);
 		list += d.entryInfoList();
 	}
 
 	foreach (QFileInfo fileInfo, list) {
-		QDir dir (fileInfo.filePath());
-		QPixmap p = Skin::getPixmap ("main", dir);
+		QPixmap p = Skin::getPixmap ("main", fileInfo.filePath());
 		if (!p.isNull()) {
-			new SkinChooserItem (QIcon (p), dir.dirName(), dir.absolutePath(),
-			                     this);
+			new SkinChooserItem (QIcon (p), fileInfo.baseName (),
+			                     fileInfo.absoluteFilePath (), this);
 		}
 	}
 

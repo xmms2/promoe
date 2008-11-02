@@ -71,10 +71,11 @@ Skin::setSkin (const QString& name)
 }
 
 const QPixmap
-Skin::getPixmap (const QString& file, QDir dir)
+Skin::getPixmap (const QString& file, const QString &path)
 {
 	/* check for files in zip and check if file exists */
 
+	QDir dir (path);
 	dir.setFilter (QDir::Files);
 
 	QFileInfoList list = dir.entryInfoList();
@@ -93,10 +94,10 @@ Skin::getPixmap (const QString& file, QDir dir)
 const QPixmap
 Skin::getPixmap (const QString& file)
 {
-	QDir dir;
+/*	QDir dir;
 
 	dir.setPath (m_path);
-/*	dir.setFilter (QDir::Files);
+	dir.setFilter (QDir::Files);
 
 	QFileInfoList list = dir.entryInfoList();
 	for (int i = 0; i < list.size(); ++i) {
@@ -109,7 +110,7 @@ Skin::getPixmap (const QString& file)
 
 	return QPixmap ();
 */
-	return getPixmap (file, dir);
+	return getPixmap (file, m_path);
 }
 
 bool

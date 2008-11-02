@@ -1,4 +1,4 @@
-Required dependencys:
+Required dependencies:
 	* QT4.2.x           http://www.trolltech.no/
 	* XMMS2             http://xmms2.xmms.org/
 	* XMMS2 C++ bindings (make sure you have boost_signals when compiling xmms2)
@@ -15,6 +15,8 @@ Compiling:
 	4) ./promoe
 	5) ????
 	6) profit
+
+	To change the install directory, use 'qmake PREFIX=<path>' at step 1
 
 Compilation problems:
 	- Errormessage "WARNING: Found potential symbol conflict of <somefile>"

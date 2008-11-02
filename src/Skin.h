@@ -37,7 +37,7 @@ class Skin : public QObject
 		static Skin *getInstance (void);
 
 		bool setSkin (const QString& name);
-		static const QPixmap getPixmap (const QString&, QDir);
+		static const QPixmap getPixmap (const QString&, const QString&);
 
 		const QSize getSize (uint item) const { return m_sizes[item]; };
 		const QPoint getPos (uint item) const { return m_positions[item]; };
