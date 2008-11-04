@@ -30,6 +30,7 @@
 #include "xconfig.h"
 #include "xmmsqt4.h"
 #include "debug.h"
+#include "playlistmodel.h"
 
 #include "sourcepref.h"
 
@@ -71,6 +72,7 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
 	m_config = new XConfig (this);
 	m_playback = new XPlayback (this);
 	m_collection = new XCollection (this);
+	m_active_playlist = new PlaylistModel(this, this, "_active");
 	m_name = name;
 }
 

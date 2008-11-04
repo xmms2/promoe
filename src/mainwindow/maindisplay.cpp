@@ -13,8 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include <xmmsclient/xmmsclient++.h>
-#include "XMMSHandler.h"
+#include "xclient.h"
 #include "xclientcache.h"
 #include "xplayback.h"
 #include "xconfig.h"
@@ -43,8 +42,8 @@
 
 MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 {
-	XMMSHandler &client = XMMSHandler::getInstance ();
-	m_xconfig = client.xconfig ();
+	const XClient *client = App->client ();
+	m_xconfig = client->xconfig ();
 	Skin* skin = Skin::getInstance ();
 
 	connect (skin, SIGNAL (skinChanged (Skin *)),
@@ -56,7 +55,7 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 
 	m_mw = parent;
 
-	SetupPushButtons ();
+	SetupPushButtons (client);
 	SetupToggleButtons ();
 
 	m_text = new TextScroller (this, 154, 12, "main");
@@ -90,6 +89,8 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 						   Skin::POSBAR_BTN_0, 
 						   Skin::POSBAR_BTN_1);
 	m_posbar->move (skin->getPos (Skin::SLIDER_POSBAR_BGS));
+	connect (m_posbar, SIGNAL (sliderMoved (int)),
+	         client->xplayback (), SLOT (seekMs (int)));
 
 	m_playstatus = new PlayStatus (this);
 	m_playstatus->move (24, 28);
@@ -100,10 +101,10 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 	m_vslider->setSliderOffset (QPoint (0, 1));
 	m_vslider->resize (skin->getSize (Skin::SLIDER_VOLUMEBAR_BGS));
 	m_vslider->move (skin->getPos (Skin::SLIDER_VOLUMEBAR_BGS));
-	connect (client.xplayback (), SIGNAL (volumeChanged (int)),
+	connect (client->xplayback (), SIGNAL (volumeChanged (int)),
 	         m_vslider, SLOT (setValue (int)));
 	connect (m_vslider, SIGNAL (sliderMoved (int)),
-	         client.xplayback (), SLOT (setVolume (int)));
+	         client->xplayback (), SLOT (setVolume (int)));
 
 	m_bslider = new PixmapSlider (this);
 	m_bslider->setMinimum (-MAX_BALANCE);
@@ -111,16 +112,16 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 	m_bslider->setSliderOffset (QPoint (0, 1));
 	m_bslider->resize (skin->getSize (Skin::SLIDER_BALANCEBAR_BGS));
 	m_bslider->move (skin->getPos (Skin::SLIDER_BALANCEBAR_BGS));
-	connect (client.xplayback (), SIGNAL (balanceChanged (int)),
+	connect (client->xplayback (), SIGNAL (balanceChanged (int)),
 	         m_bslider, SLOT (setValue (int)));
 	connect (m_bslider, SIGNAL (sliderMoved (int)),
-	         client.xplayback (), SLOT (setBalance (int)));
+	         client->xplayback (), SLOT (setBalance (int)));
 
-	connect (client.cache (), SIGNAL (activeEntryChanged (QVariantHash)),
+	connect (client->cache (), SIGNAL (activeEntryChanged (QVariantHash)),
 	         this, SLOT (setMediainfo (const QVariantHash)));
-	connect (client.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	connect (client->xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
-	connect (client.cache () , SIGNAL (playtime (uint32_t)),
+	connect (client->cache () , SIGNAL (playtime (uint32_t)),
 	         this,  SLOT (setPlaytime (uint32_t)));
 
 	setupServerConfig ();
@@ -183,6 +184,9 @@ MainDisplay::setStatus (Xmms::Playback::Status status)
 		m_posbar->setValue (0);
 		m_posbar->hide ();
 		m_stereo->setStereoMono (false, false);
+
+		//FIXME: workaround, fix by hiding timedisplay in playlist
+		emit displayTime (0);
 	} else if (status == Xmms::Playback::PLAYING) {
 		m_time->show ();
 		m_kbps->show ();
@@ -204,7 +208,6 @@ MainDisplay::setPlaytime (uint32_t time)
 		showtime = time/1000;
 	}
 	emit displayTime (showtime);
-//	m_time->setTime (showtime);
 
 	// update slider
 	m_posbar->setValue (time);
@@ -292,37 +295,36 @@ MainDisplay::SetupToggleButtons (void)
 }
 
 void
-MainDisplay::SetupPushButtons (void)
+MainDisplay::SetupPushButtons (const XClient* client)
 {
-	XMMSHandler &client = XMMSHandler::getInstance ();
 	Skin *skin = Skin::getInstance ();
 
 	/* Normal buttons */
 	m_prev = new PixmapButton (this);
 	m_prev->resize (skin->getSize (Skin::BUTTON_MW_PREV));
 	m_prev->move (skin->getPos (Skin::BUTTON_MW_PREV));
-	connect (m_prev, SIGNAL(clicked()), client.xplayback (), SLOT(prev ()));
+	connect (m_prev, SIGNAL(clicked()), client->xplayback (), SLOT(prev ()));
 	
 	m_play = new PixmapButton (this);
 	m_play->resize (skin->getSize (Skin::BUTTON_MW_PLAY));
 	m_play->move (skin->getPos (Skin::BUTTON_MW_PLAY));
-	connect (m_play, SIGNAL(clicked()), client.xplayback (), SLOT(play ()));
+	connect (m_play, SIGNAL(clicked()), client->xplayback (), SLOT(play ()));
 
 	m_pause = new PixmapButton (this);
 	m_pause->resize (skin->getSize (Skin::BUTTON_MW_PAUSE));
 	m_pause->move (skin->getPos (Skin::BUTTON_MW_PAUSE));
 	connect (m_pause, SIGNAL(clicked()),
-	         client.xplayback (), SLOT(toggle_pause ()));
+	         client->xplayback (), SLOT(toggle_pause ()));
 
 	m_stop = new PixmapButton (this);
 	m_stop->resize (skin->getSize (Skin::BUTTON_MW_STOP));
 	m_stop->move (skin->getPos (Skin::BUTTON_MW_STOP));
-	connect (m_stop, SIGNAL(clicked()), client.xplayback (), SLOT(stop ()));
+	connect (m_stop, SIGNAL(clicked()), client->xplayback (), SLOT(stop ()));
 
 	m_next = new PixmapButton (this);
 	m_next->resize (skin->getSize (Skin::BUTTON_MW_NEXT));
 	m_next->move (skin->getPos (Skin::BUTTON_MW_NEXT));
-	connect (m_next, SIGNAL(clicked()), client.xplayback (), SLOT(next ()));
+	connect (m_next, SIGNAL(clicked()), client->xplayback (), SLOT(next ()));
 
 	m_eject = new PixmapButton (this);
 	m_eject->resize (skin->getSize (Skin::BUTTON_MW_EJECT));

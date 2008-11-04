@@ -16,7 +16,7 @@
 #ifndef __SERVER_BROWSER_H__
 #define __SERVER_BROWSER_H__
 
-#include "XMMSHandler.h"
+#include "xclient.h"
 
 #include <QWidget>
 #include <QListWidget>

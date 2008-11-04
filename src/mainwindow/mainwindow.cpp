@@ -13,7 +13,8 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
+// TODO: Try to get includes right without this
+#include <xmmsclient/xmmsclient++.h>
 
 #include "mainwindow.h"
 
@@ -21,6 +22,7 @@
 #include "ServerBrowser.h"
 #endif
 
+#include "application.h"
 #include "playlistwindow.h"
 #include "maindisplay.h"
 #include "shadeddisplay.h"

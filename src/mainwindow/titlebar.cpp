@@ -13,8 +13,6 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
-
 #include "mainwindow.h"
 #include "titlebar.h"
 #include "skindisplay.h"

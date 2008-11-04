@@ -19,6 +19,8 @@
 #include <xmmsclient/xmmsclient++.h>
 #include <QWidget>
 
+class QPaintEvent;
+
 class Skin;
 
 class PlayStatus : public QWidget

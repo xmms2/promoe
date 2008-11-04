@@ -13,9 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-// FIXME should not need those two
-#include <xmmsclient/xmmsclient++.h>
-#include "XMMSHandler.h"
+#include "xclient.h"
 #include "xplayback.h"
 
 #include "application.h"
@@ -136,12 +134,12 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 	m_font = NULL;
 	m_fontmetrics = NULL;
 
-	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
+	const XClient *client = App->client ();
 
 	connect (App, SIGNAL (settingsChanged ()),
 	         this, SLOT (settingsChanged ()));
 
-	connect (xmmsh.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	connect (client->xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(handleStatus(Xmms::Playback::Status)));
 }
 
@@ -278,18 +276,18 @@ PlaylistView::mouseDoubleClickEvent (QMouseEvent *event)
 		return;
 	}
 
-	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
-	xmmsh.xplayback ()->setPos (index.row());
+	const XClient *client = App->client ();
+	client->xplayback ()->setPos (index.row());
 	if (m_status == XMMS_PLAYBACK_STATUS_STOP ||
 	    m_status == XMMS_PLAYBACK_STATUS_PAUSE) {
-			xmmsh.xplayback ()->play ();
+			client->xplayback ()->play ();
 	}
 }
 
 void
 PlaylistView::showEntryInfo (void)
 {
-	XMMSHandler &client = XMMSHandler::getInstance ();
+	const XClient *client = App->client ();
 	QModelIndex current = selectionModel ()->currentIndex ();
 	if (current.isValid ()) {
 		uint32_t id = model ()->data (current, PlaylistModel::MedialibIdRole)
@@ -297,7 +295,7 @@ PlaylistView::showEntryInfo (void)
 		// If no infodialog exists, create one, else set the selected Item as
 		// displayed item
 		if (!m_entry_info) {
-			m_entry_info = new EntryInfo (this, client.cache (), id);
+			m_entry_info = new EntryInfo (this, client->cache (), id);
 		} else {
 			m_entry_info->raise ();
 			m_entry_info->setId (id);

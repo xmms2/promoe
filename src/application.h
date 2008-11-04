@@ -15,6 +15,8 @@
 
 #include <QApplication>
 
+class XClient;
+
 class Application;
 #if defined(qApp)
 #undef qApp
@@ -32,10 +34,14 @@ class Application : public QApplication
 	public:
 		Application (int &argc, char **argv);
 
+		XClient *client () const {return m_xmms2_client;}
 
 	public slots:
 		void cleanupHandler ();
 		void handleDisconnected ();
+
+	private:
+		XClient *m_xmms2_client;
 
 	// TODO: Search some better place for those methods
 	public:

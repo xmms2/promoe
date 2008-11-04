@@ -16,8 +16,6 @@
 #ifndef __PLAYLISTWIDGET_H__
 #define __PLAYLISTWIDGET_H__
 
-#include "XMMSHandler.h"
-
 #include <QScrollBar>
 #include <QSizeGrip>
 #include <QWidget>
@@ -35,7 +33,7 @@ class PixmapButton;
 
 class PlaylistSizeGrip : public QSizeGrip {
 	Q_OBJECT
-	
+
 	public:
 		PlaylistSizeGrip (QWidget *parent) : QSizeGrip (parent) {}
 		~PlaylistSizeGrip () {}

@@ -19,9 +19,6 @@
 class MainDisplay;
 
 #include <xmmsclient/xmmsclient++.h>
-#include "XMMSHandler.h"
-
-#include <iostream>
 
 #include <QPixmap>
 #include <QPainter>
@@ -49,6 +46,7 @@ class PlayStatus;
 class MainWindow;
 class ClutterBar;
 class XConfig;
+class XClient;
 
 class MainDisplay : public SkinDisplay
 {
@@ -85,7 +83,7 @@ class MainDisplay : public SkinDisplay
 		void setRepeatAllEnabled (bool enabled);
 
 	protected:
-		void SetupPushButtons (void);
+		void SetupPushButtons (const XClient *);
 		void SetupToggleButtons (void);
 
 		PixmapButton *m_prev;

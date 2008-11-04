@@ -13,9 +13,12 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
 #include "BrowseModel.h"
 #include "BrowseDialog.h"
+#include "xclient.h"
+#include "xcollection.h"
+
+#include "application.h"
 
 #include <QDialog>
 #include <QSettings>
@@ -169,12 +172,12 @@ BrowseDialog::navigateToPrevious ()
 void
 BrowseDialog::setPath (const QModelIndex &index)
 {
-	XMMSHandler &handler = XMMSHandler::getInstance ();
+	XClient *client = App->client ();
 	BrowseModelItem *item = m_model->itemByIndex (index);
 	if (item->isDir ()) {
 		m_model->setPath (index);
 	} else {
-		handler.playlistAddURL (item->data("path"));
+		client->xcollection ()->playlistAddUrl (item->data("path"));
 	}
 }
 

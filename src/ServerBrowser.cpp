@@ -63,9 +63,9 @@ ServerBrowserList::connectServer (QListWidgetItem *it)
 {
 	ServerBrowserWindow *sw = dynamic_cast<ServerBrowserWindow*> (window ());
 
-	XMMSHandler *xmmsh = XMMSHandler::getInstance ();
+	XClient *client = App->client ();
 	ServerItem *item = dynamic_cast<ServerItem*> (it);
-	if (xmmsh->connect (item->path ().toAscii())) {
+	if (client->connect (item->path ().toAscii())) {
 		sw->close ();
 	}
 }

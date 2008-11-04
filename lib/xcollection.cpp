@@ -211,6 +211,19 @@ XCollection::addIdlist (QString name) {
 }
 
 bool
+XCollection::playlistAddUrl (QString url, QString plsname)
+{
+	if (plsname == "") {
+		plsname = d->m_activePlaylist;
+	}
+
+	m_client->playlist ()->addUrl (url.toStdString (),
+	                               plsname.toStdString ());
+
+	return true;
+}
+
+bool
 XCollection::playlistAddUrl (QUrl url, QString plsname)
 {
 	//TODO: more tests if file is valid

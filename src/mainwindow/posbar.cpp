@@ -13,9 +13,6 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
-#include "xplayback.h"
-
 #include "posbar.h"
 #include "Skin.h"
 
@@ -37,16 +34,7 @@ PosBar::PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed)
 	setMinimum (0);
 	setMaximum (0);
 
-	connect (this, SIGNAL (sliderMoved (int)),
-	         this, SLOT (seekMs (int)));
-
 	hide ();
-}
-
-void
-PosBar::seekMs (int value)
-{
-	XMMSHandler::getInstance ().xplayback ()->seekMs (value);
 }
 
 void

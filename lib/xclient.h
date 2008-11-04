@@ -30,6 +30,7 @@ class XClientCache;
 class XConfig;
 class XPlayback;
 class XCollection;
+class PlaylistModel;
 
 #define SOURCEPREF_HACK
 
@@ -72,6 +73,10 @@ class XClient : public QObject {
 			return m_collection;
 		}
 
+		PlaylistModel *active_playlist () const {
+			return m_active_playlist;
+		}
+
 		const Xmms::Client *sync () const {
 			return &m_sync;
 		};
@@ -93,6 +98,9 @@ class XClient : public QObject {
 		const Xmms::Config* config () { if (m_client && m_client->isConnected ()) return &m_client->config; else return NULL; }
 		const Xmms::Stats* stats () { if (m_client && m_client->isConnected ()) return &m_client->stats; else return NULL; }
 
+		// TODO: remove as soon as it's no longer neede
+		Xmms::Client *getClient () {return m_client;}
+
 	signals:
 		void gotConnection (XClient *);
 		void disconnected (XClient *);
@@ -111,7 +119,8 @@ class XClient : public QObject {
 		XConfig *m_config;
 		XPlayback *m_playback;
 		XCollection *m_collection;
-        bool m_isconnected;
+		PlaylistModel *m_active_playlist;
+		bool m_isconnected;
 
 		Xmms::Client m_sync;
 };

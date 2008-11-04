@@ -13,13 +13,12 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
-
 #include "playlistwindow.h"
 
 #include <QMoveEvent>
 #include <QResizeEvent>
 #include <QPoint>
+#include <QIcon>
 
 #include "playlistwidget.h"
 #include "playlistshade.h"

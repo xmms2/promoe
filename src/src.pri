@@ -7,7 +7,6 @@ include($$PWD/dialogs/dialogs.pri)
 HEADERS += application.h \
            Skin.h \
            timedisplay.h \
-		   XMMSHandler.h \
            SkinChooser.h \
            settingsdialog.h \
            basewindow.h \
@@ -18,7 +17,6 @@ HEADERS += application.h \
 SOURCES += application.cpp \
            timedisplay.cpp \
            Skin.cpp \
-           XMMSHandler.cpp \
            SkinChooser.cpp \
            settingsdialog.cpp \
            basewindow.cpp \

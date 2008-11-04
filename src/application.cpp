@@ -13,7 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
+#include "xclient.h"
 
 #include "application.h"
 
@@ -35,12 +35,11 @@ Application::Application (int &argc, char **argv) : QApplication (argc, argv)
 	setOrganizationDomain("xmms.org");
 	setApplicationName("Promoe");
 
-	//TODO: Change to XClient sometime later
-	XMMSHandler &client = XMMSHandler::getInstance ();
+	m_xmms2_client = new XClient (this, "Promoe");
 
 	connect (this, SIGNAL (aboutToQuit ()),
 	         this, SLOT (cleanupHandler ()));
-	connect (&client, SIGNAL(disconnected(XClient *)),
+	connect (m_xmms2_client, SIGNAL(disconnected(XClient *)),
 	         this, SLOT(handleDisconnected ()));
 
 	QSettings settings;
@@ -65,6 +64,8 @@ Application::Application (int &argc, char **argv) : QApplication (argc, argv)
 	mw->getEQ ()->setVisible (settings.value ("equalizer/visible", false).toBool ());
 	mw->getPL ()->setVisible (settings.value ("playlist/visible", false).toBool ());
 
+	m_xmms2_client->connect ();
+
 #ifdef HAVE_SERVERBROWSER
 	ServerBrowserWindow *browser = new ServerBrowserWindow (mw);
 	browser->show ();
@@ -82,7 +83,7 @@ Application::cleanupHandler ()
 	s.setValue("MainWindow/timemodereverse",m_timemode_reverse);
 
 	if (s.value ("promoe/quitonclose", false).toBool ())
-		XMMSHandler::getInstance ().shutdownServer ();
+		m_xmms2_client->shutdownServer ();
 }
 
 void

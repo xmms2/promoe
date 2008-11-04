@@ -13,13 +13,10 @@
  *  GNU General Public License for more details.
  */
 
-#include <xmmsclient/xmmsclient++.h>
-
-#include <QPainter>
-#include <QPaintEvent>
-
 #include "playstatus.h"
 #include "Skin.h"
+
+#include <QPainter>
 
 PlayStatus::PlayStatus (QWidget *parent) : QWidget (parent)
 {

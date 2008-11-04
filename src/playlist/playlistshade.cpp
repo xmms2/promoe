@@ -13,14 +13,14 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
-#include <xmmsclient/xmmsclient++.h>
+#include "xclient.h"
 #include "xclientcache.h"
 
 #include "application.h"
 #include "playlistshade.h"
 #include "playlistwindow.h"
 #include "pixmapbutton.h"
+#include "Skin.h"
 
 #include <QSettings>
 #include <QPainter>
@@ -29,7 +29,7 @@
 PlaylistShade::PlaylistShade (PlaylistWindow *parent) : QWidget (parent)
 {
 	QSettings s;
-	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
+	const XClient *client = App->client ();
 
 	if (!s.contains ("playlist/shadedsize"))
 		s.setValue ("playlist/shadedsize", 8);
@@ -47,7 +47,7 @@ PlaylistShade::PlaylistShade (PlaylistWindow *parent) : QWidget (parent)
 	connect (m_unshadebtn, SIGNAL (clicked ()),
 	         parent, SLOT (switchDisplay ()));
 
-	connect (xmmsh.cache (), SIGNAL (activeEntryChanged (QVariantHash)),
+	connect (client->cache (), SIGNAL (activeEntryChanged (QVariantHash)),
 	         this, SLOT (setMediainfo (QVariantHash)));
 
 	connect (App, SIGNAL(settingsChanged ()), 

@@ -49,6 +49,8 @@ class XPlayback : public QObject {
 
 		void seekMs (uint milliseconds);
 		void seekMsRel (int milliseconds);
+		// Helper to directly connect sliders to this class
+		void seekMs (int milliseconds) {seekMs ((uint) milliseconds);};
 
 		void setVolume (int new_volume);
 		void setBalance (int new_balance);

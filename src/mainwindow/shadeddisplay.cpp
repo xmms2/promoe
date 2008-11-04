@@ -13,8 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include <xmmsclient/xmmsclient++.h>
-#include "XMMSHandler.h"
+#include "xclient.h"
 #include "xclientcache.h"
 #include "xplayback.h"
 
@@ -35,7 +34,7 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	connect (skin, SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
-	XMMSHandler &client = XMMSHandler::getInstance ();
+	const XClient *client = App->client ();
 
 	setFixedSize (275, 14);
 
@@ -54,39 +53,39 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 	m_prev = new PixmapButton (this);
 	m_prev->move(169, 4);
 	m_prev->resize (8, 7);
-	connect (m_prev, SIGNAL(clicked()), client.xplayback (), SLOT(prev ()));
+	connect (m_prev, SIGNAL(clicked()), client->xplayback (), SLOT(prev ()));
 
 	m_play = new PixmapButton (this);
 	m_play->move(177, 4);
 	m_play->resize (10, 7);
-	connect (m_play, SIGNAL(clicked()), client.xplayback (), SLOT(play ()));
+	connect (m_play, SIGNAL(clicked()), client->xplayback (), SLOT(play ()));
 
 	m_pause = new PixmapButton (this);
 	m_pause->move(187, 4);
 	m_pause->resize (10, 7);
 	connect (m_pause, SIGNAL(clicked()),
-	         client.xplayback (), SLOT(toggle_pause ()));
+	         client->xplayback (), SLOT(toggle_pause ()));
 
 	m_stop = new PixmapButton (this);
 	m_stop->move(197, 4);
 	m_stop->resize (9, 7);
-	connect (m_stop, SIGNAL(clicked()), client.xplayback (), SLOT(stop ()));
+	connect (m_stop, SIGNAL(clicked()), client->xplayback (), SLOT(stop ()));
 
 	m_next = new PixmapButton (this);
 	m_next->move(206, 4);
 	m_next->resize (8, 7);
-	connect (m_next, SIGNAL(clicked()), client.xplayback (), SLOT(next ()));
+	connect (m_next, SIGNAL(clicked()), client->xplayback (), SLOT(next ()));
 
 	m_eject = new PixmapButton (this);
 	m_eject->move(216, 4);
 	m_eject->resize (9, 7);
 	connect (m_eject, SIGNAL(clicked()), this, SLOT(fileOpen()));
 
-	connect (client.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
+	connect (client->xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
 	         this, SLOT(setStatus(Xmms::Playback::Status)));
-	connect (client.cache (), SIGNAL (playtime (uint32_t)),
+	connect (client->cache (), SIGNAL (playtime (uint32_t)),
 	         this, SLOT ( setPlaytime(uint32_t)));
-	connect (client.cache (), SIGNAL (activeEntryChanged (QVariantHash)),
+	connect (client->cache (), SIGNAL (activeEntryChanged (QVariantHash)),
 	         this, SLOT (setMediainfo (QVariantHash)));
 }
 
@@ -121,8 +120,7 @@ void
 ShadedDisplay::setStatus (Xmms::Playback::Status status)
 {
 	if (status == Xmms::Playback::STOPPED) {
-		//m_number->setNumber (0, 2);
-		//nm_number2->setNumber (0, 2);
+		m_time->setTime (0);
 	}
 }
 

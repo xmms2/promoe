@@ -16,14 +16,13 @@
 #ifndef __PLAYLISTSHADE_H__
 #define __PLAYLISTSHADE_H__
 
-#include <xmmsclient/xmmsclient++.h>
-#include "Skin.h"
-
 #include <QWidget>
 #include <QHash>
 #include <QVariant>
 
 typedef QHash<QString, QVariant> QVariantHash;
+
+class Skin;
 
 class QResizeEvent;
 class PixmapButton;

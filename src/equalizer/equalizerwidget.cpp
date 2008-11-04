@@ -13,11 +13,12 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
+#include "xclient.h"
 #include "xconfig.h"
 
 #include "equalizerwidget.h"
 
+#include "application.h"
 #include "mainwindow.h"
 #include "pixmapbutton.h"
 #include "pixmapslider.h"
@@ -52,8 +53,8 @@ EqualizerSlider::on_self_slider_moved (int value)
 EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 {
 	Skin *skin = Skin::getInstance ();
-	XMMSHandler &client = XMMSHandler::getInstance ();
-	m_xconfig = client.xconfig ();
+	const XClient *client = App->client ();
+	m_xconfig = client->xconfig ();
 
 	connect (skin, SIGNAL(skinChanged(Skin *)),
 	         this, SLOT(setPixmaps(Skin *)));

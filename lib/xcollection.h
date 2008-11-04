@@ -40,6 +40,7 @@ class XCollection : public QObject
 		// idlist spesific
 		bool setActivePlaylist (QString name);
 		bool addIdlist (QString name);
+		bool playlistAddUrl (QString url, QString plsname = "");
 		bool playlistAddUrl (QUrl url, QString plsname = "");
 		bool playlistClear (QString name = "");
 		bool addPlsFile (QUrl url);

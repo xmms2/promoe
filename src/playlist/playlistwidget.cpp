@@ -13,7 +13,10 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
+#include "xclient.h"
+#include "playlistmodel.h"
+#include "xcollection.h"
+#include "xplayback.h"
 
 #include "application.h"
 #include "mainwindow.h"
@@ -22,10 +25,6 @@
 #include "playlistwidget.h"
 #include "playlistview.h"
 #include "playlistcontrols.h"
-
-#include "playlistmodel.h"
-#include "xcollection.h"
-#include "xplayback.h"
 
 #include "pixmapbutton.h"
 #include "playlistshade.h"
@@ -196,7 +195,7 @@ PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 	m_view->move (10, 20);
 //	m_view->resize (size().width()-30, size().height()-20-38);
 	// TODO: creation of Playlistmodel should be done elsewhere
-	m_view->setModel (XMMSHandler::getInstance().getPlaylistModel());
+	m_view->setModel (App->client ()->active_playlist ());
 
 	/*
 	 * This is a hack to make PlaylistScrollBar work with PlaylistView.
@@ -219,20 +218,20 @@ PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 
 	addButtons ();
 
-	XMMSHandler &client = XMMSHandler::getInstance ();
+	const XClient *client = App->client ();
 
 	m_controls = new PlaylistControls (this);
 	// connect buttons
 	connect (m_controls, SIGNAL (prev ()),
-	         client.xplayback (), SLOT (prev ()));
+	         client->xplayback (), SLOT (prev ()));
 	connect (m_controls, SIGNAL (play ()),
-	         client.xplayback (), SLOT (play ()));
+	         client->xplayback (), SLOT (play ()));
 	connect (m_controls, SIGNAL (pause ()),
-	         client.xplayback (), SLOT (pause ()));
+	         client->xplayback (), SLOT (pause ()));
 	connect (m_controls, SIGNAL (stop ()),
-	         client.xplayback (), SLOT (stop ()));
+	         client->xplayback (), SLOT (stop ()));
 	connect (m_controls, SIGNAL (next ()),
-	         client.xplayback (), SLOT (next ()));
+	         client->xplayback (), SLOT (next ()));
 	// TODO: eject
 	connect (m_controls, SIGNAL (toggleTime ()),
 	         App, SLOT (toggleTime()));
@@ -269,7 +268,7 @@ PlaylistWidget::addButtons ()
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_ALL_0,
 								Skin::PLS_DEL_ALL_1);
 	connect (b, SIGNAL (activated ()),
-	         XMMSHandler::getInstance().xcollection (),
+	         App->client ()->xcollection (),
 	         SLOT (playlistClear ()));
 	b = new PlaylistMenuButton (m_del, Skin::PLS_DEL_CRP_0,
 								Skin::PLS_DEL_CRP_1);
@@ -324,8 +323,8 @@ PlaylistWidget::addButtons ()
 void
 PlaylistWidget::menuAddUrl ()
 {
-	XMMSHandler &client = XMMSHandler::getInstance ();
-	UrlOpen *tmp = new UrlOpen (this, client.xcollection ());
+	const XClient *client = App->client ();
+	UrlOpen *tmp = new UrlOpen (this, client->xcollection ());
 	tmp->show ();
 }
 
@@ -343,7 +342,7 @@ PlaylistWidget::diveDir (const QString &dir)
 			diveDir (fileInfo.filePath ());
 		} else {
 			QString fname = fileInfo.filePath();
-			XMMSHandler::getInstance ().playlistAddURL ("file://" + fname);
+			App->client ()->xcollection ()->playlistAddUrl ("file://" + fname);
 		}
 	}
 }
@@ -374,7 +373,7 @@ PlaylistWidget::menuAddFile ()
 		BrowseDialog bd (window ());
 		files = bd.getFiles ();
 		for (int i = 0; i < files.count(); i++) {
-			XMMSHandler::getInstance ().playlistAddURL (files.value (i));
+			App->client ()->xcollection ()->playlistAddUrl (files.value (i));
 		}
 	} else {
 		FileDialog fd (this, "playlist_add_files");
@@ -382,7 +381,7 @@ PlaylistWidget::menuAddFile ()
 		files = fd.getFiles ();
 
 		for (int i = 0; i < files.count(); i++) {
-			XMMSHandler::getInstance ().playlistAddURL ("file://" + files.value(i));
+			App->client ()->xcollection ()->playlistAddUrl ("file://" + files.value(i));
 		}
 	}
 
@@ -397,9 +396,9 @@ PlaylistWidget::menuAddPls ()
 	files = fd.getFiles ();
 
 	if (files.count () > 0) {
-		XMMSHandler::getInstance ().xcollection ()->playlistClear ();
+		App->client ()->xcollection ()->playlistClear ();
 		QString file = files[0];
-		XMMSHandler::getInstance ().xcollection ()->addPlsFile (QUrl (file));
+		App->client ()->xcollection ()->addPlsFile (QUrl (file));
 	}
 }
 
@@ -590,8 +589,8 @@ PlaylistWidget::paintEvent (QPaintEvent *event)
 void
 PlaylistWidget::openPlaylistChooser ()
 {
-	XMMSHandler &client = XMMSHandler::getInstance ();
-	PlaylistChooser *tmp = new PlaylistChooser (this, client.xcollection ());
+	const XClient *client = App->client ();
+	PlaylistChooser *tmp = new PlaylistChooser (this, client->xcollection ());
 	tmp->show ();
 }
 

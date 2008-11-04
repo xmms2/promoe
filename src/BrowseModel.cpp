@@ -13,8 +13,10 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
+#include "xclient.h"
 #include "BrowseModel.h"
+
+#include "application.h"
 
 #include <QAbstractTableModel>
 #include <QString>
@@ -36,7 +38,7 @@ BrowseModel::BrowseModel (QWidget *parent) : QAbstractTableModel ()
 {
 	m_columns.append ("Name");
 	m_style = parent->style ();
-	m_client = XMMSHandler::getInstance ().getClient ();
+	m_client = App->client ()->getClient ();
 	m_filter_dot = true;
 	//list_root ();
 }

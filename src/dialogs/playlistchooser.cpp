@@ -14,9 +14,8 @@
  *  GNU General Public License for more details.
  */
 
-// FIXME: because somewhere something with the includes is wrong, this line
-// is needed
-#include "XMMSHandler.h"
+// Needed for XMMS_COLLECTION_CHANGED_* defines
+#include <xmmsc/xmmsc_idnumbers.h>
 
 #include <QRegExp>
 #include <QStringList>

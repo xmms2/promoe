@@ -30,7 +30,6 @@ class PosBar : public PixmapSlider
 		
 	public slots:
 		void setPixmaps (Skin *skin);
-		void seekMs (int);
 
 	private:
 		uint m_slider_normal;

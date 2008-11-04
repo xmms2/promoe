@@ -13,9 +13,10 @@
  *  GNU General Public License for more details.
  */
 
-#include "XMMSHandler.h"
+#include "xclient.h"
 #include "xcollection.h"
 
+#include "application.h"
 #include "mainwindow.h"
 #include "skindisplay.h"
 #include "Skin.h"
@@ -48,13 +49,13 @@ SkinDisplay::fileOpen (void)
 
 	files = fd.getFiles ();
 
-	XMMSHandler &xmmsh = XMMSHandler::getInstance();
-	if (files.count() > 0) {
-		xmmsh.xcollection ()->playlistClear ();
-	}
+	const XClient *client = App->client ();
+//	if (files.count() > 0) {
+//		xmmsh.xcollection ()->playlistClear ();
+//	}
 
 	for (int i = 0; i < files.count(); i++) {
-		xmmsh.playlistAddURL ("file://" + files.value(i));
+		client->xcollection ()->playlistAddUrl ("file://" + files.value(i));
 	}
 }
 
