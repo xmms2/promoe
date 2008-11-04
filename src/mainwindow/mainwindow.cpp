@@ -81,11 +81,9 @@ MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 	setCentralWidget (m_display);
 	m_display->show ();
 
-	//connects for timedisplay in playlistwindow
+	//connect for timedisplay in playlistwindow
 	connect (m_display, SIGNAL (displayTime (int)),
 	         m_playlistwin, SIGNAL (setDisplayTime (int)));
-	connect (m_playlistwin, SIGNAL (toggleTime()),
-	         this, SLOT (toggleTime ()));
 
 	/*
 	 * MainDisplay's shaded mode

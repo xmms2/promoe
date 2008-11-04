@@ -15,6 +15,7 @@
 
 #include "XMMSHandler.h"
 
+#include "application.h"
 #include "mainwindow.h"
 #include "BrowseDialog.h"
 #include "playlistwindow.h"
@@ -38,7 +39,6 @@
 #include <QPoint>
 #include <QRect>
 #include <QIcon>
-#include <QApplication>
 #include <QSettings>
 #include <QFileDialog>
 #include <QPainter>
@@ -235,7 +235,7 @@ PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 	         client.xplayback (), SLOT (next ()));
 	// TODO: eject
 	connect (m_controls, SIGNAL (toggleTime ()),
-	         parent, SIGNAL (toggleTime()));
+	         App, SLOT (toggleTime()));
 	connect (parent, SIGNAL (setDisplayTime (int)),
 	         m_controls, SIGNAL (setDisplayTime (int)));
 

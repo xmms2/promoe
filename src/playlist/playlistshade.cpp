@@ -50,7 +50,7 @@ PlaylistShade::PlaylistShade (PlaylistWindow *parent) : QWidget (parent)
 	connect (xmmsh.cache (), SIGNAL (activeEntryChanged (QVariantHash)),
 	         this, SLOT (setMediainfo (QVariantHash)));
 
-	connect (qApp, SIGNAL(settingsChanged ()), 
+	connect (App, SIGNAL(settingsChanged ()), 
 			 this, SLOT(settingsChanged ()));
 
 	m_text = "Promoe " PROMOE_VERSION  " - A very neat XMMS2 client";

@@ -52,24 +52,35 @@ Application::Application (int &argc, char **argv) : QApplication (argc, argv)
 	 * open the skin and send the
 	 * SkinChanged signal that will cause
 	 * all widgets to get their pixmaps
-	 * TODO: Now the Skin class loads the skin itself. This call is necessarry until
-	 * all widgets that receive the skinChanged signal fetch their pixmaps themself
-	 * on startup
+	 * TODO: Now the Skin class loads the skin itself. This call is necessarry
+	 * until all widgets that receive the skinChanged signal fetch their
+	 * pixmaps themself on startup
 	 */
 	Skin::getInstance()->setSkin (settings.value("skin/path").toString ());
 
 	mw->show ();
-	// The Playlist- and EqualizerWindow has to become visible after the mainwindow
-	// because metacity (gnome-windowmanager) can't handle them correctly otherwise
+	// The Playlist- and EqualizerWindow has to become visible after the
+	// mainwindow because metacity (gnome-windowmanager) can't handle them
+	//  correctly otherwise
 	mw->getEQ ()->setVisible (settings.value ("equalizer/visible", false).toBool ());
 	mw->getPL ()->setVisible (settings.value ("playlist/visible", false).toBool ());
 
+#ifdef HAVE_SERVERBROWSER
+	ServerBrowserWindow *browser = new ServerBrowserWindow (mw);
+	browser->show ();
+#endif
+
+	m_timemode_reverse = settings.value ("MainWindow/timemodereverse",
+	                                      false).toBool();
 }
 
 void
 Application::cleanupHandler ()
 {
 	QSettings s;
+
+	s.setValue("MainWindow/timemodereverse",m_timemode_reverse);
+
 	if (s.value ("promoe/quitonclose", false).toBool ())
 		XMMSHandler::getInstance ().shutdownServer ();
 }
@@ -91,26 +102,18 @@ Application::handleDisconnected ()
 	QApplication::quit ();
 }
 
-int 
+int
 main (int argc, char **argv)
 {
 	Application app(argc, argv);
 
-
-	QSettings settings;
-
-#ifdef Q_OS_MACX 
+#ifdef Q_OS_MACX
 	/** This is soooo wrong, there must exsist a flag for
 	  * static plugins
 	Q_IMPORT_PLUGIN(QJpegPlugin);
 	  */
 #endif
 
-
-#ifdef HAVE_SERVERBROWSER
-	ServerBrowserWindow *browser = new ServerBrowserWindow (mw);
-	browser->show ();
-#endif
 
 	return app.exec();
 }

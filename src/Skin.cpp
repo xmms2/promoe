@@ -76,7 +76,7 @@ Skin::getPixmap (const QString& file, const QString &path)
 	/* check for files in zip and check if file exists */
 
 	QDir dir (path);
-	dir.setFilter (QDir::Files);
+	dir.setFilter (QDir::Files|QDir::NoDotAndDotDot);
 
 	QFileInfoList list = dir.entryInfoList();
 	for (int i = 0; i < list.size(); ++i) {
@@ -120,7 +120,7 @@ Skin::ParsePLEdit (void)
 	QString path;
 
 	dir.setPath (m_path);
-	dir.setFilter (QDir::Files);
+	dir.setFilter (QDir::Files|QDir::NoDotAndDotDot);
 
 	QFileInfoList list = dir.entryInfoList();
 	for (int i = 0; i < list.size(); ++i) {

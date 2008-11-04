@@ -39,7 +39,7 @@ SettingsDialog::SettingsDialog (QWidget *parent) : QDialog (parent)
 	resize (400, 500);
 
 	connect (this, SIGNAL (settingsChanged (void)),
-	         qApp, SIGNAL (settingsChanged (void)));
+	         App, SIGNAL (settingsChanged (void)));
 
 	QVBoxLayout *vbox = new QVBoxLayout (this);
 	setLayout(vbox);

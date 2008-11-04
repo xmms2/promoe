@@ -19,6 +19,7 @@
 #include "xplayback.h"
 #include "xconfig.h"
 
+#include "application.h"
 #include "maindisplay.h"
 #include "mainwindow.h"
 
@@ -39,7 +40,6 @@
 #include <QFileDialog>
 #include <QSettings>
 #include <QDebug>
-#include <QMessageBox>
 
 MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 {
@@ -64,7 +64,7 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 
 	m_time = new TimeDisplay(this);
 	m_time->move (36, 26);
-	connect (m_time, SIGNAL(clicked()), m_mw, SLOT(toggleTime()));
+	connect (m_time, SIGNAL(clicked()), App, SLOT(toggleTime()));
 	connect (this, SIGNAL (displayTime (int)), m_time, SLOT (setTime (int)));
 
 	m_kbps = new PixmapNumberDisplay (this);
@@ -197,7 +197,7 @@ void
 MainDisplay::setPlaytime (uint32_t time)
 {
 	int32_t showtime;
-	if (m_mw->isTimemodeReverse()) {
+	if (App->isTimemodeReverse()) {
 		uint maxtime = m_posbar->maximum ();
 		showtime = (time/1000 - maxtime/1000);
 	} else {

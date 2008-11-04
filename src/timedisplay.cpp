@@ -52,7 +52,7 @@ AbstractTimeDisplay::AbstractTimeDisplay (QWidget *parent) : QWidget (parent)
 void
 AbstractTimeDisplay::setTime (int time)
 {
-	// Hack to make display hours and seconds instead of seconds and minutes
+	// Hack to make display hours and minutes instead of minutes and seconds
 	// if time (or reversetime) is 100 Minutes or longer
 	if ((time >= 6000) || (time <= -6000)) {
 		time /= 60;

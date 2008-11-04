@@ -43,8 +43,6 @@ class PlaylistWindow : public BaseWindow {
 	signals:
 		void visibilityChanged(bool visible);
 
-		// connected to 
-		void toggleTime (); // toggle the playtime
 		// setTime is used to set playtime in playlistcontrols
 		void setDisplayTime (int seconds);
 

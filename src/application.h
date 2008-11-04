@@ -20,6 +20,7 @@ class Application;
 #undef qApp
 #endif
 #define qApp (static_cast<Application *>(QCoreApplication::instance()))
+#define App (static_cast<Application *>(QCoreApplication::instance()))
 
 class Application : public QApplication
 {
@@ -31,7 +32,19 @@ class Application : public QApplication
 	public:
 		Application (int &argc, char **argv);
 
+
 	public slots:
 		void cleanupHandler ();
 		void handleDisconnected ();
+
+	// TODO: Search some better place for those methods
+	public:
+		bool isTimemodeReverse(void) {return m_timemode_reverse;}
+		void setTimemodeReverse(bool b) {m_timemode_reverse = b;}
+
+	public slots:
+		void toggleTime () {m_timemode_reverse = !m_timemode_reverse;}
+
+	private:
+		bool m_timemode_reverse;
 };

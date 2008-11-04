@@ -65,7 +65,7 @@ TextScroller::TextScroller (QWidget *parent, uint w,
 	m_timer = new QTimer (this);
 	m_timer->setInterval (40);
 	connect (m_timer, SIGNAL (timeout()), this, SLOT (addOffset ()));
-	connect (qApp, SIGNAL (settingsChanged ()),
+	connect (App, SIGNAL (settingsChanged ()),
 	         this, SLOT (settingsChanged ()));
 }
 

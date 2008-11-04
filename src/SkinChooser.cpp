@@ -60,11 +60,12 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 		path.append (QDir::homePath());
 		path.append ("/.config/xmms2/clients/promoe/skins/");
 		searchpath.append (path);
+		searchpath.append (DATADIR "/skins");
 		settings.setValue ("skin/searchpath", searchpath);
 	}
 
 	QDir d;
-	d.setFilter (QDir::Dirs|QDir::NoDotAndDotDot);
+	d.setFilter (QDir::AllDirs|QDir::NoDotAndDotDot|QDir::Files);
 	QFileInfoList list;
 	foreach (QString path, searchpath) {
 		d.setPath (path);

@@ -43,15 +43,11 @@ class MainWindow : public BaseWindow
 		void raisePL (void);
 		void moveEvent (QMoveEvent *event);
 
-		bool isTimemodeReverse(void) { QSettings s; return s.value("MainWindow/timemodereverse").toBool(); }
-		void setTimemodeReverse(bool b) { QSettings s; s.setValue("MainWindow/timemodereverse",b); }
-
 		void attachWidgets ();
 
 	public slots:
 		void switchDisplay ();
 		void mouseMoveEvent (QMouseEvent *event);
-		void toggleTime () { setTimemodeReverse (!isTimemodeReverse ()); }
 
 	private:
 		bool isShaded (void) { QSettings s; return s.value("MainWindow/shaded").toBool(); }

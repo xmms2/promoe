@@ -18,6 +18,7 @@
 #include "xclientcache.h"
 #include "xplayback.h"
 
+#include "application.h"
 #include "shadeddisplay.h"
 #include "titlebar.h"
 #include "pixmapbutton.h"
@@ -45,7 +46,7 @@ ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 
 	m_time = new SmallTimeDisplay (this);
 	m_time->move (130, 4);
-	connect (m_time, SIGNAL(clicked()), m_mw, SLOT(toggleTime()));
+	connect (m_time, SIGNAL(clicked()), App, SLOT(toggleTime()));
 
 	m_title = new TextScroller (this, 39, 7, "shaded");
 	m_title->move (79, 4);
@@ -129,7 +130,7 @@ void
 ShadedDisplay::setPlaytime (uint32_t time)
 {
 	int32_t showtime;
-	if (m_mw->isTimemodeReverse()) {
+	if (App->isTimemodeReverse()) {
 		showtime = (time/1000 - m_duration/1000);
 	} else {
 		showtime = time/1000;

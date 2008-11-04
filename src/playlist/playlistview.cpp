@@ -138,7 +138,7 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 
 	XMMSHandler &xmmsh = XMMSHandler::getInstance ();
 
-	connect (qApp, SIGNAL (settingsChanged ()),
+	connect (App, SIGNAL (settingsChanged ()),
 	         this, SLOT (settingsChanged ()));
 
 	connect (xmmsh.xplayback (), SIGNAL(playbackStatusChanged(Xmms::Playback::Status)),
