@@ -28,6 +28,7 @@ HEADERS += xclient.h \
 		   playlistmodel.h \
 		   xmmsqt4.h \
 		   sourcepref.h \
+           compat.h \
 		   debug.h
 
 QT += network

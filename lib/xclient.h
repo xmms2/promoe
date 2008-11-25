@@ -19,6 +19,7 @@
 #define __XCLIENT_H__
 
 #include <xmmsclient/xmmsclient++.h>
+#include "compat.h"
 
 #include <QObject>
 #include <QHash>
@@ -33,6 +34,10 @@ class XCollection;
 class PlaylistModel;
 
 #define SOURCEPREF_HACK
+// Doesn't work for XMMSV yet
+#if HAVE_XMMSV
+#undef SOURCEPREF_HACK
+#endif
 
 class XClient : public QObject {
 	Q_OBJECT

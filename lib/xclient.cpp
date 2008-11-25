@@ -14,8 +14,8 @@
  *  GNU General Public License for more details.
  */
 
-
 #include <xmmsclient/xmmsclient++.h>
+#include "compat.h"
 
 #include <QObject>
 #include <QHash>
@@ -32,7 +32,11 @@
 #include "debug.h"
 #include "playlistmodel.h"
 
+#if !HAVE_XMMSV
 #include "sourcepref.h"
+#endif
+
+#include <QtDebug>
 
 QString
 XClient::stdToQ (const std::string &str)
@@ -222,14 +226,16 @@ XClient::propDictToQHash (const std::string &key,
 	} else {
 		QString val;
 		if (key == "url") {
-			/* This really is wrong ...*/
-			char *c = const_cast<char *>(xmmsc_result_decode_url (NULL, boost::get< std::string >(value).c_str ()));
-			val = QString::fromUtf8 (c);
-			val = val.mid (val.lastIndexOf ("/") + 1);
+			QString tmp = QString::fromUtf8 (boost::get< std::string >(value).c_str ());
+#if 0
+			val = decodeXmmsUrl (tmp);
+#else
+			tmp = decodeXmmsUrl (tmp);
+			val = tmp.mid (tmp.lastIndexOf ("/") + 1);
 			if (val.isEmpty ()) {
-				val = QString::fromUtf8 (c);
+				val = tmp;
 			}
-			free (c);
+#endif
 		} else {
 			val = QString::fromUtf8 (boost::get< std::string > (value).c_str ());
 		}
