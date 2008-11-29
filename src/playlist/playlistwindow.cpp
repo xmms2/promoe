@@ -15,7 +15,6 @@
 
 #include "playlistwindow.h"
 
-#include <QMoveEvent>
 #include <QResizeEvent>
 #include <QPoint>
 #include <QIcon>
@@ -27,15 +26,16 @@
 
 PlaylistWindow::PlaylistWindow (QWidget *parent) : BaseWindow (parent)
 {
-	QSettings s;
+	setObjectName ("playlist"); // Name of the config group
 #ifndef _WIN32
 	setWindowIcon (QIcon (":icon.png"));
 #endif
 
+	QSettings s;
 	setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
 	setAttribute (Qt::WA_DeleteOnClose);
 
-	s.beginGroup ("playlist");
+	s.beginGroup (objectName ());
 	if (!s.contains ("size")) {
 		s.setValue ("size", QSize (275, 350));
 	}
@@ -57,26 +57,6 @@ PlaylistWindow::PlaylistWindow (QWidget *parent) : BaseWindow (parent)
 	// FIXME: flickering
 	//setSizeIncrement (25, 29);
 }
-
-void
-PlaylistWindow::hideEvent (QHideEvent *event)
-{
-	QSettings s;
-	s.setValue ("playlist/visible", false);
-
-	emit visibilityChanged (false);
-}
-
-void
-PlaylistWindow::showEvent (QShowEvent *event)
-{
-	QSettings s;
-	s.setValue ("playlist/visible", true);
-	mw ()->attachWidgets ();
-
-	emit visibilityChanged (true);
-}
-
 
 void
 PlaylistWindow::switchDisplay (void)
@@ -117,13 +97,6 @@ PlaylistWindow::resizeEvent (QResizeEvent *event)
 		s.setValue ("playlist/size", size ());
 	}
 	mw ()->attachWidgets ();
-}
-
-void
-PlaylistWindow::moveEvent (QMoveEvent *event)
-{
-	QSettings s;
-	s.setValue ("playlist/pos", pos ());
 }
 
 void

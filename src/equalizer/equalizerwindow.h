@@ -19,10 +19,6 @@
 #include "basewindow.h"
 
 class QWidget;
-class QMoveEvent;
-class QHideEvent;
-class QShowEvent;
-
 class MainWindow;
 class EqualizerWidget;
 
@@ -33,17 +29,8 @@ class EqualizerWindow : public BaseWindow
 		EqualizerWindow(QWidget *parent);
 		~EqualizerWindow() {}
 
-	signals:
-		void visibilityChanged(bool visible);
-
 	public slots:
 		void setEnabled (void);
-
-	protected:
-		void hideEvent (QHideEvent *event);
-		void showEvent (QShowEvent *event);
-		void moveEvent(QMoveEvent *event);
-
 
 	private:
 		MainWindow *m_mw;

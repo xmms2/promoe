@@ -20,24 +20,33 @@
 #include <QMainWindow>
 #include <QPoint>
 #include <QMap>
-class QMouseEvent;
 class QPoint;
 
-class MainWindow;
+class QHideEvent;
+class QShowEvent;
+class QMoveEvent;
+class QMouseEvent;
 
+class MainWindow;
 class BaseWindow;
 typedef QMap<BaseWindow *, QPoint> AttachedWindowMap;
 
 class BaseWindow : public QMainWindow {
 	Q_OBJECT
 
+	signals:
+		void visibilityChanged (bool visible);
+
 	public:
 		BaseWindow (QWidget *parent);
-	
+
 		bool touches (QWidget *);
 		MainWindow * mw ();
 
 	protected:
+		void hideEvent (QHideEvent *event);
+		void showEvent (QShowEvent *event);
+		void moveEvent (QMoveEvent *event);
 		void mousePressEvent (QMouseEvent *event);
 		void mouseReleaseEvent (QMouseEvent *event);
 		void mouseMoveEvent (QMouseEvent *event);

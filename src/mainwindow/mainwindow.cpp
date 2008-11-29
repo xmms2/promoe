@@ -39,6 +39,7 @@ MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 {
 	QSettings s;
 
+	setWindowTitle (App->applicationName ());
 	setWindowFlags(Qt::FramelessWindowHint);
 	setMaximumSize (275, 116);
 #ifndef _WIN32

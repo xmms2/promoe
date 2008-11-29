@@ -38,6 +38,7 @@ inline QString
 decodeXmmsUrl (const QString &path)
 {
 	QByteArray p_enc = path.toUtf8 ();
+	QString ret;
 #if HAVE_XMMSV
 	// TODO: error checking...
 	xmmsv_t *v_enc = xmmsv_new_string (p_enc.constData ());
@@ -46,15 +47,15 @@ decodeXmmsUrl (const QString &path)
 	const char *p;
 	unsigned int p_len;
 	xmmsv_get_bin (p_dec, reinterpret_cast<const unsigned char **>(&p), &p_len);
-	QString ret = QString::fromUtf8 (p, p_len);
+	ret = QString::fromUtf8 (p, p_len);
 	xmmsv_unref (p_dec);
 	// Free p?
-	return ret;
 #else
 	char *p_dec = const_cast<char *> (xmmsc_result_decode_url (NULL, p_enc.constData ()));
-	return QString::fromUtf8 (p_dec);
+	ret = QString::fromUtf8 (p_dec);
 	free (p_dec);
 #endif
+	return ret;
 }
 
 

@@ -20,10 +20,7 @@
 #include "basewindow.h"
 
 class QEvent;
-class QMoveEvent;
 class QResizeEvent;
-class QHideEvent;
-class QShowEvent;
 class QPoint;
 
 // our own classes
@@ -41,8 +38,6 @@ class PlaylistWindow : public BaseWindow {
 		void setActive (bool);
 
 	signals:
-		void visibilityChanged(bool visible);
-
 		// setTime is used to set playtime in playlistcontrols
 		void setDisplayTime (int seconds);
 
@@ -50,11 +45,8 @@ class PlaylistWindow : public BaseWindow {
 		void switchDisplay (void);
 
 	protected:
-		void hideEvent (QHideEvent *event);
-		void showEvent (QShowEvent *event);
 		void enterEvent (QEvent *event);
 		void leaveEvent (QEvent *event);
-		void moveEvent (QMoveEvent *event);
 		void resizeEvent (QResizeEvent *event);
 
 	private:

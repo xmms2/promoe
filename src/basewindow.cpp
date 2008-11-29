@@ -19,49 +19,66 @@
 
 #include <QApplication>
 #include <QWidgetList>
-#include <QMouseEvent>
 #include <QPoint>
+#include <QSettings>
+
+#include <QHideEvent>
+#include <QShowEvent>
+#include <QMoveEvent>
+#include <QMouseEvent>
+
+#include <QtDebug>
 
 BaseWindow::BaseWindow (QWidget *parent) : QMainWindow (parent)
 {
 }
 
-bool
-BaseWindow::touches (QWidget *widget)
+
+// Qt Event Handlers
+void
+BaseWindow::hideEvent (QHideEvent *event)
 {
-	if (this == widget) {
-		return true;
+	if (event->spontaneous ()) {
+		event->ignore ();
+		return;
 	}
 
-	qint32 left = x ();
-	qint32 right = left + width ();
-	qint32 top = y ();
-	qint32 bottom = top + height ();
-
-	qint32 w_left = widget->x ();
-	qint32 w_right = w_left + widget->width ();
-	qint32 w_top = widget->y ();
-	qint32 w_bottom = w_top + widget->height ();
-
-	if (( (top <= w_bottom) && (bottom >= w_top) &&
-	      ((left == w_right || right == w_left))   ) ||
-		( (left <= w_right) && (right >= w_left) &&
-		  ((top == w_bottom) || (bottom == w_top) )  )) {
-		return true;
+	if ((objectName ().isEmpty ()) | (objectName () == "MainWindow")) {
+		event->ignore ();
+		return;
 	}
 
-	return false;
+	QSettings s;
+	s.setValue (objectName ()+"/visible", false);
+
+	emit visibilityChanged (false);
 }
 
-MainWindow *
-BaseWindow::mw ()
+void
+BaseWindow::showEvent (QShowEvent *event)
 {
-	//MainWindow is the only BaseWindow without a *parent
-	if (parent ()) {
-		return qobject_cast<MainWindow *>(parent ());
-	} else {
-		return qobject_cast<MainWindow *>(this);
+	if (objectName ().isEmpty ()) {
+		event->ignore ();
+		return;
 	}
+
+	QSettings s;
+	s.setValue (objectName ()+"/visible", true);
+	mw ()->attachWidgets ();
+
+	emit visibilityChanged (true);
+}
+
+void
+BaseWindow::moveEvent (QMoveEvent *event)
+{
+	if (objectName ().isEmpty ()) {
+		event->ignore ();
+		return;
+	}
+
+	QSettings s;
+	s.setValue (objectName ()+"/pos", pos ());
 }
 
 void
@@ -89,6 +106,45 @@ BaseWindow::mouseMoveEvent (QMouseEvent *event)
 		move (snapWindow (event->globalPos() - m_diff));
 	}
 
+}
+
+// Helper classes vor snapping windows
+MainWindow *
+BaseWindow::mw ()
+{
+	//MainWindow is the only BaseWindow without a *parent
+	if (parent ()) {
+		return qobject_cast<MainWindow *>(parent ());
+	} else {
+		return qobject_cast<MainWindow *>(this);
+	}
+}
+
+bool
+BaseWindow::touches (QWidget *widget)
+{
+	if (this == widget) {
+		return true;
+	}
+
+	qint32 left = x ();
+	qint32 right = left + width ();
+	qint32 top = y ();
+	qint32 bottom = top + height ();
+
+	qint32 w_left = widget->x ();
+	qint32 w_right = w_left + widget->width ();
+	qint32 w_top = widget->y ();
+	qint32 w_bottom = w_top + widget->height ();
+
+	if (( (top <= w_bottom) && (bottom >= w_top) &&
+	      ((left == w_right || right == w_left))   ) ||
+		( (left <= w_right) && (right >= w_left) &&
+		  ((top == w_bottom) || (bottom == w_top) )  )) {
+		return true;
+	}
+
+	return false;
 }
 
 QPoint

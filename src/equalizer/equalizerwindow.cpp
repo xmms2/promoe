@@ -17,13 +17,13 @@
 
 #include "QWidget"
 #include <QSettings>
-#include <QMoveEvent>
 
 #include "mainwindow.h"
 #include "equalizerwidget.h"
 
 EqualizerWindow::EqualizerWindow (QWidget *parent) : BaseWindow (parent)
 {
+	setObjectName ("equalizer");
 	m_mw = dynamic_cast<MainWindow *>(parent);
 
 	setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
@@ -38,33 +38,7 @@ EqualizerWindow::EqualizerWindow (QWidget *parent) : BaseWindow (parent)
 }
 
 void
-EqualizerWindow::hideEvent (QHideEvent *event)
-{
-	QSettings s;
-	s.setValue ("equalizer/visible", false);
-
-	emit visibilityChanged (false);
-}
-
-void
-EqualizerWindow::showEvent (QShowEvent *event)
-{
-	QSettings s;
-	s.setValue ("equalizer/visible", true);
-	m_mw->attachWidgets ();
-
-	emit visibilityChanged (true);
-}
-
-void
 EqualizerWindow::setEnabled (void)
 {
 	qDebug ("test");
-}
-
-void
-EqualizerWindow::moveEvent (QMoveEvent *event)
-{
-	QSettings s;
-	s.setValue ("equalizer/pos", pos ());
 }
