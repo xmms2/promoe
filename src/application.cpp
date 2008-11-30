@@ -94,13 +94,20 @@ Application::handleDisconnected ()
 	if (closingDown ())
 		return;
 
-	// TODO: enable reconnect
-	QMessageBox::critical( NULL, "xmms2 daemon disconnected",
+	int pressed =
+	QMessageBox::warning( NULL, "xmms2 daemon disconnected",
 	                      "The xmms2 deamon has disconnected\n"
 	                      "This could be because the server crashed\n"
 	                      "or because another client has shut down the sever.",
-	                      "Quit Promoe");
-	QApplication::quit ();
+	                      "Reconnect", "Quit Promoe");
+	switch (pressed)
+	{
+		case 0:
+			m_xmms2_client->connect ();
+			break;
+		default:
+			QApplication::quit ();
+	}
 }
 
 int
