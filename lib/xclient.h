@@ -47,17 +47,17 @@ class XClient : public QObject {
 		bool connect (const char *path = NULL, const bool &sync = false,
 		               QWidget* parent = NULL);
 		static void propDictToQHash (const std::string &key,
-									 const Xmms::Dict::Variant &value,
-									 const std::string &source,
+		                             const Xmms::Dict::Variant &value,
+		                             const std::string &source,
 #ifdef SOURCEPREF_HACK
 		                             const QList<QRegExp> &priolist,
 		                             QHash<QString, int> &curr_prio,
 #endif
 		                             QHash<QString, QVariant> &hash);
-									 
- 		static void dictToQHash (const std::string &key,
-                                 const Xmms::Dict::Variant &value,
-                         		 QHash<QString, QVariant> &hash);
+
+		static void dictToQHash (const std::string &key,
+		                         const Xmms::Dict::Variant &value,
+		                         QHash<QString, QVariant> &hash);
 
 		static QHash<QString, QVariant> convert_propdict (const Xmms::PropDict &);
 		static QHash<QString, QVariant> convert_dict (const Xmms::Dict &);
@@ -88,11 +88,11 @@ class XClient : public QObject {
 
 		static QString stdToQ (const std::string &);
 		static std::string qToStd (const QString &);
-		
+
 		bool isConnected () const {
             return m_isconnected;
         };
-        
+
 //        static QDir esperanza_dir ();
 		void setDisconnectCallback (const Xmms::DisconnectCallback::slot_type &slot) { m_client->setDisconnectCallback (slot); }
 		const Xmms::Collection* collection () { if (m_client && m_client->isConnected ()) return &m_client->collection; else return NULL; }

@@ -25,6 +25,7 @@
 #include "Skin.h"
 
 #include <QPainter>
+#include <QMessageBox>
 
 EqualizerSlider::EqualizerSlider (QWidget *parent, int id) :
                                   PixmapSlider (parent)
@@ -110,28 +111,13 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	}
 
 	connect (m_xconfig, SIGNAL (configChanged (QString, QString)),
-	         this, SLOT (serverConfigChanged (QString, QString)));
+	         this, SLOT (serverConfigValueChanged (QString, QString)));
 
-	// if the config from the server were already loaded, we will only
-	// receive configChanged signals for values that really change
-	// so we must request the existing values manually
+	// we request the config values manually if we already are connected
+	connect (m_xconfig, SIGNAL (configLoaded ()),
+	         this, SLOT (loadServerConfig ()));
 	if (m_xconfig->isReady()) {
-		QString key;
-		QString value;
-		// set enabled checkbox
-		key = QString ("equalizer.enabled");
-		value = m_xconfig->value_get (key);
-		serverConfigChanged (key, value);
-		// set preamp
-		key = QString ("equalizer.preamp");
-		value = m_xconfig->value_get (key);
-		serverConfigChanged (key, value);
-		// Set band-sliders
-		for (int i=0; i < 10; i++) {
-			key = QString ("equalizer.legacy%1").arg(i);
-			value = m_xconfig->value_get (key);
-			serverConfigChanged (key, value);
-		}
+		loadServerConfig ();
 	}
 }
 
@@ -197,11 +183,51 @@ EqualizerWidget::paintEvent (QPaintEvent *event)
  *  update the serverconfiguraten if we change something
  */
 void
-EqualizerWidget::serverConfigChanged (QString key, QString value)
+EqualizerWidget::loadServerConfig ()
 {
-//	qDebug (key.toAscii ());
-//	qDebug (value.toAscii ());
+	// FIXME: Disable Widget if doesn't get enabled
+	// TODO: Add 'don't bother me again' checkbox
+	if (!(m_xconfig->values_get (QRegExp ("effect\\.order\\.\\d+")).
+	                 contains ("equalizer"))) {
+		int button = QMessageBox::information (this, "Equalizer not enabled",
+		                      "You need to enable the equalizer plugin on\n" \
+		                      "the server or the equalizer will not work\n\n" \
+		                      "Should promoe enable the equalizer plugin?",
+		                      "Enable", "Ignore");
+		if (button == 0) {
+			// Add 'equalizer' to first empty 'effect.order.<num>' entry,
+			// xmms2d takes care that there alway is at least one empty entry
+			int i = 0;
+			QString key = "effect.order.%1";
+			while (m_xconfig->has_key (key.arg (i))) {
+				if (m_xconfig->value_get (key.arg (i)).isEmpty ()) {
+					m_xconfig->value_set (key.arg (i), "equalizer");
+					break;
+				}
+			}
+		}
+	}
+	QString key;
+	QString value;
+	// set enabled checkbox
+	key = QString ("equalizer.enabled");
+	value = m_xconfig->value_get (key);
+	serverConfigValueChanged (key, value);
+	// set preamp
+	key = QString ("equalizer.preamp");
+	value = m_xconfig->value_get (key);
+	serverConfigValueChanged (key, value);
+	// Set band-sliders
+	for (int i=0; i < 10; i++) {
+		key = QString ("equalizer.legacy%1").arg(i);
+		value = m_xconfig->value_get (key);
+		serverConfigValueChanged (key, value);
+	}
+}
 
+void
+EqualizerWidget::serverConfigValueChanged (QString key, QString value)
+{
 	// FIXME: also test on use_legacy
 	if (key.startsWith ("equalizer.enabled")) {
 		if (value != "0") {

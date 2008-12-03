@@ -39,9 +39,13 @@ class XConfig : public QObject
 		bool value_set (QString key, QString value);
 		bool value_register (QString key, QString defval);
 
+		bool has_key (const QString &key) const
+			{return m_config_cache.contains (key);};
+
 		bool isReady (void) {return m_ready;}
 
 	signals:
+		void configLoaded ();
 		void configChanged (QString key, QString value);
 
 	public slots:

@@ -59,12 +59,14 @@ class EqualizerWidget : public QWidget
 		void setPixmaps(Skin *skin);
 
 	protected slots:
-		void serverConfigChanged (QString key, QString value);
+		void loadServerConfig ();
+		void serverConfigValueChanged (QString key, QString value);
 		void setEqualizerEnabled (bool enabled);
 		void updateServerPreamp (int value);
 		void updateServerBands (int value, int id);
 
 	private:
+
 		XConfig *m_xconfig;
 		QPixmap m_pixmap;
 		QPixmap m_graph;

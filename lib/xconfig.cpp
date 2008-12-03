@@ -118,10 +118,13 @@ XConfig::on_disconnect (XClient *client)
 bool
 XConfig::handle_config_value (const Xmms::Dict &value)
 {
+	// FIXME: I should rework configuration handling, and perhaps I should
+	// abolish the call to handle_config_value_changed here.
 	bool ok = handle_config_value_changed (value);
 	if (ok) {
 		m_ready = true;
 	}
+	emit configLoaded ();
 	return ok;
 }
 
