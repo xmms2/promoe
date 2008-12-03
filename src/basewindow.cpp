@@ -43,7 +43,7 @@ BaseWindow::hideEvent (QHideEvent *event)
 		return;
 	}
 
-	if ((objectName ().isEmpty ()) | (objectName () == "MainWindow")) {
+	if ((objectName ().isEmpty ()) || (objectName () == "MainWindow")) {
 		event->ignore ();
 		return;
 	}

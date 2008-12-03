@@ -24,7 +24,9 @@ namespace Xmms {
 
 #include <QObject>
 #include <QHash>
+#include <QRegExp>
 #include <QString>
+#include <QStringList>
 
 class XConfig : public QObject
 {
@@ -33,6 +35,7 @@ class XConfig : public QObject
 		XConfig (XClient *parent);
 
 		QString value_get (QString key);
+		QStringList values_get (QRegExp key = QRegExp (".*"));
 		bool value_set (QString key, QString value);
 		bool value_register (QString key, QString defval);
 

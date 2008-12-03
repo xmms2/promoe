@@ -48,6 +48,20 @@ XConfig::value_get (QString key)
 	return m_config_cache.value (key);
 }
 
+QStringList
+XConfig::values_get (QRegExp key)
+{
+	QStringList ret;
+	QHash < QString, QString >::ConstIterator it = m_config_cache.constBegin ();
+	while (it != m_config_cache.constEnd ()) {
+		if (key.exactMatch (it.key ())) {
+			ret.append (it.value ());
+		}
+		++it;
+	}
+	return ret;
+}
+
 bool
 XConfig::value_set (QString key, QString val)
 {
