@@ -39,19 +39,21 @@ class Skin : public QObject
 		bool setSkin (const QString& name);
 		static const QPixmap getPixmap (const QString&, const QString&);
 
-		const QSize getSize (uint item) const { return m_sizes[item]; };
-		const QPoint getPos (uint item) const { return m_positions[item]; };
+		const QSize getSize (uint item) const { return m_sizes.value (item); };
+		const QPoint getPos (uint item) const
+			{ return m_positions.value (item); };
 		const QIcon getIcon (uint item) const { return m_icons.value(item); };
 		const QPixmapList getBackgrounds (uint item) const
-		                                 { return m_backgrounds.value(item); };
+			{ return m_backgrounds.value(item); };
 		const PixmapMap getNumbers () const { return m_numbers; }
 		const PixmapMap getSmallNumbers () const { return m_smallNumbers; }
 
-		const QPixmap getItem (uint part) const { return m_items[part]; }
-		const QPixmap getPls (uint part) const { return m_playlist[part]; }
-		const QPixmap getLetter (uint c) const { return m_letterMap[c]; }
-//		const QPixmap getNumber (uint c) const { return m_numbers[c]; }
-		const QByteArray getPLeditValue (QByteArray c) const { return m_pledit_txt[c]; }
+		const QPixmap getItem (uint part) const { return m_items.value (part); }
+		const QPixmap getPls (uint part) const
+			{ return m_playlist.value (part); }
+		const QPixmap getLetter (uint c) const { return m_letterMap.value (c); }
+		const QByteArray getPLeditValue (QByteArray c) const
+			{ return m_pledit_txt.value(c); }
 
 	signals:
 		void skinChanged (Skin *skin);
@@ -78,8 +80,6 @@ class Skin : public QObject
 		QString m_skinname;
 		QString m_path;
 
-		QList<QPoint> m_positions;
-		QList<QSize> m_sizes;
 
 		QMap<uint, QIcon> m_icons;
 		QMap<uint, QPixmapList> m_backgrounds;
@@ -91,6 +91,10 @@ class Skin : public QObject
 		QMap<uint, QPixmap> m_playlist;
 
 		QMap<QByteArray, QByteArray> m_pledit_txt;
+
+		/* Initialized on class construction */
+		QMap<uint, QPoint> m_positions;
+		QMap<uint, QSize> m_sizes;
 
 	public:
 		enum Part {
@@ -219,7 +223,7 @@ class Skin : public QObject
 			PLS_WS_MID_1 = PLS_WS_MID_0,
 			PLS_LCBAR,
 			PLS_RCBAR,
-			
+
 			PLS_MSC_BTN_0,
 			PLS_MSC_BTN_1,
 

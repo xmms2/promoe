@@ -691,80 +691,80 @@ void
 Skin::setSizes ()
 {
 	m_sizes.clear ();
-	m_sizes << QSize ( 9,  9) // BUTTON_MW_MENU
-	        << QSize ( 9,  9) // BUTTON_MW_MINIMIZE
-	        << QSize ( 9,  9) // BUTTON_MW_CLOSE
-	        << QSize ( 9,  9) // BUTTON_MW_SHADE
-	        << QSize (23, 18) // BUTTON_MW_PREV
-	        << QSize (23, 18) // BUTTON_MW_PLAY
-	        << QSize (23, 18) // BUTTON_MW_PAUSE
-	        << QSize (23, 18) // BUTTON_MW_STOP
-	        << QSize (22, 18) // BUTTON_MW_NEXT
-	        << QSize (22, 16) // BUTTON_MW_EJECT
-	        << QSize (23, 12) // BUTTON_MW_EQ
-	        << QSize (23, 12) // BUTTON_MW_PLS
-	        << QSize (46, 15) // BUTTON_MW_SHUFFLE
-	        << QSize (28, 15) // BUTTON_MW_REPEAT
-	        << QSize ( 9,  9) // BUTTON_MW_SHADED_UNSHADE
-	        << QSize ( 9,  9) // BUTTON_EQ_CLOSE
-	        << QSize ( 9,  9) // BUTTON_EQ_SHADE
-	        << QSize (25, 12) // BUTTON_EQ_ACTIVE
-	        << QSize (33, 12) // BUTTON_EQ_AUTO
-	        << QSize (44, 12) // BUTTON_EQ_PRESET
-	        << QSize () // BUTTON_EQ_SHADED_CLOSE
-	        << QSize () // BUTTON_EQ_SHADED_UNSHADE
-	        << QSize ( 9,  9) // BUTTON_PLS_CLOSE
-	        << QSize ( 9,  9) // BUTTON_PLS_SHADE
-	        << QSize ( 9,  9) // BUTTON_PLS_SHADED_UNSHADE
-	        << QSize () // SLIDER_POSBAR
-	        << QSize (248, 10) // SLIDER_POSBAR_BGS
-	        << QSize (14, 11) // SLIDER_VOLUMEBAR
-	        << QSize (68, 13) // SLIDER_VOLUMEBAR_BGS
-	        << QSize () // SLIDER_BALANCEBAR
-	        << QSize (38, 13) // SLIDER_BALANCEBAR_BGS
-	        << QSize () // SLIDER_EQUALIZER
-	        << QSize (14, 63) // SLIDER_EQUALIZER_BGS
-	        ;
+	/* Please keep this list sorted like the enum */
+	m_sizes.insert (BUTTON_MW_MENU, QSize (9, 9));
+	m_sizes.insert (BUTTON_MW_MINIMIZE, QSize (9, 9));
+	m_sizes.insert (BUTTON_MW_CLOSE, QSize (9, 9));
+	m_sizes.insert (BUTTON_MW_SHADE, QSize (9, 9));
+	m_sizes.insert (BUTTON_MW_PREV, QSize (23, 18));
+	m_sizes.insert (BUTTON_MW_PLAY, QSize (23, 18));
+	m_sizes.insert (BUTTON_MW_PAUSE, QSize (23, 18));
+	m_sizes.insert (BUTTON_MW_STOP, QSize (23, 18));
+	m_sizes.insert (BUTTON_MW_NEXT, QSize (22, 18));
+	m_sizes.insert (BUTTON_MW_EJECT, QSize (22, 16));
+	m_sizes.insert (BUTTON_MW_EQ, QSize (23, 12));
+	m_sizes.insert (BUTTON_MW_PLS, QSize (23, 12));
+	m_sizes.insert (BUTTON_MW_SHUFFLE, QSize (46, 15));
+	m_sizes.insert (BUTTON_MW_REPEAT, QSize (28, 15));
+	m_sizes.insert (BUTTON_MW_SHADED_UNSHADE, QSize (9, 9));
+	m_sizes.insert (BUTTON_EQ_CLOSE, QSize (9, 9));
+	m_sizes.insert (BUTTON_EQ_SHADE, QSize (9, 9));
+	m_sizes.insert (BUTTON_EQ_ACTIVE, QSize (25, 12));
+	m_sizes.insert (BUTTON_EQ_AUTO, QSize (33, 12));
+	m_sizes.insert (BUTTON_EQ_PRESET, QSize (44, 12));
+//	m_sizes.insert (BUTTON_EQ_SHADED_CLOSE, QSize ());
+//	m_sizes.insert (BUTTON_EQ_SHADED_UNSHADE, QSize ());
+	m_sizes.insert (BUTTON_PLS_CLOSE, QSize (9, 9));
+	m_sizes.insert (BUTTON_PLS_SHADE, QSize (9, 9));
+	m_sizes.insert (BUTTON_PLS_SHADED_UNSHADE, QSize (9, 9));
+//	m_sizes.insert (SLIDER_POSBAR, QSize ());
+	m_sizes.insert (SLIDER_POSBAR_BGS, QSize (248, 10));
+	m_sizes.insert (SLIDER_VOLUMEBAR, QSize (14, 11));
+	m_sizes.insert (SLIDER_VOLUMEBAR_BGS, QSize (68, 13));
+//	m_sizes.insert (SLIDER_BALANCEBAR, QSize ());
+	m_sizes.insert (SLIDER_BALANCEBAR_BGS, QSize (38, 13));
+//	m_sizes.insert (SLIDER_EQUALIZER, QSize ());
+	m_sizes.insert (SLIDER_EQUALIZER_BGS, QSize (14, 63));
 }
 
 void
 Skin::setPositions ()
 {
 	m_positions.clear ();
-	m_positions << QPoint (  6,  3) // BUTTON_MW_MENU
-	            << QPoint (244,  3) // BUTTON_MW_MINIMIZE
-	            << QPoint (264,  3) // BUTTON_MW_CLOSE
-	            << QPoint (254,  3) // BUTTON_MW_SHADE
-	            << QPoint ( 16, 88) // BUTTON_MW_PREV
-	            << QPoint ( 39, 88) // BUTTON_MW_PLAY
-	            << QPoint ( 62, 88) // BUTTON_MW_PAUSE
-	            << QPoint ( 85, 88) // BUTTON_MW_STOP
-	            << QPoint (108, 88) // BUTTON_MW_NEXT
-	            << QPoint (136, 89) // BUTTON_MW_EJECT
-	            << QPoint (219, 58) // BUTTON_MW_EQ
-	            << QPoint (242, 58) // BUTTON_MW_PLS
-	            << QPoint (164, 89) // BUTTON_MW_SHUFFLE
-	            << QPoint (210, 89) // BUTTON_MW_REPEAT
-	            << QPoint (254,  3) // BUTTON_MW_SHADED_UNSHADE
-	            << QPoint (264,  3) // BUTTON_EQ_CLOSE
-	            << QPoint (254  ,3) // BUTTON_EQ_SHADE
-	            << QPoint ( 14, 18) // BUTTON_EQ_ACTIVE
-	            << QPoint ( 39, 18) // BUTTON_EQ_AUTO
-	            << QPoint (217, 18) // BUTTON_EQ_PRESET
-	            << QPoint () // BUTTON_EQ_SHADED_CLOSE
-	            << QPoint () // BUTTON_EQ_SHADED_UNSHADE
-	            // The next 3 widgets are placed from the right
-	            << QPoint (-11,  3) // BUTTON_PLS_CLOSE
-	            << QPoint (-20,  3) // BUTTON_PLS_SHADE
-	            << QPoint (-20,  3) // BUTTON_PLS_SHADED_UNSHADE
-	            << QPoint () // SLIDER_POSBAR
-	            << QPoint ( 16, 72) // SLIDER_POSBAR_BGS
-	            << QPoint () // SLIDER_VOLUMEBAR
-	            << QPoint (107, 57) // SLIDER_VOLUMEBAR_BGS
-	            << QPoint () // SLIDER_BALANCEBAR
-	            << QPoint (177, 57) // SLIDER_BALANCEBAR_BGS
-	            << QPoint () // SLIDER_EQUALIZER
-	            << QPoint () // SLIDER_EQUALITER_BGS
-	            ;
+	/* Please keep this list sorted like the enum */
+	m_positions.insert (BUTTON_MW_MENU, QPoint (6, 3));
+	m_positions.insert (BUTTON_MW_MINIMIZE, QPoint (244, 3));
+	m_positions.insert (BUTTON_MW_CLOSE, QPoint (264, 3));
+	m_positions.insert (BUTTON_MW_SHADE, QPoint (254, 3));
+	m_positions.insert (BUTTON_MW_PREV, QPoint (16, 88));
+	m_positions.insert (BUTTON_MW_PLAY, QPoint (39, 88));
+	m_positions.insert (BUTTON_MW_PAUSE, QPoint (62, 88));
+	m_positions.insert (BUTTON_MW_STOP, QPoint (85, 88));
+	m_positions.insert (BUTTON_MW_NEXT, QPoint (108, 88));
+	m_positions.insert (BUTTON_MW_EJECT, QPoint (136, 89));
+	m_positions.insert (BUTTON_MW_EQ, QPoint (219, 58));
+	m_positions.insert (BUTTON_MW_PLS, QPoint (242, 58));
+	m_positions.insert (BUTTON_MW_SHUFFLE, QPoint (164, 89));
+	m_positions.insert (BUTTON_MW_REPEAT, QPoint (210, 89));
+	m_positions.insert (BUTTON_MW_SHADED_UNSHADE, QPoint (254, 3));
+	m_positions.insert (BUTTON_EQ_CLOSE, QPoint (264, 3));
+	m_positions.insert (BUTTON_EQ_SHADE, QPoint (254, 3));
+	m_positions.insert (BUTTON_EQ_ACTIVE, QPoint (14, 18));
+	m_positions.insert (BUTTON_EQ_AUTO, QPoint (39, 18));
+	m_positions.insert (BUTTON_EQ_PRESET, QPoint (217, 18));
+//	m_positions.insert (BUTTON_EQ_SHADED_CLOSE  , QPoint ());
+//	m_positions.insert (BUTTON_EQ_SHADED_UNSHADE, QPoint ());
+	/* The next 3 widgets are placed from the right */
+	m_positions.insert (BUTTON_PLS_CLOSE, QPoint (-11, 3));
+	m_positions.insert (BUTTON_PLS_SHADE, QPoint (-20, 3));
+	m_positions.insert (BUTTON_PLS_SHADED_UNSHADE, QPoint (-20, 3));
+//	m_positions.insert (SLIDER_POSBAR, QPoint ());
+	m_positions.insert (SLIDER_POSBAR_BGS, QPoint (16, 72));
+//	m_positions.insert (SLIDER_VOLUMEBAR, QPoint ());
+	m_positions.insert (SLIDER_VOLUMEBAR_BGS, QPoint (107, 57));
+//	m_positions.insert (SLIDER_BALANCEBAR, QPoint ());
+	m_positions.insert (SLIDER_BALANCEBAR_BGS, QPoint (177, 57));
+//	m_positions.insert (SLIDER_EQUALIZER, QPoint ());
+//	m_positions.insert (SLIDER_EQUALIZER_BGS, QPoint ());
 }
 
