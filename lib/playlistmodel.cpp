@@ -121,6 +121,7 @@ PlaylistModel::handle_update_pos (const Xmms::Dict &posdict)
 	if (changed_pl == m_name) {
 		uint32_t pos = posdict.get<uint32_t> ("position");
 		m_current_pos = pos;
+		emit currentPosChanged (index (pos, 0));
 		emit dataChanged(index (pos, 0), index (pos, m_columns.size ()));
 	}
 	return true;
@@ -130,6 +131,7 @@ bool
 PlaylistModel::handle_update_pos (const uint32_t &pos)
 {
 	m_current_pos = pos;
+	emit currentPosChanged (index (pos, 0));
 	emit dataChanged(index (pos, 0), index (pos, m_columns.size ()));
 	return true;
 }

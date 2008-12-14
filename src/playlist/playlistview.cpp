@@ -166,10 +166,21 @@ PlaylistView::removeSelected () {
 }
 
 void
-PlaylistView::setModel (QAbstractItemModel *model) {
-	QListView::setModel (model);
+PlaylistView::setModel (PlaylistModel *plmodel) {
+	if (model ()) disconnect (model (), 0, this, SLOT (currentPosChanged (QModelIndex)));
+	QListView::setModel (plmodel);
 	setModelColumn(0);
 	updateGeometry();
+	connect (plmodel, SIGNAL (currentPosChanged (QModelIndex)),
+	         this, SLOT (currentPosChanged (QModelIndex)));
+}
+
+void
+PlaylistView::currentPosChanged (QModelIndex index) {
+	QSettings s;
+	if (s.value ("playlist/scrolltocurrent", true).toBool ()) {
+		scrollTo (index);
+	}
 }
 
 void
@@ -228,6 +239,8 @@ PlaylistView::settingsChanged ()
 	}
 	m_fontmetrics = new QFontMetrics (*m_font);
 	update ();
+	// Scroll to current pos, if enabled
+	currentPosChanged (qobject_cast<PlaylistModel *>(model())->currentPos ());
 }
 
 void

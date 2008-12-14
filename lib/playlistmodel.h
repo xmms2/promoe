@@ -65,7 +65,9 @@ class PlaylistModel : public QAbstractItemModel
 		bool dropMimeData (const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent);
 		Qt::DropActions supportedDropActions () const;
 		QStringList mimeTypes () const;
-		
+
+		QModelIndex currentPos () {return index (m_current_pos, 0);}
+
 		/**
 		 * Set the columns that should be shown in the view.
 		 * @param columns A list of property keys. i.e. "artist", "album"
@@ -122,6 +124,7 @@ class PlaylistModel : public QAbstractItemModel
 		
 	signals:
 		void entryMoved (const QModelIndex &, const QModelIndex &);
+		void currentPosChanged (QModelIndex);
 
 	public slots:
 		void got_connection (XClient *);

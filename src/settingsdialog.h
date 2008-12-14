@@ -51,6 +51,7 @@ class SettingsTabPlaylist : public QWidget {
 		QSpinBox *m_fontsize;
 		QSpinBox *m_shadesize;
 		QCheckBox *m_remote_fs;
+		QCheckBox *m_scroll_view;
 };
 
 class SettingsTabMain : public QWidget {

@@ -20,6 +20,7 @@
 #include <xmmsclient/xmmsclient++.h>
 #include "entryinfo.h"
 class Skin;
+class PlaylistModel;
 
 #include <QObject>
 #include <QAbstractItemDelegate>
@@ -50,7 +51,9 @@ class PlaylistView : public QListView {
 		PlaylistView (QWidget *parent);
 		~PlaylistView () {}
 
-		void setModel (QAbstractItemModel *model);
+		void setModel (QAbstractItemModel *model)
+			{qWarning ("Trying to set wrong model in PlaylistView"); return;};
+		void setModel (PlaylistModel *model);
 
 	public slots:
 		void contextMenuEvent (QContextMenuEvent *e);
@@ -62,7 +65,7 @@ class PlaylistView : public QListView {
 		void showEntryInfo (void);
 		void settingsChanged (void);
 		void setPixmaps (Skin *skin);
-
+		void currentPosChanged (QModelIndex);
 	protected:
 		void mouseDoubleClickEvent (QMouseEvent *event);
 

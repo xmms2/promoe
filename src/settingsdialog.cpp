@@ -311,6 +311,18 @@ SettingsTabPlaylist::SettingsTabPlaylist (QWidget *parent) : QWidget (parent)
 	l = new QLabel (tr ("Use remote filebrowsing"), c);
 	h->addWidget (l, 1);
 
+	c = new QWidget (dummy);
+	h = new QHBoxLayout (c);
+	vbox->addWidget (c, 1);
+
+	m_scroll_view = new QCheckBox (c);
+	if (!s.contains ("scrolltocurrent"))
+		s.setValue ("scrolltocurrent", true);
+	m_scroll_view->setCheckState (s.value ("scrolltocurrent").toBool () ? Qt::Checked : Qt::Unchecked);
+	h->addWidget (m_scroll_view);
+	l = new QLabel (tr ("Scroll playlist to current entry"), c);
+	h->addWidget (l, 1);
+
 	s.endGroup ();
 }
 
@@ -321,6 +333,7 @@ SettingsTabPlaylist::saveSettings (void)
 	s.setValue ("playlist/fontsize", m_fontsize->value ());
 	s.setValue ("playlist/shadedsize", m_shadesize->value ());
 	s.setValue ("playlist/useremote", m_remote_fs->checkState () == Qt::Checked);
+	s.setValue ("playlist/scrolltocurrent", m_scroll_view->checkState () == Qt::Checked);
 	//TODO: Check if we really changed something
 	return true;
 }
