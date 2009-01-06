@@ -14,7 +14,7 @@
  */
 
 #include "skindisplay.h"
-#include "textbar.h"
+#include "textscroller.h"
 #include "Skin.h"
 
 #include <QBrush>

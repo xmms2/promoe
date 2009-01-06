@@ -25,7 +25,7 @@
 #include "pixmapbutton.h"
 #include "pixmapslider.h"
 #include "titlebar.h"
-#include "textbar.h"
+#include "textscroller.h"
 #include "timedisplay.h"
 #include "Skin.h"
 #include "pixmapnumberdisplay.h"

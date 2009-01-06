@@ -23,7 +23,7 @@
 #include "pixmapbutton.h"
 
 #include "timedisplay.h"
-#include "textbar.h"
+#include "textscroller.h"
 #include "Skin.h"
 #include "mainwindow.h"
 
