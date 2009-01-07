@@ -225,6 +225,9 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 			break;
 	}
 
+	/* TODO: call this only for the necessary methods */
+	emitTotalPlaytime ();
+
 	return true;
 }
 
@@ -245,6 +248,8 @@ PlaylistModel::handle_list (const Xmms::List< unsigned int > &list)
 	}
 
 	endInsertRows ();
+
+	emitTotalPlaytime  ();
 
 	return true;
 }
@@ -284,6 +289,8 @@ PlaylistModel::entry_changed (uint32_t id)
 		QModelIndex idx2 = index (pos.at (i), m_columns.size ());
 		emit dataChanged(idx1, idx2);
 	}
+
+	emitTotalPlaytime ();
 }
 
 int
@@ -533,6 +540,39 @@ PlaylistModel::flags (const QModelIndex &idx) const
 	}
 
 	return f;
+}
+
+void
+PlaylistModel::emitTotalPlaytime ()
+{
+	bool isExact = true;
+	uint32_t time = 0;
+
+	foreach (uint32_t index, m_plist) {
+		QHash<QString, QVariant> data = m_client->cache ()->get_info (index,
+		                                                              false);
+		if (!data.isEmpty ()) {
+			time += data.value ("duration", 0).toInt ();
+		} else {
+			isExact = false;
+		}
+	}
+
+	emit totalPlaytime (time/1000, isExact);
+}
+
+uint32_t
+PlaylistModel::getPlaytimeForSelection(const QModelIndexList &index_list)
+{
+	uint32_t playtime = 0;
+	foreach (QModelIndex idx, index_list) {
+		int id = idx.row ();
+		if (id >= m_plist.size ()) continue;
+		QHash<QString, QVariant> data =
+			m_client->cache ()->get_info (m_plist.at (id), false);
+		if (!data.isEmpty ()) playtime += data.value ("duration", 0).toInt ();
+	}
+	return playtime/1000;
 }
 
 QList<uint32_t>

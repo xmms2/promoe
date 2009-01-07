@@ -20,6 +20,7 @@
 #include <QMap>
 
 class SmallTimeDisplay;
+class QPaintEvent;
 class QPixmap;
 
 typedef QMap<int, QPixmap> PixmapMap;
@@ -31,10 +32,11 @@ class PlaylistControls : public QWidget {
 		PlaylistControls (QWidget *parent);
 
 		void setNumbers (const PixmapMap &p);
+		void setPixmapFont (const PixmapMap &p);
 
 	public slots:
-		void setSelectedLength (int);
-		void setPlaylistLength (int);
+		void setSelectionPlaytime (uint32_t);
+		void setPlaylistPlaytime (uint32_t, bool isExact);
 
 	signals:
 		// emitted when buttons are clicked
@@ -49,9 +51,14 @@ class PlaylistControls : public QWidget {
 		//connected to internal timedisplay
 		void setDisplayTime (int);
 
+	private slots:
+		void paintEvent (QPaintEvent *event);
+
 	private:
-		int m_playlist_length;
-		int m_selected_length;
+		uint32_t m_playlist_playtime;
+		bool is_playlist_playtime_exact;
+		uint32_t m_selection_playtime;
+		PixmapMap m_font;
 
 		SmallTimeDisplay *m_timedisplay;
 };

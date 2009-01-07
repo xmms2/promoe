@@ -46,7 +46,16 @@ class XClientCache : public QObject
 	public:
 		XClientCache (XClient *);
 
-		QHash<QString, QVariant> get_info (uint32_t id);
+		/* Returns the metadata of the given medialib id, if it is cached
+		 * locally. If the metadata is not cached, an empty QHash is returned
+		 * If the metadata is not cached and fetchFromServer is true, the
+		 * metadata is fetched from the server and a entryChanged SIGNAL is
+		 * emitted to notify the caller that the metadata has arrived
+		 * DO NOT use this function with fetchFromServer set to false if you
+		 * didn't understand this explanation
+		 */
+		QHash<QString, QVariant> get_info (uint32_t id,
+		                                   bool fetchFromServer=true);
 		QVariantHash get_current_info () {return get_info (m_current_id);}
 		QIcon get_icon (uint32_t id);
 		QPixmap get_pixmap (uint32_t id);

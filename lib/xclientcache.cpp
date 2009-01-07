@@ -154,9 +154,9 @@ XClientCache::get_pixmap (uint32_t id)
 }
 
 QHash<QString, QVariant>
-XClientCache::get_info (uint32_t id)
+XClientCache::get_info (uint32_t id, bool fetchFromServer)
 {
-	if (!m_info.contains (id)) {
+	if ((!m_info.contains (id)) && fetchFromServer) {
 		m_client->medialib ()->getInfo (id) (
 		               Xmms::bind (&XClientCache::handle_medialib_info, this),
 		               boost::bind (&XClientCache::handle_medialib_info_error,
@@ -164,7 +164,7 @@ XClientCache::get_info (uint32_t id)
 		m_info[id] = QHash<QString, QVariant> ();
 	}
 
-	return m_info[id];
+	return m_info.value(id, QHash<QString, QVariant>());
 }
 
 bool

@@ -144,7 +144,21 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 }
 
 void
-PlaylistView::invertSelection () {
+PlaylistView::selectionChanged (const QItemSelection &selected,
+                                const QItemSelection &deselected)
+{
+	/* selectedIndexes () is used here because selected only contains newly
+	 * seleted indexes and will give a wrong result if pressing CONTROL to
+	 * modify a selection */
+	uint32_t playtime = qobject_cast<PlaylistModel *> (model ())->getPlaytimeForSelection (selectedIndexes ());
+	emit selectionPlaytimeChanged (playtime);
+
+	QListView::selectionChanged (selected, deselected);
+}
+
+void
+PlaylistView::invertSelection ()
+{
 	QItemSelection selection = QItemSelection (model ()->index (0, 0),
 	                           model ()->index (model ()->rowCount ()-1, 0));
 	selectionModel ()->select (selection, QItemSelectionModel::Toggle |

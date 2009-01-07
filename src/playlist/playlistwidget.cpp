@@ -238,6 +238,14 @@ PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 	connect (parent, SIGNAL (setDisplayTime (int)),
 	         m_controls, SIGNAL (setDisplayTime (int)));
 
+
+	connect (App->client ()->active_playlist (),
+	         SIGNAL (totalPlaytime(uint32_t, bool)),
+	         m_controls, SLOT (setPlaylistPlaytime (uint32_t, bool)));
+
+	connect (m_view, SIGNAL (selectionPlaytimeChanged(uint32_t)),
+	         m_controls, SLOT (setSelectionPlaytime (uint32_t)));
+
 	setMinimumSize (275, 116);
 //	resize (275, 300);
 }
@@ -448,6 +456,7 @@ PlaylistWidget::setPixmaps (Skin *skin)
 	m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_SHADE));
 
 	m_controls->setNumbers (skin->getSmallNumbers ());
+	m_controls->setPixmapFont (skin->getPixmapFont ());
 
 	setActive (m_active);
 

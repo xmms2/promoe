@@ -115,6 +115,8 @@ class PlaylistModel : public QAbstractItemModel
 
 		void removeRows (QModelIndexList);
 
+		uint32_t getPlaytimeForSelection(const QModelIndexList &index_list);
+
 	protected:
 		XClient *m_client;
 		QList < unsigned int > m_plist;
@@ -125,6 +127,7 @@ class PlaylistModel : public QAbstractItemModel
 	signals:
 		void entryMoved (const QModelIndex &, const QModelIndex &);
 		void currentPosChanged (QModelIndex);
+		void totalPlaytime (uint32_t seconds, bool isExact);
 
 	public slots:
 		void got_connection (XClient *);
@@ -142,6 +145,8 @@ class PlaylistModel : public QAbstractItemModel
         bool handle_current_pls (const std::string &);
 
 		void getInfo (unsigned int id) const;
+
+		void emitTotalPlaytime ();
 
 		uint32_t m_current_pos;
         bool m_isactive;

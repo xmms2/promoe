@@ -55,6 +55,9 @@ class PlaylistView : public QListView {
 			{qWarning ("Trying to set wrong model in PlaylistView"); return;};
 		void setModel (PlaylistModel *model);
 
+	signals:
+		void selectionPlaytimeChanged (uint32_t playtime);
+
 	public slots:
 		void contextMenuEvent (QContextMenuEvent *e);
 
@@ -66,8 +69,12 @@ class PlaylistView : public QListView {
 		void settingsChanged (void);
 		void setPixmaps (Skin *skin);
 		void currentPosChanged (QModelIndex);
+
 	protected:
 		void mouseDoubleClickEvent (QMouseEvent *event);
+
+	protected slots:
+		void selectionChanged (const QItemSelection &, const QItemSelection &);
 
 	private:
 		Xmms::Playback::Status m_status;

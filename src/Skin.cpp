@@ -375,6 +375,7 @@ Skin::BuildLetterMap (void)
 	/* special characters */
 	m_letterMap['"'] = letters[0][27];
 	m_letterMap['@'] = letters[0][28];
+	m_letterMap[':'] = letters[1][12];
 	m_letterMap['('] = letters[1][13];
 	m_letterMap[')'] = letters[1][14];
 	m_letterMap['-'] = letters[1][15];

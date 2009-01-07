@@ -17,6 +17,24 @@
 #include "pixmapbutton.h"
 #include "timedisplay.h"
 
+#include <QPainter>
+
+QString secondsToString (uint32_t seconds)
+{
+	int h, m, s;
+	s = seconds % 60;
+	seconds /= 60;
+	m = seconds % 60;
+	h = seconds / 60;
+
+	QString ret = QString ("%1%2%3")
+		.arg (h ? QString ("%1:").arg(h) : "")
+		.arg (m ? QString ("%1:").arg(m) : "")
+		.arg (s);
+	return ret;
+}
+
+
 PlaylistControls::PlaylistControls (QWidget *parent) : QWidget (parent)
 {
 	setFixedSize (100, 38);
@@ -63,7 +81,30 @@ PlaylistControls::PlaylistControls (QWidget *parent) : QWidget (parent)
 	connect (this, SIGNAL (setDisplayTime (int)),
 	         m_timedisplay, SLOT (setTime (int)));
 
-	//TODO:  playtimes
+	m_selection_playtime = 0;
+	m_playlist_playtime = 0;
+	is_playlist_playtime_exact = true;
+}
+
+void
+PlaylistControls::paintEvent (QPaintEvent *event)
+{
+	if (m_font.isEmpty ()) return;
+
+	int x = 8, y = 10;
+	QString time = QString ("%1/%2%3")
+		.arg (secondsToString (m_selection_playtime))
+		.arg (secondsToString (m_playlist_playtime))
+		.arg (is_playlist_playtime_exact ? "" : "+");
+
+	QPainter paint;
+	paint.begin (this);
+	foreach (QChar c, time) {
+		paint.drawPixmap (x, y, m_font[c.toAscii()]);
+		x += 5;
+	}
+	paint.end ();
+
 }
 
 void
@@ -73,13 +114,23 @@ PlaylistControls::setNumbers (const PixmapMap &p)
 }
 
 void
-PlaylistControls::setSelectedLength (int lenght)
+PlaylistControls::setPixmapFont (const PixmapMap &p)
 {
-	//TODO
+	m_font = p;
+	update ();
 }
 
 void
-PlaylistControls::setPlaylistLength (int lenght)
+PlaylistControls::setSelectionPlaytime (uint32_t playtime)
 {
-	//TODO
+	m_selection_playtime = playtime;
+	update ();
+}
+
+void
+PlaylistControls::setPlaylistPlaytime (uint32_t playtime, bool isExact)
+{
+	m_playlist_playtime = playtime;
+	is_playlist_playtime_exact = isExact;
+	update ();
 }
