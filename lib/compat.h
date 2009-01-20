@@ -1,7 +1,7 @@
 /** 
- *  This file is a part of Esperanza, an XMMS2 Client.
+ *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2007 XMMS2 Team
+ *  Copyright (C) 2005-2009 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@
 
 #if HAVE_XMMSV
 #include <stdio.h>
-#include <xmmsc/xmmsc_value.h>
+#include <xmmsc/xmmsv.h>
 #endif
 
 inline QString
