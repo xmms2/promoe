@@ -166,7 +166,7 @@ XCollection::Private::handle_playlists_list (const Xmms::List< std::string > &li
 
 #if HAVE_XMMSV
 	for (Xmms::List< std::string >::const_iterator iter = list.begin();
-	     iter != list.end(); iter ++) {
+	     iter != list.end(); ++iter) {
 		m_playlists.append (XClient::stdToQ(*iter));
 	}
 #else

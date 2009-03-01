@@ -251,7 +251,7 @@ PlaylistModel::handle_list (const Xmms::List< unsigned int > &list)
 	int i = 0;
 #if HAVE_XMMSV
 	for (Xmms::List< int >::const_iterator iter = list.begin();
-	     iter != list.end(); iter ++) {
+	     iter != list.end(); ++iter) {
 		i++;
 	}
 #else
@@ -262,7 +262,7 @@ PlaylistModel::handle_list (const Xmms::List< unsigned int > &list)
 	beginInsertRows (QModelIndex (), 0, i);
 #if HAVE_XMMSV
 	for (Xmms::List< int >::const_iterator iter = list.begin();
-	     iter != list.end(); iter ++) {
+	     iter != list.end(); ++iter) {
 		m_plist.append (*iter);
 	}
 #else

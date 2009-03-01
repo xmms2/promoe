@@ -103,7 +103,7 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 
 #if HAVE_XMMSV
 	for (Xmms::List< Xmms::Dict >::const_iterator iter = res.begin();
-	     iter != res.end(); iter++) {
+	     iter != res.end(); ++iter) {
 		Xmms::Dict d = *iter;
 #else
 	for (res.first (); res.isValid (); ++res) {
