@@ -14,6 +14,7 @@
  */
 
 #include <xmmsclient/xmmsclient++.h>
+#include "compat.h"
 
 #include "xcollection.h"
 #include "xcollection_p.h"
@@ -163,9 +164,16 @@ XCollection::Private::handle_playlists_list (const Xmms::List< std::string > &li
 {
 	m_playlists.clear ();
 
+#if HAVE_XMMSV
+	for (Xmms::List< std::string >::const_iterator iter = list.begin();
+	     iter != list.end(); iter ++) {
+		m_playlists.append (XClient::stdToQ(*iter));
+	}
+#else
 	for (list.first (); list.isValid (); ++list) {
 		m_playlists.append (XClient::stdToQ(*list));
 	}
+#endif
 	m_playlists.sort ();
 
 	return true;

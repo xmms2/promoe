@@ -16,6 +16,7 @@
 
 
 #include <xmmsclient/xmmsclient++.h>
+#include "compat.h"
 #include <QAbstractTableModel>
 #include <QHash>
 #include <QVariant>
@@ -119,7 +120,11 @@ PlaylistModel::handle_update_pos (const Xmms::Dict &posdict)
 {
 	QString changed_pl = XClient::stdToQ (posdict.get<std::string> ("name"));
 	if (changed_pl == m_name) {
+#if HAVE_XMMSV
+		uint32_t pos = posdict.get<int32_t> ("position");
+#else
 		uint32_t pos = posdict.get<uint32_t> ("position");
+#endif
 		m_current_pos = pos;
 		emit currentPosChanged (index (pos, 0));
 		emit dataChanged(index (pos, 0), index (pos, m_columns.size ()));
@@ -231,21 +236,40 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 	return true;
 }
 
+#if HAVE_XMMSV
+bool
+PlaylistModel::handle_list (const Xmms::List< int > &list)
+#else
 bool
 PlaylistModel::handle_list (const Xmms::List< unsigned int > &list)
+#endif
 {
 	beginRemoveRows (QModelIndex (), 0, m_plist.size ());
 	m_plist.clear ();
 	endRemoveRows ();
 
 	int i = 0;
+#if HAVE_XMMSV
+	for (Xmms::List< int >::const_iterator iter = list.begin();
+	     iter != list.end(); iter ++) {
+		i++;
+	}
+#else
 	for (list.first (); list.isValid (); ++list) {
 		i ++;
 	}
+#endif
 	beginInsertRows (QModelIndex (), 0, i);
+#if HAVE_XMMSV
+	for (Xmms::List< int >::const_iterator iter = list.begin();
+	     iter != list.end(); iter ++) {
+		m_plist.append (*iter);
+	}
+#else
 	for (list.first (); list.isValid (); ++list) {
 		m_plist.append (*list);
 	}
+#endif
 
 	endInsertRows ();
 

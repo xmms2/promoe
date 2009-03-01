@@ -19,6 +19,7 @@
 #define __PLAYLIST_MODEL_H__
 
 #include <xmmsclient/xmmsclient++.h>
+#include "compat.h"
 
 class XClient;
 
@@ -123,7 +124,7 @@ class PlaylistModel : public QAbstractItemModel
 		QList < uint32_t > getPosById (uint32_t id);
 		QList < QString > m_columns;
 		QList < QString > m_colfallback;
-		
+
 	signals:
 		void entryMoved (const QModelIndex &, const QModelIndex &);
 		void currentPosChanged (QModelIndex);
@@ -134,7 +135,11 @@ class PlaylistModel : public QAbstractItemModel
 		void entry_changed (uint32_t);
 
 	private:
+#if HAVE_XMMSV
+		bool handle_list (const Xmms::List< int > &list);
+#else
 		bool handle_list (const Xmms::List< unsigned int > &list);
+#endif
 		bool handle_change (const Xmms::Dict &chg);
 #if (XMMS_IPC_PROTOCOL_VERSION > 10)
 		bool handle_update_pos (const Xmms::Dict &pos);

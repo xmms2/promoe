@@ -14,6 +14,7 @@
  */
 
 #include "xclient.h"
+#include "compat.h"
 #include "BrowseModel.h"
 
 #include "application.h"
@@ -100,8 +101,14 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 		delete m_list.takeFirst ();
 	}
 
+#if HAVE_XMMSV
+	for (Xmms::List< Xmms::Dict >::const_iterator iter = res.begin();
+	     iter != res.end(); iter++) {
+		Xmms::Dict d = *iter;
+#else
 	for (res.first (); res.isValid (); ++res) {
 		Xmms::Dict d = *res;
+#endif
 
 		if (!d.contains ("path"))
 			continue;
