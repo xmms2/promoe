@@ -178,14 +178,12 @@ EqualizerWidget::paintEvent (QPaintEvent *event)
 	paint.end();
 }
 
-/*
- *  These methods handle server configuration updates and
- *  update the serverconfiguraten if we change something
- */
-void
-EqualizerWidget::loadServerConfig ()
+
+bool
+EqualizerWidget::haveEqualizerEffect()
 {
 	// FIXME: Disable Widget if doesn't get enabled
+	// TODO: Test if server has equalizer effect plugin
 	// TODO: Add 'don't bother me again' checkbox
 	if (!(m_xconfig->values_get (QRegExp ("effect\\.order\\.\\d+")).
 	                 contains ("equalizer"))) {
@@ -205,8 +203,22 @@ EqualizerWidget::loadServerConfig ()
 					break;
 				}
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
+	return true;
+
+}
+
+/*
+ *  These methods handle server configuration updates and
+ *  update the serverconfiguraten if we change something
+ */
+void
+EqualizerWidget::loadServerConfig ()
+{
 	QString key;
 	QString value;
 	// set enabled checkbox
@@ -249,10 +261,12 @@ EqualizerWidget::serverConfigValueChanged (QString key, QString value)
 
 void
 EqualizerWidget::setEqualizerEnabled (bool enabled) {
-	if (enabled) {
+	if (enabled && haveEqualizerEffect()) {
 		m_xconfig->value_set ("equalizer.enabled", "1");
 		m_xconfig->value_set ("equalizer.use_legacy", "1");
 	} else {
+		m_enable->setChecked (false); // uncheck the button again if equalizer
+		                              // effect is not enabled
 		m_xconfig->value_set ("equalizer.enabled", "0");
 	}
 }

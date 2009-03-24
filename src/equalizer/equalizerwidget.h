@@ -66,6 +66,7 @@ class EqualizerWidget : public QWidget
 		void updateServerBands (int value, int id);
 
 	private:
+		bool haveEqualizerEffect();
 
 		XConfig *m_xconfig;
 		QPixmap m_pixmap;
