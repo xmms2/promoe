@@ -19,6 +19,7 @@
 
 #include "ui_entryinfo.h"
 
+#include <stdint.h>
 #include <QDialog>
 
 class XClientCache;

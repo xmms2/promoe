@@ -16,6 +16,7 @@
 #ifndef __PLAYLISTCONTROLS_H__
 #define __PLAYLISTCONTROLS_H__
 
+#include <stdint.h>
 #include <QWidget>
 #include <QMap>
 
