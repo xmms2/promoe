@@ -96,7 +96,7 @@ Application::handleDisconnected ()
 
 	int pressed =
 	QMessageBox::warning( NULL, "xmms2 daemon disconnected",
-	                      "The xmms2 deamon has disconnected\n"
+	                      "The xmms2 daemon has disconnected\n"
 	                      "This could be because the server crashed\n"
 	                      "or because another client has shut down the sever.",
 	                      "Reconnect", "Quit Promoe");
