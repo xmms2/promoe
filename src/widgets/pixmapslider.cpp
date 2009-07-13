@@ -132,13 +132,8 @@ PixmapSlider::paintEvent (QPaintEvent *event)
 	if (!m_backgrounds.isEmpty ()) {
 		int bg_idx = backgroundIndex ();
 		QPixmap bg = m_backgrounds[bg_idx];
-		// only redraw the complete background, if the index changed
-		if (bg_idx == m_background_index) {
-			p.drawPixmap (event->rect (), bg, bg.rect ());
-		} else {
-			m_background_index = bg_idx;
-			p.drawPixmap (rect (), bg, bg.rect ());
-		}
+		m_background_index = bg_idx;
+		p.drawPixmap (0, 0, bg.width(), bg.height(), bg);
 	}
 	// draw slider
 	QPixmap *slider = isSliderDown () ? &m_pressed : &m_normal;

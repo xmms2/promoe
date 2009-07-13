@@ -621,7 +621,7 @@ Skin::BuildSliders (void)
 	if (img.isNull ())
 		return false;
 	for (int i = 0; i <= 27; i++) {
-		list << img.copy(0, i*15, 68, 13);
+		list << img.copy(0, i*15, qMin (68, img.width()), 13);
 	}
 	m_backgrounds[SLIDER_VOLUMEBAR_BGS] = list;
 
