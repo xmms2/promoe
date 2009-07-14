@@ -19,6 +19,8 @@
 #include <QPainter>
 #include <QSettings>
 
+static const QString defaultSkin = ":/skins/Almond-blue/";
+
 Skin *Skin::singleton = NULL;
 
 Skin *Skin::getInstance (void)
@@ -36,7 +38,7 @@ Skin::Skin ()
 	setPositions ();
 
 	QSettings settings;
-	setSkin (settings.value("skin/path", ":CleanAMP/").toString ());
+	setSkin (settings.value("skin/path", defaultSkin).toString ());
 }
 
 
@@ -62,7 +64,7 @@ Skin::setSkin (const QString& name)
 	       ParsePLEdit() &&
 	       BuildNumbers() &&
 	       BuildPlaylist () )) {
-		setSkin (":CleanAMP/");
+		setSkin (defaultSkin);
 		return false;
 	}
 

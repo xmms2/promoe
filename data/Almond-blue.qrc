@@ -1,0 +1,20 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/skins">
+<file>Almond-blue/Balance.bmp</file>
+<file>Almond-blue/Cbuttons.bmp</file>
+<file>Almond-blue/Eq_Ex.bmp</file>
+<file>Almond-blue/EqMain.bmp</file>
+<file>Almond-blue/Main.bmp</file>
+<file>Almond-blue/MonoSter.bmp</file>
+<file>Almond-blue/Numbers.bmp</file>
+<file>Almond-blue/PlayPaus.bmp</file>
+<file>Almond-blue/PlEdit.bmp</file>
+<file>Almond-blue/PlEdit.txt</file>
+<file>Almond-blue/PosBar.bmp</file>
+<file>Almond-blue/ShufRep.bmp</file>
+<file>Almond-blue/Text.bmp</file>
+<file>Almond-blue/Titlebar.bmp</file>
+<file>Almond-blue/VisColor.txt</file>
+<file>Almond-blue/Volume.bmp</file>
+</qresource>
+</RCC>

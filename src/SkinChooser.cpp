@@ -19,9 +19,12 @@
 #include <QDir>
 #include <QFile>
 #include <QIcon>
+#include <QImageReader>
 #include <QLabel>
 #include <QSettings>
 #include <QVBoxLayout>
+
+#include <QtDebug>
 
 SkinChooser::SkinChooser (QWidget *parent) : QDialog (parent)
 {
@@ -48,8 +51,17 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 {
 	setIconSize (QSize (137, 58));
 
-	new SkinChooserItem (QIcon (":CleanAMP/main.png"), "CleanAMP (default)",
-	                     ":CleanAMP/", this);
+	new SkinChooserItem (QIcon (QIcon(Skin::getPixmap("main", ":/skins/Almond-blue"))),
+	                      "Almond-blue (default)",
+	                     ":/skins/Almond-blue/", this);
+
+	foreach(QString skin,  QDir(":/skins").entryList()) {
+		if (skin == "Almond-blue") continue;
+		QString path = ":/skins/" + skin;
+		QIcon icon = QIcon(Skin::getPixmap("main", path));
+		if (icon.isNull()) continue;
+		new SkinChooserItem(icon, skin, path, this);
+	}
 
 	QSettings settings;
 	QStringList searchpath;

@@ -1,0 +1,26 @@
+<!DOCTYPE RCC><RCC version="1.0">
+	<qresource prefix="/skins">
+		<file>CleanAMP/Eq_ex.png</file>
+		<file>CleanAMP/GENEX.png</file>
+		<file>CleanAMP/Gen.png</file>
+		<file>CleanAMP/monoster.png</file>
+		<file>CleanAMP/PLEDIT.TXT</file>
+		<file>CleanAMP/ReadMe.txt</file>
+		<file>CleanAMP/Thumbs.db</file>
+		<file>CleanAMP/VIDEO.png</file>
+		<file>CleanAMP/Volume.png</file>
+		<file>CleanAMP/balance.png</file>
+		<file>CleanAMP/cbuttons.png</file>
+		<file>CleanAMP/eqmain.png</file>
+		<file>CleanAMP/main.png</file>
+		<file>CleanAMP/mb.png</file>
+		<file>CleanAMP/numbers.png</file>
+		<file>CleanAMP/playpaus.png</file>
+		<file>CleanAMP/pledit.png</file>
+		<file>CleanAMP/posbar.png</file>
+		<file>CleanAMP/shufrep.png</file>
+		<file>CleanAMP/text.png</file>
+		<file>CleanAMP/titlebar.png</file>
+		<file>CleanAMP/viscolor.txt</file>
+	</qresource>
+</RCC>
