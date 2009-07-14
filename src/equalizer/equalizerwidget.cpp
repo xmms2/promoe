@@ -202,6 +202,7 @@ EqualizerWidget::haveEqualizerEffect()
 					m_xconfig->value_set (key.arg (i), "equalizer");
 					break;
 				}
+				i++;
 			}
 			return true;
 		} else {
