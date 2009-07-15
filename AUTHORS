@@ -8,6 +8,10 @@
 ## This list is sorted alphabetically.
 ##
 
+N: Henrik Grindal Bakken
+E: henrik.bakken@tandberg.com
+D: Fix for compiling with g++ 4.4
+
 N: Tobias Bengtsson
 E: tobbe@tobbe.nu
 D: Various widgets
