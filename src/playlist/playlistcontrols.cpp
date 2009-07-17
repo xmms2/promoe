@@ -27,10 +27,10 @@ QString secondsToString (uint32_t seconds)
 	m = seconds % 60;
 	h = seconds / 60;
 
-	QString ret = QString ("%1%2%3")
+	QString ret = QString ("%1%2:%3")
 		.arg (h ? QString ("%1:").arg(h) : "")
-		.arg (m ? QString ("%1:").arg(m) : "")
-		.arg (s);
+		.arg (m, h > 0 ? 2 : 1, 10, QLatin1Char('0'))
+		.arg (s, 2, 10, QLatin1Char('0'));
 	return ret;
 }
 
