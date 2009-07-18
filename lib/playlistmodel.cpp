@@ -167,7 +167,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 {
 	int32_t change = chg.get<int32_t> ("type");
 	int32_t pos = 0, npos = 0;
-	uint32_t id = 0;
+	int32_t id = 0;
 	QString s;
 
 	if (chg.contains ("position")) {
@@ -175,7 +175,11 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 	}
 
 	if (chg.contains ("id")) {
+#if HAVE_XMMSV
+		id = chg.get<int32_t> ("id");
+#else
 		id = chg.get<uint32_t> ("id");
+#endif
 	}
 
 	if (chg.contains ("name")) {
