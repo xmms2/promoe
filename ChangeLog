@@ -1,3 +1,9 @@
+Version 0.1rc2 (2009-07-20)
+	* changed default skin to Almond-blue (licensed under GPL)
+	* fix a time formating issue in the playlist 
+	* fix playlist so that it is updated when entries are added
+	* fix infinite loop when enabling equalizer effect in deamon
+
 Version 0.1rc1 (2009-07-08)
 	* first release candidate
 	* mainwindow, playlistwindow and equalizer mostly work
