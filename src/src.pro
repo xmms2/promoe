@@ -21,8 +21,7 @@ DESTDIR = $$PWD/..
 
 RESOURCES += ../data/promoe.qrc
 RESOURCES += ../data/Almond-blue.qrc
-macx:RC_FILE = promoe.icns
-macx:INCLUDEPATH = /sw/include
+macx:RC_FILE = ../promoe.icns
 
 QT += network
 ;macx:QTPLUGIN += qjpeg
