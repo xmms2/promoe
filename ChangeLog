@@ -1,3 +1,7 @@
+Version 0.1.0 (2009-8-25)
+	* disabled icon.png
+	* hardcoding $PREFIX/share/promoe/skins as searchpath
+
 Version 0.1rc2 (2009-07-20)
 	* changed default skin to Almond-blue (licensed under GPL)
 	* fix a time formating issue in the playlist 
