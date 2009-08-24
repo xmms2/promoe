@@ -1,0 +1,11 @@
+[Desktop Entry]
+# Spec version, NOT application Version
+Version=1.0
+Name=Promoe
+GenericName=XMMS2 Client
+Categories=QT:Application;AudioVideo;Audio;
+Exec=promoe
+Icon=xmms2
+Terminal=false
+Type=Application
+

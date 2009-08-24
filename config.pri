@@ -1,4 +1,4 @@
-DEFINES += PROMOE_VERSION="\"\\\"0.1-rc2\\\"\""
+DEFINES += PROMOE_VERSION="\"\\\"0.1.0\\\"\""
 
 isEmpty(PREFIX): PREFIX = /usr/local
 isEmpty(BINDIR): BINDIR = $$PREFIX/bin

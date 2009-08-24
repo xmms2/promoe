@@ -15,5 +15,8 @@ unix: {
 manpages1.path = $$MANDIR/man1
 manpages1.files = promoe.1
 INSTALLS += manpages1
+desktop.path = $$PREFIX/share/applications
+desktop.files = promoe.desktop
+INSTALLS += desktop
 }
 
