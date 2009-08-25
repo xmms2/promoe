@@ -151,7 +151,7 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 
 	qSort (m_list.begin (), m_list.end (), BrowseModelItem::itemCompare);
 
-	qDebug ("%s", qPrintable(m_list.at(0)->data("name")));
+	//qDebug ("%s", m_list.size() > 0 ? qPrintable(m_list.at(0)->data("name")) : "none");
 
 	reset ();
 
