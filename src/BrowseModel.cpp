@@ -164,6 +164,9 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 int
 BrowseModel::rowCount (const QModelIndex &parent) const
 {
+	if (parent.isValid())
+		return 0;
+
 	return m_list.size ();
 }
 
