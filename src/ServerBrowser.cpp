@@ -14,6 +14,7 @@
  */
 
 #include "ServerBrowser.h"
+#include "application.h"
 
 #include <QPushButton>
 

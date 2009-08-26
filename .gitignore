@@ -16,3 +16,6 @@ promoe
 qrc*
 .gdb*
 Makefile
+.waf-*
+.lock-wscript
+_build_
