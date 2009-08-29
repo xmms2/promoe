@@ -187,3 +187,4 @@ BrowseDialog::setPath (const QString &path)
 	m_model->setPath (path);
 }
 
+#include "BrowseDialog.moc"

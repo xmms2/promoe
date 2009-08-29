@@ -90,3 +90,5 @@ ClutterBar::paintEvent (QPaintEvent *event)
 	QPainter p (this);
 	p.drawPixmap (rect (), m_pixmap, m_pixmap.rect ());
 }
+
+#include "clutterbar.moc"

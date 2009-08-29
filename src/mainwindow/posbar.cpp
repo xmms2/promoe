@@ -55,3 +55,4 @@ PosBar::setPixmaps (Skin *skin)
 	update ();
 }
 
+#include "posbar.moc"

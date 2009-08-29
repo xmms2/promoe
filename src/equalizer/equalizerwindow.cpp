@@ -42,3 +42,5 @@ EqualizerWindow::setEnabled (void)
 {
 	qDebug ("test");
 }
+
+#include "equalizerwindow.moc"

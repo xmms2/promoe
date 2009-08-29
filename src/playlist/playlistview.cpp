@@ -330,3 +330,5 @@ PlaylistView::showEntryInfo (void)
 		m_entry_info->show ();
 	}
 }
+
+#include "playlistview.moc"

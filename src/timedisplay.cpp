@@ -113,3 +113,5 @@ AbstractTimeDisplay::paintEvent (QPaintEvent *event)
 	}
 	paint.end ();
 }
+
+#include "timedisplay.moc"

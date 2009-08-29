@@ -109,3 +109,4 @@ SkinList::changeSkin (QListWidgetItem *item)
 	settings.setValue ("skin/path", it->getPath ());
 }
 
+#include "SkinChooser.moc"

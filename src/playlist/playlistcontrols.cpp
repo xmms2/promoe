@@ -134,3 +134,5 @@ PlaylistControls::setPlaylistPlaytime (uint32_t playtime, bool isExact)
 	is_playlist_playtime_exact = isExact;
 	update ();
 }
+
+#include "playlistcontrols.moc"

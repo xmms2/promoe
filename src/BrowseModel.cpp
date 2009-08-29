@@ -216,3 +216,5 @@ BrowseModel::fileIcon (const QModelIndex &index) const
 
 	return QIcon (m_style->standardPixmap (QStyle::SP_FileIcon));
 }
+
+#include "BrowseModel.moc"

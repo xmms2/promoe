@@ -136,4 +136,4 @@ ShadedDisplay::setPlaytime (uint32_t time)
 	m_time->setTime (showtime);
 }
 
-
+#include "shadeddisplay.moc"

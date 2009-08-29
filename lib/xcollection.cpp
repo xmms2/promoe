@@ -274,3 +274,6 @@ XCollection::addPlsFile (QUrl url)
 
 	return true;
 }
+
+#include "xcollection.moc"
+#include "xcollection_p.moc"

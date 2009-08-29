@@ -291,3 +291,5 @@ XPlayback::setBalance (int new_balance)
 
 	m_balance = new_balance;
 }
+
+#include "xplayback.moc"

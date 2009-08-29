@@ -59,3 +59,4 @@ SkinDisplay::fileOpen (void)
 	}
 }
 
+#include "skindisplay.moc"

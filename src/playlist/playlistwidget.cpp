@@ -603,4 +603,4 @@ PlaylistWidget::openPlaylistChooser ()
 	tmp->show ();
 }
 
-
+#include "playlistwidget.moc"

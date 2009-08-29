@@ -210,3 +210,5 @@ MainWindow::attachWidgets ()
 	}
 
 }
+
+#include "mainwindow.moc"

@@ -195,3 +195,4 @@ TitleBar::mouseDoubleClickEvent (QMouseEvent *event)
 	mw->switchDisplay ();
 }
 
+#include "titlebar.moc"

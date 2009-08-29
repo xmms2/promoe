@@ -125,3 +125,5 @@ main (int argc, char **argv)
 
 	return app.exec();
 }
+
+#include "application.moc"

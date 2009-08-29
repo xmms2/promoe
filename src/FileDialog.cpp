@@ -56,3 +56,5 @@ FileDialog::getDirectory ()
 	return ret;
 
 }
+
+#include "FileDialog.moc"

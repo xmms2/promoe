@@ -83,3 +83,5 @@ EntryInfo::mlib_entry_removed (uint32_t id)
 		close ();
 	}
 }
+
+#include "entryinfo.moc"

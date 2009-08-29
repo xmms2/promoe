@@ -302,3 +302,5 @@ TextScroller::mouseMoveEvent (QMouseEvent *event)
 
 	update ();
 }
+
+#include "textscroller.moc"

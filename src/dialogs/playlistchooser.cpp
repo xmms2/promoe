@@ -221,3 +221,5 @@ PlaylistChooser::on_textEdit_textChanged ()
 	createButton->setEnabled ((!playlistExists (textEdit->text ())
 	                           && (textEdit->text () != "")));
 }
+
+#include "playlistchooser.moc"

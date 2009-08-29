@@ -203,3 +203,5 @@ ServerBrowserList::~ServerBrowserList ()
 	}
 	*/
 }
+
+#include "ServerBrowser.moc"

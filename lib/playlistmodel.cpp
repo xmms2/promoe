@@ -628,3 +628,5 @@ PlaylistModel::removeRows (QModelIndexList index_list)
 		m_client->playlist ()->removeEntry (idlist.at(i));
 	}
 }
+
+#include "playlistmodel.moc"

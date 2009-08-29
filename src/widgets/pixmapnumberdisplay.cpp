@@ -80,3 +80,4 @@ PixmapNumberDisplay::paintEvent (QPaintEvent *event)
 	paint.end ();
 }
 
+#include "pixmapnumberdisplay.moc"

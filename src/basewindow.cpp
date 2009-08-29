@@ -293,3 +293,5 @@ BaseWindow::snapWindow(QPoint pos, AttachedWindowMap attached)
 
 	return pos;
 }
+
+#include "basewindow.moc"

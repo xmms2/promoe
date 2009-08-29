@@ -198,3 +198,5 @@ PlaylistMenu::setPixmaps (Skin *skin)
 
 	update ();
 }
+
+#include "playlistmenu.moc"

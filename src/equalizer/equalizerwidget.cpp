@@ -284,3 +284,5 @@ EqualizerWidget::updateServerBands (int value, int id)
 	QString key = QString ("equalizer.legacy%1").arg (id);
 	m_xconfig->value_set (key, QString::number (value));
 }
+
+#include "equalizerwidget.moc"

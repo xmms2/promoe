@@ -771,3 +771,4 @@ Skin::setPositions ()
 //	m_positions.insert (SLIDER_EQUALIZER_BGS, QPoint ());
 }
 
+#include "Skin.moc"

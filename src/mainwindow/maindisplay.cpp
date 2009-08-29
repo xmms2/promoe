@@ -372,3 +372,5 @@ MainDisplay::setRepeatAllEnabled (bool enabled) {
 		m_xconfig->value_set ("playlist.repeat_all", "0");
 	}
 }
+
+#include "maindisplay.moc"

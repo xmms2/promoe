@@ -76,3 +76,4 @@ PlayStatus::paintEvent (QPaintEvent *event)
 	p.end ();
 }
 
+#include "playstatus.moc"

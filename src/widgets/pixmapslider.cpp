@@ -189,3 +189,5 @@ PixmapSlider::backgroundIndex ()
 	                                        sliderPosition (),
 	                                        m_backgrounds.size () - 1, false);
 }
+
+#include "pixmapslider.moc"

@@ -267,4 +267,4 @@ XClient::convert_propdict (const Xmms::PropDict &dict)
 	return hash;
 }
 
-
+#include "xclient.moc"

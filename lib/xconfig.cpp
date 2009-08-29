@@ -144,3 +144,5 @@ XConfig::handle_config_value_changed (const Xmms::Dict &value)
 	// TODO
 	return true;
 }
+
+#include "xconfig.moc"

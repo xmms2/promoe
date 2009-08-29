@@ -164,3 +164,4 @@ PlaylistShade::paintEvent (QPaintEvent *event)
 
 }
 
+#include "playlistshade.moc"

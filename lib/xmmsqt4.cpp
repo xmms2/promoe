@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QSocketNotifier>
 
+
 static void CheckWrite (int i, void *userdata);
 
 XmmsQT4::XmmsQT4 (xmmsc_connection_t *xmmsc) :
@@ -89,3 +90,5 @@ static void CheckWrite (int i, void *userdata)
 		obj->ToggleWrite (false);
 	}
 }
+
+#include "xmmsqt4.moc"

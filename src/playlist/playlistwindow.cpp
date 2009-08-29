@@ -114,3 +114,4 @@ PlaylistWindow::leaveEvent (QEvent *event)
 	m_shaded->setActive (false);
 }
 
+#include "playlistwindow.moc"

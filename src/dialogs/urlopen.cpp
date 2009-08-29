@@ -39,3 +39,5 @@ UrlOpen::on_openButton_clicked ()
 		}
 	}
 }
+
+#include "urlopen.moc"

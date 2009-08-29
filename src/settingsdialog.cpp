@@ -517,3 +517,5 @@ SettingsTabMain::saveSettings (void)
 	//TODO: Check if we really changed something
 	return true;
 }
+
+#include "settingsdialog.moc"

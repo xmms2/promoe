@@ -59,3 +59,5 @@ StereoMono::setStereoMono (bool stereo, bool mono)
 
 	update ();
 }
+
+#include "stereomono.moc"

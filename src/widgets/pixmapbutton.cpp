@@ -34,3 +34,5 @@ PixmapButton::paintEvent( QPaintEvent * event )
 	p.end();
 
 }
+
+#include "pixmapbutton.moc"

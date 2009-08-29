@@ -195,3 +195,5 @@ XClientCache::handle_playtime (const unsigned int &tme)
 	emit playtime(tme);
 	return true;
 }
+
+#include "xclientcache.moc"
