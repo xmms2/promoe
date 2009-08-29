@@ -13,6 +13,8 @@
  *  GNU General Public License for more details.
  */
 
+#ifndef __SKINCHOOSER__
+#define __SKINCHOOSER__
 
 #include <QListWidget>
 #include <QDialog>
@@ -53,3 +55,4 @@ class SkinChooser : public QDialog
 
 };
 
+#endif

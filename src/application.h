@@ -13,6 +13,9 @@
  *  GNU General Public License for more details.
  */
 
+#ifndef __APPLICATION__
+#define __APPLICATION__
+
 #include <QApplication>
 
 class XClient;
@@ -54,3 +57,5 @@ class Application : public QApplication
 	private:
 		bool m_timemode_reverse;
 };
+
+#endif
