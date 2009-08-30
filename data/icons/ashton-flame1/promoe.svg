@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="364.08679"
+   height="364.09"
+   id="svg2831"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="promoe.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs2833">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 32 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="64 : 32 : 1"
+       inkscape:persp3d-origin="32 : 21.333333 : 1"
+       id="perspective2839" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.6875"
+     inkscape:cx="-221.92717"
+     inkscape:cy="-10.196666"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:showpageshadow="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="914"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:snap-guide="true"
+     inkscape:snap-center="true" />
+  <metadata
+     id="metadata2836">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+        <dc:title></dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>AJ Ashton &lt;aj.ashton@gmail.com&gt;</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>AJ Ashton &lt;aj.ashton@gmail.com&gt;</dc:title>
+          </cc:Agent>
+        </dc:rights>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(-45.786249,-58.502055)">
+    <g
+       transform="translate(-368.61767,-383.06641)"
+       id="g2922">
+      <path
+         sodipodi:nodetypes="cszzsz"
+         id="path2727"
+         d="M 548.59091,788.7677 C 420.81104,729.25416 492.17058,554.45443 624.2602,462.24635 C 703.42863,406.98108 595.81483,497.71498 638.76547,521.84985 C 682.31248,546.31984 712.93447,476.19835 702.49994,505.75842 C 691.89764,535.79377 669.07746,566.31496 703.97166,619.24328 C 755.5937,697.54477 677.54356,848.82745 548.59091,788.7677 z"
+         style="fill:#0076c8;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:6.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         id="g2754"
+         transform="matrix(1.069375,0,0,1.069375,32.683682,-47.48194)">
+        <g
+           id="g2759">
+          <path
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             d="M 519.90625,627.09375 C 490.72607,630.87384 461.07387,646.36648 447.90625,673.75 C 448.85251,680.48809 456.02841,671.9144 459.25,670.5625 C 507.95204,640.73586 575.62113,644.06175 619.71875,680.96875 C 626.57584,681.0748 619.35851,671.97704 618.08593,668.5875 C 601.11952,639.90204 566.45738,626.34031 534.25,626.21875 C 529.46875,626.51042 524.6875,626.80208 519.90625,627.09375 z"
+             id="path2739" />
+          <path
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             d="M 526.71875,678.125 C 510.19341,680.32351 492.5117,689.21512 486.11224,705.34091 C 489.176,710.36827 495.24654,701.53154 499.54856,700.67904 C 525.58584,688.02149 559.05306,690.67091 581.46875,709.53125 C 588.2709,709.70153 581.20733,700.57233 579.17634,697.64167 C 567.21889,681.8204 545.80091,675.98676 526.71875,678.125 z"
+             id="path2744" />
+          <path
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             d="M 534.8125,724.8125 C 524.94043,725.21274 512.74636,729.80488 509.9375,740.15625 C 514.46565,743.41129 519.30335,735.36704 524.66283,735.68661 C 536.34316,732.27672 549.02192,735.77175 558.60701,742.62635 C 563.65886,740.69455 557.19228,734.09388 554.70879,731.67366 C 549.21697,726.992 541.97294,724.75509 534.8125,724.8125 z"
+             id="path2746" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
