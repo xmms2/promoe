@@ -65,7 +65,7 @@ def configure(conf):
                 os.path.join(conf.env['PROMOE_DATADIR'], 'Skins'))
 
     conf.sub_config('lib')
-    conf.sub_config('data')
+#    conf.sub_config('data')
     conf.sub_config('src')
 
     conf.write_config_header('promoe_config.h')
@@ -75,7 +75,7 @@ def configure(conf):
 
 def build(bld):
     bld.add_subdirs('lib')
-    bld.add_subdirs('data')
+#    bld.add_subdirs('data')
     bld.add_subdirs('src')
 
     bld.install_files('${MANDIR}/man1', 'promoe.1')

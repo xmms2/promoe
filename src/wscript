@@ -100,7 +100,7 @@ def build(bld):
     obj.target       = 'promoe'
     obj.includes     = incdirs
     obj.source       = sources
-    obj.uselib_local = 'promoe_lib promoe_data'
+    obj.uselib_local = 'promoe_lib'
     obj.uselib       = 'QTCORE QTGUI AVAHI-CLIENT AVAHI-QT4'
     pass
 
