@@ -33,28 +33,15 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
-lib_source = """
-             playlistmodel.cpp
-             xclient.cpp
-             xconfig.cpp
-             xplayback.cpp
-             xclientcache.cpp
-             xcollection.cpp
-             xmmsqt4.cpp
-             """
-
-
 def set_options(opt):
     pass
 def configure(conf):
     pass
 def build(bld):
-    obj                 = bld.new_task_gen('qt4', 'staticlib', 'cxx')
-    obj.target          = 'promoe_lib'
-    obj.install_path    = 0 # Don't install
-    obj.includes        = '.'
-    obj.source          = lib_source
-    obj.uselib          = 'QTCORE QTGUI XMMS2-CLIENT-CPP'
-    obj.export_incdirs  = '.'
+    obj              = bld.new_task_gen('qt4', 'staticlib', 'cxx')
+    obj.target       = 'promoe_data'
+    obj.install_path = 0 # Don't install
+    obj.source       = 'Almond-blue.qrc'
+    obj.uselib       = 'QTCORE'
     pass
 

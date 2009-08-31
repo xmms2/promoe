@@ -59,26 +59,23 @@ def configure(conf):
 
     conf.define('VERSION', APPVERSION)
     conf.define('PROMOE_VERSION', APPVERSION)
+
     conf.define('PROMOE_DATADIR', os.path.join(conf.env['DATADIR'], 'promoe'))
-
-    # temprary, until all usages are removed
-    conf.env['CXXDEFINES'] =[]
-    conf.env['CXXDEFINES'].append('PROMOE_VERSION="%s"'%APPVERSION)
-    conf.env['CXXDEFINES'].append('DATADIR="%s/promoe"'%conf.env['DATADIR'])
-
-    # Path for 'promoe_config.h'
-    conf.env.prepend_value("CPPPATH", conf.srcdir)
+    conf.define('PROMOE_SKINDIR', 
+                os.path.join(conf.env['PROMOE_DATADIR'], 'Skins'))
 
     conf.sub_config('lib')
-    # Path needed to find library headers for local static library
-    conf.env.prepend_value("CPPPATH", os.path.join(conf.srcdir, "lib"))
-
+    conf.sub_config('data')
     conf.sub_config('src')
 
     conf.write_config_header('promoe_config.h')
+    # Path for 'promoe_config.h'
+    # FIXME: There must be a better way to get this path
+    conf.env.append_value('CPPPATH', os.path.join(conf.blddir, conf.envname))
 
 def build(bld):
     bld.add_subdirs('lib')
+    bld.add_subdirs('data')
     bld.add_subdirs('src')
 
     bld.install_files('${MANDIR}/man1', 'promoe.1')

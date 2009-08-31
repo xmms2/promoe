@@ -26,6 +26,8 @@
 #include <QPainter>
 #include <QPoint>
 
+#include "promoe_config.h"
+
 PlaylistShade::PlaylistShade (PlaylistWindow *parent) : QWidget (parent)
 {
 	QSettings s;

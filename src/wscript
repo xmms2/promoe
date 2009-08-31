@@ -93,13 +93,14 @@ def build(bld):
 
     sources.append("../data/Almond-blue.qrc")
 
-    obj = bld.new_task_gen('qt4', 'program', 'cxx')
-    obj.target = 'promoe'
-    obj.includes = bld_subdirs
-    obj.includes.append('.')
-#    obj.includes.append('../lib')
-    obj.source= sources
-    obj.uselib_local = 'lib_promoe'
-    obj.uselib = 'QTCORE QTGUI AVAHI-CLIENT AVAHI-QT4'
+    incdirs = bld_subdirs
+    incdirs.append('.')
+
+    obj              = bld.new_task_gen('qt4', 'program', 'cxx')
+    obj.target       = 'promoe'
+    obj.includes     = incdirs
+    obj.source       = sources
+    obj.uselib_local = 'promoe_lib promoe_data'
+    obj.uselib       = 'QTCORE QTGUI AVAHI-CLIENT AVAHI-QT4'
     pass
 

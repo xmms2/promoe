@@ -28,6 +28,8 @@
 
 #include <application.h>
 
+#include "promoe_config.h"
+
 TextScroller::TextScroller (QWidget *parent, uint w,
                             uint h, const QString &name) : QWidget (parent)
 {

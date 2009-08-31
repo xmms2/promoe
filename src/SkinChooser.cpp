@@ -26,6 +26,8 @@
 
 #include <QtDebug>
 
+#include "promoe_config.h"
+
 SkinChooser::SkinChooser (QWidget *parent) : QDialog (parent)
 {
 
@@ -75,7 +77,7 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 		settings.setValue ("skin/searchpath", searchpath);
 	}
 	// This should not be saved in the searchpath config value.
-	searchpath.append (DATADIR "/skins");
+	searchpath.append (PROMOE_SKINDIR);
 
 	QDir d;
 	d.setFilter (QDir::AllDirs|QDir::NoDotAndDotDot|QDir::Files);
