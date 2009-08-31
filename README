@@ -3,32 +3,20 @@ Required dependencies:
 	* XMMS2             http://xmms2.xmms.org/
 	* XMMS2 C++ bindings (make sure you have boost_signals when compiling xmms2)
 	  - promoe works with 0.4DrK and 0.5DrL
+	* Python for compiling
 
 Optional dependencys:
 	* Avahi     http://www.avahi.org/
 
 Compiling:
-	1) Run qmake in the topdir (not in ./src)
-	   (on debian systems it's called qmake-qt4)
-	2) Run make
-	3) Have a coffe
-	4) ./promoe
-	5) ????
-	6) profit
+	1) Run './waf configure' 
+	2) Run './waf build'
+	     This can take some time
+	3) Run './waf install' to install
+	4) Have fun
 
-	To change the install directory, use 'qmake PREFIX=<path>' at step 1
-
-Compilation problems:
-	- Errormessage "WARNING: Found potential symbol conflict of <somefile>"
-	  -> make sure you use uic from Qt4 (uic -version)
-	     (on debian systems it's sufficant if uic-qt4 exists)
-
-	- Errormessage "error: xmmsclient/xmmsclient++.h: No such file or directory"
-	  followed by a bunch of other errors
-	  -> You don't have the xmms2-c++ header files installed
-	     (package libxmmsclient++-dev on debian)
-	     After installing the headerfiles run 'make distclean' and start again 
-		 from 'Compiling 1)'
+	To change the install directory, use 
+	   './waf configure --prefix=<path>' at step 1
 
 Reporting Bugs:
 	preferred way to report bugs is through xmms2's bugtracker at
