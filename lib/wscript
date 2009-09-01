@@ -49,7 +49,7 @@ def set_options(opt):
 def configure(conf):
     pass
 def build(bld):
-    obj                 = bld.new_task_gen('qt4', 'staticlib', 'cxx')
+    obj                 = bld.new_task_gen('qt4', 'cstaticlib', 'cxx')
     obj.target          = 'promoe_lib'
     obj.install_path    = 0 # Don't install
     obj.includes        = '.'

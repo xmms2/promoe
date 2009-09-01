@@ -5,7 +5,7 @@ Name=Promoe
 GenericName=XMMS2 Client
 Categories=Qt;Application;AudioVideo;Audio;
 Exec=promoe
-Icon=xmms2
+Icon=promoe
 Terminal=false
 Type=Application
 

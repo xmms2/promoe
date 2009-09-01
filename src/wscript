@@ -91,16 +91,15 @@ def build(bld):
     if bld.env['HAVE_SERVERBROWSER']:
         sources.append('ServerBrowser.cpp')
 
-    sources.append("../data/Almond-blue.qrc")
-
     incdirs = bld_subdirs
     incdirs.append('.')
 
-    obj              = bld.new_task_gen('qt4', 'program', 'cxx')
+    obj              = bld.new_task_gen('qt4', 'cprogram', 'cxx')
     obj.target       = 'promoe'
     obj.includes     = incdirs
     obj.source       = sources
     obj.uselib_local = 'promoe_lib'
+    obj.add_objects  = 'promoe_data'
     obj.uselib       = 'QTCORE QTGUI AVAHI-CLIENT AVAHI-QT4'
     pass
 

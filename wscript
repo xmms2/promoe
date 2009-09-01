@@ -46,6 +46,7 @@ def set_options(opt):
     opt.tool_options('qt4')
 
     opt.sub_options('lib')
+    opt.sub_options('data')
     opt.sub_options('src')
 
 
@@ -65,7 +66,7 @@ def configure(conf):
                 os.path.join(conf.env['PROMOE_DATADIR'], 'Skins'))
 
     conf.sub_config('lib')
-#    conf.sub_config('data')
+    conf.sub_config('data')
     conf.sub_config('src')
 
     conf.write_config_header('promoe_config.h')
@@ -75,9 +76,10 @@ def configure(conf):
 
 def build(bld):
     bld.add_subdirs('lib')
-#    bld.add_subdirs('data')
+    bld.add_subdirs('data')
     bld.add_subdirs('src')
 
-    bld.install_files('${MANDIR}/man1', 'promoe.1')
-    bld.install_files('${DATADIR}/applications', 'promoe.desktop')
+    bld.install_files('${MANDIR}/man1', 'data/promoe.1')
+    bld.install_files('${DATADIR}/applications', 'data/promoe.desktop')
+    bld.install_files('${DATADIR}/icons', 'data/icons/ashton-flame1/promoe.svg')
 

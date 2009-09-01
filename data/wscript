@@ -38,10 +38,10 @@ def set_options(opt):
 def configure(conf):
     pass
 def build(bld):
-    obj              = bld.new_task_gen('qt4', 'staticlib', 'cxx')
+    obj              = bld.new_task_gen('qt4', 'cxx')
     obj.target       = 'promoe_data'
     obj.install_path = 0 # Don't install
-    obj.source       = 'Almond-blue.qrc'
+    obj.source       = 'skins/Almond-blue.qrc'
     obj.uselib       = 'QTCORE'
     pass
 
