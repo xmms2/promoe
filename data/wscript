@@ -43,5 +43,8 @@ def build(bld):
     obj.install_path = 0 # Don't install
     obj.source       = 'skins/Almond-blue.qrc'
     obj.uselib       = 'QTCORE'
-    pass
+
+    bld.install_files('${MANDIR}/man1', 'promoe.1')
+    bld.install_files('${DATADIR}/applications', 'promoe.desktop')
+    bld.install_files('${DATADIR}/icons', 'icons/ashton-flame1/promoe.svg')
 

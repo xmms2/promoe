@@ -79,7 +79,3 @@ def build(bld):
     bld.add_subdirs('data')
     bld.add_subdirs('src')
 
-    bld.install_files('${MANDIR}/man1', 'data/promoe.1')
-    bld.install_files('${DATADIR}/applications', 'data/promoe.desktop')
-    bld.install_files('${DATADIR}/icons', 'data/icons/ashton-flame1/promoe.svg')
-
