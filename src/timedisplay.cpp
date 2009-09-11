@@ -41,9 +41,10 @@ SmallTimeDisplay::SmallTimeDisplay (QWidget *parent)
 	m_d4_x_pos = 23;
 }
 
-AbstractTimeDisplay::AbstractTimeDisplay (QWidget *parent) : QWidget (parent)
+AbstractTimeDisplay::AbstractTimeDisplay (QWidget *parent)
+                    : QWidget (parent), m_time(0), m_d1_x_pos(0), m_d2_x_pos(0),
+                      m_d3_x_pos(0),  m_d4_x_pos(0)
 {
-	m_time = 0;
 }
 
 /*

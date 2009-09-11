@@ -18,7 +18,8 @@
 
 #include <QPainter>
 
-StereoMono::StereoMono (QWidget *parent) : QWidget (parent)
+StereoMono::StereoMono (QWidget *parent)
+           : QWidget (parent), m_stereo(0), m_mono(0)
 {
 	setFixedSize (56, 12);
 
