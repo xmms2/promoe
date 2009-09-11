@@ -36,13 +36,19 @@ POSSIBILITY OF SUCH DAMAGE.
 def set_options(opt):
     pass
 def configure(conf):
-    pass
+    conf.check_tool('misc')
+
+
 def build(bld):
     obj              = bld.new_task_gen('qt4', 'cxx')
     obj.target       = 'promoe_data'
     obj.install_path = 0 # Don't install
     obj.source       = 'skins/Almond-blue.qrc'
     obj.uselib       = 'QTCORE'
+
+    man              = bld.new_task_gen('subst')
+    man.source       = 'promoe.1.in'
+    man.install_path = '${MANDIR}/man1'
 
     bld.install_files('${MANDIR}/man1', 'promoe.1')
     bld.install_files('${DATADIR}/applications', 'promoe.desktop')

@@ -13,8 +13,14 @@ XMMS/WinAMP classic.
 .I $XDG_CONFIG_HOME/xmms2/Promoe.conf
 The configuration file
 .TP
+.I @PROMOE_SKINDIR@
+Default system directory for XMMS skins. Skins that are added in this directory
+are available to all users on a system. This directory is set when the
+application is compiled.
+.TP
 .I $HOME/.config/xmms2/clients/promoe/skins
-Default directory for skins, can be changed in the configuration file
+Default directory for per user skins. This directory can be changed in the
+configuration file
 .SH  ENVIRONMENT VARIABLES
 .TP
 .I XMMS_PATH

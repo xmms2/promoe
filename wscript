@@ -63,7 +63,8 @@ def configure(conf):
 
     conf.define('PROMOE_DATADIR', os.path.join(conf.env['DATADIR'], 'promoe'))
     conf.define('PROMOE_SKINDIR', 
-                os.path.join(conf.env['PROMOE_DATADIR'], 'Skins'))
+                os.path.join(conf.env['PROMOE_DATADIR'], 'skins'))
+
 
     conf.sub_config('lib')
     conf.sub_config('data')
