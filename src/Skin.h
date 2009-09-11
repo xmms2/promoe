@@ -56,6 +56,9 @@ class Skin : public QObject
 		const QByteArray getPLeditValue (QByteArray c) const
 			{ return m_pledit_txt.value(c); }
 
+		/* Workaround for programm starup */
+		void emitSkinChanged () { emit skinChanged(this); }
+
 	signals:
 		void skinChanged (Skin *skin);
 

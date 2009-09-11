@@ -47,15 +47,12 @@ Application::Application (int &argc, char **argv) : QApplication (argc, argv)
 	MainWindow *mw = new MainWindow (NULL);
 
 	/*
-	 * Now that everything is initialized
-	 * open the skin and send the
-	 * SkinChanged signal that will cause
-	 * all widgets to get their pixmaps
-	 * TODO: Now the Skin class loads the skin itself. This call is necessarry
-	 * until all widgets that receive the skinChanged signal fetch their
-	 * pixmaps themself on startup
+	 * After all windows have been initialized, send the skinChanged signal,
+	 * so that all windows fetch their skin information.
+	 * The windows should fetch their skin information themselfes on startup
+	 * This is a wokaround until all widgets have been fixed
 	 */
-	Skin::getInstance()->setSkin (settings.value("skin/path").toString ());
+	Skin::getInstance()->emitSkinChanged();
 
 	mw->show ();
 	// The Playlist- and EqualizerWindow has to become visible after the
