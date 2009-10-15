@@ -43,6 +43,7 @@ class XClient : public QObject {
 	Q_OBJECT
 	public:
 		XClient (QObject *, const std::string &);
+		~XClient ();
 
 		bool connect (const char *path = NULL, const bool &sync = false,
 		               QWidget* parent = NULL);

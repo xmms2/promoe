@@ -80,6 +80,13 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
 	m_name = name;
 }
 
+XClient::~XClient ()
+{
+	// make sure we disconnect, to make valgrind happy
+	if (m_isconnected)
+		disconnect ();
+}
+
 void XClient::disconnect ()
 {
 	delete m_client;
