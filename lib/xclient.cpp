@@ -68,7 +68,7 @@ XClient::esperanza_dir ()
 }
 */
 
-XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), m_sync (name + "-sync")
+XClient::XClient (QObject *parent, const std::string &name) : QObject (parent)
 {
 	m_client = NULL;
     m_isconnected = false;
@@ -146,15 +146,6 @@ try_again:
 	}
 
 	m_client->setMainloop (new XmmsQT4 (m_client->getConnection ()));
-
-    if (sync) {
-	    try {
-		    m_sync.connect (ipcpath);
-	    }
-	    catch (Xmms::connection_error &e) {
-		    qWarning ("Couldn't establish sync connection!");
-	    }
-    }
 
 	m_isconnected = true;
 	// useing normal disconnect callback, if that causes problems,

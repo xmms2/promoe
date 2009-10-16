@@ -83,10 +83,6 @@ class XClient : public QObject {
 			return m_active_playlist;
 		}
 
-		const Xmms::Client *sync () const {
-			return &m_sync;
-		};
-
 		static QString stdToQ (const std::string &);
 		static std::string qToStd (const QString &);
 
@@ -131,8 +127,6 @@ class XClient : public QObject {
 		XCollection *m_collection;
 		PlaylistModel *m_active_playlist;
 		bool m_isconnected;
-
-		Xmms::Client m_sync;
 };
 
 
