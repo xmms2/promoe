@@ -98,7 +98,7 @@ def build(bld):
     obj.target       = 'promoe'
     obj.includes     = incdirs
     obj.source       = sources
-    obj.uselib_local = 'promoe_lib'
+    obj.uselib_local = 'backend_lib'
     obj.add_objects  = 'promoe_data'
     obj.uselib       = 'QTCORE QTGUI AVAHI-CLIENT AVAHI-QT4'
     pass

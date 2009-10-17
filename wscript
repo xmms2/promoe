@@ -45,7 +45,7 @@ def set_options(opt):
     opt.tool_options('gnu_dirs')
     opt.tool_options('qt4')
 
-    opt.sub_options('lib')
+    opt.sub_options('backend_xmmsclient++')
     opt.sub_options('data')
     opt.sub_options('src')
 
@@ -66,7 +66,7 @@ def configure(conf):
                 os.path.join(conf.env['PROMOE_DATADIR'], 'skins'))
 
 
-    conf.sub_config('lib')
+    conf.sub_config('backend_xmmsclient++')
     conf.sub_config('data')
     conf.sub_config('src')
 
@@ -76,7 +76,7 @@ def configure(conf):
     conf.env.append_value('CPPPATH', os.path.join(conf.blddir, conf.envname))
 
 def build(bld):
-    bld.add_subdirs('lib')
+    bld.add_subdirs('backend_xmmsclient++')
     bld.add_subdirs('data')
     bld.add_subdirs('src')
 
