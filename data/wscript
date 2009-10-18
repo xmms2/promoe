@@ -40,7 +40,7 @@ def configure(conf):
 
 
 def build(bld):
-    obj              = bld.new_task_gen('qt4', 'cxx')
+    obj              = bld.new_task_gen(features='qt4 cxx')
     obj.target       = 'promoe_data'
     obj.install_path = 0 # Don't install
     obj.source       = 'skins/Almond-blue.qrc'

@@ -94,7 +94,7 @@ def build(bld):
     incdirs = bld_subdirs
     incdirs.append('.')
 
-    obj              = bld.new_task_gen('qt4', 'cprogram', 'cxx')
+    obj              = bld.new_task_gen(features='qt4 cprogram cxx')
     obj.target       = 'promoe'
     obj.includes     = incdirs
     obj.source       = sources
