@@ -245,6 +245,8 @@ calcVolume (int volume, int balance)
 void
 XPlayback::setVolume (int new_volume)
 {
+	if (!m_client->isConnected ()) return;
+
 	// Don't echo values the server sent us back to it
 	if (m_volume == new_volume)
 		return;
@@ -271,6 +273,8 @@ XPlayback::setVolume (int new_volume)
 void
 XPlayback::setBalance (int new_balance)
 {
+	if (!m_client->isConnected ()) return;
+
 	// Don't echo values the server sent back to the server
 	if ((m_balance == new_balance) || m_onechannel)
 		return;
