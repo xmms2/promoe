@@ -234,6 +234,8 @@ XCollection::playlistAddUrl (QString url, QString plsname)
 bool
 XCollection::playlistAddUrl (QUrl url, QString plsname)
 {
+	if (!m_client->isConnected ()) return false;
+
 	//TODO: more tests if file is valid
 	if (!url.isValid ()) {
 		return false;
@@ -252,6 +254,8 @@ XCollection::playlistAddUrl (QUrl url, QString plsname)
 bool
 XCollection::playlistClear (QString name)
 {
+	if (!m_client->isConnected ()) return false;
+
 	if (name == "") {
 		name = d->m_activePlaylist;
 	}
@@ -263,6 +267,8 @@ XCollection::playlistClear (QString name)
 bool
 XCollection::addPlsFile (QUrl url)
 {
+	if (!m_client->isConnected ()) return false;
+
 	if (url.scheme ().isEmpty ()) {
 		//the protocol identifier is missing
 		//we guess we might be local, so just add file://
