@@ -21,8 +21,9 @@ class XClient;
 
 #include <xmmsclient/xmmsclient++.h>
 #include <QObject>
+#include <QMap>
 
-static const int MAX_BALANCE = 20;
+typedef QMap<QString, int> VolumeMap;
 
 /**
  * @class XPlayback
@@ -34,9 +35,6 @@ class XPlayback : public QObject {
 
 	public:
 		XPlayback (XClient *);
-
-		int getVolume () {return m_volume;}
-		int getBalance () {return m_balance;}
 
 	public slots:
 		void play ();
@@ -52,8 +50,7 @@ class XPlayback : public QObject {
 		// Helper to directly connect sliders to this class
 		void seekMs (int milliseconds) {seekMs ((uint) milliseconds);};
 
-		void setVolume (int new_volume);
-		void setBalance (int new_balance);
+		void setVolume (QString key, int volume);
 
 		// callbacks for clientlib
 		bool playback_status (const Xmms::Playback::Status &status);
@@ -63,18 +60,12 @@ class XPlayback : public QObject {
 
 	signals:
 		void playbackStatusChanged (Xmms::Playback::Status status);
-		void volumeChanged (int volume);
-		void balanceChanged (int balance);
+		void volumeChanged (VolumeMap);
 
 	private:
 		XClient *m_client;
 		Xmms::Playback::Status m_status;
 
-		void newVolume (int new_volume);
-		void newBalance (int new_balance);
-		int m_volume;
-		int m_balance;
-		bool m_onechannel;
 };
 
 #endif

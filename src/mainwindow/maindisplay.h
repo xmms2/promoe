@@ -47,6 +47,7 @@ class MainWindow;
 class ClutterBar;
 class XConfig;
 class XClient;
+class VolumeHandler;
 
 class MainDisplay : public SkinDisplay
 {
@@ -110,6 +111,7 @@ class MainDisplay : public SkinDisplay
 
 		XConfig *m_xconfig;
 
+		VolumeHandler *m_volumehandler;
 };
 
 #endif

@@ -17,6 +17,7 @@
 #include "xclientcache.h"
 #include "xplayback.h"
 #include "xconfig.h"
+#include "volumehandler.h"
 
 #include "application.h"
 #include "maindisplay.h"
@@ -44,6 +45,7 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 {
 	const XClient *client = App->client ();
 	m_xconfig = client->xconfig ();
+	m_volumehandler = new VolumeHandler (client);
 	Skin* skin = Skin::getInstance ();
 
 	connect (skin, SIGNAL (skinChanged (Skin *)),
@@ -101,21 +103,21 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 	m_vslider->setSliderOffset (QPoint (0, 1));
 	m_vslider->resize (skin->getSize (Skin::SLIDER_VOLUMEBAR_BGS));
 	m_vslider->move (skin->getPos (Skin::SLIDER_VOLUMEBAR_BGS));
-	connect (client->xplayback (), SIGNAL (volumeChanged (int)),
+	connect (m_volumehandler, SIGNAL (volume (int)),
 	         m_vslider, SLOT (setValue (int)));
 	connect (m_vslider, SIGNAL (sliderMoved (int)),
-	         client->xplayback (), SLOT (setVolume (int)));
+	         m_volumehandler, SLOT (setVolume (int)));
 
 	m_bslider = new PixmapSlider (this);
-	m_bslider->setMinimum (-MAX_BALANCE);
-	m_bslider->setMaximum (MAX_BALANCE);
+	m_bslider->setMinimum (-MAX_STEREO_BALANCE);
+	m_bslider->setMaximum (MAX_STEREO_BALANCE);
 	m_bslider->setSliderOffset (QPoint (0, 1));
 	m_bslider->resize (skin->getSize (Skin::SLIDER_BALANCEBAR_BGS));
 	m_bslider->move (skin->getPos (Skin::SLIDER_BALANCEBAR_BGS));
-	connect (client->xplayback (), SIGNAL (balanceChanged (int)),
+	connect (m_volumehandler, SIGNAL (balance (int)),
 	         m_bslider, SLOT (setValue (int)));
 	connect (m_bslider, SIGNAL (sliderMoved (int)),
-	         client->xplayback (), SLOT (setBalance (int)));
+	         m_volumehandler, SLOT (setBalance (int)));
 
 	connect (client->cache (), SIGNAL (activeEntryChanged (QVariantHash)),
 	         this, SLOT (setMediainfo (const QVariantHash)));

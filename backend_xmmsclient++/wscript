@@ -41,6 +41,7 @@ lib_source = """
              xclientcache.cpp
              xcollection.cpp
              xmmsqt4.cpp
+             volumehandler.cpp
              """
 
 
