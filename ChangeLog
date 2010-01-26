@@ -1,4 +1,12 @@
-Version 0.1.0 (2009-8-25)
+Version 0.1.1 (2010-02-21)
+	* Fixed segfaults when promoe is not connected
+	* Update to DrNO API changes
+	* tweak skinloading on startup so that default skin is only loaded once
+	* guard headerfiles against multiple inclusion
+	* workaround segfault and endles loop in Browse Model
+	* fix lintian warnings (from debian)
+
+Version 0.1.0 (2009-08-25)
 	* disabled icon.png
 	* hardcoding $PREFIX/share/promoe/skins as searchpath
 
