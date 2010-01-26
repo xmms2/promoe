@@ -1,3 +1,11 @@
+Version 0.2.0-devel (unreleased)
+	* use waf as build system
+	* added Icon created by AJ Ashton
+	* add skin install pathes to manpage
+	* rewrite volume handling
+	* Move skin handling to SkinManager class
+	* Rewrite Skin class
+
 Version 0.1.1 (2010-02-21)
 	* Fixed segfaults when promoe is not connected
 	* Update to DrNO API changes
