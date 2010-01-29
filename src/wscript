@@ -42,6 +42,7 @@ bld_subdirs = [
                'equalizer',
                'mainwindow',
                'playlist',
+               'skin',
                'widgets'
               ]
 bld_files = [
@@ -51,8 +52,6 @@ bld_files = [
              'BrowseModel.cpp',
              'FileDialog.cpp',
              'settingsdialog.cpp',
-             'Skin.cpp',
-             'SkinChooser.cpp',
              'timedisplay.cpp'
             ]
 
