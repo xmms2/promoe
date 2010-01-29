@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
 
 #include "playlistmenu.h"
 #include "Skin.h"
+#include "skinmanager.h"
 
 #include <QMouseEvent>
 #include <QWidget>
@@ -25,11 +26,9 @@
 PlaylistMenuBar::PlaylistMenuBar (QWidget *parent, uint id) : QWidget (parent)
 {
 	m_id = id;
-
-	Skin *skin = Skin::getInstance ();
 	m_pixmap = QPixmap (0,0);
 
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps (Skin *)));
 }
 
@@ -92,11 +91,9 @@ PlaylistMenu::PlaylistMenu (QWidget *parent, uint pix,
 	m_decbar->move (0, 0);
 
 	m_pixid = pix;
-
-	Skin *skin = Skin::getInstance ();
 	m_pixmap = QPixmap (0,0);
 
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps (Skin *)));
 }
 

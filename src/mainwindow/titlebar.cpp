@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "pixmapbutton.h"
 #include "BrowseDialog.h"
 #include "Skin.h"
+#include "skinmanager.h"
 
 #include <QMenu>
 #include <QPainter>
@@ -30,7 +31,7 @@ TitleBar::TitleBar (QWidget *parent, bool shaded) : QWidget (parent)
 {
 	MainWindow *mw = dynamic_cast<MainWindow*>(window ());
 	m_shaded = shaded;
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 
 	setFixedSize (275, 14);
 
@@ -61,7 +62,7 @@ TitleBar::TitleBar (QWidget *parent, bool shaded) : QWidget (parent)
 	connect (m_closebtn, SIGNAL (clicked()), qApp, SLOT (quit ()));
 
 	m_pixmap = QPixmap(0,0);
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 }
 

@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include "playlistwindow.h"
 #include "pixmapbutton.h"
 #include "Skin.h"
+#include "skinmanager.h"
 
 #include <QSettings>
 #include <QPainter>
@@ -36,8 +37,8 @@ PlaylistShade::PlaylistShade (PlaylistWindow *parent) : QWidget (parent)
 	if (!s.contains ("playlist/shadedsize"))
 		s.setValue ("playlist/shadedsize", 8);
 
-	Skin *skin = Skin::getInstance ();
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	Skin *skin = SkinManager::instance ()->activeSkin ();
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
 	m_closebtn = new PixmapButton (this);
@@ -88,7 +89,7 @@ PlaylistShade::setMediainfo (QVariantHash info)
 void
 PlaylistShade::resizeEvent (QResizeEvent *event)
 {
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 
 	QPoint p = skin->getPos (Skin::BUTTON_PLS_CLOSE);
 	m_closebtn->move (p.x () + width (), p.y());

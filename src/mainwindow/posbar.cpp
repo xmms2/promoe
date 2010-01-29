@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,18 +15,18 @@
 
 #include "posbar.h"
 #include "Skin.h"
+#include "skinmanager.h"
 
 #include <QWidget>
 
 PosBar::PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed)
 	: PixmapSlider (parent)
 {
-	Skin *skin = Skin::getInstance ();
 	m_slider_normal = bnormal;
 	m_slider_pressed = bpressed;
 	m_bg = bg;
-	
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps (Skin *)));
 
 	setFixedSize (248, 10);

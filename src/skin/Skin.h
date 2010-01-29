@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,20 +34,29 @@ class Skin : public QObject
 {
 	Q_OBJECT
 	public:
-		static Skin *getInstance (void);
+		Skin (const QString &url);
+		Skin (Skin *other, const QString &url = "");
 
-		bool setSkin (const QString& name);
+		const bool isValid () const {return m_valid;}
+
 		static const QPixmap getPixmap (const QString&, const QString&);
 
-		const QSize getSize (uint item) const { return m_sizes.value (item); };
+		const QSize getSize (uint item) const
+			 { return m_sizes.value (item); }
 		const QPoint getPos (uint item) const
-			{ return m_positions.value (item); };
-		const QIcon getIcon (uint item) const { return m_icons.value(item); };
+			{ return m_positions.value (item); }
+
+		const PixmapMap getNumbers () const
+			{ return m_numbers; }
+		const PixmapMap getSmallNumbers () const
+			{ return m_smallNumbers; }
+
+		const QIcon getIcon (uint item) const
+			{ return m_icons.value(item); }
 		const QPixmapList getBackgrounds (uint item) const
 			{ return m_backgrounds.value(item); };
-		const PixmapMap getNumbers () const { return m_numbers; }
-		const PixmapMap getSmallNumbers () const { return m_smallNumbers; }
-		const PixmapMap getPixmapFont () const { return m_letterMap; }
+		const PixmapMap getPixmapFont () const
+			{ return m_letterMap; }
 
 		const QPixmap getItem (uint part) const { return m_items.value (part); }
 		const QPixmap getPls (uint part) const
@@ -56,18 +65,11 @@ class Skin : public QObject
 		const QByteArray getPLeditValue (QByteArray c) const
 			{ return m_pledit_txt.value(c); }
 
-		/* Workaround for programm starup */
-		void emitSkinChanged () { emit skinChanged(this); }
-
-	signals:
-		void skinChanged (Skin *skin);
-
 	private:
-		Skin();
-		static Skin *singleton;
-
 		void setSizes ();
 		void setPositions ();
+
+		bool setSkin (const QString& name);
 
 		const QPixmap getPixmap (const QString& file);
 		bool BuildLetterMap (void);
@@ -81,6 +83,7 @@ class Skin : public QObject
 		bool ParsePLEdit (void);
 		bool BuildEqualizer (void);
 
+		bool m_valid;
 		QString m_skinname;
 		QString m_path;
 

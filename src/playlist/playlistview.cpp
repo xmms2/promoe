@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "playlistwidget.h"
 #include "Skin.h"
 #include "entryinfo.h"
+#include "skinmanager.h"
 
 #include <QColor>
 #include <QMenu>
@@ -108,7 +109,7 @@ PlaylistDelegate::sizeHint ( const QStyleOptionViewItem &option,
 PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 {
 	QSettings s;
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 
 	if (!s.contains ("playlist/fontsize"))
 		s.setValue ("playlist/fontsize", 10);
@@ -128,7 +129,7 @@ PlaylistView::PlaylistView (QWidget *parent) : QListView (parent)
 	// TODO make sure delegate gets deleted
 	setItemDelegate (new PlaylistDelegate (this));
 
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
 	m_font = NULL;

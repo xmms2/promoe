@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,28 +19,39 @@
 #include <QPainter>
 #include <QSettings>
 
-static const QString defaultSkin = ":/skins/Almond-blue/";
-
-Skin *Skin::singleton = NULL;
-
-Skin *Skin::getInstance (void)
-{
-	if (!singleton) {
-		singleton = new Skin ();
-	}
-
-	return singleton;
-}
-
-Skin::Skin ()
+Skin::Skin (const QString &url)
 {
 	setSizes ();
 	setPositions ();
 
-	QSettings settings;
-	setSkin (settings.value("skin/path", defaultSkin).toString ());
+	m_valid = setSkin (url);
 }
 
+// Copy string and replace data with that from url.
+Skin::Skin (Skin *other, const QString &url)
+{
+	Q_ASSERT (other != 0);
+
+	m_sizes     = other->m_sizes;
+	m_positions = other->m_positions;
+
+	// At the moment, these are only used if url == "", but
+	// later windows that aren't modified in a skin should be displayed
+	// with the default skin
+	m_items        = other->m_items;
+	m_letterMap    = other->m_letterMap;
+	m_smallNumbers = other->m_smallNumbers;
+	m_numbers      = other->m_numbers;
+	m_playlist     = other->m_playlist;
+	m_pledit_txt   = other->m_pledit_txt;
+
+	// TODO: Use default skin for missing information
+	if (!url.isEmpty ()) {
+		m_valid = setSkin (url);
+	} else {
+		m_valid = true;
+	}
+}
 
 bool
 Skin::setSkin (const QString& name)
@@ -64,11 +75,9 @@ Skin::setSkin (const QString& name)
 	       ParsePLEdit() &&
 	       BuildNumbers() &&
 	       BuildPlaylist () )) {
-		setSkin (defaultSkin);
 		return false;
 	}
 
-	emit skinChanged(this);
 	return true;
 }
 
@@ -96,22 +105,6 @@ Skin::getPixmap (const QString& file, const QString &path)
 const QPixmap
 Skin::getPixmap (const QString& file)
 {
-/*	QDir dir;
-
-	dir.setPath (m_path);
-	dir.setFilter (QDir::Files);
-
-	QFileInfoList list = dir.entryInfoList();
-	for (int i = 0; i < list.size(); ++i) {
-		QFileInfo fileInfo = list.at(i);
-		QString fname = fileInfo.fileName().toLower();
-		if (fname.section(".", 0, 0) == file) {
-			return QPixmap (fileInfo.filePath());
-		}
-	}
-
-	return QPixmap ();
-*/
 	return getPixmap (file, m_path);
 }
 

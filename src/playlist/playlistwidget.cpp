@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "playlistwidget.h"
 #include "playlistview.h"
 #include "playlistcontrols.h"
+#include "skinmanager.h"
 
 #include "pixmapbutton.h"
 #include "playlistshade.h"
@@ -51,15 +52,13 @@
 PlaylistScrollBar::PlaylistScrollBar (QWidget *parent) :
                    QScrollBar (Qt::Vertical, parent)
 {
-	Skin *skin = Skin::getInstance ();
-
 	setContextMenuPolicy(Qt::NoContextMenu);
 
 	m_pixmap = QPixmap (0, 0);
 	m_slider = QPixmap (0, 0);
 	m_slider_down = QPixmap (0, 0);
 
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 }
 
@@ -176,9 +175,9 @@ PlaylistScrollBar::sliderValueFromPosition (int position)
  */
 PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 {
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
 	setActive (underMouse ());
@@ -413,7 +412,7 @@ PlaylistWidget::menuAddPls ()
 void
 PlaylistWidget::resizeEvent (QResizeEvent *event)
 {
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 
 	QPoint p = skin->getPos (Skin::BUTTON_PLS_CLOSE);
 	m_closebtn->move (p.x () + width (), p.y());
@@ -466,7 +465,7 @@ PlaylistWidget::setPixmaps (Skin *skin)
 void
 PlaylistWidget::setActive (bool active)
 {
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 
 	m_active = active;
 

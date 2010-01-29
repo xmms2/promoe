@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "mainwindow.h"
 #include "equalizerwindow.h"
 #include "playlistwindow.h"
-#include "Skin.h"
+#include "skinmanager.h"
 
 #ifdef HAVE_SERVERBROWSER
 #include "Serverbrowser.h"
@@ -52,7 +52,7 @@ Application::Application (int &argc, char **argv) : QApplication (argc, argv)
 	 * The windows should fetch their skin information themselfes on startup
 	 * This is a wokaround until all widgets have been fixed
 	 */
-	Skin::getInstance()->emitSkinChanged();
+	SkinManager::instance()->emitSkinChanged();
 
 	mw->show ();
 	// The Playlist- and EqualizerWindow has to become visible after the

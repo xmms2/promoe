@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
 
 #include "Skin.h"
 #include "SkinChooser.h"
+#include "skinmanager.h"
 
 #include <QDir>
 #include <QFile>
@@ -25,8 +26,6 @@
 #include <QVBoxLayout>
 
 #include <QtDebug>
-
-#include "promoe_config.h"
 
 SkinChooser::SkinChooser (QWidget *parent) : QDialog (parent)
 {
@@ -65,19 +64,7 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 		new SkinChooserItem(icon, skin, path, this);
 	}
 
-	QSettings settings;
-	QStringList searchpath;
-	if (settings.contains ("skin/searchpath") ) {
-		searchpath = settings.value ("skin/searchpath").toStringList ();
-	} else {
-		QString path;
-		path.append (QDir::homePath());
-		path.append ("/.config/xmms2/clients/promoe/skins/");
-		searchpath.append (path);
-		settings.setValue ("skin/searchpath", searchpath);
-	}
-	// This should not be saved in the searchpath config value.
-	searchpath.append (PROMOE_SKINDIR);
+	QStringList searchpath = SkinManager::instance ()->skinPathes ();
 
 	QDir d;
 	d.setFilter (QDir::AllDirs|QDir::NoDotAndDotDot|QDir::Files);
@@ -102,13 +89,9 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 void
 SkinList::changeSkin (QListWidgetItem *item)
 {
-	Skin *skin = Skin::getInstance ();
 	SkinChooserItem *it = dynamic_cast<SkinChooserItem*> (item);
 
-	QSettings settings;
-
-	skin->setSkin (it->getPath ());
-	settings.setValue ("skin/path", it->getPath ());
+	SkinManager::instance ()->loadSkin (it->getPath ());
 }
 
 #include "SkinChooser.moc"

@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
 #include "skindisplay.h"
 #include "textscroller.h"
 #include "Skin.h"
+#include "skinmanager.h"
 
 #include <QBrush>
 #include <QFont>
@@ -33,9 +34,7 @@
 TextScroller::TextScroller (QWidget *parent, uint w,
                             uint h, const QString &name) : QWidget (parent)
 {
-	Skin *skin = Skin::getInstance ();
-
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
 	QSettings s;
@@ -147,7 +146,7 @@ TextScroller::drawText ()
 void
 TextScroller::drawBitmapFont (QString text)
 {
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 
 	int w = text.length() * 5;
 	QString temp = text.toLower ();
@@ -182,7 +181,7 @@ TextScroller::drawBitmapFont (QString text)
 void
 TextScroller::drawQtFont (QString text)
 {
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 
 	QFont font(skin->getPLeditValue ("font"));
 	font.setPixelSize (m_fontsize);

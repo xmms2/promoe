@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "pixmapbutton.h"
 #include "pixmapslider.h"
 #include "Skin.h"
+#include "skinmanager.h"
+
 
 #include <QPainter>
 #include <QMessageBox>
@@ -53,11 +55,11 @@ EqualizerSlider::on_self_slider_moved (int value)
 
 EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 {
-	Skin *skin = Skin::getInstance ();
+	Skin *skin = SkinManager::instance ()->activeSkin ();
 	const XClient *client = App->client ();
 	m_xconfig = client->xconfig ();
 
-	connect (skin, SIGNAL(skinChanged(Skin *)),
+	connect (SkinManager::instance (), SIGNAL(skinChanged(Skin *)),
 	         this, SLOT(setPixmaps(Skin *)));
 
 	m_closebtn = new PixmapButton (this);

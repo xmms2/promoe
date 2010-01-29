@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 #include "application.h"
 #include "shadeddisplay.h"
+#include "skinmanager.h"
 #include "titlebar.h"
 #include "pixmapbutton.h"
 
@@ -29,9 +30,7 @@
 
 ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 {
-	Skin *skin = Skin::getInstance ();
-
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
 	const XClient *client = App->client ();

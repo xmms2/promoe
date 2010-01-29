@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,13 +15,13 @@
 
 #include "playstatus.h"
 #include "Skin.h"
+#include "skinmanager.h"
 
 #include <QPainter>
 
 PlayStatus::PlayStatus (QWidget *parent) : QWidget (parent)
 {
-	Skin* skin = Skin::getInstance ();
-	connect (skin, SIGNAL (skinChanged (Skin *)),
+	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps (Skin *)));
 
 	setFixedSize(11, 9);
