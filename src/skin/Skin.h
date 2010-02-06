@@ -25,7 +25,7 @@
 #include <QIcon>
 #include <QPixmap>
 
-class QDir;
+class QIODevice;
 
 typedef QList <QPixmap> QPixmapList;
 typedef QMap <int, QPixmap> PixmapMap;
@@ -69,19 +69,24 @@ class Skin : public QObject
 		void setSizes ();
 		void setPositions ();
 
-		bool setSkin (const QString& name);
+		// Methods to handle the files of a skin
+		bool handle_main       (const QPixmap &);
+		bool handle_titlebar   (const QPixmap &);
+		bool handle_posbar     (const QPixmap &);
+		bool handle_volume     (const QPixmap &);
+		bool handle_balance    (const QPixmap &);
+		bool handle_cbuttons   (const QPixmap &);
+		bool handle_monoster   (const QPixmap &);
+		bool handle_playpaus   (const QPixmap &);
+		bool handle_shufrep    (const QPixmap &);
+		bool handle_text       (const QPixmap &);
+		bool handle_numbers    (const QPixmap &);
+		bool handle_eqmain     (const QPixmap &);
+		bool handle_eq_ex      (const QPixmap &);
+		bool handle_pledit     (const QPixmap &);
+		bool handle_pledit_txt (QIODevice *);
 
-		const QPixmap getPixmap (const QString& file);
-		bool BuildLetterMap (void);
-		bool BuildButtons (void);
-		bool BuildToggleButtons (void);
-		bool BuildTitleBar (void);
-		bool BuildSliders (void);
-		bool BuildOther (void);
-		bool BuildNumbers (void);
-		bool BuildPlaylist (void);
-		bool ParsePLEdit (void);
-		bool BuildEqualizer (void);
+		bool setSkin (const QString& name);
 
 		bool m_valid;
 		QString m_skinname;
