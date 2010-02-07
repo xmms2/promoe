@@ -15,7 +15,7 @@
  */
 
 #include "skinmanager.h"
-#include "Skin.h"
+#include "skin.h"
 
 #include <QSettings>
 #include <QDebug>

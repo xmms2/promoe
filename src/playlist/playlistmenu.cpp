@@ -14,7 +14,8 @@
  */
 
 #include "playlistmenu.h"
-#include "Skin.h"
+
+#include "skin.h"
 #include "skinmanager.h"
 
 #include <QMouseEvent>

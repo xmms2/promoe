@@ -17,16 +17,16 @@
 #include "xclientcache.h"
 #include "xplayback.h"
 
-#include "application.h"
 #include "shadeddisplay.h"
+
+#include "application.h"
+#include "mainwindow.h"
+#include "pixmapbutton.h"
+#include "skin.h"
 #include "skinmanager.h"
 #include "titlebar.h"
-#include "pixmapbutton.h"
-
 #include "timedisplay.h"
 #include "textscroller.h"
-#include "Skin.h"
-#include "mainwindow.h"
 
 ShadedDisplay::ShadedDisplay (QWidget *parent) : SkinDisplay (parent)
 {

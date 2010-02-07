@@ -23,18 +23,16 @@
 #endif
 
 #include "application.h"
-#include "playlistwindow.h"
-#include "maindisplay.h"
-#include "shadeddisplay.h"
 #include "equalizerwindow.h"
-#include "Skin.h"
+#include "maindisplay.h"
+#include "playlistwindow.h"
+#include "shadeddisplay.h"
+#include "skin.h"
 #include "skinmanager.h"
 
 #include <QSettings>
 #include <QIcon>
-#include <QPluginLoader>
 #include <QMouseEvent>
-#include <qplugin.h>
 
 MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 {

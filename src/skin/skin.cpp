@@ -13,7 +13,7 @@
  *  GNU General Public License for more details.
  */
 
-#include "Skin.h"
+#include "skin.h"
 
 #include <QDir>
 #include <QPainter>
@@ -839,4 +839,4 @@ Skin::setPositions ()
 //	m_positions.insert (SLIDER_EQUALIZER_BGS, QPoint ());
 }
 
-#include "Skin.moc"
+#include "skin.moc"

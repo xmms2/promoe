@@ -17,11 +17,11 @@
 #include "xplayback.h"
 
 #include "application.h"
+#include "entryinfo.h"
 #include "playlistview.h"
 #include "playlistmodel.h"
 #include "playlistwidget.h"
-#include "Skin.h"
-#include "entryinfo.h"
+#include "skin.h"
 #include "skinmanager.h"
 
 #include <QColor>

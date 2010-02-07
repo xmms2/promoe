@@ -17,10 +17,10 @@
 #include "xclientcache.h"
 
 #include "application.h"
+#include "pixmapbutton.h"
 #include "playlistshade.h"
 #include "playlistwindow.h"
-#include "pixmapbutton.h"
-#include "Skin.h"
+#include "skin.h"
 #include "skinmanager.h"
 
 #include <QSettings>

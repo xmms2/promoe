@@ -13,16 +13,17 @@
  *  GNU General Public License for more details.
  */
 
-#include "mainwindow.h"
 #include "titlebar.h"
-#include "skindisplay.h"
-#include "SkinChooser.h"
-// #include "MedialibWindow.h"
-#include "settingsdialog.h"
-#include "pixmapbutton.h"
+
 #include "BrowseDialog.h"
-#include "Skin.h"
+#include "mainwindow.h"
 #include "skinmanager.h"
+#include "pixmapbutton.h"
+#include "settingsdialog.h"
+#include "skin.h"
+#include "SkinChooser.h"
+#include "skindisplay.h"
+// #include "MedialibWindow.h"
 
 #include <QMenu>
 #include <QPainter>

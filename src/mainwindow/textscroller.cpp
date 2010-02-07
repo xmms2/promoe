@@ -13,10 +13,11 @@
  *  GNU General Public License for more details.
  */
 
+#include <application.h>
+#include "skin.h"
 #include "skindisplay.h"
-#include "textscroller.h"
-#include "Skin.h"
 #include "skinmanager.h"
+#include "textscroller.h"
 
 #include <QBrush>
 #include <QFont>
@@ -26,8 +27,6 @@
 #include <QPixmap>
 #include <QSettings>
 #include <QTimer>
-
-#include <application.h>
 
 #include "promoe_config.h"
 

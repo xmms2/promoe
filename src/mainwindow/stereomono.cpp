@@ -14,7 +14,8 @@
  */
 
 #include "stereomono.h"
-#include "Skin.h"
+
+#include "skin.h"
 #include "skinmanager.h"
 
 #include <QPainter>

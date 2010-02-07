@@ -22,7 +22,7 @@
 #include "mainwindow.h"
 #include "pixmapbutton.h"
 #include "pixmapslider.h"
-#include "Skin.h"
+#include "skin.h"
 #include "skinmanager.h"
 
 
