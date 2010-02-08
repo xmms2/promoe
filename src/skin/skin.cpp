@@ -15,9 +15,13 @@
 
 #include "skin.h"
 
+#include "diriterator.h"
+
 #include <QDir>
 #include <QPainter>
 #include <QSettings>
+
+#include <QDebug>
 
 Skin::Skin (const QString &url)
 {
@@ -657,64 +661,61 @@ Skin::setSkin (const QString& path)
 	QPixmap p_numbers;
 	QPixmap p_volume;
 
-	dir.setFilter (QDir::Files|QDir::NoDotAndDotDot);
-	QStringList entries = dir.entryList ();
-	for (int i = 0; i < entries.size (); i++) {
-		QString filename = entries.at (i);
-		QString entry = filename.toLower ();
+	DirIterator *iter = new DirIterator(dir);
+
+	while (iter->hasNext ()) {
+		QString entry = iter->next ().toLower ();
 		if (entry.endsWith (".txt")) {
-			QFile f (dir.absoluteFilePath (filename));
-			if (!f.open(QIODevice::ReadOnly | QIODevice::Text))
+			QPointer<QIODevice> d = iter->entry ();
+			if (d == 0)
 				continue;
+			d->setTextModeEnabled (true);
 			if ( entry == "pledit.txt") {
-				b_pledit_txt = handle_pledit_txt (&f);
+				b_pledit_txt = handle_pledit_txt (d);
 			}
 			continue;
 		} else if (entry.endsWith (".cur")) {
 			// Cursor files are not supported yet
 			continue;
 		} else {
-			QPixmap img = QPixmap (dir.absoluteFilePath (filename));
-			if (img.isNull ()) {
-				continue;
-			}
-
 			entry = entry.section(".", 0, 0);
 			if (entry == "main") {
-				b_main = handle_main (img);
+				b_main = handle_main (iter->pixmapEntry ());
 			} else if (entry == "titlebar") {
-				b_titlebar = handle_titlebar (img);
+				b_titlebar = handle_titlebar (iter->pixmapEntry ());
 			} else if (entry == "posbar" ) {
-				b_posbar = handle_posbar (img);
+				b_posbar = handle_posbar (iter->pixmapEntry ());
 			} else if (entry == "volume") {
-				p_volume = img;
-				b_volume = handle_volume (img);
+				p_volume = iter->pixmapEntry ();
+				b_volume = handle_volume (p_volume);
 			} else if (entry == "balance") {
-				b_balance = handle_balance (img);
+				b_balance = handle_balance (iter->pixmapEntry ());
 			} else if (entry == "cbuttons") {
-				b_cbuttons = handle_cbuttons (img);
+				b_cbuttons = handle_cbuttons (iter->pixmapEntry ());
 			} else if (entry == "monoster") {
-				b_monoster = handle_monoster (img);
+				b_monoster = handle_monoster (iter->pixmapEntry ());
 			} else if (entry == "playpaus") {
-				b_playpaus = handle_playpaus (img);
+				b_playpaus = handle_playpaus (iter->pixmapEntry ());
 			} else if (entry == "shufrep") {
-				b_shufrep = handle_shufrep (img);
+				b_shufrep = handle_shufrep (iter->pixmapEntry ());
 			} else if (entry == "text") {
-				b_text = handle_text (img);
+				b_text = handle_text (iter->pixmapEntry ());
 			} else if (entry == "nums_ex") {
-				b_numbers = handle_numbers (img);
+				b_numbers = handle_numbers (iter->pixmapEntry ());
 			} else if (entry == "numbers") {
-				p_numbers = img;
+				p_numbers = iter->pixmapEntry ();
 			} else if (entry == "eqmain") {
-				b_eqmain = handle_eqmain (img);
+				b_eqmain = handle_eqmain (iter->pixmapEntry ());
 			} else if (entry == "eq_ex") {
-				p_eq_ex = img;
+				p_eq_ex = iter->pixmapEntry ();
 			} else if (entry == "pledit") {
-				b_pledit = handle_pledit (img);
+				b_pledit = handle_pledit (iter->pixmapEntry ());
 			}
 			continue;
 		}
 	}
+
+	delete iter;
 
 	if (!b_balance) {
 		// Fallback, use volume image if skin has no balance image

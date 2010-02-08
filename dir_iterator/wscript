@@ -33,53 +33,23 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
-APPVERSION = '0.1.0'
-APPNAME = 'promoe'
+lib_source = """
+             diriteratorbase.cpp
+             diriterator.cpp
+             """
 
-srcdir = '.'
-blddir = '_build_'
-
-import os.path
 
 def set_options(opt):
-    opt.tool_options('gnu_dirs')
-    opt.tool_options('qt4')
-
-    opt.sub_options('backend_xmmsclient++')
-    opt.sub_options('dir_iterator')
-    opt.sub_options('data')
-    opt.sub_options('src')
-
-
+    pass
 def configure(conf):
-    conf.check_tool('gnu_dirs')
-    conf.check_tool('g++')
-    conf.check_tool('qt4')
-
-    conf.check_cfg(package='xmms2-client-cpp', args="--cflags --libs",
-                   mandatory=1)
-
-    conf.define('VERSION', APPVERSION)
-    conf.define('PROMOE_VERSION', APPVERSION)
-
-    conf.define('PROMOE_DATADIR', os.path.join(conf.env['DATADIR'], 'promoe'))
-    conf.define('PROMOE_SKINDIR', 
-                os.path.join(conf.env['PROMOE_DATADIR'], 'skins'))
-
-
-    conf.sub_config('backend_xmmsclient++')
-    conf.sub_config('dir_iterator')
-    conf.sub_config('data')
-    conf.sub_config('src')
-
-    conf.write_config_header('promoe_config.h')
-    # Path for 'promoe_config.h'
-    # FIXME: There must be a better way to get this path
-    conf.env.append_value('CPPPATH', os.path.join(conf.blddir, conf.envname))
-
+    pass
 def build(bld):
-    bld.add_subdirs('backend_xmmsclient++')
-    bld.add_subdirs('dir_iterator')
-    bld.add_subdirs('data')
-    bld.add_subdirs('src')
+    obj                 = bld.new_task_gen(features='qt4 cstaticlib cxx')
+    obj.target          = 'dir_iterator'
+    obj.install_path    = 0 # Don't install
+    obj.includes        = '.'
+    obj.source          = lib_source
+    obj.uselib          = 'QTCORE QTGUI'
+    obj.export_incdirs  = '.'
+    pass
 
