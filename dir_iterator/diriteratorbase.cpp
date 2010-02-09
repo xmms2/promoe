@@ -16,8 +16,9 @@
 
 #include "diriteratorbase.h"
 #include "diriterator.h"
+#include "archiveiterator.h"
 #include <QDataStream>
-#include "QFile"
+#include "QFileInfo"
 
 
 #include <QDebug>
@@ -35,17 +36,32 @@ DirIteratorBase::pixmapEntry ()
 	QPixmap p;
 	p.loadFromData(a);
 
+	if (p.isNull ()) {
+		qDebug () << "Size:" << a.size ();
+	}
+
 	return p;
 }
 
 DirIteratorBase *
 DirIteratorBase::open(const QString &path)
 {
-	QDir dir(path);
-	if (!dir.exists ()) {
+	QFileInfo info(path);
+	if (!info.exists ()) {
 		return 0;
 	}
 
-	return new DirIterator (dir);
+	if (info.isDir ()) {
+		return new DirIterator (path);
+	}
+
+	if (info.isFile ()) {
+		ArchiveIterator *iter = new ArchiveIterator (path);
+		if (iter && !iter->hasNext ()) {
+			delete iter;
+			return 0;
+		}
+		return iter;
+	}
 }
 

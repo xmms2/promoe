@@ -20,6 +20,7 @@
 #include <QDir>
 #include <QPainter>
 #include <QSettings>
+#include <QFileInfo>
 
 #include <QDebug>
 
@@ -700,8 +701,12 @@ Skin::setSkin (const QString& path)
 	QPixmap p_numbers;
 	QPixmap p_volume;
 
-	while (iter->hasNext ()) {
-		QString entry = iter->next ().toLower ();
+	QString entry;
+	while (!(entry = iter->next ().toLower ()).isEmpty ()) {
+		if ((entry = QFileInfo (entry).fileName ()).isEmpty ()) {
+			// workaround to ignore pathes in archives
+			continue;
+		}
 		if (entry.endsWith (".txt")) {
 			QPointer<QIODevice> d = iter->entry ();
 			if (d == 0)

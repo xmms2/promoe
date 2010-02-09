@@ -36,20 +36,25 @@ POSSIBILITY OF SUCH DAMAGE.
 lib_source = """
              diriteratorbase.cpp
              diriterator.cpp
+             archiveiterator.cpp
+             archivereaddevice.cpp
+             archive_read_open_qiodevice.cpp
              """
 
 
 def set_options(opt):
     pass
 def configure(conf):
+    conf.check_cfg(package='libarchive', args="--cflags --libs")
     pass
+
 def build(bld):
     obj                 = bld.new_task_gen(features='qt4 cstaticlib cxx')
     obj.target          = 'dir_iterator'
     obj.install_path    = 0 # Don't install
     obj.includes        = '.'
     obj.source          = lib_source
-    obj.uselib          = 'QTCORE QTGUI'
+    obj.uselib          = 'QTCORE QTGUI LIBARCHIVE'
     obj.export_incdirs  = '.'
     pass
 
