@@ -101,23 +101,25 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 	m_vslider = new PixmapSlider(this);
 	m_vslider->setMinimum (0);
 	m_vslider->setMaximum (100);
+	m_vslider->setPageStep (3);
 	m_vslider->setSliderOffset (QPoint (0, 1));
 	m_vslider->resize (skin->getSize (Skin::SLIDER_VOLUMEBAR_BGS));
 	m_vslider->move (skin->getPos (Skin::SLIDER_VOLUMEBAR_BGS));
 	connect (m_volumehandler, SIGNAL (volume (int)),
 	         m_vslider, SLOT (setValue (int)));
-	connect (m_vslider, SIGNAL (sliderMoved (int)),
+	connect (m_vslider, SIGNAL (valueChanged (int)),
 	         m_volumehandler, SLOT (setVolume (int)));
 
 	m_bslider = new PixmapSlider (this);
 	m_bslider->setMinimum (-MAX_STEREO_BALANCE);
 	m_bslider->setMaximum (MAX_STEREO_BALANCE);
+	m_bslider->setPageStep (3);
 	m_bslider->setSliderOffset (QPoint (0, 1));
 	m_bslider->resize (skin->getSize (Skin::SLIDER_BALANCEBAR_BGS));
 	m_bslider->move (skin->getPos (Skin::SLIDER_BALANCEBAR_BGS));
 	connect (m_volumehandler, SIGNAL (balance (int)),
 	         m_bslider, SLOT (setValue (int)));
-	connect (m_bslider, SIGNAL (sliderMoved (int)),
+	connect (m_bslider, SIGNAL (valueChanged (int)),
 	         m_volumehandler, SLOT (setBalance (int)));
 
 	connect (client->cache (), SIGNAL (activeEntryChanged (QVariantHash)),

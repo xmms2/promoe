@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,10 +37,10 @@ class EqualizerSlider : public PixmapSlider
 	EqualizerSlider (QWidget*, int);
 
 	signals:
-	void numberedSliderMoved (int value, int id);
+	void numberedValueChanged (int value, int id);
 
 	protected slots:
-	void on_self_slider_moved (int value);
+	void on_self_value_changed (int value);
 
 	private:
 	int m_id;

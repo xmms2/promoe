@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client
  *
- *  Copyright (C) 2008-2009 XMMS2 Team
+ *  Copyright (C) 2008-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -59,11 +59,10 @@ PixmapSlider::mouseMoveEvent (QMouseEvent *event)
 	}
 
 	int val = sliderMovePosition (event);
-
-	if (val == value ()) {
-		return;
+	if (val != value ()) {
+		QAbstractSlider::setValue (val);
 	}
-	QAbstractSlider::setValue (val);
+
 }
 
 void
@@ -77,11 +76,10 @@ PixmapSlider::mousePressEvent (QMouseEvent *event)
 	setSliderDown (true);
 
 	int val = sliderMovePosition (event);
-
-	if (val == value ()) {
-		return;
+	if (val != value ()) {
+		QAbstractSlider::setValue (val);
 	}
-	QAbstractSlider::setValue (val);
+
 
 	update ();
 }
@@ -95,8 +93,10 @@ PixmapSlider::mouseReleaseEvent (QMouseEvent *event)
 	}
 
 	int val = sliderMovePosition (event);
+	if (val != value ()) {
+		QAbstractSlider::setValue (val);
+	}
 
-	QAbstractSlider::setValue (val);
 
 	setSliderDown (false);
 
@@ -106,12 +106,21 @@ PixmapSlider::mouseReleaseEvent (QMouseEvent *event)
 int
 PixmapSlider::sliderMovePosition (QMouseEvent *event)
 {
+	int ret;
 	if (orientation () == Qt::Vertical) {
-		return sliderValueFromPosition (event->y() - m_pressed.height () /2);
+		ret = sliderValueFromPosition (event->y() - m_pressed.height () /2);
 	} else {
-		return sliderValueFromPosition (event->x() - m_pressed.width () /2);
+		ret = sliderValueFromPosition (event->x() - m_pressed.width () /2);
 	}
 
+	// Make sliders snap to center. Usefull for equalizer sliders and balance
+	const int centerValue = 0;
+	if ((ret > centerValue - pageStep ()) &&
+	    (ret < centerValue + pageStep ())) {
+		ret = centerValue;
+	}
+
+	return ret;
 }
 
 void
@@ -120,6 +129,10 @@ PixmapSlider::setValue (int val)
 	if (isSliderDown ()){
 		return;
 	}
+	if (val == value()) {
+		return;
+	}
+
 	QAbstractSlider::setValue (val);
 }
 

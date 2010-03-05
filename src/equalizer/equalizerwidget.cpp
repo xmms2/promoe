@@ -33,19 +33,20 @@ EqualizerSlider::EqualizerSlider (QWidget *parent, int id) :
                                   PixmapSlider (parent)
 {
 	m_id = id;
-	connect ( this, SIGNAL (sliderMoved (int)),
-              this, SLOT (on_self_slider_moved (int)) );
+	connect ( this, SIGNAL (valueChanged (int)),
+              this, SLOT (on_self_value_changed (int)) );
 	setMinimum (-20);
 	setMaximum (20);
+	setPageStep (2);
 	setSliderOffset (QPoint (1, 0));
 	setInvertedAppearance (true);
 	setOrientation (Qt::Vertical);
 }
 
 void
-EqualizerSlider::on_self_slider_moved (int value)
+EqualizerSlider::on_self_value_changed (int value)
 {
-	emit numberedSliderMoved (value, m_id);
+	emit numberedValueChanged (value, m_id);
 }
 
 
@@ -101,14 +102,14 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	m_preamp = new EqualizerSlider(this, -1);
 	m_preamp->resize (skin->getSize (Skin::SLIDER_EQUALIZER_BGS));
 	m_preamp->move(21, 38);
-	connect (m_preamp, SIGNAL (sliderMoved (int)),
+	connect (m_preamp, SIGNAL (valueChanged (int)),
 	         this, SLOT (updateServerPreamp (int)));
 
 	for (int i=0; i < 10; i++) {
 		m_bands[i] = new EqualizerSlider(this, i);
 		m_bands[i]->resize (skin->getSize (Skin::SLIDER_EQUALIZER_BGS));
 		m_bands[i]->move(78+i*18, 38);
-		connect (m_bands[i], SIGNAL (numberedSliderMoved (int, int)),
+		connect (m_bands[i], SIGNAL (numberedValueChanged (int, int)),
 		         this, SLOT (updateServerBands (int, int)));
 	}
 
