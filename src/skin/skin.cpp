@@ -136,6 +136,8 @@ Skin::handle_posbar (const QPixmap &img)
 	m_items[POSBAR] = img.copy (0, 0, 248, h);
 	m_items[POSBAR_BTN_0] = img.copy (248, 0, 29, h);
 	m_items[POSBAR_BTN_1] = img.copy (278, 0, 29, h);
+
+	return true;
 }
 
 bool
@@ -731,9 +733,32 @@ Skin::setSkin (const QString& path)
 		handle_eq_ex (p_eq_ex);
 	}
 
-	return (b_main && b_titlebar && b_posbar && b_volume && b_cbuttons &&
-	        b_monoster && b_playpaus && b_shufrep && b_text && b_numbers &&
-	        b_eqmain && b_pledit && b_pledit_txt);
+	if (!(b_main && b_titlebar && b_posbar && b_volume && b_cbuttons &&
+	      b_monoster && b_playpaus && b_shufrep && b_text && b_numbers &&
+	      b_eqmain && b_pledit && b_pledit_txt)) {
+
+		// Some debug information to find out why a skin failed to load
+		QStringList list;
+		if (!b_main)       { list << "main"; }
+		if (!b_titlebar)   { list << "titlebar"; }
+		if (!b_posbar)     { list << "posbar"; }
+		if (!b_volume)     { list << "volume"; }
+		if (!b_cbuttons)   { list << "cbuttons"; }
+		if (!b_monoster)   { list << "monoster"; }
+		if (!b_playpaus)   { list << "playpaus"; }
+		if (!b_shufrep)    { list << "shufrep"; }
+		if (!b_text)       { list << "text"; }
+		if (!b_numbers)    { list << "numbers/nums_ex"; }
+		if (!b_eqmain)     { list << "equmain"; }
+		if (!b_pledit)     { list << "pledit"; }
+		if (!b_pledit_txt) { list << "pledit.txt"; }
+
+		qDebug() << "Could not load Skin" << path << ": failed to load files"
+		         << list;
+		return false;
+	}
+
+	return true;
 }
 
 const QPixmap
