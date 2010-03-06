@@ -85,26 +85,37 @@ Skin::handle_titlebar (const QPixmap &img)
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (0, 0, 9, 9), PBPixmaps::Normal);
 	button.addPixmap (img.copy (0, 9, 9, 9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (33, 18, 9, 9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_MW_MENU] = button;
+	button.addPixmap (img.copy (33, 45, 9, 9), PBPixmaps::Inactive);
+	m_buttons[BUTTON_MW_SHADED_MENU] = button;
 
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (9, 0, 9, 9), PBPixmaps::Normal);
 	button.addPixmap (img.copy (9, 9, 9, 9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (271, 18, 9, 9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_MW_MINIMIZE] = button;
+	button.addPixmap (img.copy (271, 45, 9, 9), PBPixmaps::Inactive);
+	m_buttons[BUTTON_MW_SHADED_MINIMIZE] = button;
 
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (18, 0, 9, 9), PBPixmaps::Normal);
 	button.addPixmap (img.copy (18, 9, 9, 9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (291, 18, 9, 9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_MW_CLOSE] = button;
+	button.addPixmap (img.copy (291, 45, 9, 9), PBPixmaps::Inactive);
+	m_buttons[BUTTON_MW_SHADED_CLOSE] = button;
 
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (0, 18, 9, 9), PBPixmaps::Normal);
 	button.addPixmap (img.copy (9, 18, 9, 9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (281, 18, 9, 9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_MW_SHADE] = button;
 
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (0, 27, 9, 9), PBPixmaps::Normal);
 	button.addPixmap (img.copy (9, 27, 9, 9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (281, 45, 9, 9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_MW_SHADED_UNSHADE] = button;
 
 	m_items[TITLEBAR_0] = img.copy(27, 0, 275, 14);
@@ -444,6 +455,7 @@ Skin::handle_eqmain (const QPixmap &img)
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (  0, 116,  9,  9), PBPixmaps::Normal);
 	button.addPixmap (img.copy (  0, 125,  9,  9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (264, 152,  9,  9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_EQ_CLOSE] = button;
 
 	button = PBPixmaps ();
@@ -470,7 +482,8 @@ Skin::handle_eqmain (const QPixmap &img)
 	m_buttons[BUTTON_EQ_PRESET] = button;
 
 	button = PBPixmaps ();
-	button.addPixmap (img.copy (254, 3,  9,  9), PBPixmaps::Normal);
+	button.addPixmap (img.copy (254, 137,  9,  9), PBPixmaps::Normal);
+	button.addPixmap (img.copy (254, 152,  9,  9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_EQ_SHADE] = button;
 
 	QPixmapList list;
@@ -512,16 +525,25 @@ Skin::handle_pledit (const QPixmap &img)
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (167,  3,  9,  9), PBPixmaps::Normal);
 	button.addPixmap (img.copy ( 52, 42,  9,  9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (167, 24,  9,  9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_PLS_CLOSE] = button;
 
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (158,  3,  9,  9), PBPixmaps::Normal);
 	button.addPixmap (img.copy ( 62, 42,  9,  9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (158, 24,  9,  9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_PLS_SHADE] = button;
+
+	button = PBPixmaps ();
+	button.addPixmap (img.copy (138, 45,  9,  9), PBPixmaps::Normal);
+	button.addPixmap (img.copy ( 52, 42,  9,  9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (138, 60,  9,  9), PBPixmaps::Inactive);
+	m_buttons[BUTTON_PLS_SHADED_CLOSE] = button;
 
 	button = PBPixmaps ();
 	button.addPixmap (img.copy (129, 45,  9,  9), PBPixmaps::Normal);
 	button.addPixmap (img.copy (150, 42,  9,  9), PBPixmaps::Pressed);
+	button.addPixmap (img.copy (129, 60,  9,  9), PBPixmaps::Inactive);
 	m_buttons[BUTTON_PLS_SHADED_UNSHADE] = button;
 
 	m_playlist[PLS_CORNER_UL_0] = img.copy(0, 0, 25, 20);
@@ -817,6 +839,9 @@ Skin::setSizes ()
 	m_sizes.insert (BUTTON_MW_PLS, QSize (23, 12));
 	m_sizes.insert (BUTTON_MW_SHUFFLE, QSize (46, 15));
 	m_sizes.insert (BUTTON_MW_REPEAT, QSize (28, 15));
+	m_sizes.insert (BUTTON_MW_SHADED_MENU, QSize (9, 9));
+	m_sizes.insert (BUTTON_MW_SHADED_MINIMIZE, QSize (9, 9));
+	m_sizes.insert (BUTTON_MW_SHADED_CLOSE, QSize (9, 9));
 	m_sizes.insert (BUTTON_MW_SHADED_UNSHADE, QSize (9, 9));
 	m_sizes.insert (BUTTON_EQ_CLOSE, QSize (9, 9));
 	m_sizes.insert (BUTTON_EQ_SHADE, QSize (9, 9));
@@ -857,6 +882,9 @@ Skin::setPositions ()
 	m_positions.insert (BUTTON_MW_PLS, QPoint (242, 58));
 	m_positions.insert (BUTTON_MW_SHUFFLE, QPoint (164, 89));
 	m_positions.insert (BUTTON_MW_REPEAT, QPoint (210, 89));
+	m_positions.insert (BUTTON_MW_SHADED_MENU, QPoint (6, 3));
+	m_positions.insert (BUTTON_MW_SHADED_MINIMIZE, QPoint (244, 3));
+	m_positions.insert (BUTTON_MW_SHADED_CLOSE, QPoint (264, 3));
 	m_positions.insert (BUTTON_MW_SHADED_UNSHADE, QPoint (254, 3));
 	m_positions.insert (BUTTON_EQ_CLOSE, QPoint (264, 3));
 	m_positions.insert (BUTTON_EQ_SHADE, QPoint (254, 3));

@@ -103,7 +103,7 @@ PlaylistShade::setPixmaps (Skin *skin)
 {
 	QSettings s;
 
-	m_closebtn->setPixmaps (skin->getButton (Skin::BUTTON_PLS_CLOSE));
+	m_closebtn->setPixmaps (skin->getButton (Skin::BUTTON_PLS_SHADED_CLOSE));
 	m_unshadebtn->setPixmaps (skin->getButton (Skin::BUTTON_PLS_SHADED_UNSHADE));
 
 	m_pixmap_le = skin->getPls (Skin::PLS_WS_LE_0);

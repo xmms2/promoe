@@ -74,6 +74,7 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	m_shadebtn = new PixmapButton (this);
 	m_shadebtn->resize (skin->getSize (Skin::BUTTON_EQ_SHADE));
 	m_shadebtn->move (skin->getPos (Skin::BUTTON_EQ_SHADE));
+	connect (m_shadebtn, SIGNAL (clicked ()), parent, SLOT (switchDisplay ()));
 	m_shadebtn->setEnabled (false);
 
 	m_enable = new PixmapButton (this);

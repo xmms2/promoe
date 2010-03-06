@@ -127,6 +127,9 @@ class Skin : public QObject
 			BUTTON_MW_SHUFFLE,
 			BUTTON_MW_REPEAT,
 			/* Mainwindow buttons shaded */
+			BUTTON_MW_SHADED_MENU,
+			BUTTON_MW_SHADED_MINIMIZE,
+			BUTTON_MW_SHADED_CLOSE,
 			BUTTON_MW_SHADED_UNSHADE,
 			/* Equalizer buttons */
 			BUTTON_EQ_CLOSE,
@@ -141,6 +144,7 @@ class Skin : public QObject
 			BUTTON_PLS_CLOSE,
 			BUTTON_PLS_SHADE,
 			/* Playlist buttons shaded */
+			BUTTON_PLS_SHADED_CLOSE,
 			BUTTON_PLS_SHADED_UNSHADE,
 			/* Sliders */
 			SLIDER_POSBAR,
