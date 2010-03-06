@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,9 +38,23 @@ EqualizerWindow::EqualizerWindow (QWidget *parent) : BaseWindow (parent)
 }
 
 void
-EqualizerWindow::setEnabled (void)
+EqualizerWindow::activeWindowInEvent (QEvent *event)
 {
-	qDebug ("test");
+	m_equalizer->setActive (true);
+	BaseWindow::activeWindowInEvent (event);
+}
+
+void
+EqualizerWindow::activeWindowOutEvent (QEvent *event)
+{
+	m_equalizer->setActive (false);
+	BaseWindow::activeWindowOutEvent (event);
+}
+
+void
+EqualizerWindow::switchDisplay (void)
+{
+	qDebug("switchDisplay not implemented for equalizer");
 }
 
 #include "equalizerwindow.moc"

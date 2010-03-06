@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -50,6 +50,10 @@ class BaseWindow : public QMainWindow {
 		void mousePressEvent (QMouseEvent *event);
 		void mouseReleaseEvent (QMouseEvent *event);
 		void mouseMoveEvent (QMouseEvent *event);
+
+		bool event (QEvent *event);
+		virtual void activeWindowInEvent (QEvent *event);
+		virtual void activeWindowOutEvent (QEvent *event);
 
 		QPoint snapWindow (QPoint pos, AttachedWindowMap attached = AttachedWindowMap());
 		QPoint m_diff;

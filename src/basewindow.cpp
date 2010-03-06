@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -35,6 +35,29 @@ BaseWindow::BaseWindow (QWidget *parent) : QMainWindow (parent)
 
 
 // Qt Event Handlers
+bool
+BaseWindow::event (QEvent *event)
+{
+	if (event->type () == QEvent::ActivationChange) {
+		if (isActiveWindow()) {
+			activeWindowInEvent (event);
+		} else {
+			activeWindowOutEvent (event);
+		}
+	}
+	return QMainWindow::event (event);
+}
+
+void
+BaseWindow::activeWindowInEvent (QEvent *event)
+{
+}
+
+void
+BaseWindow::activeWindowOutEvent (QEvent *event)
+{
+}
+
 void
 BaseWindow::hideEvent (QHideEvent *event)
 {

@@ -36,6 +36,7 @@
 
 MainWindow::MainWindow (QWidget *parent) : BaseWindow (parent)
 {
+	setObjectName ("MainWindow");
 	QSettings s;
 
 	setWindowTitle (App->applicationName ());
@@ -125,6 +126,23 @@ MainWindow::switchDisplay ()
 	update ();
 
 }
+
+void
+MainWindow::activeWindowInEvent (QEvent *event)
+{
+	m_display->setActive (true);
+	m_shaded->setActive (true);
+	BaseWindow::activeWindowInEvent (event);
+}
+
+void
+MainWindow::activeWindowOutEvent (QEvent *event)
+{
+	m_display->setActive (false);
+	m_shaded->setActive (false);
+	BaseWindow::activeWindowOutEvent (event);
+}
+
 
 void
 MainWindow::raisePL (void)

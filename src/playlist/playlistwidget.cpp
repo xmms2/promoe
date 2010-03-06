@@ -180,7 +180,7 @@ PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps(Skin *)));
 
-	setActive (underMouse ());
+	setActive (isActiveWindow ());
 
 	m_closebtn = new PixmapButton (this);
 	m_closebtn->resize (skin->getSize (Skin::BUTTON_PLS_CLOSE));

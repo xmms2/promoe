@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -48,6 +48,10 @@ class MainWindow : public BaseWindow
 	public slots:
 		void switchDisplay ();
 		void mouseMoveEvent (QMouseEvent *event);
+
+	protected:
+		void activeWindowInEvent (QEvent *event);
+		void activeWindowOutEvent (QEvent *event);
 
 	private:
 		bool isShaded (void) { QSettings s; return s.value("MainWindow/shaded").toBool(); }

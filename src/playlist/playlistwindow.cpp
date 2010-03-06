@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -100,18 +100,20 @@ PlaylistWindow::resizeEvent (QResizeEvent *event)
 }
 
 void
-PlaylistWindow::enterEvent (QEvent *event)
+PlaylistWindow::activeWindowInEvent (QEvent *event)
 {
 	m_playlist->setActive (true);
 	m_shaded->setActive (true);
+	BaseWindow::activeWindowInEvent (event);
 }
 
 
 void
-PlaylistWindow::leaveEvent (QEvent *event)
+PlaylistWindow::activeWindowOutEvent (QEvent *event)
 {
 	m_playlist->setActive (false);
 	m_shaded->setActive (false);
+	BaseWindow::activeWindowOutEvent (event);
 }
 
 #include "playlistwindow.moc"

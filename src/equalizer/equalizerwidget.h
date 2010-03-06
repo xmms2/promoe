@@ -34,16 +34,16 @@ class EqualizerSlider : public PixmapSlider
 	Q_OBJECT
 
 	public:
-	EqualizerSlider (QWidget*, int);
+		EqualizerSlider (QWidget*, int);
 
 	signals:
-	void numberedValueChanged (int value, int id);
+		void numberedValueChanged (int value, int id);
 
 	protected slots:
-	void on_self_value_changed (int value);
+		void on_self_value_changed (int value);
 
 	private:
-	int m_id;
+		int m_id;
 };
 
 class EqualizerWidget : public QWidget
@@ -53,6 +53,8 @@ class EqualizerWidget : public QWidget
 	public:
 		EqualizerWidget(QWidget *parent);
 		~EqualizerWidget();
+
+		void setActive (bool);
 		void paintEvent (QPaintEvent *event);
 
 	public slots:
@@ -68,6 +70,7 @@ class EqualizerWidget : public QWidget
 	private:
 		bool haveEqualizerEffect();
 
+		bool m_active;
 		XConfig *m_xconfig;
 		QPixmap m_pixmap;
 		QPixmap m_graph;

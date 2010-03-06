@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,9 +16,9 @@
 #ifndef __PLAYLISTWINDOW_H__
 #define __PLAYLISTWINDOW_H__
 
-// Qt classes
 #include "basewindow.h"
 
+// Qt classes
 class QEvent;
 class QResizeEvent;
 class QPoint;
@@ -45,8 +45,8 @@ class PlaylistWindow : public BaseWindow {
 		void switchDisplay (void);
 
 	protected:
-		void enterEvent (QEvent *event);
-		void leaveEvent (QEvent *event);
+		void activeWindowInEvent (QEvent *event);
+		void activeWindowOutEvent (QEvent *event);
 		void resizeEvent (QResizeEvent *event);
 
 	private:

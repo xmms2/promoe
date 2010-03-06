@@ -63,6 +63,8 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	connect (SkinManager::instance (), SIGNAL(skinChanged(Skin *)),
 	         this, SLOT(setPixmaps(Skin *)));
 
+	setActive (isActiveWindow ());
+
 	m_closebtn = new PixmapButton (this);
 	m_closebtn->resize (skin->getSize (Skin::BUTTON_EQ_CLOSE));
 	m_closebtn->move (skin->getPos (Skin::BUTTON_EQ_CLOSE));
@@ -157,7 +159,17 @@ EqualizerWidget::setPixmaps (Skin *skin)
 		m_bands[i]->setBackground (bgslist);
 	}
 
+	setActive (m_active);
+
 	update();
+}
+
+void
+EqualizerWidget::setActive (bool active)
+{
+	Skin *skin = SkinManager::instance ()->activeSkin ();
+
+	m_active = active;
 }
 
 void

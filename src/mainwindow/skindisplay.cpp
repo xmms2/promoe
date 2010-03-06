@@ -30,15 +30,9 @@ SkinDisplay::SkinDisplay (QWidget *parent) : QWidget(parent)
 }
 
 void
-SkinDisplay::enterEvent (QEvent *event)
+SkinDisplay::setActive (bool b)
 {
-	dynamic_cast<TitleBar *>(m_tbar)->setActive(true);
-}
-
-void
-SkinDisplay::leaveEvent (QEvent *event)
-{
-	dynamic_cast<TitleBar *>(m_tbar)->setActive(false);
+	dynamic_cast<TitleBar *>(m_tbar)->setActive (b);
 }
 
 void

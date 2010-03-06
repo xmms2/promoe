@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,15 +27,14 @@ class SkinDisplay : public QWidget
 	public:
 		SkinDisplay (QWidget *parent);
 
+		void setActive (bool b);
+
 	public slots:
 		void fileOpen (void);
 
 	protected:
-		void enterEvent (QEvent *event);
-		void leaveEvent (QEvent *event);
-
 		QWidget *m_tbar;
-		
+
 };
 
 #endif
