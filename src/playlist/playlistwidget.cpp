@@ -451,8 +451,8 @@ PlaylistWidget::resizeEvent (QResizeEvent *event)
 void
 PlaylistWidget::setPixmaps (Skin *skin)
 {
-	m_closebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_CLOSE));
-	m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_PLS_SHADE));
+	m_closebtn->setPixmaps (skin->getButton (Skin::BUTTON_PLS_CLOSE));
+	m_shadebtn->setPixmaps (skin->getButton (Skin::BUTTON_PLS_SHADE));
 
 	m_controls->setNumbers (skin->getSmallNumbers ());
 	m_controls->setPixmapFont (skin->getPixmapFont ());

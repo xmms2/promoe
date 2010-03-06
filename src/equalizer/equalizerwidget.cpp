@@ -92,14 +92,10 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	m_auto->move (skin->getPos (Skin::BUTTON_EQ_AUTO));
 	m_auto->setEnabled(false); // FIXME: needs to be implemented
 
-	connect (m_auto, SIGNAL(clicked()), parent, SLOT(setEnabled()));
-
 	m_preset = new PixmapButton (this);
 	m_preset->resize (skin->getSize (Skin::BUTTON_EQ_PRESET));
 	m_preset->move (skin->getPos (Skin::BUTTON_EQ_PRESET));
 	m_preset->setEnabled(false); // FIXME: needs to be implemented
-
-	connect(m_preset, SIGNAL(clicked()), parent, SLOT(setEnabled()));
 
 	m_preamp = new EqualizerSlider(this, -1);
 	m_preamp->resize (skin->getSize (Skin::SLIDER_EQUALIZER_BGS));
@@ -140,11 +136,11 @@ EqualizerWidget::setPixmaps (Skin *skin)
 	setMaximumSize (m_pixmap.size ());
 
 	/* Updade Buttons */
-	m_closebtn->setIcon (skin->getIcon (Skin::BUTTON_EQ_CLOSE));
-	m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_EQ_SHADE));
-	m_enable->setIcon (skin->getIcon (Skin::BUTTON_EQ_ACTIVE));
-	m_auto->setIcon (skin->getIcon (Skin::BUTTON_EQ_AUTO));
-	m_preset->setIcon (skin->getIcon (Skin::BUTTON_EQ_PRESET));
+	m_closebtn->setPixmaps (skin->getButton (Skin::BUTTON_EQ_CLOSE));
+	m_shadebtn->setPixmaps (skin->getButton (Skin::BUTTON_EQ_SHADE));
+	m_enable->setPixmaps (skin->getButton (Skin::BUTTON_EQ_ACTIVE));
+	m_auto->setPixmaps (skin->getButton (Skin::BUTTON_EQ_AUTO));
+	m_preset->setPixmaps (skin->getButton (Skin::BUTTON_EQ_PRESET));
 
 	/* Update Sliders */
 	QPixmap normal = skin->getItem (Skin::EQ_WIN_BAR_BTN_0);
@@ -161,7 +157,7 @@ EqualizerWidget::setPixmaps (Skin *skin)
 
 	setActive (m_active);
 
-	update();
+	update ();
 }
 
 void
@@ -170,6 +166,14 @@ EqualizerWidget::setActive (bool active)
 	Skin *skin = SkinManager::instance ()->activeSkin ();
 
 	m_active = active;
+
+	if (active) {
+		m_title = skin->getItem (Skin::EQ_WIN_TITLE_ACTIVE);
+	} else {
+		m_title = skin->getItem (Skin::EQ_WIN_TITLE_INACTIVE);
+	}
+
+	update ();
 }
 
 void
@@ -183,7 +187,8 @@ EqualizerWidget::paintEvent (QPaintEvent *event)
 
 	paint.begin(this);
 
-	paint.drawPixmap(rect(), m_pixmap, m_pixmap.rect());
+	paint.drawPixmap(rect (), m_pixmap, m_pixmap.rect ());
+	paint.drawPixmap(QPoint (0, 0), m_title, m_title.rect ());
 //	r.setRect(86, 17, 113, 19);
 	if (m_graph.height () > 0 ) {
 		r.setRect(86, 17, m_graph.width (), m_graph.height ());

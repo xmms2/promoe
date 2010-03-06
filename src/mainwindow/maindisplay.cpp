@@ -151,16 +151,16 @@ MainDisplay::setPixmaps (Skin *skin)
 	setFixedSize(QSize(275, 116));
 
 	/* update buttons*/
-	m_prev->setIcon (skin->getIcon (Skin::BUTTON_MW_PREV));
-	m_play->setIcon (skin->getIcon (Skin::BUTTON_MW_PLAY));
-	m_pause->setIcon (skin->getIcon (Skin::BUTTON_MW_PAUSE));
-	m_stop->setIcon (skin->getIcon (Skin::BUTTON_MW_STOP));
-	m_next->setIcon (skin->getIcon (Skin::BUTTON_MW_NEXT));
-	m_eject->setIcon (skin->getIcon (Skin::BUTTON_MW_EJECT));
-	m_eq->setIcon (skin->getIcon (Skin::BUTTON_MW_EQ));
-	m_pls->setIcon (skin->getIcon (Skin::BUTTON_MW_PLS));
-	m_shuffle->setIcon (skin->getIcon (Skin::BUTTON_MW_SHUFFLE));
-	m_repeat->setIcon (skin->getIcon (Skin::BUTTON_MW_REPEAT));
+	m_prev->setPixmaps (skin->getButton (Skin::BUTTON_MW_PREV));
+	m_play->setPixmaps (skin->getButton (Skin::BUTTON_MW_PLAY));
+	m_pause->setPixmaps (skin->getButton (Skin::BUTTON_MW_PAUSE));
+	m_stop->setPixmaps (skin->getButton (Skin::BUTTON_MW_STOP));
+	m_next->setPixmaps (skin->getButton (Skin::BUTTON_MW_NEXT));
+	m_eject->setPixmaps (skin->getButton (Skin::BUTTON_MW_EJECT));
+	m_eq->setPixmaps (skin->getButton (Skin::BUTTON_MW_EQ));
+	m_pls->setPixmaps (skin->getButton (Skin::BUTTON_MW_PLS));
+	m_shuffle->setPixmaps (skin->getButton (Skin::BUTTON_MW_SHUFFLE));
+	m_repeat->setPixmaps (skin->getButton (Skin::BUTTON_MW_REPEAT));
 
 	/* update Sliders */
 	m_vslider->setBackground (skin->getBackgrounds (Skin::SLIDER_VOLUMEBAR_BGS));

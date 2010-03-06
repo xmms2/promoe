@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client
  *
- *  Copyright (C) 2008-2009 XMMS2 Team
+ *  Copyright (C) 2008-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -24,15 +24,39 @@
 void
 PixmapButton::paintEvent( QPaintEvent * event )
 {
-	QPixmap pixmap = icon().pixmap (size(),
-	                        isDown() ? QIcon::Active : QIcon::Normal,
-							isChecked() ? QIcon::On : QIcon::Off);
+	PBPixmaps::Mode m;
+	if (isActiveWindow ()) {
+		if (isDown ()) {
+			m = PBPixmaps::Pressed;
+		} else {
+			m = PBPixmaps::Normal;
+		}
+	} else {
+		m = PBPixmaps::Inactive;
+	}
+
+	QPixmap pixmap = m_pixmaps.pixmap (m, isChecked () ? PBPixmaps::Checked
+	                                                   : PBPixmaps::Unchecked);
+	if (pixmap.isNull ()) {
+
+		pixmap = icon().pixmap (size(),
+	                    isDown() ? QIcon::Active : QIcon::Normal,
+		                isChecked() ? QIcon::On : QIcon::Off);
+	}
 
 	QPainter p;
 	p.begin(this);
 	p.drawPixmap( rect(), pixmap, pixmap.rect() );
 	p.end();
 
+}
+
+void
+PixmapButton::setPixmaps (const PixmapButtonPixmaps & p)
+{
+	m_pixmaps = p;
+
+	update ();
 }
 
 #include "pixmapbutton.moc"

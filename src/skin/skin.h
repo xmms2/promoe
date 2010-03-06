@@ -25,6 +25,8 @@
 #include <QIcon>
 #include <QPixmap>
 
+#include "pixmapbutton.h"
+
 class QIODevice;
 
 typedef QList <QPixmap> QPixmapList;
@@ -51,8 +53,8 @@ class Skin : public QObject
 		const PixmapMap getSmallNumbers () const
 			{ return m_smallNumbers; }
 
-		const QIcon getIcon (uint item) const
-			{ return m_icons.value(item); }
+		const PBPixmaps getButton (int button) const
+			{ return m_buttons.value (button); }
 		const QPixmapList getBackgrounds (uint item) const
 			{ return m_backgrounds.value(item); };
 		const PixmapMap getPixmapFont () const
@@ -92,8 +94,7 @@ class Skin : public QObject
 		QString m_skinname;
 		QString m_path;
 
-
-		QMap<uint, QIcon> m_icons;
+		QMap<int, PBPixmaps> m_buttons;
 		QMap<uint, QPixmapList> m_backgrounds;
 
 		QMap<int, QPixmap> m_numbers;
@@ -180,6 +181,8 @@ class Skin : public QObject
 			CLUTTER_D,
 			CLUTTER_V,
 			EQ_WIN_BG,
+			EQ_WIN_TITLE_ACTIVE,
+			EQ_WIN_TITLE_INACTIVE,
 			EQ_WIN_GRAPH_BG,
 			EQ_WIN_BAR_BTN_0,
 			EQ_WIN_BAR_BTN_1,

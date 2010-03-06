@@ -153,14 +153,14 @@ TitleBar::setPixmaps (Skin *skin)
 		m_pixmap = m_pixmap_inactive;
 	}
 
-	m_menubtn->setIcon (skin->getIcon (Skin::BUTTON_MW_MENU));
-	m_minimize->setIcon (skin->getIcon (Skin::BUTTON_MW_MINIMIZE));
+	m_menubtn->setPixmaps (skin->getButton (Skin::BUTTON_MW_MENU));
+	m_minimize->setPixmaps (skin->getButton (Skin::BUTTON_MW_MINIMIZE));
 	if (m_shaded) {
-		m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_SHADED_UNSHADE));
+		m_shadebtn->setPixmaps (skin->getButton (Skin::BUTTON_MW_SHADED_UNSHADE));
 	} else {
-		m_shadebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_SHADE));
+		m_shadebtn->setPixmaps (skin->getButton (Skin::BUTTON_MW_SHADE));
 	}
-	m_closebtn->setIcon (skin->getIcon (Skin::BUTTON_MW_CLOSE));
+	m_closebtn->setPixmaps (skin->getButton (Skin::BUTTON_MW_CLOSE));
 
 	update ();
 }
