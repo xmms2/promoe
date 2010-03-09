@@ -20,15 +20,16 @@
 
 #include <QDebug>
 
-DirIterator::DirIterator (const QDir & dir)
+DirIterator::DirIterator (const QDir & dir) : DirIteratorBase ()
 {
 	m_dir = dir;
 	finish_init ();
 }
 
-DirIterator::DirIterator (const QString & path)
+DirIterator::DirIterator (const QString & path) : DirIteratorBase ()
 {
 	m_dir = QDir (path);
+	finish_init ();
 }
 
 DirIterator::~DirIterator ()
@@ -105,5 +106,3 @@ DirIterator::entry ()
 
 	return m_device;
 }
-
-#include "diriterator.moc"

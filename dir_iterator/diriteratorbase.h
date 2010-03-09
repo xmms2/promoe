@@ -15,8 +15,9 @@
  */
 
 #ifndef __DIRITERATORBASE_H__
-#define __DIRITERATIRBASE_H__
+#define __DIRITERATORBASE_H__
 
+#include <QDir>
 #include <QString>
 #include <QPointer>
 #include <QIODevice>
@@ -33,11 +34,12 @@ public:
 
 	virtual QPointer<QIODevice> entry () = 0;
 
+	static DirIteratorBase *open(const QString &path);
+
 	// Included because I'm lazy, returns a QPixmap for the current entry.
 	// If no pixmap can be createt for the current entry, an empty pixmap is
 	// returned
 	QPixmap pixmapEntry ();
-
 };
 
 #endif

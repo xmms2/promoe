@@ -24,10 +24,8 @@
 #include <QStringList>
 
 
-class DirIterator : public QObject, public virtual DirIteratorBase
+class DirIterator : public DirIteratorBase
 {
-	Q_OBJECT
-
 public:
 	DirIterator (const QDir & dir);
 	DirIterator (const QString & path);

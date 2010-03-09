@@ -15,7 +15,7 @@
 
 #include "skin.h"
 
-#include "diriterator.h"
+#include "diriteratorbase.h"
 
 #include <QDir>
 #include <QPainter>
@@ -676,9 +676,10 @@ Skin::handle_pledit_txt (QIODevice *device)
 bool
 Skin::setSkin (const QString& path)
 {
-	QDir dir(path);
-	if (!dir.exists ())
+	DirIteratorBase *iter = DirIteratorBase::open(path);
+	if (iter == 0) {
 		return false;
+	}
 
 	m_path = path;
 
@@ -698,8 +699,6 @@ Skin::setSkin (const QString& path)
 	QPixmap p_eq_ex;
 	QPixmap p_numbers;
 	QPixmap p_volume;
-
-	DirIterator *iter = new DirIterator(dir);
 
 	while (iter->hasNext ()) {
 		QString entry = iter->next ().toLower ();
