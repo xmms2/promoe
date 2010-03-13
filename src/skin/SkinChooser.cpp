@@ -75,7 +75,7 @@ SkinList::SkinList (QWidget *parent) : QListWidget (parent)
 	}
 
 	foreach (QFileInfo fileInfo, list) {
-		QPixmap p = Skin::getPixmap ("main", fileInfo.filePath());
+		QPixmap p = Skin::getMainPixmap (fileInfo.filePath());
 		if (!p.isNull()) {
 			new SkinChooserItem (QIcon (p), fileInfo.baseName (),
 			                     fileInfo.absoluteFilePath (), this);

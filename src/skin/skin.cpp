@@ -802,6 +802,34 @@ Skin::setSkin (const QString& path)
 }
 
 const QPixmap
+Skin::getMainPixmap (const QString& path)
+{
+	DirIteratorBase *iter = DirIteratorBase::open(path);
+	if (iter == 0) {
+		return QPixmap ();
+	}
+
+	QString entry;
+	QPixmap ret = QPixmap ();
+	while (!(entry = iter->next ().toLower ()).isEmpty ()) {
+        if ((entry = QFileInfo (entry).fileName ()).isEmpty ()) {
+            // workaround to ignore pathes in archives
+            continue;
+        }
+		entry = entry.section(".", 0, 0);
+		if (entry == "main") {
+			ret = iter->pixmapEntry ();
+			if (!ret.isNull ())
+				break;
+		}
+	}
+
+	delete iter;
+
+	return ret;
+}
+
+const QPixmap
 Skin::getPixmap (const QString& file, const QString &path)
 {
 	QDir dir (path);

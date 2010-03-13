@@ -42,6 +42,7 @@ class Skin : public QObject
 		const bool isValid () const {return m_valid;}
 
 		static const QPixmap getPixmap (const QString&, const QString&);
+		static const QPixmap getMainPixmap (const QString& path);
 
 		const QSize getSize (uint item) const
 			 { return m_sizes.value (item); }
