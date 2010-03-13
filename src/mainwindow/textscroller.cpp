@@ -192,9 +192,9 @@ TextScroller::drawQtFont (QString text)
 
 	if (rect.width() > width ()) {
 		temp += QString ("  ***  ");
-		QRect rect = fM.boundingRect (temp);
+		int w = fM.width (temp);
 
-		m_pixmap = QPixmap (rect.width(), height ());
+		m_pixmap = QPixmap (w, height ());
 	} else {
 		m_pixmap = QPixmap (size ());
 	}
