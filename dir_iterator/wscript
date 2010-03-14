@@ -33,12 +33,13 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
+import Utils
+
 lib_source = """
              diriteratorbase.cpp
              diriterator.cpp
              archiveiterator.cpp
              archivereaddevice.cpp
-             archive_read_open_qiodevice.cpp
              """
 
 
@@ -49,11 +50,15 @@ def configure(conf):
     pass
 
 def build(bld):
+    sources = Utils.to_list(lib_source)
+    if bld.env.HAVE_LIBARCHIVE:
+        sources.append("archive_read_open_qiodevice.cpp")
+
     obj                 = bld.new_task_gen(features='qt4 cstaticlib cxx')
     obj.target          = 'dir_iterator'
     obj.install_path    = 0 # Don't install
     obj.includes        = '.'
-    obj.source          = lib_source
+    obj.source          = sources
     obj.uselib          = 'QTCORE QTGUI LIBARCHIVE'
     obj.export_incdirs  = '.'
     pass
