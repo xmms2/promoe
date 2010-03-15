@@ -3,8 +3,9 @@ Version 0.2.0-devel (unreleased)
 	* added Icon created by AJ Ashton
 	* add skin install pathes to manpage
 	* rewrite volume handling
-	* Move skin handling to SkinManager class
-	* Rewrite Skin class
+	* rewrite Skin class
+	  + Move skin handling to SkinManager class
+	  + add support for skins in archives (zip, tar.gz, ...)
 
 Version 0.1.1 (2010-02-21)
 	* Fixed segfaults when promoe is not connected
