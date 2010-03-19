@@ -165,7 +165,7 @@ Skin::handle_volume (const QPixmap &img)
 	for (int i = 0; i <= 27; i++) {
 		list << img.copy(0, i*15, qMin (68, img.width()), 13);
 	}
-	m_backgrounds[SLIDER_VOLUMEBAR_BGS] = list;
+	m_pixmaplists[SLIDER_VOLUMEBAR_BGS] = list;
 
 	if (img.height() > 421) {
 		const int h = qMin (11, img.height () - 422);
@@ -195,7 +195,7 @@ Skin::handle_balance (const QPixmap &img)
 		list.append (p);
 		list.prepend (p);
 	}
-	m_backgrounds[SLIDER_BALANCEBAR_BGS] = list;
+	m_pixmaplists[SLIDER_BALANCEBAR_BGS] = list;
 
 	if (img.height() > 421) {
 		const int h = qMin (11, img.height () - 422);
@@ -499,7 +499,7 @@ Skin::handle_eqmain (const QPixmap &img)
 	for (int i = 0; i < 14; i++) {
 		list << img.copy (13+15*i, 229, 14, 63);
 	}
-	m_backgrounds[SLIDER_EQUALIZER_BGS] = list;
+	m_pixmaplists[SLIDER_EQUALIZER_BGS] = list;
 
 	m_items[EQ_WIN_BAR_BTN_0] = img.copy (0, 164, 11, 11);
 	m_items[EQ_WIN_BAR_BTN_1] = img.copy (0, 176, 11, 11);

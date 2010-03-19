@@ -39,8 +39,6 @@ class MainWindow : public BaseWindow
 		PlaylistWindow *getPL () { return m_playlistwin; }
 		EqualizerWindow *getEQ () { return m_equalizer; }
 
-
-		void raisePL (void);
 		void moveEvent (QMoveEvent *event);
 
 		void attachWidgets ();

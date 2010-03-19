@@ -57,8 +57,8 @@ class Skin : public QObject
 
 		const ButtonPixmaps getButton (int button) const
 			{ return m_buttons.value (button); }
-		const QPixmapList getBackgrounds (uint item) const
-			{ return m_backgrounds.value(item); };
+		const QPixmapList getPixmapList (uint item) const
+			{ return m_pixmaplists.value(item); };
 		const PixmapMap getPixmapFont () const
 			{ return m_letterMap; }
 
@@ -99,7 +99,7 @@ class Skin : public QObject
 		QString m_path;
 
 		QMap<int, ButtonPixmaps> m_buttons;
-		QMap<uint, QPixmapList> m_backgrounds;
+		QMap<uint, QPixmapList> m_pixmaplists;
 
 		QMap<int, QPixmap> m_numbers;
 		QMap<int, QPixmap> m_smallNumbers;

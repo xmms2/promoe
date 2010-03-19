@@ -161,10 +161,10 @@ MainDisplay::setPixmaps (Skin *skin)
 	m_repeat->setPixmaps (skin->getButton (Skin::BUTTON_MW_REPEAT));
 
 	/* update Sliders */
-	m_vslider->setBackground (skin->getBackgrounds (Skin::SLIDER_VOLUMEBAR_BGS));
+	m_vslider->setBackground (skin->getPixmapList (Skin::SLIDER_VOLUMEBAR_BGS));
 	m_vslider->setButton (skin->getButton (Skin::SLIDER_VOLUMEBAR_BUTTON));
 
-	m_bslider->setBackground (skin->getBackgrounds (Skin::SLIDER_BALANCEBAR_BGS));
+	m_bslider->setBackground (skin->getPixmapList (Skin::SLIDER_BALANCEBAR_BGS));
 	m_bslider->setButton (skin->getButton (Skin::SLIDER_BALANCEBAR_BUTTON));
 
 	/* update some other widgets */

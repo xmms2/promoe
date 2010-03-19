@@ -146,7 +146,7 @@ EqualizerWidget::setPixmaps (Skin *skin)
 	/* Update Sliders */
 	QPixmap normal = skin->getItem (Skin::EQ_WIN_BAR_BTN_0);
 	QPixmap pressed = skin->getItem (Skin::EQ_WIN_BAR_BTN_1);
-	QPixmapList bgslist = skin->getBackgrounds (Skin::SLIDER_EQUALIZER_BGS);
+	QPixmapList bgslist = skin->getPixmapList (Skin::SLIDER_EQUALIZER_BGS);
 
 	m_preamp->setSliders (normal, pressed);
 	m_preamp->setBackground (bgslist);

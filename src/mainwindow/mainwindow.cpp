@@ -143,13 +143,6 @@ MainWindow::activeWindowOutEvent (QEvent *event)
 	BaseWindow::activeWindowOutEvent (event);
 }
 
-
-void
-MainWindow::raisePL (void)
-{ 
-	m_playlistwin->raise (); 
-}
-
 void
 MainWindow::mouseMoveEvent (QMouseEvent *event)
 {
