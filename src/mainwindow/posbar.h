@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,16 +25,11 @@ class PosBar : public PixmapSlider
 	Q_OBJECT
 
 	public:
-		PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed);
+		PosBar (QWidget *parent);
 		~PosBar () { }
-		
+
 	public slots:
 		void setPixmaps (Skin *skin);
-
-	private:
-		uint m_slider_normal;
-		uint m_slider_pressed;
-		uint m_bg;
 };
 
 #endif

@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 CLient
  *
- *  Copyright (C) 2008 XMMS2 Team
+ *  Copyright (C) 2008-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,8 @@
 #include <QAbstractSlider>
 #include <QList>
 #include <QPoint>
+
+#include "buttonpixmaps.h"
 
 class QWidget;
 class QPixmap;
@@ -41,9 +43,13 @@ class PixmapSlider : public QAbstractSlider
 		void setBackground (const QPixmapList &);
 		QPixmapList backgrounds () const { return m_backgrounds; }
 
+		void setButton (const ButtonPixmaps &);
+
 		void setSliders (QPixmap normal, QPixmap pressed = QPixmap ());
-		QPixmap normalSlider () const { return m_normal; }
-		QPixmap pressedSlider () const { return m_pressed; }
+		QPixmap normalSlider () const
+			{ return m_button.pixmap (ButtonPixmaps::Normal); }
+		QPixmap pressedSlider () const
+			{ return m_button.pixmap (ButtonPixmaps::Pressed); }
 
 		void setSliderOffset (QPoint offset) { m_slider_offset = offset; }
 
@@ -63,8 +69,7 @@ class PixmapSlider : public QAbstractSlider
 
 	private:
 		QPixmapList m_backgrounds;
-		QPixmap m_normal;
-		QPixmap m_pressed;
+		ButtonPixmaps m_button;
 
 		QPoint m_slider_offset;
 		int m_background_index;

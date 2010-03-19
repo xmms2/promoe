@@ -44,10 +44,16 @@ PixmapSlider::setBackground (const QPixmapList &list)
 }
 
 void
+PixmapSlider::setButton (const ButtonPixmaps &p)
+{
+	m_button = p;
+}
+
+void
 PixmapSlider::setSliders (QPixmap normal, QPixmap pressed)
 {
-	m_normal = normal;
-	m_pressed = pressed;
+	m_button.addPixmap (normal, ButtonPixmaps::Normal);
+	m_button.addPixmap (pressed, ButtonPixmaps::Pressed);
 }
 
 void
@@ -107,10 +113,11 @@ int
 PixmapSlider::sliderMovePosition (QMouseEvent *event)
 {
 	int ret;
+	QPixmap p = m_button.pixmap (ButtonPixmaps::Pressed);
 	if (orientation () == Qt::Vertical) {
-		ret = sliderValueFromPosition (event->y() - m_pressed.height () /2);
+		ret = sliderValueFromPosition (event->y() - p.height () /2);
 	} else {
-		ret = sliderValueFromPosition (event->x() - m_pressed.width () /2);
+		ret = sliderValueFromPosition (event->x() - p.width () /2);
 	}
 
 	// Make sliders snap to center. Usefull for equalizer sliders and balance
@@ -149,8 +156,9 @@ PixmapSlider::paintEvent (QPaintEvent *event)
 		p.drawPixmap (0, 0, bg.width(), bg.height(), bg);
 	}
 	// draw slider
-	QPixmap *slider = isSliderDown () ? &m_pressed : &m_normal;
-	QRect rect (slider->rect ());
+	QPixmap slider = m_button.pixmap (isSliderDown () ? ButtonPixmaps::Pressed
+	                                                  : ButtonPixmaps::Normal);
+	QRect rect (slider.rect ());
 	if (orientation () == Qt::Vertical) {
 		rect.moveTop (sliderPositionFromValue () + m_slider_offset.y ());
 		rect.moveLeft (m_slider_offset.x ());
@@ -158,7 +166,7 @@ PixmapSlider::paintEvent (QPaintEvent *event)
 		rect.moveLeft (sliderPositionFromValue () + m_slider_offset.x ());
 		rect.moveTop (m_slider_offset.y ());
 	}
-	p.drawPixmap (rect , *slider, slider->rect ());
+	p.drawPixmap (rect , slider, slider.rect ());
 	p.end ();
 }
 
@@ -166,10 +174,11 @@ int
 PixmapSlider::sliderPositionFromValue ()
 {
 	int span;
+	QPixmap p = m_button.pixmap (ButtonPixmaps::Normal);
 	if (orientation () == Qt::Vertical) {
-		span = height () - m_normal.height ();
+		span = height () - p.height ();
 	} else {
-		span = width () - m_normal.width ();
+		span = width () - p.width ();
 	}
 
     return QStyle::sliderPositionFromValue (minimum (), maximum (),
@@ -181,10 +190,11 @@ int
 PixmapSlider::sliderValueFromPosition (int pos)
 {
 	int span;
+	QPixmap p = m_button.pixmap (ButtonPixmaps::Normal);
 	if (orientation () == Qt::Vertical) {
-		span = height () - m_normal.height ();
+		span = height () - p.height ();
 	} else {
-		span = width () - m_normal.width ();
+		span = width () - p.width ();
 	}
 
 	return  QStyle::sliderValueFromPosition (minimum (), maximum (), pos,

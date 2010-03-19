@@ -88,9 +88,7 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 	m_clutterbar = new ClutterBar (this);
 	m_clutterbar->move (10, 22);
 
-	m_posbar = new PosBar (this, Skin::POSBAR, 
-						   Skin::POSBAR_BTN_0, 
-						   Skin::POSBAR_BTN_1);
+	m_posbar = new PosBar (this);
 	m_posbar->move (skin->getPos (Skin::SLIDER_POSBAR_BGS));
 	connect (m_posbar, SIGNAL (sliderMoved (int)),
 	         client->xplayback (), SLOT (seekMs (int)));
@@ -164,11 +162,10 @@ MainDisplay::setPixmaps (Skin *skin)
 
 	/* update Sliders */
 	m_vslider->setBackground (skin->getBackgrounds (Skin::SLIDER_VOLUMEBAR_BGS));
-	m_vslider->setSliders (skin->getItem (Skin::VOLBAR_BTN_0),
-	                       skin->getItem (Skin::VOLBAR_BTN_1));
+	m_vslider->setButton (skin->getButton (Skin::SLIDER_VOLUMEBAR_BUTTON));
+
 	m_bslider->setBackground (skin->getBackgrounds (Skin::SLIDER_BALANCEBAR_BGS));
-	m_bslider->setSliders (skin->getItem (Skin::BALANCE_BTN_0),
-	                       skin->getItem (Skin::BALANCE_BTN_1));
+	m_bslider->setButton (skin->getButton (Skin::SLIDER_BALANCEBAR_BUTTON));
 
 	/* update some other widgets */
 	m_time->setPixmaps (skin->getNumbers ());

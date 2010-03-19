@@ -20,13 +20,8 @@
 
 #include <QWidget>
 
-PosBar::PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed)
-	: PixmapSlider (parent)
+PosBar::PosBar (QWidget *parent) : PixmapSlider (parent)
 {
-	m_slider_normal = bnormal;
-	m_slider_pressed = bpressed;
-	m_bg = bg;
-
 	connect (SkinManager::instance (), SIGNAL (skinChanged (Skin *)),
 	         this, SLOT (setPixmaps (Skin *)));
 
@@ -41,17 +36,11 @@ PosBar::PosBar (QWidget *parent, uint bg, uint bnormal, uint bpressed)
 void
 PosBar::setPixmaps (Skin *skin)
 {
-	QPixmap pixmap = skin->getItem (m_bg);
+	QPixmap pixmap = skin->getItem (Skin::POSBAR);
 	setBackground (pixmap);
 	setFixedSize (248, pixmap.height ());
 
-	if ( !skin->getItem(m_slider_normal).isNull() &&
-	     !skin->getItem(m_slider_pressed).isNull()) {
-		setSliders (skin->getItem(m_slider_normal),
-		            skin->getItem(m_slider_pressed));
-	} else {
-		setSliders (QPixmap (), QPixmap ());
-	}
+	setButton (skin->getButton (Skin::SLIDER_POSBAR_BUTTON));
 
 	update ();
 }

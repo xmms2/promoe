@@ -21,74 +21,12 @@
 #include <QMap>
 #include <QPixmap>
 
+#include "buttonpixmaps.h"
+
 typedef QMap <int, QPixmap> PixmapMap;
 
 class QPaintEvent;
 class QWidget;
-
-/*
- * QIcon::Normal for normal apperance
- * QIcon::Active for pressed state
- *
- * QIcon::Off for uncecked state
- * QIcon::On for checked state
- *
- * only QIcon::Normal QIcon::Off combination is necessary
- */
-class PixmapButtonPixmaps
-{
-	public:
-		PixmapButtonPixmaps () :
-			m_pixmaps() {}
-		PixmapButtonPixmaps (const PixmapButtonPixmaps &p) :
-			m_pixmaps(p.m_pixmaps) {}
-
-
-		enum Mode {
-			Normal    = 0, // Used when button is in active Window
-			Inactive  = 1, // Used when button is in inactive Window
-			Pressed   = 2  // used when button is pressed
-		};
-
-		enum State {
-			Unchecked = 0, // used when button is unchecked
-			Checked   = 1  // used when button is checked
-		};
-
-		void addPixmap (const QPixmap & pixmap, Mode m = Normal,
-		                State s = Unchecked) {
-			m_pixmaps[getKey(m, s)] = pixmap;
-			if (!m_pixmaps.contains (getKey (Normal, Unchecked))) {
-				m_pixmaps[getKey (Normal, Unchecked)] = pixmap;
-			}
-		}
-
-		QPixmap pixmap (Mode m = Normal, State s = Unchecked) const {
-			if (m_pixmaps.contains (getKey (m, s))) {
-				return m_pixmaps.value (getKey (m, s));
-
-			} else if (s == Checked && m != Normal &&
-			           m_pixmaps.contains (getKey (Normal, s))) {
-				return m_pixmaps.value (getKey (Normal, s));
-			} else {
-				return m_pixmaps.value (getKey (Normal, Unchecked));
-			}
-		}
-
-
-		PixmapButtonPixmaps & operator= (const PixmapButtonPixmaps & p) {
-			m_pixmaps = p.m_pixmaps;
-		}
-
-	protected:
-		PixmapMap m_pixmaps;
-
-		// get the key to be used in the PixmapMap
-		inline int getKey (Mode m, State s) const { return (m + s*3); }
-};
-
-typedef PixmapButtonPixmaps PBPixmaps;
-
 
 class PixmapButton : public QAbstractButton
 {
@@ -98,7 +36,7 @@ class PixmapButton : public QAbstractButton
 		PixmapButton (QWidget *parent) : QAbstractButton (parent) {}
 		~PixmapButton () {};
 
-		void setPixmaps (const PixmapButtonPixmaps & p);
+		void setPixmaps (const ButtonPixmaps & p);
 
 	protected:
 		void paintEvent ( QPaintEvent * event );

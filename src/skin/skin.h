@@ -25,7 +25,7 @@
 #include <QIcon>
 #include <QPixmap>
 
-#include "pixmapbutton.h"
+#include "buttonpixmaps.h"
 
 class QIODevice;
 
@@ -39,13 +39,14 @@ class Skin : public QObject
 		Skin (const QString &url);
 		Skin (Skin *other, const QString &url = "");
 
-		const bool isValid () const {return m_valid;}
+		const bool isValid () const
+			{ return m_valid; }
 
 		static const QPixmap getPixmap (const QString&, const QString&);
 		static const QPixmap getMainPixmap (const QString& path);
 
 		const QSize getSize (uint item) const
-			 { return m_sizes.value (item); }
+			{ return m_sizes.value (item); }
 		const QPoint getPos (uint item) const
 			{ return m_positions.value (item); }
 
@@ -54,17 +55,19 @@ class Skin : public QObject
 		const PixmapMap getSmallNumbers () const
 			{ return m_smallNumbers; }
 
-		const PBPixmaps getButton (int button) const
+		const ButtonPixmaps getButton (int button) const
 			{ return m_buttons.value (button); }
 		const QPixmapList getBackgrounds (uint item) const
 			{ return m_backgrounds.value(item); };
 		const PixmapMap getPixmapFont () const
 			{ return m_letterMap; }
 
-		const QPixmap getItem (uint part) const { return m_items.value (part); }
+		const QPixmap getItem (uint part) const
+			{ return m_items.value (part); }
 		const QPixmap getPls (uint part) const
 			{ return m_playlist.value (part); }
-		const QPixmap getLetter (uint c) const { return m_letterMap.value (c); }
+		const QPixmap getLetter (uint c) const
+			{ return m_letterMap.value (c); }
 		const QByteArray getPLeditValue (QByteArray c) const
 			{ return m_pledit_txt.value(c); }
 
@@ -95,7 +98,7 @@ class Skin : public QObject
 		QString m_skinname;
 		QString m_path;
 
-		QMap<int, PBPixmaps> m_buttons;
+		QMap<int, ButtonPixmaps> m_buttons;
 		QMap<uint, QPixmapList> m_backgrounds;
 
 		QMap<int, QPixmap> m_numbers;
@@ -150,10 +153,13 @@ class Skin : public QObject
 			/* Sliders */
 			SLIDER_POSBAR,
 			SLIDER_POSBAR_BGS,
+			SLIDER_POSBAR_BUTTON,
 			SLIDER_VOLUMEBAR,
 			SLIDER_VOLUMEBAR_BGS,
+			SLIDER_VOLUMEBAR_BUTTON,
 			SLIDER_BALANCEBAR,
 			SLIDER_BALANCEBAR_BGS,
+			SLIDER_BALANCEBAR_BUTTON,
 			SLIDER_EQUALIZER,
 			SLIDER_EQUALIZER_BGS,
 //		};
@@ -192,12 +198,6 @@ class Skin : public QObject
 			EQ_WIN_BAR_BTN_0,
 			EQ_WIN_BAR_BTN_1,
 			POSBAR,
-			POSBAR_BTN_0,
-			POSBAR_BTN_1,
-			VOLBAR_BTN_0,
-			VOLBAR_BTN_1,
-			BALANCE_BTN_0,
-			BALANCE_BTN_1,
 		};
 
 		enum PlaylistParts {

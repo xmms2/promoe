@@ -146,8 +146,11 @@ Skin::handle_posbar (const QPixmap &img)
 	const int h = qMin (10, img.height ());
 	m_sizes[SLIDER_POSBAR_BGS] = QSize (248, h);
 	m_items[POSBAR] = img.copy (0, 0, 248, h);
-	m_items[POSBAR_BTN_0] = img.copy (248, 0, 29, h);
-	m_items[POSBAR_BTN_1] = img.copy (278, 0, 29, h);
+
+	ButtonPixmaps button;
+	button.addPixmap (img.copy (248, 0, 29, h), ButtonPixmaps::Normal);
+	button.addPixmap (img.copy (278, 0, 29, h), ButtonPixmaps::Pressed);
+	m_buttons[SLIDER_POSBAR_BUTTON] = button;
 
 	return true;
 }
@@ -165,10 +168,11 @@ Skin::handle_volume (const QPixmap &img)
 	m_backgrounds[SLIDER_VOLUMEBAR_BGS] = list;
 
 	if (img.height() > 421) {
-		m_items[VOLBAR_BTN_1] = img.copy (0, 422, 14,
-		                                  qMin (11, img.height () - 422));
-		m_items[VOLBAR_BTN_0] = img.copy (15, 422, 14,
-		                                  qMin (11, img.height () - 422));
+		const int h = qMin (11, img.height () - 422);
+		ButtonPixmaps button;
+		button.addPixmap (img.copy (0, 422, 14, h), ButtonPixmaps::Normal);
+		button.addPixmap (img.copy (15, 422, 14, h), ButtonPixmaps::Pressed);
+		m_buttons[SLIDER_VOLUMEBAR_BUTTON] = button;
 	}
 
 	return true;
@@ -194,10 +198,11 @@ Skin::handle_balance (const QPixmap &img)
 	m_backgrounds[SLIDER_BALANCEBAR_BGS] = list;
 
 	if (img.height() > 421) {
-		m_items[BALANCE_BTN_1] = img.copy(0, 422, 14,
-		                                  qMin (11, img.height () - 422));
-		m_items[BALANCE_BTN_0] = img.copy(15, 422, 14,
-		                                  qMin (11, img.height () - 422));
+		const int h = qMin (11, img.height () - 422);
+		ButtonPixmaps button;
+		button.addPixmap (img.copy (0, 422, 14, h), ButtonPixmaps::Normal);
+		button.addPixmap (img.copy (15, 422, 14, h), ButtonPixmaps::Pressed);
+		m_buttons[SLIDER_BALANCEBAR_BUTTON] = button;
 	}
 
 	return true;
