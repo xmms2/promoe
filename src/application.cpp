@@ -14,6 +14,7 @@
  */
 
 #include "xclient.h"
+#include "xclientcache.h"
 
 #include "application.h"
 
@@ -105,6 +106,24 @@ Application::handleDisconnected ()
 		default:
 			QApplication::quit ();
 	}
+}
+
+void
+Application::showEntryInfo (int id)
+{
+	if (id <= 0) {
+		id = m_xmms2_client->cache ()->get_current_id ();
+	}
+	if (id <= 0)
+		return;
+
+	if (!m_entry_info) {
+		m_entry_info = new EntryInfo (NULL, m_xmms2_client->cache (), id);
+	} else {
+		m_entry_info->raise ();
+		m_entry_info->setId (id);
+	}
+	m_entry_info->show ();
 }
 
 int

@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,6 +17,9 @@
 #define __APPLICATION__
 
 #include <QApplication>
+#include <QPointer>
+
+#include "entryinfo.h"
 
 class XClient;
 
@@ -53,9 +56,11 @@ class Application : public QApplication
 
 	public slots:
 		void toggleTime () {m_timemode_reverse = !m_timemode_reverse;}
+		void showEntryInfo (int id = 0);
 
 	private:
 		bool m_timemode_reverse;
+		QPointer<EntryInfo> m_entry_info;
 };
 
 #endif

@@ -1,7 +1,7 @@
 /** 
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2007 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -60,6 +60,8 @@ class XClientCache : public QObject
 		QIcon get_icon (uint32_t id);
 		QPixmap get_pixmap (uint32_t id);
 		QVariant extra_info_get (uint32_t, const QString &);
+
+		int get_current_id () { return m_current_id; }
 
 		void extra_info_set (uint32_t, const QString &, const QVariant &);
 		void invalidate (uint32_t);

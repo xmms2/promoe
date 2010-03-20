@@ -87,6 +87,8 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 
 	m_clutterbar = new ClutterBar (this);
 	m_clutterbar->move (10, 22);
+	connect (m_clutterbar, SIGNAL (clicked_i ()),
+	         App, SLOT (showEntryInfo ()));
 
 	m_posbar = new PosBar (this);
 	m_posbar->move (skin->getPos (Skin::SLIDER_POSBAR_BGS));

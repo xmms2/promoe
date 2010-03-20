@@ -320,15 +320,7 @@ PlaylistView::showEntryInfo (void)
 	if (current.isValid ()) {
 		uint32_t id = model ()->data (current, PlaylistModel::MedialibIdRole)
 		                        .toUInt ();
-		// If no infodialog exists, create one, else set the selected Item as
-		// displayed item
-		if (!m_entry_info) {
-			m_entry_info = new EntryInfo (this, client->cache (), id);
-		} else {
-			m_entry_info->raise ();
-			m_entry_info->setId (id);
-		}
-		m_entry_info->show ();
+		App->showEntryInfo (id);
 	}
 }
 
