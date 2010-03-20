@@ -162,6 +162,8 @@ class Skin : public QObject
 			SLIDER_BALANCEBAR_BUTTON,
 			SLIDER_EQUALIZER,
 			SLIDER_EQUALIZER_BGS,
+			/* Various */
+			PIXMAPS_CLUTTERBAR,
 //		};
 //
 //		enum Part { // Old and not yet sorted enum
@@ -177,20 +179,10 @@ class Skin : public QObject
 			TITLEBAR_1,
 			STATUSBAR_0,
 			STATUSBAR_1,
-			SEEKBAR,
-			SEEKBAR_POS_0,
-			SEEKBAR_POS_1,
 			TEXTBG,
 			PIC_PLAY,
 			PIC_PAUSE,
 			PIC_STOP,
-			CLUTTER_ON,
-			CLUTTER_OFF,
-			CLUTTER_O,
-			CLUTTER_A,
-			CLUTTER_I,
-			CLUTTER_D,
-			CLUTTER_V,
 			EQ_WIN_BG,
 			EQ_WIN_TITLE_ACTIVE,
 			EQ_WIN_TITLE_INACTIVE,
@@ -198,6 +190,17 @@ class Skin : public QObject
 			EQ_WIN_BAR_BTN_0,
 			EQ_WIN_BAR_BTN_1,
 			POSBAR,
+		};
+
+		// The order here must be the same as in handle_titlebar
+		enum ClutterItems {
+			CLUTTER_ON,
+			CLUTTER_OFF,
+			CLUTTER_O,
+			CLUTTER_A,
+			CLUTTER_I,
+			CLUTTER_D,
+			CLUTTER_V
 		};
 
 		enum PlaylistParts {

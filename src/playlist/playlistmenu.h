@@ -16,7 +16,7 @@
 #ifndef __PLAYLISTMENU_H__
 #define __PLAYLISTMENU_H__
 
-#include <skin.h>
+#include "skin.h"
 
 #include <QWidget>
 

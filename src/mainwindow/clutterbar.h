@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2008 XMMS2 Team
+ *  Copyright (C) 2005-2010 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,11 +16,16 @@
 #ifndef __CLUTTERBAR_H__
 #define __CLUTTERBAR_H__
 
-#include "QWidget"
+#include <QWidget>
+#include <QMap>
+#include <QPixmap>
+
 class QMouseEvent;
 class QPaintEvent;
 
 class Skin;
+
+typedef QList<QPixmap> QPixmapList;
 
 class ClutterBar : public QWidget
 {
@@ -30,26 +35,36 @@ class ClutterBar : public QWidget
 		~ClutterBar ();
 
 	public slots:
+		void setPixmaps (const QPixmapList &);
 		void setPixmaps(Skin *skin);
+
+	signals:
+		void clicked_o ();
+		void clicked_a (bool checked);
+		void clicked_i ();
+		void clicked_d (bool checked);
+		void clicked_v ();
 
 	protected:
 		void paintEvent (QPaintEvent *event);
 
 		void mousePressEvent (QMouseEvent *event);
+		void mouseMoveEvent (QMouseEvent *event);
 		void mouseReleaseEvent (QMouseEvent *event);
 
-		QPixmap m_clutter_off;
-		QPixmap m_clutter_on;
+		void enterEvent (QEvent *event);
+		void leaveEvent (QEvent *event);
 
-		QPixmap m_clutter_o;
-		QPixmap m_clutter_a;
-		QPixmap m_clutter_i;
-		QPixmap m_clutter_d;
-		QPixmap m_clutter_v;
+		bool posInWidget (const int x, const int y) const;
+		int posToVal (const int x, const int y) const;
 
-		bool enabled;
+		QPixmapList m_pixmaps;
 
-		QPixmap m_pixmap;
+		int m_val;
+		bool m_checked_a;
+		bool m_checked_d;
+
+		bool m_show_always;
 };
 
 
