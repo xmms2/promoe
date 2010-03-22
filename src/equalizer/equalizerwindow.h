@@ -21,6 +21,7 @@
 class QWidget;
 class MainWindow;
 class EqualizerWidget;
+class EqualizerShade;
 
 class EqualizerWindow : public BaseWindow
 {
@@ -37,8 +38,8 @@ class EqualizerWindow : public BaseWindow
 		void activeWindowOutEvent (QEvent *event);
 
 	private:
-		MainWindow *m_mw;
 		EqualizerWidget *m_equalizer;
+		EqualizerShade *m_shaded;
 };
 
 #endif // __EQUALIZERWINDOW_H__

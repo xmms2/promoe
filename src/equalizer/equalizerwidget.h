@@ -21,6 +21,7 @@ class QString;
 class QVariant;
 class QPixmap;
 class QPaintEvent;
+class QMouseEvent;
 
 #include "pixmapslider.h"
 class XConfig;
@@ -56,6 +57,7 @@ class EqualizerWidget : public QWidget
 
 		void setActive (bool);
 		void paintEvent (QPaintEvent *event);
+		void mouseDoubleClickEvent (QMouseEvent *event);
 
 	public slots:
 		void setPixmaps(Skin *skin);

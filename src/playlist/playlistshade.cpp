@@ -132,7 +132,7 @@ PlaylistShade::setActive (bool b)
 	update ();
 }
 
-void 
+void
 PlaylistShade::mouseDoubleClickEvent (QMouseEvent *event)
 {
 	PlaylistWindow *pw = dynamic_cast<PlaylistWindow*>(window ());

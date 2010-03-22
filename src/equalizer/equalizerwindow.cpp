@@ -20,27 +20,36 @@
 
 #include "mainwindow.h"
 #include "equalizerwidget.h"
+#include "equalizershade.h"
 
 EqualizerWindow::EqualizerWindow (QWidget *parent) : BaseWindow (parent)
 {
 	setObjectName ("equalizer");
-	m_mw = dynamic_cast<MainWindow *>(parent);
 
 	setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
 	setAttribute (Qt::WA_DeleteOnClose);
 
-	m_equalizer = new EqualizerWidget (this);
-	m_equalizer->show();
+	QSettings s;
+	s.beginGroup (objectName ());
 
+	m_equalizer = new EqualizerWidget (this);
+	m_shaded = new EqualizerShade (this);
 	setCentralWidget (m_equalizer);
 
-	setFixedSize (275, 116);
+	if (!s.contains ("shaded"))
+		s.setValue ("shaded", false);
+	else
+		s.setValue ("shaded", !s.value("shaded").toBool ());
+	switchDisplay ();
+
+	s.endGroup ();
 }
 
 void
 EqualizerWindow::activeWindowInEvent (QEvent *event)
 {
 	m_equalizer->setActive (true);
+	m_shaded->setActive (true);
 	BaseWindow::activeWindowInEvent (event);
 }
 
@@ -48,13 +57,29 @@ void
 EqualizerWindow::activeWindowOutEvent (QEvent *event)
 {
 	m_equalizer->setActive (false);
+	m_shaded->setActive (false);
 	BaseWindow::activeWindowOutEvent (event);
 }
 
 void
 EqualizerWindow::switchDisplay (void)
 {
-	qDebug("switchDisplay not implemented for equalizer");
+	QSettings s;
+	s.beginGroup (objectName ());
+
+	if (s.value("shaded").toBool ()) {
+		m_shaded->hide ();
+		m_equalizer->show ();
+		setFixedSize (m_equalizer->size ());
+		s.setValue ("shaded", false);
+	} else {
+		m_equalizer->hide ();
+		m_shaded->show ();
+		setFixedSize (m_shaded->size ());
+		s.setValue ("shaded", true);
+    }
+
+	s.endGroup ();
 }
 
 #include "equalizerwindow.moc"

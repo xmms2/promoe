@@ -189,6 +189,8 @@ class Skin : public QObject
 			EQ_WIN_GRAPH_BG,
 			EQ_WIN_BAR_BTN_0,
 			EQ_WIN_BAR_BTN_1,
+			EQ_WIN_SHADE_ACTIVE,
+			EQ_WIN_SHADE_INACTIVE,
 			POSBAR,
 		};
 

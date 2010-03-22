@@ -517,6 +517,9 @@ Skin::handle_eq_ex (const QPixmap &img)
 	if (img.isNull ())
 		return false;
 
+	m_items[EQ_WIN_SHADE_ACTIVE] = img.copy (0, 0, 275, 14);
+	m_items[EQ_WIN_SHADE_INACTIVE] = img.copy (0, 15, 275, 14);
+
 	m_buttons[BUTTON_EQ_SHADE].addPixmap (img.copy ( 1, 38,  9,  9),
 	                                      PBPixmaps::Pressed);
 
@@ -702,8 +705,8 @@ Skin::setSkin (const QString& path)
 	bool b_main = false, b_titlebar = false, b_posbar = false, b_volume = false;
 	bool b_balance = false, b_cbuttons = false, b_monoster = false;
 	bool b_playpaus = false, b_shufrep = false, b_text = false;
-	bool b_numbers = false, b_eqmain = false, b_pledit = false;
-	bool b_pledit_txt = false;
+	bool b_numbers = false, b_eqmain = false, b_eq_ex = false;
+	bool b_pledit = false, b_pledit_txt = false;
 
 	QPixmap p_eq_ex;
 	QPixmap p_numbers;
@@ -778,12 +781,12 @@ Skin::setSkin (const QString& path)
 
 	// handle_eq_ex must be called after handle_eqmain
 	if (b_eqmain) {
-		handle_eq_ex (p_eq_ex);
+		b_eq_ex = handle_eq_ex (p_eq_ex);
 	}
 
 	if (!(b_main && b_titlebar && b_posbar && b_volume && b_cbuttons &&
 	      b_monoster && b_playpaus && b_shufrep && b_text && b_numbers &&
-	      b_eqmain && b_pledit && b_pledit_txt)) {
+	      b_eqmain && b_eq_ex && b_pledit && b_pledit_txt)) {
 
 		// Some debug information to find out why a skin failed to load
 		QStringList list;
@@ -798,6 +801,7 @@ Skin::setSkin (const QString& path)
 		if (!b_text)       { list << "text"; }
 		if (!b_numbers)    { list << "numbers/nums_ex"; }
 		if (!b_eqmain)     { list << "equmain"; }
+		if (!b_eq_ex)      { list << "eq_ex"; }
 		if (!b_pledit)     { list << "pledit"; }
 		if (!b_pledit_txt) { list << "pledit.txt"; }
 

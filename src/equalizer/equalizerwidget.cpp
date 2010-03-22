@@ -24,10 +24,12 @@
 #include "pixmapslider.h"
 #include "skin.h"
 #include "skinmanager.h"
+#include "equalizerwindow.h"
 
 
 #include <QPainter>
 #include <QMessageBox>
+#include <QMouseEvent>
 
 EqualizerSlider::EqualizerSlider (QWidget *parent, int id) :
                                   PixmapSlider (parent)
@@ -121,6 +123,8 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QWidget (parent)
 	if (m_xconfig->isReady()) {
 		loadServerConfig ();
 	}
+
+	setFixedSize (275, 116);
 }
 
 EqualizerWidget::~EqualizerWidget (void)
@@ -175,6 +179,15 @@ EqualizerWidget::setActive (bool active)
 	}
 
 	update ();
+}
+
+void
+EqualizerWidget::mouseDoubleClickEvent (QMouseEvent *event)
+{
+	EqualizerWindow *ew = dynamic_cast<EqualizerWindow *>(window ());
+	if (event->y() < 14) {
+		ew->switchDisplay ();
+	}
 }
 
 void
