@@ -4,7 +4,7 @@
 """
 This file is a part of Promoe, an XMMS2 Client
 
-Copyright (C) 2009 XMMS2 Team
+Copyright (C) 2009-2010 XMMS2 Team
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -33,24 +33,15 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
-def set_options(opt):
-    pass
-def configure(conf):
-    conf.check_tool('misc')
+excludes = []
+if not bld.env.LIB_LIBARCHIVE:
+    excludes.append('archive_read_open_qiodevice.cpp')
 
-
-def build(bld):
-    obj              = bld.new_task_gen(features='qt4 cxx')
-    obj.target       = 'promoe_data'
-    obj.install_path = 0 # Don't install
-    obj.source       = 'skins/Almond-blue.qrc'
-    obj.uselib       = 'QTCORE'
-
-    man              = bld.new_task_gen('subst')
-    man.source       = 'promoe.1.in'
-    man.install_path = '${MANDIR}/man1'
-
-    bld.install_files('${MANDIR}/man1', 'promoe.1')
-    bld.install_files('${DATADIR}/applications', 'promoe.desktop')
-    bld.install_files('${DATADIR}/icons', 'icons/ashton-flame1/promoe.svg')
-
+bld(
+    features        = 'cxx qt4',
+    target          = 'dir_iterator',
+    source          = bld.path.ant_glob(['*.cpp'], excl=excludes),
+    use             = 'QTCORE QTGUI LIBARCHIVE',
+    includes        = '..',
+    export_includes = '.'
+)

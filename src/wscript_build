@@ -33,43 +33,16 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
-from waflib.TaskGen import feature, before, after
-import os
+excludes = ['attic/*', 'ServerBrowser.cpp']
 
-# Automatically pick up include paths
-@feature('cxx')
-@after('process_source')
-@before('apply_incpaths')
-def add_includes_paths(self):
-    incs = set(self.to_list(getattr(self, 'includes', '')))
-    for x in self.compiled_tasks:
-        incs.add(x.inputs[0].parent.path_from(self.path))
-    self.includes = list(incs)
+# if not (bld.env['LIB_AVAHI-QT4'] and bld.env['LIB_AVAHI-CLIENT']):
+#     excludes.append('ServerBrowser.cpp')
 
-APPVERSION = '0.2.0-devel'
-APPNAME = 'promoe'
-
-def options(opt):
-    opt.load('gnu_dirs compiler_cxx qt4')
-
-def configure(conf):
-    conf.load('gnu_dirs compiler_cxx qt4')
-
-    conf.check_cfg(package='xmms2-client-cpp', args='--cflags --libs')
-    conf.check_cfg(package='libarchive', args="--cflags --libs", mandatory=False)
-
-    conf.check_cfg(package='avahi-client', args="--cflags --libs", mandatory=False)
-    conf.check_cfg(package='avahi-qt4', args="--cflags --libs", mandatory=False)
-    # if bld.env['LIB_AVAHI-QT4'] and bld.env['LIB_AVAHI-CLIENT']:
-    #     conf.define('HAVE_SERVERBROWSER', 1)
-
-    conf.define('VERSION', APPVERSION)
-    conf.define('PROMOE_VERSION', APPVERSION)
-    conf.define('PROMOE_DATADIR', os.path.join(conf.env['DATADIR'], 'promoe'))
-    conf.define('PROMOE_SKINDIR', os.path.join(conf.env['DATADIR'], 'promoe', 'skins'))
-
-    conf.write_config_header('promoe_config.h')
-
-def build(bld):
-    bld.recurse('backend_xmmsclient++ dir_iterator data src')
-
+bld(
+    features     = 'cxxprogram cxx qt4',
+    target       = 'promoe',
+    includes     = '..',
+    source       = bld.path.ant_glob(['**/*.cpp', '**/*.ui'], excl=excludes),
+    use          = 'backend_lib dir_iterator promoe_data',
+    uselib       = 'QTCORE QTGUI' # 'AVAHI-CLIENT AVAHI-QT4'
+)
