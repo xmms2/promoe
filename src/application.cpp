@@ -13,6 +13,8 @@
  *  GNU General Public License for more details.
  */
 
+#include "promoe_config.h"
+
 #include "xclient.h"
 #include "xclientcache.h"
 
@@ -24,7 +26,7 @@
 #include "skinmanager.h"
 
 #ifdef HAVE_SERVERBROWSER
-#include "Serverbrowser.h"
+#include "ServerBrowser.h"
 #endif
 
 #include <QSettings>
