@@ -17,5 +17,5 @@ qrc*
 .gdb*
 Makefile
 .waf-*
-.lock-wscript
-_build_
+.lock*
+build
