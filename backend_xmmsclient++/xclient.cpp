@@ -166,7 +166,7 @@ XClient::dictToQHash (const std::string &key,
 		             QVariant (boost::get< int32_t > (value)));
 	} else if (value.type () == typeid (uint32_t)) {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
-		             QVariant (boost::get< uint32_t > (value)));
+		             QVariant (boost::get< int32_t > (value)));
 	} else {
 		QString val;
 		val = QString::fromUtf8 (boost::get< std::string > (value).c_str ());
@@ -220,7 +220,7 @@ XClient::propDictToQHash (const std::string &key,
 		             QVariant (boost::get< int32_t > (value)));
 	} else if (value.type () == typeid (uint32_t)) {
 		hash.insert (QString::fromLatin1 (key.c_str ()),
-		             QVariant (boost::get< uint32_t > (value)));
+		             QVariant (boost::get< int32_t > (value)));
 	} else {
 		QString val;
 		if (key == "url") {

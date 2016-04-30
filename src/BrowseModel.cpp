@@ -129,7 +129,7 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 					name += " - ";
 				}
 				if (d.contains ("tracknr")) {
-					name += QString::number (d.get<uint32_t>
+					name += QString::number (d.get<int32_t>
 											 ("tracknr")).rightJustified(2, '0');
 					name += " - ";
 				}
