@@ -1,0 +1,9 @@
+os: linux
+sudo: required
+language: cpp
+
+before_script:
+    - sudo -E apt-get install -yq --no-install-suggests --no-install-recommends --force-yes libavahi-qt4-dev libqt4-dev libxmmsclient++-dev
+
+script:
+    - ./waf configure build
