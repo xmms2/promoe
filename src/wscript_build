@@ -4,7 +4,7 @@
 """
 This file is a part of Promoe, an XMMS2 Client
 
-Copyright (C) 2009-2010 XMMS2 Team
+Copyright (C) 2009-2016 XMMS2 Team
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions

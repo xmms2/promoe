@@ -1,7 +1,7 @@
 /**
  *  This file is a part of Promoe, an XMMS2 CLient
  *
- *  Copyright (C) 2008-2010 XMMS2 Team
+ *  Copyright (C) 2008-2016 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
