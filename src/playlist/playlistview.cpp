@@ -34,6 +34,8 @@
 
 #include <QSizePolicy>
 
+#include <qdrawutil.h>
+
 /*
  * PlaylistDelegate
  */

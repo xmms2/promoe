@@ -63,6 +63,8 @@ def configure(conf):
     # if bld.env['LIB_AVAHI-QT4'] and bld.env['LIB_AVAHI-CLIENT']:
     #     conf.define('HAVE_SERVERBROWSER', 1)
 
+    conf.env.append_unique('CXXFLAGS', ['-fPIC', '-DPIC'])
+
     conf.define('VERSION', APPVERSION)
     conf.define('PROMOE_VERSION', APPVERSION)
     conf.define('PROMOE_DATADIR', os.path.join(conf.env['DATADIR'], 'promoe'))

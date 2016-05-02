@@ -76,7 +76,7 @@ XCollection::Private::on_collection_modified (const Xmms::Dict &value)
 /*
 	qDebug ("---");
 	foreach (QString s, m_playlists) {
-		qDebug (s.toAscii ());
+		qDebug (s.toLatin1 ());
 	}
 */
 
@@ -144,7 +144,7 @@ bool
 XCollection::remove (QString name, QString ns) {
 	if (!m_client->isConnected ()) return false;
 
-	m_client->collection ()->remove (name.toStdString (), ns.toAscii ());
+	m_client->collection ()->remove (name.toStdString (), ns.toLatin1 ());
 
 	return true;
 }

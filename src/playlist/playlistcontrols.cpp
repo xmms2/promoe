@@ -100,7 +100,7 @@ PlaylistControls::paintEvent (QPaintEvent *event)
 	QPainter paint;
 	paint.begin (this);
 	foreach (QChar c, time) {
-		paint.drawPixmap (x, y, m_font[c.toAscii()]);
+		paint.drawPixmap (x, y, m_font[c.toLatin1()]);
 		x += 5;
 	}
 	paint.end ();

@@ -151,15 +151,17 @@ PlaylistModel::columns () const
 void
 PlaylistModel::setColumns (const QList<QString> &new_columns)
 {
+	beginResetModel ();
 	m_columns = new_columns;
-	reset ();
+	endResetModel ();
 }
 
 void
 PlaylistModel::setColumnFallback (const QList<QString> &new_columns)
 {
+	beginResetModel ();
 	m_colfallback = new_columns;
-	reset ();
+	endResetModel ();
 }
 
 bool

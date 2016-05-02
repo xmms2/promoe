@@ -73,6 +73,8 @@ BrowseModel::setPath (const QString &path)
 void
 BrowseModel::list_root ()
 {
+	beginResetModel ();
+
 	while (!m_list.isEmpty ()) {
 		delete m_list.takeFirst ();
 	}
@@ -82,9 +84,9 @@ BrowseModel::list_root ()
 //	m_list.append (new BrowseModelItem ("daap://", "DAAP", true));
 	emit dirChanged ("");
 
-	reset ();
-
 	m_current_dir = "";
+
+	endResetModel ();
 }
 
 bool
@@ -97,6 +99,8 @@ BrowseModel::list_err (const std::string err)
 bool
 BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 {
+	beginResetModel ();
+
 	while (!m_list.isEmpty ()) {
 		delete m_list.takeFirst ();
 	}
@@ -153,7 +157,7 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 
 	//qDebug ("%s", m_list.size() > 0 ? qPrintable(m_list.at(0)->data("name")) : "none");
 
-	reset ();
+	endResetModel ();
 
 	emit dirChanged (m_current_dir);
 
