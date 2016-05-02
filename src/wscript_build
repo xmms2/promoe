@@ -39,10 +39,10 @@ excludes = ['attic/*', 'ServerBrowser.cpp']
 #     excludes.append('ServerBrowser.cpp')
 
 bld(
-    features     = 'cxxprogram cxx qt4',
+    features     = 'cxxprogram cxx qt4 qt5',
     target       = 'promoe',
     includes     = '..',
     source       = bld.path.ant_glob(['**/*.cpp', '**/*.ui'], excl=excludes),
     use          = 'backend_lib dir_iterator promoe_data',
-    uselib       = 'QTCORE QTGUI' # 'AVAHI-CLIENT AVAHI-QT4'
+    uselib       = 'QTCORE QTGUI QT5CORE QT5GUI QT5WIDGETS' # 'AVAHI-CLIENT AVAHI-QT4'
 )

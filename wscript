@@ -50,10 +50,19 @@ APPVERSION = '0.2.0-devel'
 APPNAME = 'promoe'
 
 def options(opt):
-    opt.load('gnu_dirs compiler_cxx qt4')
+    opt.load('gnu_dirs compiler_cxx')
+    try:
+        opt.load('qt5')
+    except:
+        opt.load('qt4')
 
 def configure(conf):
-    conf.load('gnu_dirs compiler_cxx qt4')
+    conf.load('gnu_dirs compiler_cxx')
+
+    try:
+        conf.load('qt5')
+    except:
+        conf.load('qt4')
 
     conf.check_cfg(package='xmms2-client-cpp', args='--cflags --libs')
     conf.check_cfg(package='libarchive', args="--cflags --libs", mandatory=False)

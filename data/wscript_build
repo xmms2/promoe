@@ -34,11 +34,11 @@ POSSIBILITY OF SUCH DAMAGE.
 """
 
 obj = bld(
-    features     = 'qt4 cxx',
+    features     = 'cxx qt4 qt5',
     target       = 'promoe_data',
     install_path = 0, # Don't install
     source       = 'skins/Almond-blue.qrc',
-    uselib       = 'QTCORE'
+    uselib       = 'QTCORE QT5CORE'
 )
 
 man = bld(

@@ -38,10 +38,10 @@ if not bld.env.LIB_LIBARCHIVE:
     excludes.append('archive_read_open_qiodevice.cpp')
 
 bld(
-    features        = 'cxx qt4',
+    features        = 'cxx qt4 qt5',
     target          = 'dir_iterator',
     source          = bld.path.ant_glob(['*.cpp'], excl=excludes),
-    use             = 'QTCORE QTGUI LIBARCHIVE',
+    use             = 'QTCORE QTGUI QT5CORE QT5GUI LIBARCHIVE',
     includes        = '..',
     export_includes = '.'
 )

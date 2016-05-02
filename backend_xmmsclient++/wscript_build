@@ -33,9 +33,9 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 bld(
-    features        = 'cxx qt4',
+    features        = 'cxx qt4 qt5',
     target          = 'backend_lib',
     source          = bld.path.ant_glob(['*.cpp']),
-    use             = 'QTCORE QTGUI XMMS2-CLIENT-CPP',
+    use             = 'QTCORE QTGUI QT5CORE QT5GUI QT5WIDGETS XMMS2-CLIENT-CPP',
     export_includes = '.'
 )
