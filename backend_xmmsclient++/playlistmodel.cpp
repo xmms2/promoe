@@ -362,6 +362,8 @@ PlaylistModel::index (int row, int column, const QModelIndex &parent) const
 QVariant
 PlaylistModel::data (const QModelIndex &index, int role) const
 {
+	QSettings s;
+
 	if (!index.isValid ()) {
 		return QVariant ();
 	}
@@ -381,7 +383,13 @@ PlaylistModel::data (const QModelIndex &index, int role) const
 		return QVariant ();
 	}
 
-	if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
+	if (
+		(role == Qt::DisplayRole)
+		|| (
+			(role == Qt::ToolTipRole)
+			&& s.value ("playlist/showtooltips", true).toBool ()
+		)
+	) {
 		QString key = m_columns[index.column ()].toLower ();
 		QString fallkey = m_colfallback[index.column ()].toLower ();
 

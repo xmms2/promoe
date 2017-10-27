@@ -196,13 +196,21 @@ void
 PlaylistView::currentPosChanged (QModelIndex index) {
 	QSettings s;
 	if (s.value ("playlist/scrolltocurrent", true).toBool ()) {
-		scrollTo (index);
+		QRect rc = visualRect (index);
+		ScrollHint sh = EnsureVisible;
+		int push = height() * 0.1;
+		if ((rc.y() < push) || (rc.y() > height() - push)) {
+			// Outside the viewable area or close to the edge, scroll to middle
+			sh = PositionAtCenter;
+		}
+		scrollTo (index, sh);
 	}
 }
 
 void
 PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 {
+	QSettings s;
 	QMenu qm(this);
 
 	QAction *a;
@@ -234,6 +242,11 @@ PlaylistView::contextMenuEvent (QContextMenuEvent *e)
 	a->setEnabled(false); //FIXME: Disabled for now
 	qm.addAction (a);
 
+	a = new QAction (tr ("Show tooltips"), this);
+	connect (a, SIGNAL (triggered ()), this, SLOT (configureTooltips ()));
+	a->setCheckable(true);
+	a->setChecked (s.value ("playlist/showtooltips", true).toBool ());
+	qm.addAction (a);
 
 	e->accept ();
 	qm.exec (e->globalPos ());
@@ -324,6 +337,13 @@ PlaylistView::showEntryInfo (void)
 		                        .toUInt ();
 		App->showEntryInfo (id);
 	}
+}
+
+void
+PlaylistView::configureTooltips (void)
+{
+	QSettings s;
+	s.setValue ("playlist/showtooltips", !s.value("playlist/showtooltips", true).toBool ());
 }
 
 #include "playlistview.moc"
