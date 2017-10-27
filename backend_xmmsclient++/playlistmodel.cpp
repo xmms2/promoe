@@ -279,6 +279,8 @@ PlaylistModel::handle_list (const Xmms::List< unsigned int > &list)
 
 	emitTotalPlaytime  ();
 
+	m_client->playlist ()->currentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
+
 	return true;
 }
 
