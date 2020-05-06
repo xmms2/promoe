@@ -74,6 +74,7 @@ class ButtonPixmaps
 
 		ButtonPixmaps & operator= (const ButtonPixmaps & p) {
 			m_pixmaps = p.m_pixmaps;
+			return *this;
 		}
 
 	protected:
