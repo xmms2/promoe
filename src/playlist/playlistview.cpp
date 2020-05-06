@@ -36,6 +36,16 @@
 
 #include <qdrawutil.h>
 
+// L=left, R=right, N=normal (not active), A=active, S=selected
+#define DFMT_LN    "%#2ca4c7%@. <r>%r - </r>%#------%t %#444444 %c"
+#define DFMT_RN    "<l>%#12576b<n>%n:</n>%l %#------</l>%d"
+#define DFMT_LNS   "%#2ca4c7%@. <r>%r - </r>%#------%t %#444444 %c"
+#define DFMT_RNS   "<l>%#003342<n>%n:</n>%l %#------</l>%d"
+#define DFMT_LA    "%@. <r>%r - </r>%t %#555555 %c"
+#define DFMT_RA    "<l><n>%n:</n>%l </l>%d"
+#define DFMT_LAS   "%@. <r>%r - </r>%t %#555555 %c"
+#define DFMT_RAS   "<l><n>%n:</n>%l </l>%d"
+
 /*
  * PlaylistDelegate
  */
@@ -48,51 +58,269 @@ void
 PlaylistDelegate::paint( QPainter *painter, const QStyleOptionViewItem& option,
                          const QModelIndex &index ) const
 {
+	QSettings s;
+
 	painter->save ();
 
 	/* Set background color */
 	if ( option.state & QStyle::State_Selected ) {
-		qDrawPlainRect (painter, option.rect, QColor("#FFFFFF"), 0,
-		                &option.palette.brush (QPalette::Highlight));
+		QString selColour = s.value ("playlist/format_clr_sel_bg", QString ()).toString ();
+		QBrush b;
+		if ( selColour.isEmpty () ) {
+			b = option.palette.brush (QPalette::Highlight);
+		} else {
+			b = QBrush (QColor (selColour));
+		}
+		qDrawPlainRect (painter, option.rect, QColor ("#FFFFFF"), 0, &b);
 	}
 
 	/* Set forground color */
-	if ( index.data (PlaylistModel::CurrentEntryRole).toBool () ) {
-		painter->setPen (option.palette.brush (QPalette::BrightText).color ());
-	} else {
-		painter->setPen (option.palette.brush (QPalette::Text).color ());
-	}
+	bool isCurrent = index.data (PlaylistModel::CurrentEntryRole).toBool ();
 
-	/* generate string */
-	//TODO Add album and playtime
-	QVariant tmp;
-	QModelIndex m;
 	QRect r = option.rect;
-	QString s;
-	// Get playtime and if it exists, draw it
-	m = index.sibling (index.row (), 2);
-	tmp = m.data ();
-	if (tmp.isValid ()) {
+
+	// Extract all the data we need
+	QMap<char, QString> placeholderValues;
+	QVariant tmp;
+
+	placeholderValues['@'] = QString::number (index.row () + 1, 10);
+
+	tmp = index.sibling (index.row (), 2).data ();
+	if ( tmp.isValid () ) {
 		int seconds = tmp.toInt () / 1000;
-		s = QString ("%1:%2").arg (seconds / 60, 2)
-		                     .arg (seconds % 60, 2, 10, QLatin1Char ('0'));
-		painter->drawText (r, Qt::AlignVCenter | Qt::AlignRight, s);
-		// now adjust der paintrectangle for the remaining text
-		r.setWidth (r.width () - option.fontMetrics.width (s));
+		placeholderValues['d'] = QString ("%1:%2").arg (seconds / 60)
+		                                          .arg (seconds % 60, 2, 10,
+		                                                QLatin1Char ('0'));
+	} else {
+		// Normal dashes ("-:--") don't line up with the digits ("0:00") in the
+		// rows above and below, so use a wider Unicode dash.
+		placeholderValues['d'] = QString::fromUtf8 ("\u2013:\u2013\u2013");
 	}
 
-	// now build String for Artis Title and Position
-	s = QString ("%1. ").arg (index.row () + 1);
+	// A(r)tist
 	tmp = index.data ();
-	if (tmp.isValid ())
-		s.append (tmp.toString ()).append (" - ");
-	m = index.sibling (index.row (), 1);
-	tmp = m.data ();
-	if (tmp.isValid ())
-		s.append (tmp.toString ());
-	s = option.fontMetrics.elidedText(s, Qt::ElideRight, r.width());
+	placeholderValues['r'] = tmp.isValid () ? tmp.toString () : QString ();
 
-	painter->drawText (r, Qt::AlignVCenter, s);
+	// Song (t)itle
+	tmp = index.sibling (index.row (), 1).data ();
+	placeholderValues['t'] = tmp.isValid () ? tmp.toString () : QString ();
+
+	// A(l)bum
+	tmp = index.sibling (index.row (), 3).data ();
+	placeholderValues['l'] = tmp.isValid () ? tmp.toString () : QString ();
+
+	// Track (n)umber
+	tmp = index.sibling (index.row (), 4).data ();
+	placeholderValues['n'] = tmp.isValid () ? tmp.toString () : QString ();
+
+	// Play (c)ount
+	tmp = index.sibling (index.row (), 5).data ();
+	placeholderValues['c'] = tmp.isValid () ? tmp.toString () : QString ();
+
+	QVector<QString> format;
+
+	// We always start with a colour specifier ("%#") and the colour "------"
+	// or "++++++" so that we can rely on the string list always starting with
+	// a colour code, even if the user hasn't specified one.  This simplifies
+	// handling the colours later.
+	if ( isCurrent ) {
+		if ( option.state & QStyle::State_Selected ) {
+			format.append (
+				QString ("%#++++++%1").arg (
+					s.value ("playlist/format_r_active_selected", DFMT_RAS).toString ()
+				)
+			);
+			format.append (
+				QString ("%#++++++%1").arg (
+					s.value ("playlist/format_l_active_selected", DFMT_LAS).toString ()
+				)
+			);
+		} else {
+			format.append (
+				QString ("%#++++++%1").arg (
+					s.value ("playlist/format_r_active", DFMT_RA).toString ()
+				)
+			);
+			format.append (
+				QString ("%#++++++%1").arg (
+					s.value ("playlist/format_l_active", DFMT_LA).toString ()
+				)
+			);
+		}
+	} else {
+		if ( option.state & QStyle::State_Selected ) {
+			format.append (
+				QString ("%#------%1").arg (
+					s.value ("playlist/format_r_normal_selected", DFMT_RNS).toString ()
+				)
+			);
+			format.append (
+				QString ("%#------%1").arg (
+					s.value ("playlist/format_l_normal_selected", DFMT_LNS).toString ()
+				)
+			);
+		} else {
+			format.append (
+				QString ("%#------%1").arg (
+					s.value ("playlist/format_r_normal", DFMT_RN).toString ()
+				)
+			);
+			format.append (
+				QString ("%#------%1").arg (
+					s.value ("playlist/format_l_normal", DFMT_LN).toString ()
+				)
+			);
+		}
+	}
+
+	// See if we need to shorten any fields to get the whole song title visible
+
+	QMap<char, bool> shortened;
+	shortened['r'] = false;
+	shortened['l'] = false;
+
+	QVector<QStringList> output;
+	QVector<QString> previewText;
+
+	// Do this a few times until we get it right.  Must be one more than the
+	// number of fields we abbreviate, so the text gets regenerated after the
+	// last field has been shortened.  This is also important because if, for
+	// example the space is so short the album title is made completely blank,
+	// then a <l></l> conditional will activate and possibly hide some
+	// additional information like the track number and separating symbol.
+	for ( int retry = 0; retry < 3; retry++ ) // 3 = artist, album, +1
+	{
+		output.clear ();
+		previewText.clear ();
+
+		for ( QVector<QString>::const_iterator f = format.constBegin ();
+		      f != format.constEnd ();
+		      f++ )
+		{
+			QString fmt = *f; // copy to preserve original
+
+			// Remove all the conditional sections based on whether data is present
+			for ( QMap<char, QString>::iterator p = placeholderValues.begin ();
+			      p != placeholderValues.end ();
+			      p++ )
+			{
+				const char &key = p.key ();
+				const QString &value = p.value ();
+
+				// This regex will match the section that should be removed if that
+				// tag is empty.  If it's empty, the whole thing is removed tags
+				// and all, but if the placeholder has a value then only the start
+				// and end tags are removed.
+				QRegExp reg (QString ("<%1>(.*)</%1>").arg (key));
+				fmt.replace (reg, value.isEmpty () ? "" : "\\1");
+
+				// Put the final value in too while we're here
+				fmt.replace (QString ('%') + key, value);
+			}
+
+			QStringList parts = fmt.split ("%#", QString::SkipEmptyParts);
+			output.append (parts);
+
+			QString pt;
+			for ( QStringList::const_iterator s = parts.begin ();
+			      s != parts.end ();
+			      s++ )
+			{
+				pt.append (s->mid (6));
+			}
+			previewText.append (pt);
+		}
+
+		// Measure the text to see if it will fit
+		QRect rcLeft = option.fontMetrics.boundingRect (r, Qt::AlignVCenter, previewText[1]);
+		QRect rcRight = option.fontMetrics.boundingRect (r, Qt::AlignVCenter | Qt::AlignRight, previewText[0]);
+		int widthLeft = rcLeft.width ();
+		int widthRight = rcRight.width ();
+		if ( widthLeft + widthRight > r.width () ) {
+			// The left text will run into the right, so crop something
+			unsigned int excess = 4 + widthLeft + widthRight - r.width ();
+
+			QString *target = nullptr;
+			if ( !shortened['l'] ) {
+				// Shorten the album first
+				shortened['l'] = true;
+				target = &placeholderValues['l'];
+
+			} else if ( !shortened['r'] ) {
+				// Then the artist
+				shortened['r'] = true;
+				target = &placeholderValues['r'];
+			}
+
+			if ( target ) {
+				if ( !target->isEmpty () ) {
+					QRect rcField = option.fontMetrics.boundingRect (r, Qt::AlignVCenter, *target);
+					int maxFieldWidth = rcField.width () - excess;
+					if ( maxFieldWidth < 0) {
+						// No room at all for this field
+						*target = QString ();
+					} else {
+						*target = option.fontMetrics.elidedText (*target,
+						                                         Qt::ElideRight,
+						                                         maxFieldWidth);
+					}
+				}
+			} else {
+				// No need to retry
+				break;
+			}
+		}
+
+	} // for (retry until we can get the song title to fit)
+
+	// Now draw the left and right text for this song
+
+	const QStringList &slRight = output[0];
+	const QStringList &slLeft = output[1];
+
+	// Do the left-aligned text first
+	for ( int i = 0; i < slLeft.size (); i++ ) {
+		QString colourCode = QString ("#").append (slLeft[i].mid (0, 6));
+		QString content = slLeft[i].mid (6);
+
+		QColor c;
+		if ( colourCode.compare ("#------") == 0) {
+			c = option.palette.brush (QPalette::Text).color ();
+		} else if ( colourCode.compare ("#++++++") == 0) {
+			c = option.palette.brush (QPalette::BrightText).color ();
+		} else {
+			c = QColor (colourCode);
+		}
+		painter->setPen (c);
+
+		QRect rcResult; // need a fresh one for each drawText()
+		painter->drawText (r, Qt::AlignVCenter, content, &rcResult);
+		// Move the drawing point across by as much as we just drew
+		r.setLeft (r.left () + rcResult.width ());
+	}
+
+	// Followed by the right-aligned text
+	for ( int i = slRight.size () - 1; i >= 0; i-- ) {
+		QString colourCode = QString ("#").append (slRight[i].mid (0, 6));
+		QString content = slRight[i].mid (6);
+
+		QColor c;
+		if ( colourCode.compare ("#------") == 0) {
+			c = option.palette.brush (QPalette::Text).color ();
+		} else if ( colourCode.compare ("#++++++") == 0) {
+			c = option.palette.brush (QPalette::BrightText).color ();
+		} else {
+			c = QColor (colourCode);
+		}
+		painter->setPen (c);
+
+		QRect rcResult; // need a fresh one for each drawText()
+		painter->drawText (r, Qt::AlignVCenter | Qt::AlignRight, content, &rcResult);
+		// Move the drawing point back by as much as we just drew
+		r.setWidth (r.width () - rcResult.width ());
+	}
+
+
 	painter->restore ();
 }
 

@@ -32,3 +32,62 @@ Patches:
 
 	To discuss a patch or feature request, you can also try to reach the
 	developer at xmms2's irc channel #xmms2 on freenode (irc.freenode.net)
+
+Configuration:
+	Config file defaults to ~/.config/xmms2/Promoe.conf
+
+	To change the playlist text style, add these default values to the
+	[playlist] section then change as desired: (see below for the old ones)
+
+	format_l_normal=%#2ca4c7%@. <r>%r - </r>%#------%t %#444444 %c
+	format_r_normal=<l>%#12576b<n>%n:</n>%l %#------</l>%d
+	format_l_normal_selected=%#2ca4c7%@. <r>%r - </r>%#------%t %#444444 %c
+	format_r_normal_selected=<l>%#003342<n>%n:</n>%l %#------</l>%d
+	format_l_active=%@. <r>%r - </r>%t %#555555 %c
+	format_r_active=<l><n>%n:</n>%l </l>%d
+	format_l_active_selected=%@. <r>%r - </r>%t %#555555 %c
+	format_r_active_selected=<l><n>%n:</n>%l </l>%d
+
+	For each playlist row, the above items mean:
+		*_l_*       Left-justified text
+		*_r_*       Right-justified text
+		*_normal    Default style (used for most playlist entries)
+		*_active    The one currently playing entry
+		*_selected  As above but also has been clicked on to select it
+
+		By default, the active one makes most of the text white, and the
+		selected one tweaks the brightness a little to give better
+		contrast against the selection background colour.
+
+	Placeholders:
+		%@  Playlist index
+		%c  Play count (number of times track has been played)
+		%d  Duration
+		%l  Album
+		%n  Track number
+		%r  Artist
+		%t  Title
+		%#  Change colour - HTML RGB codes, exactly 6 chars must follow
+		    %#ff0000  bright red
+		    %#------  current skin's default text colour
+		    %#++++++  skin's default "bright" text colour
+		<X></X>  Hide text between the tags if tag "X" is blank, e.g.
+		         <l>%n %l</l> will only show tracknum+album if album is
+		         present
+
+	To change the selection background colour, add this item to [playlist]:
+
+		format_clr_sel_bg=#FF0000
+
+	To return to the default skin-specified colour, delete this line again.
+
+	To go back to the simpler style used in earlier Promoe versions, use:
+
+		format_l_normal=%@. <r>%r - </r>%t
+		format_r_normal=%d
+		format_l_normal_selected=%@. <r>%r - </r>%t
+		format_r_normal_selected=%d
+		format_l_active=%@. <r>%r - </r>%t
+		format_r_active=%d
+		format_l_active_selected=%@. <r>%r - </r>%t
+		format_r_active_selected=%d
