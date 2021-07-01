@@ -85,6 +85,7 @@ class MainDisplay : public SkinDisplay
 
 	protected:
 		void SetupPushButtons (const XClient *);
+		void SetupShortcuts (const XClient *);
 		void SetupToggleButtons (void);
 
 		PixmapButton *m_prev;
