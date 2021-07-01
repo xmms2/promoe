@@ -43,6 +43,7 @@
 #include <QFileDialog>
 #include <QPainter>
 #include <QUrl>
+#include <QShortcut>
 
 /*
  *
@@ -236,6 +237,22 @@ PlaylistWidget::PlaylistWidget (PlaylistWindow *parent) : QWidget (parent)
 	         App, SLOT (toggleTime()));
 	connect (parent, SIGNAL (setDisplayTime (int)),
 	         m_controls, SIGNAL (setDisplayTime (int)));
+
+QShortcut *shortcut_prev = new QShortcut(QKeySequence("z"), this);
+	connect (shortcut_prev, SIGNAL(activated()), client->xplayback (), SLOT(prev ()));
+
+	QShortcut *shortcut_play = new QShortcut(QKeySequence("x"), this);
+	connect (shortcut_play, SIGNAL(activated()), client->xplayback (), SLOT(play ()));
+
+
+	QShortcut *shortcut_pause = new QShortcut(QKeySequence("c"), this);
+	connect (shortcut_pause, SIGNAL(activated()), client->xplayback (), SLOT(toggle_pause ()));
+
+	QShortcut *shortcut_stop = new QShortcut(QKeySequence("v"), this);
+	connect (shortcut_stop, SIGNAL(activated()), client->xplayback (), SLOT(stop ()));
+
+	QShortcut *shortcut_next = new QShortcut(QKeySequence("b"), this);
+	connect (shortcut_next, SIGNAL(activated()), client->xplayback (), SLOT(next ()));
 
 
 	connect (App->client ()->active_playlist (),

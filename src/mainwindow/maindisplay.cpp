@@ -40,6 +40,7 @@
 
 #include <QFileDialog>
 #include <QSettings>
+#include <QShortcut>
 #include <QDebug>
 
 MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
@@ -59,6 +60,7 @@ MainDisplay::MainDisplay (MainWindow *parent) : SkinDisplay(parent)
 	m_mw = parent;
 
 	SetupPushButtons (client);
+	SetupShortcuts (client);
 	SetupToggleButtons ();
 
 	m_text = new TextScroller (this, 154, 12, "main");
@@ -334,6 +336,31 @@ MainDisplay::SetupPushButtons (const XClient* client)
 	m_eject->resize (skin->getSize (Skin::BUTTON_MW_EJECT));
 	m_eject->move (skin->getPos (Skin::BUTTON_MW_EJECT));
 	connect (m_eject, SIGNAL(clicked()), this, SLOT(fileOpen()));
+
+}
+
+void
+MainDisplay::SetupShortcuts (const XClient* client)
+{
+	/* Normal buttons */
+	QShortcut *shortcut_prev = new QShortcut(QKeySequence("z"), this);
+	connect (shortcut_prev, SIGNAL(activated()), client->xplayback (), SLOT(prev ()));
+
+	QShortcut *shortcut_play = new QShortcut(QKeySequence("x"), this);
+	connect (shortcut_play, SIGNAL(activated()), client->xplayback (), SLOT(play ()));
+
+
+	QShortcut *shortcut_pause = new QShortcut(QKeySequence("c"), this);
+	connect (shortcut_pause, SIGNAL(activated()), client->xplayback (), SLOT(toggle_pause ()));
+
+	QShortcut *shortcut_stop = new QShortcut(QKeySequence("v"), this);
+	connect (shortcut_stop, SIGNAL(activated()), client->xplayback (), SLOT(stop ()));
+
+	QShortcut *shortcut_next = new QShortcut(QKeySequence("b"), this);
+	connect (shortcut_next, SIGNAL(activated()), client->xplayback (), SLOT(next ()));
+
+	QShortcut *shortcut_eject = new QShortcut(QKeySequence("n"), this);
+	connect (shortcut_eject, SIGNAL(activated()), this, SLOT(fileOpen()));
 
 }
 
