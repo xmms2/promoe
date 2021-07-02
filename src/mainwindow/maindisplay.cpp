@@ -343,24 +343,23 @@ void
 MainDisplay::SetupShortcuts (const XClient* client)
 {
 	/* Normal buttons */
-	QShortcut *shortcut_prev = new QShortcut(QKeySequence("z"), this);
-	connect (shortcut_prev, SIGNAL(activated()), client->xplayback (), SLOT(prev ()));
+	QShortcut *shortcut_prev = new QShortcut (QKeySequence ("z"), this);
+	connect (shortcut_prev, SIGNAL (activated ()), client->xplayback (), SLOT (prev ()));
 
-	QShortcut *shortcut_play = new QShortcut(QKeySequence("x"), this);
-	connect (shortcut_play, SIGNAL(activated()), client->xplayback (), SLOT(play ()));
+	QShortcut *shortcut_play = new QShortcut (QKeySequence ("x"), this);
+	connect (shortcut_play, SIGNAL (activated ()), client->xplayback (), SLOT (play ()));
 
+	QShortcut *shortcut_pause = new QShortcut (QKeySequence ("c"), this);
+	connect (shortcut_pause, SIGNAL (activated ()), client->xplayback (), SLOT (toggle_pause ()));
 
-	QShortcut *shortcut_pause = new QShortcut(QKeySequence("c"), this);
-	connect (shortcut_pause, SIGNAL(activated()), client->xplayback (), SLOT(toggle_pause ()));
+	QShortcut *shortcut_stop = new QShortcut (QKeySequence ("v"), this);
+	connect (shortcut_stop, SIGNAL (activated ()), client->xplayback (), SLOT (stop ()));
 
-	QShortcut *shortcut_stop = new QShortcut(QKeySequence("v"), this);
-	connect (shortcut_stop, SIGNAL(activated()), client->xplayback (), SLOT(stop ()));
+	QShortcut *shortcut_next = new QShortcut (QKeySequence ("b"), this);
+	connect (shortcut_next, SIGNAL (activated ()), client->xplayback (), SLOT (next ()));
 
-	QShortcut *shortcut_next = new QShortcut(QKeySequence("b"), this);
-	connect (shortcut_next, SIGNAL(activated()), client->xplayback (), SLOT(next ()));
-
-	QShortcut *shortcut_eject = new QShortcut(QKeySequence("n"), this);
-	connect (shortcut_eject, SIGNAL(activated()), this, SLOT(fileOpen()));
+	QShortcut *shortcut_eject = new QShortcut (QKeySequence ("n"), this);
+	connect (shortcut_eject, SIGNAL (activated ()), this, SLOT (fileOpen ()));
 
 }
 
