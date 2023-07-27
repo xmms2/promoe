@@ -33,7 +33,7 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
-excludes = ['attic/*', 'ServerBrowser.cpp']
+excludes = ['attic/*', 'ServerBrowser.cpp', 'ServerBrowser.h']
 
 # if not (bld.env['LIB_AVAHI-QT4'] and bld.env['LIB_AVAHI-CLIENT']):
 #     excludes.append('ServerBrowser.cpp')
@@ -43,6 +43,7 @@ bld(
     target       = 'promoe',
     includes     = '..',
     source       = bld.path.ant_glob(['**/*.cpp', '**/*.ui'], excl=excludes),
+    moc          = bld.path.ant_glob(['**/*.h'], excl=excludes),
     use          = 'backend_lib dir_iterator promoe_data',
     uselib       = 'QTCORE QTGUI QT5CORE QT5GUI QT5WIDGETS' # 'AVAHI-CLIENT AVAHI-QT4'
 )

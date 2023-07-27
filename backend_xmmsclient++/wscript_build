@@ -36,6 +36,7 @@ bld(
     features        = 'cxx qt4 qt5',
     target          = 'backend_lib',
     source          = bld.path.ant_glob(['*.cpp']),
+    moc             = bld.path.ant_glob(['*.h']),
     use             = 'QTCORE QTGUI QT5CORE QT5GUI QT5WIDGETS XMMS2-CLIENT-CPP',
     export_includes = '.'
 )

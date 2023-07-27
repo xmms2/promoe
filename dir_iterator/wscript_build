@@ -41,6 +41,7 @@ bld(
     features        = 'cxx qt4 qt5',
     target          = 'dir_iterator',
     source          = bld.path.ant_glob(['*.cpp'], excl=excludes),
+    moc             = bld.path.ant_glob(['*.h'], excl=excludes),
     use             = 'QTCORE QTGUI QT5CORE QT5GUI LIBARCHIVE',
     includes        = '..',
     export_includes = '.'

@@ -28,7 +28,11 @@
 #include <avahi-client/lookup.h>
 #include <avahi-common/malloc.h>
 #include <avahi-common/error.h>
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <avahi-qt4/qt-watch.h>
+#else
+#include <avahi-qt5/qt-watch.h>
+#endif
 
 class ServerItem : public QListWidgetItem {
 	public:
